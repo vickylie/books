@@ -1,0 +1,128 @@
+<html>
+<head>
+<title>VMWare 經 驗 談 （ 下 篇 ） </title>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+</head>
+
+<body bgcolor="#FFFFFF" background="../background3.jpg">
+<div align="center"> 
+  <p align="left"><strong><big><b><img src="../image/catlog/tutor.gif" width="500" height="58"></b></big></strong></p>
+  <p align="left"><strong><big>VMWare 經 驗 談 （ 下 篇 ） <b><img src="../line1.jpg" width="600" height="2"></b></big></strong></p>
+  <p align="left">這 是 第 三 部 份 . 這 一 部 份 是 設 定 networking 中 的 第 二 小 部 份 ， 也 就 是 
+    將 win95/nt 寵 物 雞 連 上 internet. 我 們 所 要 用 到 的 ， 是 ip-masquerading， ip-forwarding 
+    ( 現 在 叫 ipchains)， 和 設 定 一 下 route 而 已 . 我 對 網 路 設 定 只 是 生 手 ... 都 是 亂 碰 亂 
+    撞 後 成 功 的 ... 然 後 再 把 不 需 要 的 設 定 慢 慢 eliminate， 最 後 就 會 剩 下 有 用 的 那 幾 行 設 
+    定 . 所 以 這 邊 所 說 的 ... 請 各 位 好 好 思 考 過 . 因 為 我 的 設 定 不 一 定 適 用 於 各 位 .<br>
+    <br>
+    有 關 ip-masquerading 虛 擬 IP 的 部 份 ... 我 們 要 enable 的 就 是 那 些 modules... 記 得 
+    了 嗎 ? :)<br>
+    不 記 得 的 話 ... 請 看 第 一 部 份 的 &quot;Modules 確 認 &quot;. 還 記 得 我 們 已 經 把 核 心 
+    加 入 了 firewall， 虛 擬 IP， 以 及 ip-forwarding 的 功 能 ， 然 後 重 新 compile 過 建 立 成 
+    modules 嗎 ? 我 在 建 立 核 心 之 後 ， 有 寫 到 要 確 認 時 是 自 己 要 確 定 核 心 已 經 自 己 很 滿 意 
+    後 才 要 確 認 這 些 modules... 因 為 如 果 自 己 不 滿 意 compile 出 來 的 核 心 ， 那 還 是 重 新 compile... 
+    重 新 compile 又 得 殺 掉 <br>
+    <br>
+    1) /usr/include/asm<br>
+    2) /usr/include/linux<br>
+    3) /usr/include/scsi ( 以 上 三 個 directories， 是 symbolic links to /usr/src/linux/include 
+    裡 的 asm-i386， linux， scsi 三 個 directories)<br>
+    4) /lib/modules/2.3.X/* &lt;-- 這 一 個 可 以 不 刪 ... 不 過 既 然 要 重 compile kernel， 
+    重 新 製 modules 沒 差 吧 ... 搞 不 好 有 的 功 能 你 ban 了 再 重 新 compile 過 ... 而 原 本 的 
+    kernel 中 有 這 一 個 module 被 enable... 這 樣 殘 留 下 的 modules 就 沒 有 用 ... 因 為 沒 
+    有 dependent 嘍 <br>
+    5) /boot/vmlinuz &lt;-- 這 一 個 是 指 compile 後 的 核 心 ， 不 過 你 不 喜 歡 ， 而 想 要 重 
+    compile 成 這 個 名 字 的 新 核 心 .<br>
+    <br>
+    ok， 現 在 我 假 定 各 位 已 經 設 定 了 各 位 心 目 中 最 好 最 完 美 最 漂 亮 的 kernel 了 .. 所 有 的 
+    ip_masq XX.o 的 modules 也 已 經 確 認 了 . :) 現 在 ㄛ ... 我 們 所 要 做 的 就 是 把 這 些 modules 
+    檔 ， 設 一 個 text file， 寫 成 script， 然 後 把 這 個 text 檔 設 成 可 執 行 ... 這 樣 就 可 以 
+    了 ... 要 不 然 ... 每 次 要 上 線 ... 我 們 就 要 打 insmod ip_masqXX.o 很 多 次 才 能 把 所 有 
+    要 的 功 能 enable.. 這 樣 子 會 很 煩 人 . 以 下 是 我 的 小 script... 這 只 是 很 原 始 的 ... 不 
+    過 基 本 的 功 能 都 可 以 用 ， 可 以 上 網 嘍 ， 可 以 用 ftp， 也 可 以 irc. 井 字 號 的 部 份 表 示 功 
+    能 是 有 ， 不 過 我 少 用 ， 所 以 ban 掉 ， 改 天 要 用 再 enable 嘍 .<br>
+    <br>
+    [my small script]<br>
+    <br>
+    # !/bin/sh<br>
+    <br>
+    echo 1 &gt; /proc/sys/net/ipv4/ip_forward &lt;--( 這 個 是 一 定 要 啟 動 的 ， 是 用 
+    來 enable ip-forwarding.)<br>
+    echo 1 &gt; /proc/sys/net/ipv4/ip_autoconfig &lt;--( 這 行 我 不 知 ... 不 過 既 然 
+    可 以 自 動 設 定 ip， 我 就 enable 它 ， 待 證 實 )<br>
+    echo 1 &gt; /proc/sys/net/ipv4/ip_dynaddr &lt;--( 這 個 是 動 態 的 address， 我 想 
+    可 能 跟 ip-masq 有 關 ， enable 它 ， 待 證 實 )<br>
+    <br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_masq_autofw.o ( 以 下 就 是 把 所 有 的 ip_masq* 
+    功 能 包 括 進 來 )<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_masq_mfw.o<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_masq_ftp.o<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_masq_irc.o<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_masq_portfw.o<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_masq_raudio.o<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_masq_user.o<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_masq_vdolive.o &lt;--( 我 ban 掉 ， 因 
+    為 我 沒 有 vdolive.)<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_gre.o &lt;--( 我 ban 掉 ， 因 為 不 懂 得 
+    怎 麼 用 這 個 網 路 界 面 )<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_masq_cuseemo.o &lt;--( 我 ban 掉 ， 因 
+    為 我 沒 有 cuseeme)<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ip_masq_quake.o &lt;--( 我 ban 掉 ， 因 為 
+    我 沒 有 玩 quake)<br>
+    #modprobe -a /lib/modules/2.3.2/ipv4/ipip.o &lt;--( 這 個 我 也 不 懂 ... 不 過 我 
+    enable 以 後 要 研 究 看 看 )<br>
+    <br>
+    ipchains -A forward -s 192.168.0.1/24 -d 0.0.0.0/0 -b -j MASQ &lt;--( 這 一 
+    行 是 ipchains 的 指 令 <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    不 過 因 為 要 設 更 好 ， 才 能 防 止 hacker<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    請 各 位 在 這 個 地 方 多 多 注 意 ， &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    如 果 各 位 寫 出 好 的 ， 請 知 會 我 一 下 ， tkx)<br>
+    <br>
+    route add -host 192.168.0.1 gw flower &lt;--( 這 個 192.168.0.1 是 vmnet1 界 面 
+    associated 的 位 址 <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    當 初 寫 這 一 行 是 因 為 我 當 時 win95， winNT 可 上 網 ， 不 過 <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    Linux 卻 反 而 不 能 上 網 了 ... 所 以 我 試 到 最 後 ， 寫 下 這 一 行 ， &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    就 可 以 三 個 通 通 上 網 了 :D )<br>
+    <br>
+    cd /etc/rc.d/init.d<br>
+    ./inet restart &lt;--( 既 然 我 們 有 動 到 route 指 令 ， 那 最 好 重 新 啟 動 inet， 把 所 有 
+    的 daemon 都 更 新 一 次 ， &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 這 樣 子 DNA 
+    daemon (named)， Samba daemon (smbd， nmbd)， Route daemon (routed)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vmware (vmmon.o ， vmnet.o) 等 等 
+    更 動 過 的 ， 都 一 次 可 以 更 新 使 新 設 定 生 效 )<br>
+    ./named restart &lt;--( 說 也 奇 怪 ... 我 一 定 要 加 這 個 上 去 ..DNS daemon 才 會 生 效 
+    ..<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DNS 生 效 後 .. 才 能 上 網 browser， ftp， 
+    irc.. 等 等 的 )<br>
+    <br>
+    請 各 位 refine 這 一 個 小 script. 基 本 上 只 要 能 上 網 ， 安 全 設 定 設 好 ， 那 就 好 了 . 給 這 
+    個 檔 取 個 名 字 ， 放 在 /usr/local/bin 裡 ， 用 來 區 別 自 己 寫 的 executable. 記 得 把 這 一 
+    個 檔 設 成 可 執 行 <br>
+    <br>
+    &nbsp;&nbsp;&nbsp; chmod 755 檔 名 <br>
+    <br>
+    要 執 行 這 個 檔 ， 跑 到 /usr/local/bin， 打 ./ 檔 名 就 可 以 enable 上 述 設 定 . 這 一 個 檔 
+    ... 應 該 是 在 win95/98winNT 開 啟 後 ， login 後 ， 在 linux 裡 用 netcfg activate pppX 
+    網 路 界 面 後 ， 才 要 執 行 的 . <br>
+    <br>
+    現 在 各 位 可 在 window95/98/NT 裡 打 開 browser， 試 試 看 可 不 可 以 上 線 ， check pop3 email， 
+    ftp， irc， 等 等 的 . 泡 個 咖 啡 ， 休 息 一 下 享 受 自 己 設 定 後 的 成 果 吧 . :D<br>
+    <br>
+    note:<br>
+    <br>
+    如 果 各 位 打 了 些 paper， 然 後 存 到 linux 的 directories 分 享 出 來 as NFS 的 網 路 硬 碟 
+    ... 請 確 定 這 些 directories 的 存 取 修 改 的 權 限 是 可 以 讓 使 用 者 可 存 取 修 改 的 . 我 們 
+    可 以 舉 個 例 子 : 假 設 我 要 把 /usr/local/src 這 一 個 directory 設 成 每 個 使 用 者 都 能 存 
+    取 的 ， 那 我 們 可 以 把 下 列 這 一 行 加 到 上 面 的 script 裡 面 :<br>
+    <br>
+    chmod 777 -R /usr/local/src 這 樣 設 不 知 可 不 可 行 ， 不 過 我 倒 是 這 樣 子 ， 讓 我 以 simon 
+    login 到 win95 裡 面 得 以 把 檔 案 存 到 /usr/local/src 。</p>
+  <p align="left">&nbsp;</p>
+  
+    
+</div>
+</body>
+</html>

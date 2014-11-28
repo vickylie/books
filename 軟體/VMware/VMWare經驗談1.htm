@@ -1,0 +1,478 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+
+<head>
+<style><!-- a:{color:#000099} a:vlink{color:#663366} a:hover{color:#FF0000} --></style>
+<title>VMWare 經 驗 談 （ 上 篇 ） </title>
+</head>
+
+<body aLink="#000080" bgColor="#FFFFFF" link="#000080" vLink="#000080" background="../background3.jpg">
+<div align="left">
+  <p><b> <img src="../image/catlog/tutor.gif" width="500" height="58"></b></p>
+  <p><b>VMWare 經 驗 談 （ 上 篇 ） <img src="../line1.jpg" width="600" height="2"></b></p>
+</div>
+<p>這 個 小 檔 案 ， 是 記 載 我 install/configure vmware， for linux， for only one computer， 
+  所 知 道 的 一 些 經 驗 . 由 於 我 也 是 Linux 初 學 者 ， 一 路 自 己 跌 跌 撞 撞 過 來 ， 所 以 這 中 間 有 
+  不 少 的 錯 誤 . 如 果 別 人 也 有 這 個 需 求 的 話 ， 請 再 email 給 他 / 她 們 <br>
+  <br>
+  設 備 界 定 :<br>
+  <br>
+  首 先 ， 我 必 需 要 界 定 一 下 我 本 身 的 電 腦 裝 備 :<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; ram&nbsp;&nbsp;&nbsp; 256 MB<br>
+  &nbsp;&nbsp;&nbsp; ( 建 議 : ram 多 多 益 善 )<br>
+  &nbsp;&nbsp;&nbsp; hard drive(s): /dev/hda (primary， master， IDE):western digital 
+  EZ drive 13GB<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; ( 建 議 1: 不 要 買 EZ drive.. 小 弟 我 因 為 看 到 便 宜 才 買 ， 很 後 悔 呢 
+  ...)<br>
+  &nbsp;&nbsp;&nbsp; ( 建 議 2: 買 IDE 硬 碟 ， 容 量 不 要 超 過 8.4GB&nbsp;&nbsp; 8.4 為 
+  極 限 ， 極 限 的 head=256(0-255)， cylinder=1024(0-1023)， secter:63 否 則 無 法 format 
+  成 linux 的 ext2 filesystem)<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp; /dev/hdb (primary， slave， IDE): western digital 3.2GB<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; /dev/hdc (secondary， master， IDE): quantum 2.5GB<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; /dev/hdd (secondary， master， IDE): 一 般 cd-rom<br>
+  &nbsp;&nbsp;&nbsp; motherboard: 華 碩 (asus) P5A/B Baby AT 主 機 版 <br>
+  &nbsp;&nbsp;&nbsp; CPU:&nbsp;&nbsp;&nbsp; AMD K6-2 350MHZ<br>
+  &nbsp;&nbsp;&nbsp; 沒 有 iomega zip100<br>
+  <br>
+  以 上 是 硬 體 部 份 簡 單 的 描 述 .<br>
+  &nbsp;&nbsp; <br>
+  軟 體 的 話 就 是 作 業 系 統 :&nbsp;&nbsp;&nbsp; RedHat 6.0 Linux ( 因 為 我 是 初 學 者 :) 
+  ) 英 文 版 vmware 1.1.2 版 ( 目 前 版 本 )( 中 文 版 的 linux 應 該 不 會 有 什 麼 太 大 的 問 題 ... 
+  如 果 真 的 遇 到 沒 法 解 決 的 ， 改 採 英 文 版 )<br>
+  <br>
+  更 新 kernel 至 : 2.3.2 ( 原 kernel 2.2.5-15 沒 support 這 塊 主 機 版 的 ALI15x3 chipset)<br>
+  (kernel 2.3.19 試 過 ， vmware support 不 到 ， 說 kernel 太 新 了 )<br>
+  my linux library: glibc2.0<br>
+  my c compiler: gcc version egcs-2.91.66 19990314/Linux (egcs-1.1.2 release)<br>
+  my perl: version 5.005_03 built for i386-linux &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <br>
+  <br>
+  要 使 用 到 的 protocol( 協 定 )， and 一 些 目 前 為 人 熟 知 的 技 術 .<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 1.tcp/ip protocol<br>
+  &nbsp;&nbsp;&nbsp; 2.smb(samba) protocol&nbsp;&nbsp;&nbsp;&nbsp; [session message 
+  block protocol]<br>
+  &nbsp;&nbsp;&nbsp; 3.ip-masquerading ( 虛 擬 IP)<br>
+  &nbsp;&nbsp;&nbsp; 4.ip-forwarding ( 目 前 是 ipchains 這 個 名 稱 )<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3 和 4 的 前 提 是 enable firewall( 要 
+  有 防 火 牆 ).<br>
+  &nbsp;&nbsp;&nbsp; 5. 設 一 下 routing.<br>
+  &nbsp;&nbsp;&nbsp; 6.ppp protocol ( 使 用 modem 的 人 要 上 網 用 的 )<br>
+  &nbsp;&nbsp;&nbsp; <br>
+  這 之 間 大 家 不 太 了 解 的 可 能 是 smb， ip-masquerading/ip-forwarding.<br>
+  routing， tcp/ip， ppp 對 各 位 大 姊 頭 來 說 不 是 難 事 .<br>
+  <br>
+  ###########################################################################</p>
+<p align="left">NOTE:<br>
+  <br>
+  under linux， 更 動 /re-compile 核 心 是 除 非 需 要 enable 一 些 功 能 才 要 做 的 . <br>
+  更 新 kernel， 有 幾 個 想 法 跟 大 家 說 說 ㄛ .<br>
+  <br>
+  1. 用 GUI 界 面 (under /usr/src/linux， type make xconfig)<br>
+  &nbsp;&nbsp;&nbsp; 好 處 是 可 以 選 錯 重 選 ， 可 以 選 下 一 頁 ， 也 可 以 選 上 一 頁 <br>
+  2. compile 的 核 心 最 好 是 用 bzip 壓 縮 過 的 ， ( 比 gzip 壓 縮 比 更 高 )<br>
+  <br>
+  ###########################################################################<br>
+  <br>
+  核 心 設 定 :<br>
+  <br>
+  ( 會 compile 核 心 嗎 ? 不 會 的 話 參 考 kernel-HOWTO. 簡 單 說 明 一 下 ).<br>
+  <br>
+  首 先 ， download kernel 2.3.x( 我 的 是 2.3.2).tar.gz 通 常 都 10 幾 MB 吧 .<br>
+  我 assume 大 家 都 已 經 可 以 在 X window 下 運 作 .<br>
+  <br>
+  然 後 ， asali 一 點 的 人 ( 要 確 定 很 asali ㄛ :P )， <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1) 殺 掉 舊 有 的 <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cd /usr/src&lt;-- 這 是 kernel 所 在 
+  的 directory<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rm -rf linux* (redhat 下 面 會 有 兩 個 
+  linuxXX directory)<br>
+  <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cd /usr/include &lt;-- 這 是 kernel's 
+  header files 的 symbolic link<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  的 所 在 的 directory.<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rm -rf asm linux scsi ( 這 三 個 directory， 
+  其 實 只 是 symbolic links)<br>
+  <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cd /lib/modules &lt;-- 這 是 modules 
+  的 所 在 的 directory<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rm -rf * ( 殺 掉 全 部 的 directories) 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <br>
+  <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2) 找 出 你 / 妳 download 下 來 的 kernelXXXXX.tar.gz<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cd ( 到 你 放 這 個 kernel 的 directory)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tar zxvf kernelXXXXX.tar.gz -C /usr/src 
+  ( 大 寫 C)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cd /usr/include<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ln -s /usr/src/linux/include/asm-i386 
+  asm<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ln -s /usr/src/linux/include/linux 
+  linux<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ln -s /usr/src/linux/include/scsi 
+  scsi<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 以 上 這 三 行 ， 是 把 /usr/src/linux/include/asm-i386， 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在 /usr/include 下 ， 建 立 symbolic links.)<br>
+  &nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3) 到 /usr/src/linux 下 ， 準 備 自 己 更 
+  動 /re-compile 核 心 <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我 只 說 要 用 vmware 所 需 enable 的 options<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 除 了 我 有 設 modules 以 外 ， 通 通 yes， 
+  如 果 不 想 設 module， 那 選 yes.<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 如 果 我 沒 有 說 要 打 yes 或 modules， 
+  而 它 自 己 有 選 yes 的 話 ， &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 看 各 位 需 要 再 
+  打 yes 或 no 就 可 以 ) &nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cd /usr/src/linux<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; make xconfig&lt;----( 會 出 現 一 個 tcl/tk 
+  視 窗 )<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在 code maturity level options:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;prompt 
+  for development and/or incomplete code/drivers&nbsp;&nbsp;&nbsp; <br>
+  <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在 Processor type and features: ( 
+  看 各 位 用 那 種 CPU)<br>
+  &nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;Pentium/K6/TSC 
+  ( 因 為 我 用 AMD K6-2 350MHZ)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;MTRR 
+  (memory type range register)support<br>
+  <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在 networking options:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;network 
+  firewalling&nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;TCP/IP 
+  networking<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;IP: 
+  firewalling<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IP: always 
+  defragment(required for masquerading)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IP: transparent 
+  proxy support<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IP: masquerading<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IP: ICMP 
+  masquerading<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IP: masquerading 
+  special modules support<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IP: ipautofw 
+  masq support&lt;--( 我 是 選 modules)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IP: ipportfw 
+  masq-forwarding support&lt;--(modules)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IP: ip fwmask 
+  masq-forwarding support&lt;--(modules) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IP: aliasing 
+  support<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IP: TCP syncookie 
+  support( 我 有 選 ， 不 過 不 知 道 是 否 必 要 )<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 反 正 只 要 
+  有 看 到 masq， 我 都 選 了 @_@)&nbsp;&nbsp;&nbsp; <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在 network device support: 我 是 依 照 
+  用 電 話 線 上 網 的 需 要 <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;Dummy 
+  net driver support<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;PPP 
+  (point-to-point) support<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 如 果 ISP 
+  沒 support PPP， 那 選 SLIP support) <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在 filesystems: ( 依 各 位 自 己 的 需 求 
+  我 想 )<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;DOS 
+  FAT fs support<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;MSDOS 
+  fs support<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;VFAT 
+  (win95) fs support<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;ISO9660 
+  CDROM filesystem support<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;NTFS 
+  filesystem support&lt;--(modules: 原 本 用 NT 的 人 才 選 )<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;Second 
+  extended fs support&nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 其 它 的 filesystem 
+  各 位 有 用 到 自 己 選 . 不 贅 述 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在 Network File Systems: ( 各 位 有 用 
+  到 自 己 再 多 選 ) &nbsp;&nbsp;&nbsp; <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;SMB 
+  filesystem support<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;SMB 
+  Win95 bug work-around<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4)Save and Exit 把 剛 剛 的 更 動 save 
+  起 來 <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 然 後 在 terminal mode 下 打 :<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; make dep;make bzImage;make modules;make 
+  modules_install<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 中 間 是 用 semi-colon 分 開 ， <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不 要 在 這 幾 個 commands 中 間 加 入 make 
+  clean)<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如 果 都 成 功 ， 請 到 /usr/src/linux/arch/i386/boot 
+  中 <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 看 看 有 沒 有 bzImage， 有 的 話 ， copy 到 
+  /boot 這 個 directory 去 <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 更 名 為 vmlinuz (replace 掉 舊 的 ). COPY 
+  完 後 ， 才 可 以 打 make clean<br>
+  &nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cp /usr/src/linux/arch/i386/boot/bzImage 
+  /boot/vmlinuz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (say yes to replace old vmlinuz)<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; make clean ( 把 所 有 的 剛 剛 compile 
+  中 產 生 的 檔 案 清 除 )<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5) 打 開 emacs， 打 開 /etc/lilo.conf<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; image=/boot/vmlinuz-2.2.5-15&lt;---here 
+  ( 改 成 vmlinuz)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; append=&quot;mem=256M&quot;&lt;-- 
+  這 個 看 自 己 有 多 少 ， 大 於 128MB 設 一 下 好 些 )<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; save 起 來 ... 然 後 在 terminal mode 
+  下 打 :<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lilo -v -v -v<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 這 樣 子 就 完 成 了 核 心 .<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6) 為 了 防 範 新 核 心 不 能 成 功 開 機 ， 或 
+  者 當 掉 ， 請 準 備 一 片 空 白 floppy<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 放 入 A drive 後 ， 在 terminal mode 下 
+  打 <br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dd if=/boot/vmlinuz-2.2.5-15 
+  of=/dev/fd0<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (vmlinuz-2.2.5-15 是 舊 核 心 ， 先 把 它 
+  備 份 到 A drive， &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如 果 新 核 心 開 機 失 敗 
+  ， 放 入 舊 的 至 少 可 以 進 去 再 重 新 compile kernel)<br>
+  &nbsp;&nbsp; <br>
+  現 在 ， 抽 出 floppy， 離 開 X-window， 在 terminal mode 下 打 reboot 重 開 機 確 定 出 現 了 LILO: 
+  然 後 也 確 定 到 login: password: 這 個 階 段 都 沒 問 題 我 們 才 能 確 定 說 核 心 是 成 功 的 ... 如 
+  果 中 間 出 現 一 些 執 行 不 成 功 而 需 要 重 compile 的 話 ， 一 樣 重 覆 上 述 步 驟 . 要 確 定 核 心 有 
+  把 這 一 些 選 項 加 入 ㄛ . :D<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <br>
+  Modules 確 認 :<br>
+  <br>
+  這 是 在 compile kernel 到 一 切 覺 得 都 很 完 美 了 ， 才 要 確 認 的 .<br>
+  <br>
+  cd /lib/modules/2.3.X/ipv4 ( 我 的 是 2.3.2)<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 看 看 有 沒 有 一 大 堆 ip_masq_XXX.o 的 modules<br>
+  &nbsp;&nbsp;&nbsp; 這 些 .o 檔 ， 在 做 vmware 上 網 時 ， 對 modem 使 用 者 會 是 關 鍵 . &nbsp;&nbsp;&nbsp; 
+  <br>
+  <br>
+  &nbsp;&nbsp;&nbsp; ( 我 的 有 : ip_masq_autofw.o<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ip_masq_cuseeme.o<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ip_masq_ftp.o<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ip_masq_irc.o<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ip_masq_mfw.o<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ip_masq_portfw.o<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ip_masq_quake.o<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ip_masq_raudio.o<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ip_masq_user.o<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ip_masq_vdolive.o )<br>
+  <br>
+  目 前 只 要 確 認 就 好 ... 不 一 定 全 部 都 要 跟 我 的 一 樣 .<br>
+  <br>
+  Install VMWARE rpm 檔 及 後 續 動 作 :<br>
+  <br>
+  [install]:<br>
+  <br>
+  到 http://www.vmware.com 去 下 載 vmware for linux(or NT). 因 為 我 是 用 Linux， 所 以 
+  我 就 灌 vmware for linux.<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; cd ( 你 放 vmwareforlinuxXXX.rpm 這 個 檔 的 directory)<br>
+  &nbsp;&nbsp;&nbsp; rpm -ivh vmwareforlinuxXXX.rpm &lt;--(assumption: 第 一 次 灌 
+  vmware)<br>
+  <br>
+  這 樣 就 install 好 了 <br>
+  <br>
+  [configure vmware]:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; cd /usr/bin<br>
+  &nbsp;&nbsp;&nbsp; ./vmware-config.pl ( 執 行 後 會 問 一 些 問 題 ， under terminal mode)<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 它 會 幫 你 / 妳 compile 出 1) /lib/modules/2.3.X/misc/vmmon.o<br>
+  &nbsp;&nbsp;&nbsp; 2) /lib/modules/2.3.X/misc/vmnet.o<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; vmmon.o 是 執 行 vmware 用 的 ， vmnet.o 是 一 個 虛 擬 的 網 路 介 面 的 
+  module.<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 當 問 到 要 不 要 用 host-only networking， 打 yes， &nbsp;&nbsp;&nbsp; 
+  問 要 不 要 auto-probe 沒 有 用 到 的 IP-range 的 話 ， 選 no.( 這 個 可 以 自 己 手 動 設 定 )<br>
+  &nbsp;&nbsp;&nbsp; 選 no 後 ， 它 就 會 問 你 host server address:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 要 用 B 級 LAN 的 打 172.16.X.X (X 讓 各 
+  位 自 己 去 設 )<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 要 用 C 級 LAN 的 打 192.168.X.X (X 讓 
+  各 位 自 己 去 設 )<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我 是 給 了 個 192.168.0.1<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 當 問 到 netmask， 我 是 打 255.255.255.0&lt;--C 級 用 的 ， B 級 的 請 
+  打 255.255.0.0.<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 到 這 兒 一 切 大 概 就 可 以 了 ... 它 會 跟 你 說 smb 有 在 運 作 .. 叫 你 在 
+  /etc/smb.conf<br>
+  &nbsp;&nbsp;&nbsp; 中 加 入 一 行 interface = XXX， XXX， XXX， XXX/XX 這 樣 的 ... 這 以 
+  後 再 詳 述 .<br>
+  <br>
+  [ 取 得 license / 放 置 license]:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 到 http://www.vmware.com 中 去 註 冊 ， 要 個 評 估 版 的 license.<br>
+  &nbsp;&nbsp;&nbsp; 然 後 check e-mail， 如 果 其 中 有 一 個 attach file， 名 稱 是 一 連 串 
+  數 字 ， &nbsp;&nbsp;&nbsp; 把 它 save 成 license.<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 我 是 用 root login， 懶 得 遇 到 權 限 問 題 ， 所 以 我 在 我 的 /root 下 <br>
+  &nbsp;&nbsp;&nbsp; 建 一 個 .vmware 目 錄 . 如 果 是 用 別 的 user login 的 話 ， &nbsp;&nbsp;&nbsp; 
+  在 使 用 者 自 己 的 directory 下 建 一 個 .vmware 目 錄 .<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mkdir /root/.vmware (or /home/XXX/.vmware)<br>
+  &nbsp;&nbsp;&nbsp; <br>
+  &nbsp;&nbsp;&nbsp; 把 license 拷 貝 一 份 到 /root/.vmware (/home/XXX/.vmware) 裡 面 
+  去 <br>
+  <br>
+  [ 建 立 虛 擬 硬 碟 ]:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; cd /usr/bin<br>
+  &nbsp;&nbsp;&nbsp; ./vmware &amp; &lt;--( 在 background 執 行 vmware)<br>
+  <br>
+  這 時 會 跳 出 一 個 視 窗 ...vmware-wizard... 讓 你 / 妳 建 立 virtual hard drive. 看 各 位 
+  需 要 自 行 選 擇 . 不 過 ㄛ ， 要 記 得 自 己 建 立 的 virtual hard drive 是 放 在 那 一 個 partition 
+  和 那 一 個 directory ㄛ ...<br>
+  <br>
+  它 也 會 幫 妳 check check 看 你 所 選 hard drive size 會 不 會 在 那 一 個 partition 不 夠 用 
+  或 者 足 夠 . 大 小 自 己 設 ... 打 數 字 下 去 就 可 以 . 單 位 是 MB.<br>
+  <br>
+  如 果 不 確 定 自 己 的 partition 到 底 在 那 ， 以 及 有 多 少 空 間 ， 可 在 terminal mode 下 . 打 
+  df 來 看 看 . 以 下 是 我 自 己 df 後 所 看 到 的 結 果 . 供 大 家 參 考 .<br>
+  <br>
+  Filesystem 1k-blocks Used Available Use% Mounted on<br>
+  <br>
+  /dev/hdc1 199047 36410 152357 19% /<br>
+  <br>
+  /dev/hdc10 394199 4278 369561 1% /home<br>
+  <br>
+  /dev/hda1 2096160 1566592 529568 75% /mnt/hda1<br>
+  <br>
+  /dev/hda10 128220 6 128214 0% /mnt/hda10<br>
+  <br>
+  /dev/hda5 2096160 643936 1452224 31% /mnt/hda5<br>
+  <br>
+  /dev/hda6 2096160 160 2096000 0% /mnt/hda6<br>
+  <br>
+  /dev/hda7 2096160 1056192 1039968 50% /mnt/hda7<br>
+  <br>
+  /dev/hda8 2096160 1833856 262304 87% /mnt/hda8<br>
+  <br>
+  /dev/hda9 2096160 1294944 801216 62% /mnt/hda9<br>
+  <br>
+  /dev/hdc5 796033 233641 521268 31% /opt<br>
+  <br>
+  /dev/hdc7 152215 550 143805 0% /tmp<br>
+  <br>
+  /dev/hdb1 2990073 757517 2077931 27% /usr<br>
+  <br>
+  /dev/hdc9 597072 2750 563481 0% /usr/local<br>
+  <br>
+  /dev/hdc8 160029 15364 136401 10% /var<br>
+  <br>
+  建 立 好 自 己 硬 碟 後 ... 可 以 更 改 一 下 memory 的 大 小 . 在 vmware 視 窗 上 有 一 個 settings 
+  選 項 ... 選 configuration editor... 裡 面 就 可 以 自 行 修 改 ... 看 要 自 己 再 加 一 個 virtual 
+  hard drive 呀 ， 更 改 memory 大 小 ， 音 效 ( 是 用 linux 的 driver)， 以 及 serial port， 
+  parallel port... 我 不 建 議 更 動 serial port， 讓 它 自 己 去 找 就 好 了 ... 如 果 自 己 手 動 
+  設 serial port 給 滑 鼠 ， 那 滑 鼠 會 死 當 . 只 要 是 serial port， 都 讓 它 自 己 去 找 .<br>
+  <br>
+  [ 灌 作 業 系 統 步 驟 ]:<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; ( 我 assume 各 位 的 cdrom 沒 法 開 機 ， 需 要 開 機 片 .. 如 果 可 以 的 ， 
+  就 不 用 開 機 片 .)<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 請 準 備 一 片 win98 開 機 片 ... 這 開 機 片 要 能 開 機 ， fdisk， format， 
+  <br>
+  &nbsp;&nbsp;&nbsp; 以 及 抓 到 你 / 妳 的 cd-rom.<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 請 將 win95/98/NT..CD 放 入 cd-rom 中 .<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 開 機 片 放 到 A 槽 後 ， power-on vmware. 它 會 check 你 / 妳 的 系 統 
+  ...<br>
+  &nbsp;&nbsp;&nbsp; 如 果 有 一 些 警 告 ， 選 下 次 不 要 提 示 ， 然 後 按 ok... 那 些 警 告 是 說 電 
+  腦 的 <br>
+  &nbsp;&nbsp;&nbsp; 一 些 零 件 或 你 的 一 些 設 定 的 問 題 ... 過 得 了 就 不 用 理 它 們 . <br>
+  &nbsp;&nbsp;&nbsp; 過 不 了 請 重 新 檢 視 上 面 的 一 切 步 驟 .<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 確 定 開 機 片 抓 到 了 cd-rom.<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 到 了 A:\ 後 ， fdisk... 在 這 個 虛 擬 硬 碟 下 分 割 partitions.<br>
+  &nbsp;&nbsp;&nbsp; 分 割 好 後 重 &quot; 開 機 &quot;&lt;-- ctrl+alt+del reboot vmware.<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 然 後 也 是 確 定 抓 到 cdrom， 然 後 format 各 位 的 所 有 的 virtual hard<br>
+  &nbsp;&nbsp;&nbsp; drive 裡 面 的 所 有 partitions. 最 好 給 這 些 partitions 一 些 有 意 
+  義 的 名 稱 .<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 接 下 來 就 是 d: ( 假 設 這 是 cd-rom 代 號 )<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; 然 後 到 win95/98/nt 的 directory， 開 始 setup 灌 作 業 系 統 . 這 一 
+  部 份 大 家 <br>
+  &nbsp;&nbsp;&nbsp; 都 比 我 還 行 ， 所 以 不 多 說 .<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 一 點 要 提 醒 的 : 在 灌 之 中 ， 設 定 網 路 的 
+  部 份 ， 請 記 得 要 至 少 選 <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 一 個 撥 號 網 路 卡 ， 及 clients for microsoft 
+  network， 以 及 <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcp/ip， 我 在 灌 win95 那 時 沒 有 選 adapter， 
+  所 以 灌 好 後 重 開 機 <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 到 中 途 freeze 掉 了 . 請 小 心 .<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 音 效 卡 網 路 卡 最 好 都 選 ... 反 正 不 選 白 
+  不 選 . 選 了 音 效 卡 後 可 在 <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vmware 下 聽 mp3， wma， rm， ra... 等 
+  等 的 檔 .<br>
+  <br>
+  我 現 在 假 設 大 家 都 灌 好 了 ， 灌 好 後 重 開 機 也 沒 有 問 題 ， 可 以 到 window 下 了 . 這 時 顏 色 一 
+  定 很 差 (16 色 )... 不 過 沒 關 係 ... 慢 慢 來 .<br>
+  <br>
+  [ 使 用 true-color 16 bit]<br>
+  &nbsp;&nbsp;&nbsp; <br>
+  各 位 可 以 到 http://www.vmware.com 中 下 載 vmware-tools. 它 是 一 個 .exe 檔 .... 下 載 
+  後 ... 請 把 這 個 檔 存 到 一 個 空 白 floppy 中 .<br>
+  &nbsp; <br>
+  然 後 把 這 一 片 floppy 放 入 A drive... 然 後 拷 貝 到 各 位 的 virtual hard drive 裡 ... 執 
+  行 它 ...install 後 它 會 出 現 一 個 configuration 的 text file... 有 教 各 位 如 何 找 到 這 
+  個 inf 檔 ， 以 及 如 何 灌 這 個 inf 檔 .<br>
+  <br>
+  我 現 在 假 設 大 家 都 可 以 用 到 true-color 16 bit 了 .&nbsp;
+<p>
+  
+  
+  </body>
+</html>

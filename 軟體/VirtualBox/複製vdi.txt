@@ -1,0 +1,9 @@
+
+
+C:\Program Files\Oracle\VirtualBox>VBoxManage.exe clonevdi "d:\vm\ubuntu 10.04.vdi.vdi" "d:\vm\ubuntu 10.04(½Æ»sª©).vdi"
+
+
+°Ñ¦Ò:
+    http://www.dotblogs.com.tw/cloudio/archive/2010/01/31/13415.aspx
+    http://blog.xuite.net/jyoutw/xtech/41280167
+

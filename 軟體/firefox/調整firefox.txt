@@ -1,0 +1,20 @@
+將 Firefox 的文字編輯器改成 emeditor
+    第1步：在網址列輸入 about:config
+    第2步：然後在篩選器輸入「view_source.editor.external」，值改為「true」。
+    第3步：再篩選出「view_source.editor.path」，內含值改為「C:\Program Files\EmEditor\EmEditor.exe」，或其他你的編輯器的路徑即可。
+    第4步：重開Firefox
+
+修改 Firefox 預設 cache 目錄路徑
+
+    主要是要把路徑設到 RAM disk 去
+
+    編輯→屬性 
+    進階→網路→ 離線資料儲存 容量設定 (先去把 cache 目錄資料清空, 並設定大小) 
+    網址列輸入: about:config 
+    滑鼠右鍵新增 字串: browser.cache.disk.parent_directory (新增此字串) 
+        Windows 可考慮 s:\TEMP\firefox (s: 是 ram disk) 
+        Linux 可新增 /tmp/ram/firefox 
+    重新開啟 Firefox 後, 看看 /tmp/ram/firefox/Cache 是否有資料就知道是否成功了~ :) 
+
+
+

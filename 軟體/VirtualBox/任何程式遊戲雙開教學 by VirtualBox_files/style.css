@@ -1,0 +1,252 @@
+#content .recommended-posts1 *,
+#content .recommended-posts2 *,
+#content .recommended-posts3 * {
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+	zoom:1;
+	text-indent:0;
+}
+
+
+	#content .recommended-posts1 {
+		position:relative;
+		margin:15px 0;
+		text-align:left;
+		font-size:12px;
+		line-height:22px;
+		height:130px;
+		overflow:hidden;
+		zoom:1;
+		clear:both;
+	}
+	
+	#content .recommended-posts1 h5,
+	#content .recommended-posts2 h5 {
+		margin:0;
+		padding:0;
+	}
+	
+	#content .recommended-posts1 h5 span {
+		display:block;
+		margin:7px 10px 10px 130px;
+		padding:0;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		position:relative;
+		font-weight:bold;
+	}
+	
+	#content .recommended-posts1 .recommended-post-image {
+		position:absolute;
+		left:10px;
+		top:10px;
+		margin:0;
+		padding:4px;
+		background:white;
+		border:1px solid;
+		z-index:5;
+	}
+	
+	#content .recommended-posts1 ul {
+		position:absolute;
+		left:130px;
+		top:32px;
+		right:10px;
+		padding:0;
+		z-index:4;
+	}
+	
+	#content .recommended-posts1 ul li a,
+	#content .recommended-posts1 ul li a:hover {
+		display:block;
+		background:none;
+		width:100%;
+		margin:0 0 0 -20px;
+		padding:0 0 0 20px;
+		text-decoration:underline;
+		white-space:nowrap;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		overflow-y:visible;
+	}
+	
+	#content .recommended-posts1 ul li a.selected {
+		color:#333;
+	background:#FAFAFA;
+		text-decoration:underline;
+		-moz-border-radius: 8px;
+		-webkit-border-radius: 8px;
+		border-radius: 8px;
+	}
+	
+	#content .recommended-posts2 {
+		margin:20px 0;
+		overflow:hidden;
+		text-align:left;
+		font-size:12px;
+		line-height:20px;
+		zoom:1;
+		clear:both;
+	}
+	
+	
+	
+	#content .recommended-posts2 h5  {
+		display:block;
+		margin:10px 0;
+		padding:0;
+		font-weight:bold;
+	}
+	
+	
+	#content .recommended-posts2 ul {
+		display:block;zoom:1;
+		overflow:hidden;
+	}
+	
+	#content .recommended-posts2 ul li {
+		overflow:hidden;
+		position:relative;
+		zoom:1;
+		display:block;
+		padding:5px;
+		margin:0;
+		height:50px;
+	}
+	
+	#content .recommended-posts2 ul li.even {
+	border-top:1px dotted;
+	border-bottom:1px dotted;
+	}
+	
+	#content .recommended-posts2 .recommended-post-image {
+		position:absolute;
+		top:5px;
+		left:5px;
+		bottom:5px;
+		width:46px;
+		height:46px;
+		float:left;
+		margin:0px;
+		padding:0;
+		border:1px solid;
+		padding:1px;
+	}
+	
+	#content .recommended-posts2 ul li a,
+	#content .recommended-posts2 ul li a:hover {
+		display:block;
+		background:none;
+		position:absolute;
+		top:8px;
+		right:10px;
+		left:65px;
+		margin:0;
+		padding:0;
+		text-decoration:underline;
+		white-space:nowrap;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		overflow-y:visible;
+		zoom:1;
+	}
+	
+	#content .recommended-posts2 ul li span {
+		display:block;
+		background:none;
+		position:absolute;
+		top:30px;
+		right:10px;
+		left:65px;
+		padding:0;
+		margin:0;
+		white-space:nowrap;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		overflow-y:visible;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+		filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+		-moz-opacity:0.8;
+		-khtml-opacity: 0.8;
+		opacity: 0.8;
+		zoom:1;
+	}
+	
+	#content .recommended-posts2 ul li em {
+		font-weight:bold;
+		margin:0px 3px;
+	}
+	
+	
+	#content .recommended-posts3   {
+	text-align:left;
+	margin:20px 0;
+	overflow:hidden;
+	zoom:1;
+	font-size:12px;
+	clear:both;
+}
+
+	#content .recommended-posts3 h5 {
+font-weight:bold;
+margin:0;
+padding:0;
+
+}
+	#content .recommended-posts3 ul {
+margin:10px 0;
+overflow:hidden;
+float:left;
+zoom:1;
+list-style:none;
+border-right: 1px dotted;
+height:180px;
+}
+	#content .recommended-posts3 ul li  {
+float: left;
+list-style:none;
+text-align:center;
+width:120px;
+height:180px;
+border:none;
+border-left: 1px dotted;
+cursor: pointer;
+}
+	#content .recommended-posts3 ul li a {
+display:block;
+width:120px;
+height:180px;
+}
+
+	#content .recommended-posts3 ul li a span{
+display:block;
+text-align:left;
+margin:0px 10px;
+line-height:20px;
+height:60px;
+overflow:hidden;
+text-decoration:none;
+}
+
+	#content .recommended-posts3 ul li a img{
+margin:10px 10px 5px 10px;
+padding:4px;
+border:1px solid;
+width: 90px;
+height:90px;
+}
+	#content .recommended-posts3 ul li a:hover {
+background:#555;
+color:white;
+}
+	#content .recommended-posts3 ul li a:hover img {
+border:1px solid #CCC;
+background:#555;
+}
+
