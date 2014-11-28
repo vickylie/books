@@ -1,0 +1,329 @@
+<html>
+
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/ by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:41 GMT -->
+<head>
+  <TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+   <style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+   <META http-equiv="Content-Type" content="text/html; charset=big5">
+   <META name="description" content="MySQL 4.1.0  中文參考手冊">
+   <META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+   <LINK rel="shortcut icon" href="shuixin13.ico" />
+<LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+
+</HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+
+<h1>MySQL Reference Manual for version 4.1.0-alpha.</h1>
+<p>　</p>
+<hr size="1" />
+<p>　<a href="about.html">譯者序</a></p>
+<p> 　<a href="function_index.html">列類型與函數索引</a></p>
+<ul>
+  <li><a href="06-1.html">6 MySQL 語言參考</a></li>
+  <ul>
+    <li><a href="06-1.html">6.1 語言結構</a></li>
+    <ul>
+      <li><a href="06-1.html#Literals">6.1.1 文字：怎麼寫字串與數位</a></li>
+      <ul>
+        <li><a href="06-1.html#String_syntax">6.1.1.1 字串</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-1.html#Number_syntax">6.1.1.2 數位</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-1.html#Hexadecimal_values">6.1.1.3 十六進制值</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-1.html#NULL_values">6.1.1.4 <code>NULL</code> 值</a></li>
+        <ul>
+        </ul>
+      </ul>
+      <li><a href="06-1.html#Legal_names">6.1.2 資料庫、表、索引、列和別名</a></li>
+      <ul>
+      </ul>
+      <li><a href="06-1.html#Name_case_sensitivity">6.1.3 名字的大小寫敏感性</a></li>
+      <ul>
+      </ul>
+      <li><a href="06-1.html#Variables">6.1.4 使用者變數</a></li>
+      <ul>
+      </ul>
+      <li><a href="06-1.html#System_Variables">6.1.5 系統變數</a></li>
+      <ul>
+      </ul>
+      <li><a href="06-1.html#Comments">6.1.6 註釋句法</a></li>
+      <ul>
+      </ul>
+      <li><a href="06-1.html#Reserved_words">6.1.7 MySQL 對保留字挑剔嗎？</a></li>
+      <ul>
+      </ul>
+    </ul>
+    <li><a href="06-2.html">6.2 列類型</a></li>
+    <ul>
+      <li><a href="06-2.html#Numeric_types">6.2.1 數位類型</a></li>
+      <ul>
+      </ul>
+      <li><a href="06-2.html#Date_and_time_types">6.2.2 Date 和 Time 類型</a></li>
+      <ul>
+        <li><a href="06-2.html#Y2K_issues">6.2.2.1 Y2K 問題和日期類型</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-2.html#DATETIME">6.2.2.2 DATETIME、DATE 和 TIMESTAMP 類型</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-2.html#TIME">6.2.2.3 TIME 類型</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-2.html#YEAR">6.2.2.4 YEAR 類型</a></li>
+        <ul>
+        </ul>
+      </ul>
+      <li><a href="06-2.html#String_types">6.2.3 字串類型</a></li>
+      <ul>
+        <li><a href="06-2.html#CHAR">6.2.3.1 CHAR 和 VARCHAR 類型</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-2.html#BLOB">6.2.3.2 BLOB 和 TEXT 類型</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-2.html#ENUM">6.2.3.3 ENUM 類型</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-2.html#SET">6.2.3.4 SET 類型</a></li>
+        <ul>
+        </ul>
+      </ul>
+      <li><a href="06-2.html#Choosing_types">6.2.4 為列選擇正確的類型</a></li>
+      <ul>
+      </ul>
+      <li><a href="06-2.html#Other-vendor_column_types">6.2.5 使用來自其它的資料庫引擎的列類型</a></li>
+      <ul>
+      </ul>
+      <li><a href="06-2.html#Storage_requirements">6.2.6 列類型儲存需求</a></li>
+      <ul>
+        <li><a href="06-2.html#IDX1093">6.2.6.1 數位類型儲存需求</a></li>
+      </ul>
+      <ul>
+        <li><a href="06-2.html#IDX1095">6.2.6.2 日期和時間類型儲存需求</a></li>
+      </ul>
+      <ul>
+        <li><a href="06-2.html#IDX1099">6.2.6.3 字串類型儲存需求</a></li>
+      </ul>
+    </ul>
+    <li><a href="06-3.html">6.3 用於 SELECT 和 WHERE 幾句的函數</a></li>
+    <ul>
+      <li><a href="06-3.html#Non-typed_Operators">6.3.1 無類型的特殊運算幾和函數</a></li>
+      <ul>
+        <li><a href="06-3.html#Parentheses">6.3.1.1 圓括號</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-3.html#Comparison_Operators">6.3.1.2 比較運算幾</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-3.html#Logical_Operators">6.3.1.3 邏輯運算幾</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-3.html#Control_flow_functions">6.3.1.4 控制流函數</a></li>
+        <ul>
+        </ul>
+      </ul>
+      <li><a href="06-3.html#String_functions">6.3.2 字串函數</a></li>
+      <ul>
+        <li><a href="06-3.html#String_comparison_functions">6.3.2.1 字串比較函數</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-3.html#Case_Sensitivity_Operators">6.3.2.2 字母大小寫敏感性</a></li>
+        <ul>
+        </ul>
+      </ul>
+      <li><a href="06-3.html#Numeric_Functions">6.3.3 數位函數</a></li>
+      <ul>
+        <li><a href="06-3.html#Arithmetic_functions">6.3.3.1 算術運算</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-3.html#Mathematical_functions">6.3.3.2 數學函數</a></li>
+        <ul>
+        </ul>
+      </ul>
+      <li><a href="06-3.html#Date_and_time_functions">6.3.4 日期和時間函數</a></li>
+      <ul>
+      </ul>
+      <li><a href="06-3.html#Cast_Functions">6.3.5 Cast 函數</a></li>
+      <ul>
+      </ul>
+      <li><a href="06-3.html#Other_Functions">6.3.6 其它函數</a></li>
+      <ul>
+        <li><a href="06-3.html#Bit_functions">6.3.6.1 位函數</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-3.html#Miscellaneous_functions">6.3.6.2 輔助功能函數</a></li>
+        <ul>
+        </ul>
+      </ul>
+      <li><a href="06-3.html#Group_by_functions">6.3.7 用於 GROUP BY 幾句的函數</a></li>
+      <ul>
+      </ul>
+    </ul>
+    <li><a href="06-4.html">6.4 資料操縱：SELECT, INSERT, UPDATE, DELETE</a>
+      <ul>
+        <li><a href="06-4.html#SELECT">6.4.1 SELECT 句法</a></li>
+        <ul>
+          <li><a href="06-4.html#JOIN">6.4.1.1 JOIN 句法</a></li>
+          <ul>
+          </ul>
+          <li><a href="06-4.html#UNION">6.4.1.2 UNION 句法</a></li>
+          <ul>
+          </ul>
+        </ul>
+        <li><a href="06-4.html#HANDLER">6.4.2 HANDLER 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-4.html#INSERT">6.4.3 INSERT 句法</a></li>
+        <ul>
+          <li><a href="06-4.html#INSERT_SELECT">6.4.3.1 INSERT ... SELECT 句法</a></li>
+          <ul>
+          </ul>
+        </ul>
+        <li><a href="06-4.html#INSERT_DELAYED">6.4.4 INSERT DELAYED 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-4.html#UPDATE">6.4.5 UPDATE 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-4.html#DELETE">6.4.6 DELETE 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-4.html#TRUNCATE">6.4.7 TRUNCATE 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-4.html#REPLACE">6.4.8 REPLACE句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-4.html#LOAD_DATA">6.4.9 LOAD DATA INFILE 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-4.html#DO">6.4.10 DO 句法</a></li>
+        <ul>
+        </ul>
+      </ul>
+    </li>
+    <li><a href="06-5.html#Data_Definition">6.5 資料定義： CREATE、DROP、ALTER</a> 
+      <ul>
+        <li><a href="06-5.html#CREATE_DATABASE">6.5.1 CREATE DATABASE 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-5.html#DROP_DATABASE">6.5.2 DROP DATABASE 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-5.html#CREATE_TABLE">6.5.3 CREATE TABLE 句法</a></li>
+        <ul>
+          <li><a href="06-5.html#Silent_column_changes">6.5.3.1 隱式的列定義變化</a></li>
+          <ul>
+          </ul>
+        </ul>
+        <li><a href="06-5.html#ALTER_TABLE">6.5.4 ALTER TABLE 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-5.html#RENAME_TABLE">6.5.5 RENAME TABLE 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-5.html#DROP_TABLE">6.5.6 DROP 
+          TABLE 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-5.html#CREATE_INDEX">6.5.7 CREATE INDEX 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-5.html#DROP_INDEX">6.5.8 DROP INDEX 句法</a></li>
+        <ul>
+        </ul>
+      </ul>
+    </li>
+    <li><a href="06-6.html">6.6 基本的 MySQL 使用者實用命令</a>
+      <ul>
+        <li><a href="06-6.html#USE">6.6.1 USE 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-6.html#DESCRIBE">6.6.2 DESCRIBE 句法 (獲得列的資訊)</a></li>
+        <ul>
+        </ul>
+      </ul>
+    </li>
+    <li><a href="06-7.html">6.7 MySQL 事務與鎖定命令</a> 
+      <ul>
+        <li><a href="06-7.html#COMMIT">6.7.1 BEGIN/COMMIT/ROLLBACK 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-7.html#LOCK_TABLES">6.7.2 LOCK TABLES/UNLOCK TABLES 句法</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-7.html#SET_TRANSACTION">6.7.3 SET TRANSACTION 句法</a></li>
+        <ul>
+        </ul>
+      </ul>
+    </li>
+    <li><a href="06-8.html">6.8 MySQL 全文搜尋</a>
+      <ul>
+        <li><a href="06-8.html#Fulltext_Restrictions">6.8.1 全文的限制</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-8.html#Fulltext_Fine-tuning">6.8.2 微調 MySQL 全文搜尋</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-8.html#Fulltext_TODO">6.8.3 全文搜尋 TODO</a></li>
+        <ul>
+        </ul>
+      </ul>
+    </li>
+    <li><a href="06-9.html">6.9 MySQL 查詢快取</a>
+      <ul>
+        <li><a href="06-9.html#Query_Cache_How">6.9.1 查詢快取如何運作</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-9.html#Query_Cache_Configuration">6.9.2 查詢快取設定</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-9.html#Query_Cache_in_SELECT">6.9.3 在 SELECT 中的查詢快取選項</a></li>
+        <ul>
+        </ul>
+        <li><a href="06-9.html#Query_Cache_Status_and_Maintenance">6.9.4 查詢快取的狀態和維護</a></li>
+      </ul>
+    </li>
+  </ul>
+</ul>
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="../../flash/onlined41d.html?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+
+
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/ by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:41 GMT -->
+</html>
+<!--/UdmComment-->

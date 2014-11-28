@@ -1,0 +1,1662 @@
+<HTML>
+  
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-2.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+<HEAD>
+  <TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+   <style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+   <META http-equiv="Content-Type" content="text/html; charset=big5">
+   <META name="description" content="MySQL 4.1.0  中文參考手冊">
+   <META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+   <LINK rel="shortcut icon" href="shuixin13.ico" />
+   <LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+
+  </HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+<H1>MySQL Reference Manual for version 4.1.0-alpha.</H1>
+<P>
+<P><HR>
+<H2><A NAME="Column_types"></A>6.2  列類型</H2>
+<P>
+<A NAME="IDX1008"></A>
+<A NAME="IDX1009"></A>
+
+</P>
+<P>
+MySQL 支援大量的列類型，它們可以被分為 3 類：數位類型、日期和時間類型以及字串(字元)類型。這個章節首先給出可用類型的概述，並且總結各類型所需的儲存需求，然後提供各類型中的類型範疇更詳細的描述。概述有意地簡化了。更詳細的說明應該參考特寫列類型的附加資訊，例如你能為其指定值的允許格式。
+</P>
+<P>
+MySQL 支援的列類型在下面列出。下列代碼字母用於描述中：
+</P>
+<P>
+<A NAME="IDX1010"></A>
+<A NAME="IDX1011"></A>
+<A NAME="IDX1012"></A>
+<A NAME="IDX1013"></A>
+<A NAME="IDX1014"></A>
+<A NAME="IDX1015"></A>
+<DL COMPACT>
+
+<DT><CODE>M</CODE>
+<DD>
+指出最大的顯示尺寸。最大的顯示尺寸長度為 255。
+
+<DT><CODE>D</CODE>
+<DD>
+適用於浮點類型。指出跟隨在十進制小數點後的數位數量。最大可能值為 30，但不應大於 <CODE>M</CODE>-2。
+</DL>
+
+<P>
+方括號 (<SAMP>“[”</SAMP> and <SAMP>“]”</SAMP>) 指定可選的類型修飾部份。
+</P>
+<P>
+<A NAME="IDX1016"></A>
+
+</P>
+
+<P>
+注意，如果為一個列指定了 <CODE>ZEROFILL</CODE>，MySQL 將自動為這個列加入 <CODE>UNSIGNED</CODE> 屬性。
+</P>
+<P>
+<STRONG>警告：</STRONG>你應該知道當在兩個整數類型值中使用減法時，如有一個為 <CODE>UNSIGNED</CODE>類型，那麼結果也是無符號的。查看章節 <A HREF="06-3.html#Cast_Functions">6.3.5  Cast 函數</A>。
+</P>
+<DL COMPACT>
+
+<DT><CODE>TINYINT[(M)] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+<A NAME="IDX1017"></A>
+ 
+
+一個非常小的整數。有符號的範圍是 <CODE>-128</CODE> 到 <CODE>127</CODE>。無符號的範圍是 <CODE>0</CODE> 到 <CODE>255</CODE>。
+<A NAME="IDX1018"></A>
+<A NAME="IDX1019"></A>
+<DT><CODE>BIT</CODE>
+<DD>
+<DT><CODE>BOOL</CODE>
+<DD>
+它們是 <CODE>TINYINT(1)</CODE> 的同義詞。
+
+<A NAME="IDX1020"></A>
+<DT><CODE>SMALLINT[(M)] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+一個小整數。有符號的範圍是 <CODE>-32768</CODE> 到 <CODE>32767</CODE>。無符號的範圍是 <CODE>0</CODE> 到 <CODE>65535</CODE>。
+
+<A NAME="IDX1021"></A>
+<DT><CODE>MEDIUMINT[(M)] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+一個中等大小的整數。有符號的範圍是 <CODE>-8388608</CODE> 到 <CODE>8388607</CODE>。無符號的範圍是 <CODE>0</CODE> 到 <CODE>16777215</CODE>。
+
+<A NAME="IDX1022"></A>
+<DT><CODE>INT[(M)] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+一個正常大小的整數。有符號的範圍是 <CODE>-2147483648</CODE> 到 <CODE>2147483647</CODE>。無符號的範圍是 <CODE>0</CODE> 到 <CODE>4294967295</CODE>。
+
+<A NAME="IDX1023"></A>
+<DT><CODE>INTEGER[(M)] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+<CODE>INT</CODE> 的同義詞。
+
+<A NAME="IDX1024"></A>
+<DT><CODE>BIGINT[(M)] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+一個大的整數。有符號的範圍是 <CODE>-9223372036854775808</CODE> 到 <CODE>9223372036854775807</CODE>。無符號的範圍是 <CODE>0</CODE> 到 <CODE>18446744073709551615</CODE>。
+
+你應該知道的有關 <CODE>BIGINT</CODE> 列的一些事情：
+
+
+<UL>
+<LI>
+
+<A NAME="IDX1025"></A>
+所有的算術運算均是用有符號的 <CODE>BIGINT</CODE> 或 <CODE>DOUBLE</CODE> 值來完成的，因此你不應該使用大於 <CODE>9223372036854775807</CODE> (63 bits) 的無符號大整數，除了位函數之外！如果你這樣做了，結果中的某些大數位可能會出錯，因為將 <CODE>BIGINT</CODE> 轉換成 <CODE>DOUBLE</CODE> 時產生了舍入錯誤。MySQL 4.0 在下列情況下可以處理 <CODE>BIGINT</CODE>：
+<UL>
+<LI>
+
+在一個 <CODE>BIGINT</CODE> 列中使用整數儲存一個大的無符號值。
+<LI>
+
+在 <CODE>MIN(big_int_column)</CODE> 和 <CODE>MAX(big_int_column)</CODE>中。
+<LI>
+
+當兩個操作數都是整數時使用運算子 (<CODE>+</CODE>、<CODE>-</CODE>、<CODE>*</CODE>、等)。
+</UL>
+
+<LI>
+
+通常你可以在一個 <CODE>BIGINT</CODE> 列中以字串方式儲存的一個精確的整數。在這種情況下，MySQL 將執行一個字串到數位的轉換，包括無 intermediate 的雙精度表示法。
+<LI>
+
+當兩個參數均是整數值時，<SAMP>“-”</SAMP>、<SAMP>“+”</SAMP>和 <SAMP>“*”</SAMP> 將使用 <CODE>BIGINT</CODE> 運算！這就意味著，如果兩個大整數的乘積(或函數的結果傳回整數)的結果大於 <CODE>9223372036854775807</CODE> 時，你可能會得到意想不到的結果。
+</UL>
+
+<A NAME="IDX1026"></A>
+<A NAME="IDX1027"></A>
+<A NAME="IDX1028"></A>
+<DT><CODE>FLOAT(precision) [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+一個浮點型數位。<CODE>precision</CODE> 可以是
+<CODE>&#60;=24</CODE> 作為一個單精度的浮點數位和介於 25 和 53 之間作為一個雙精度的浮點數位。這些類型與下面描述的 <CODE>FLOAT</CODE> 和 <CODE>DOUBLE</CODE> 類型相似。
+
+<CODE>FLOAT(X)</CODE> 有與相應的 <CODE>FLOAT</CODE> 和 <CODE>DOUBLE</CODE> 類型同樣的範圍，但是顯示尺寸和十進制小數位數是未定義的。
+在 MySQL  3.23 中，它是一個真實的浮點值。而在 MySQL 早期的版本中，<CODE>FLOAT(precision)</CODE> 通常有 2 小數位。
+
+注意，由於在 MySQL 中所有的計算都是以雙精度執行的，所以使用 <CODE>FLOAT</CODE> 可能帶來一些意想不到的問題。
+查看章節 <A HREF="manual2.html#No_matching_rows">A.5.6  解決沒有相符行的問題</A>。
+
+<A NAME="IDX1029"></A>
+<A NAME="IDX1030"></A>
+該句法是為了 ODBC 兼容而提供的。
+
+<A NAME="IDX1031"></A>
+<A NAME="IDX1032"></A>
+<DT><CODE>FLOAT[(M,D)] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+一個小的(單精度) 浮點數位。允許的值是 <CODE>-3.402823466E+38</CODE> 到 <CODE>-1.175494351E-38</CODE>、<CODE>0</CODE> 和 <CODE>1.175494351E-38</CODE> 到 <CODE>3.402823466E+38</CODE>。如果 <CODE>UNSIGNED</CODE> 被指定，負值是不允許的。<CODE>M</CODE> 是顯示寬度，<CODE>D</CODE> 是小數位數。<CODE>FLOAT</CODE> 沒有參數或有 <CODE>X</CODE> &#60;= 24 的 <CODE>FLOAT(X)</CODE> 代表一個單精度的浮點數位。
+
+<A NAME="IDX1033"></A>
+<A NAME="IDX1034"></A>
+<DT><CODE>DOUBLE[(M,D)] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+一個正常大小的(雙精度)浮上數位。允許的值是 <CODE>-1.7976931348623157E+308</CODE> 到 <CODE>-2.2250738585072014E-308</CODE>、<CODE>0</CODE> 和 <CODE>2.2250738585072014E-308</CODE> 到 <CODE>1.7976931348623157E+308</CODE>。如果 <CODE>UNSIGNED</CODE> 被指定，負值是不允許的。<CODE>M</CODE> 是顯示寬度，<CODE>D</CODE> 是小數位數。<CODE>DOUBLE</CODE> 沒胡參數或有 25 &#60;= <CODE>X</CODE> &#60;= 53 的 <CODE>FLOAT(X)</CODE> 代表一個雙精度的浮點數位。
+
+<A NAME="IDX1035"></A>
+<A NAME="IDX1036"></A>
+<DT><CODE>DOUBLE PRECISION[(M,D)] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+<DT><CODE>REAL[(M,D)] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+它們是 <CODE>DOUBLE</CODE> 同義詞。
+
+<A NAME="IDX1037"></A>
+<DT><CODE>DECIMAL[(M[,D])] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+一個未壓縮(unpacked)的浮點數。運作如同一個 <CODE>CHAR</CODE> 列：“unpacked” 意味著數位是以一個字串儲存的，值的每一位將使用一個字元。小數點並且對於負數，<SAMP>“-”</SAMP> 符號不在 <CODE>M</CODE> 中計算(但是它們的空間是被保留的)。如果 <CODE>D</CODE> 是 0，值將沒有小數點或小數部份。<CODE>DECIMAL</CODE> 值的最大範圍與 <CODE>DOUBLE</CODE> 一致，但是對於一個給定的 <CODE>DECIMAL</CODE> 列，實際的範圍可以被所選擇的 <CODE>M</CODE> 和 <CODE>D</CODE> 限制。如果 <CODE>UNSIGNED</CODE> 被指定，負值是不允許的。
+
+如果 <CODE>D</CODE> 被忽略，預設為 0。如果 <CODE>M</CODE> 被忽略，預設為 10。
+
+在 MySQL 3.23 以前，<CODE>M</CODE> 參數必須包含符號與小數點所需的空間。
+
+<A NAME="IDX1038"></A>
+<A NAME="IDX1039"></A>
+<DT><CODE>DEC[(M[,D])] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+<DT><CODE>NUMERIC[(M[,D])] [UNSIGNED] [ZEROFILL]</CODE>
+<DD>
+<CODE>DECIMAL</CODE> 的同義詞。
+
+<A NAME="IDX1040"></A>
+<DT><CODE>DATE</CODE>
+<DD>
+一個日期。支援的範圍是 <CODE>'1000-01-01'</CODE> 到 <CODE>'9999-12-31'</CODE>。MySQL 以 <CODE>'YYYY-MM-DD'</CODE> 格式顯示 <CODE>DATE</CODE> 值，但是允許你以字串或數位給一個 <CODE>DATE</CODE> 列賦值。查看章節 <A HREF="06-2.html#DATETIME">6.2.2.2  <CODE>DATETIME</CODE>、<CODE>DATE</CODE> 和 <CODE>TIMESTAMP</CODE> 類型</A>。
+
+<A NAME="IDX1041"></A>
+<DT><CODE>DATETIME</CODE>
+<DD>
+一個日期和時間的組合。支援的範圍是 <CODE>'1000-01-01 00:00:00'</CODE> 到 <CODE>'9999-12-31 23:59:59'</CODE>。MySQL 以<CODE>'YYYY-MM-DD HH:MM:SS'</CODE> 格式顯示 <CODE>DATETIME</CODE> 值，但是允許你以字串或數位給一個 <CODE>DATETIME</CODE> 列賦值。查看章節 <A HREF="06-2.html#DATETIME">6.2.2.2  <CODE>DATETIME</CODE>、<CODE>DATE</CODE> 和 <CODE>TIMESTAMP</CODE> 類型</A>。
+
+<A NAME="IDX1042"></A>
+<DT><CODE>TIMESTAMP[(M)]</CODE>
+<DD>
+一個時間戳。範圍是 <CODE>'1970-01-01 00:00:00'</CODE> 到 <CODE>2037</CODE> 年間的任意時刻。
+
+MySQL 4.0 和更早版本中，<CODE>TIMESTAMP</CODE> 值是以 <CODE>YYYYMMDDHHMMSS</CODE>、<CODE>YYMMDDHHMMSS</CODE>、<CODE>YYYYMMDD</CODE> 或 <CODE>YYMMDD</CODE> 格式顯示的，它取決於 <CODE>M</CODE> 是否是 <CODE>14</CODE> (或省略)、<CODE>12</CODE>、<CODE>8</CODE> 或 <CODE>6</CODE>，但是允許你以字串或數位給一個 <CODE>TIMESTAMP</CODE> 列賦值。
+
+從 MySQL 4.1 開始，<CODE>TIMESTAMP</CODE> 以 <CODE>'YYYY-MM-DD HH:MM:DD'</CODE> 格式作為字元傳回。如果你你希望以數位形式傳回則必須在該時間戳欄位後加上 +0。不同的時間戳長度是不支援的。從 MySQL 4.0.12 開始，選項 <CODE>--new</CODE> 可以被用來使伺服器與 4.1 一樣運作。
+
+<CODE>TIMESTAMP</CODE> 列有益於記錄一個 <CODE>INSERT</CODE> 或 <CODE>UPDATE</CODE> 操作的日期和時間，因為如果你自己沒有給它賦值，它將被自動地設定為最近一次操作的日期和時間。也可以通過給它賦一個 <CODE>NULL</CODE>  而使它設定為目前的日期和時間。查看章節 <A HREF="06-2.html#Date_and_time_types">6.2.2  Date 和 Time 類型</A>。
+
+參數 <CODE>M</CODE> 只影響一個 <CODE>TIMESTAMP</CODE> 列的顯示格式﹔它的值總是占用 4 個字節儲存。
+
+注意，當 <CODE>TIMESTAMP(M)</CODE> 列的 <CODE>M</CODE> 是 8 或 14 時，它傳回的是數位而其它的 <CODE>TIMESTAMP(M)</CODE> 列傳回的是字串。這僅僅是為了可以可靠地轉儲並恢復到其它格式的表中。
+查看章節 <A HREF="06-2.html#DATETIME">6.2.2.2  <CODE>DATETIME</CODE>、<CODE>DATE</CODE> 和 <CODE>TIMESTAMP</CODE> 類型</A>。
+
+<A NAME="IDX1043"></A>
+<DT><CODE>TIME</CODE>
+<DD>
+一個時間。範圍是 <CODE>'-838:59:59'</CODE> 到 <CODE>'838:59:59'</CODE>。MySQL 以 <CODE>'HH:MM:SS'</CODE> 格式顯示  <CODE>TIME</CODE> 值，但是允許你使用字串或數位來給 <CODE>TIME</CODE> 列賦值。查看章節 <A HREF="06-2.html#TIME">6.2.2.3  <CODE>TIME</CODE> 類型</A>。
+
+<A NAME="IDX1044"></A>
+<DT><CODE>YEAR[(2|4)]</CODE>
+<DD>
+一個 2 或 4 位數位格式的年(預設為 4 位)。允許的值是 <CODE>1901</CODE> 到 <CODE>2155</CODE>、<CODE>0000</CODE>(4 位年格式) 以及使用 2 位格式的 1970-2069 (70-69)。MySQL 以 <CODE>YYYY</CODE> 格式顯示 <CODE>YEAR</CODE> 值，但是允許你使用字串或數位來給 <CODE>YEAR</CODE> 列賦值。(<CODE>YEAR</CODE> 類型在 MySQL 3.22 之前不支援。) 查看章節 <A HREF="06-2.html#YEAR">6.2.2.4  <CODE>YEAR</CODE> 類型</A>。
+
+<A NAME="IDX1045"></A>
+<A NAME="IDX1046"></A>
+<A NAME="IDX1047"></A>
+<A NAME="IDX1048"></A>
+<DT><CODE>[NATIONAL] CHAR(M) [BINARY]</CODE>
+<DD>
+一個定長的字串，當儲存時，總是以空格填滿右邊到指定的長度。<CODE>M</CODE> 的範圍是 0 到 255 (在 MySQL 3.23 版本之前為 1 到 255)。當該值被檢索時，尾部空格將被刪除。<CODE>CHAR</CODE> 值根據預設的字元集進行忽略大小寫的排索與比較，除非指定了關鍵詞 <CODE>BINARY</CODE>。
+
+<CODE>NATIONAL CHAR</CODE> (或短形式 <CODE>NCHAR</CODE>) 是以 ANSI SQL 方式定義一個 <CODE>CHAR</CODE> 列，它將使用預設的字元集。這在 MySQL 中是預設的。
+
+<CODE>CHAR</CODE> 是 <CODE>CHARACTER</CODE> 的縮寫。
+
+MySQL 允許以 <CODE>CHAR(0)</CODE> 類型建立一個列。一些老程式運行時必需一個列，卻又並不使用這個列的值，你就不得不為了適應它而建立該列，在這情況下，<CODE>CHAR(0)</CODE> 將是很有益的。當需要一個列僅保存兩個值時：一個為 <CODE>CHAR(0)</CODE>(該列沒有定義為 <CODE>NOT NULL</CODE>)，這將僅占用一個比特位來儲存 2 個值：<CODE>NULL</CODE> 或 <CODE>""</CODE>。查看章節 <A HREF="06-2.html#CHAR">6.2.3.1  <CODE>CHAR</CODE> 和 <CODE>VARCHAR</CODE> 類型</A>。
+
+<DT><CODE>CHAR</CODE>
+<DD>
+這是 <CODE>CHAR(1)</CODE> 的同義詞。
+
+<A NAME="IDX1049"></A>
+<A NAME="IDX1050"></A>
+<A NAME="IDX1051"></A>
+<DT><CODE>[NATIONAL] VARCHAR(M) [BINARY]</CODE>
+<DD>
+一個變長的字串。<STRONG>注意：</STRONG>尾部的空格在儲存時將會被刪除(這與 ANSI SQL 約規不同)。<CODE>M</CODE> 的範圍是 0 到 255 (在 MySQL 4.0.2 之前的版本中是 1 到 255)。
+<CODE>VARCHAR</CODE> 值以大小寫忽略方式進行排索與比較，除非關鍵詞 <CODE>BINARY</CODE> 被指定。查看章節 <A HREF="06-5.html#Silent_column_changes">6.5.3.1  隱式的列定義變化</A>。
+
+<CODE>VARCHAR</CODE> 是 <CODE>CHARACTER VARYING</CODE> 的縮寫。
+查看章節 <A HREF="06-2.html#CHAR">6.2.3.1  <CODE>CHAR</CODE> 和 <CODE>VARCHAR</CODE> 類型</A>。
+
+<A NAME="IDX1052"></A>
+<A NAME="IDX1053"></A>
+<DT><CODE>TINYBLOB</CODE>
+<DD>
+<DT><CODE>TINYTEXT</CODE>
+<DD>
+一個 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 列，最大長度為 255 (2^8 - 1) 個字元。查看章節 <A HREF="06-5.html#Silent_column_changes">6.5.3.1  隱式的列定義變化</A>。查看章節 <A HREF="06-2.html#BLOB">6.2.3.2   <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 類型</A>。
+
+<A NAME="IDX1054"></A>
+<A NAME="IDX1055"></A>
+<DT><CODE>BLOB</CODE>
+<DD>
+<DT><CODE>TEXT</CODE>
+<DD>
+一個 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 列，最大長度為 65535 (2^16 - 1) 個字元。查看章節 <A HREF="06-5.html#Silent_column_changes">6.5.3.1  隱式的列定義變化</A>。查看章節 <A HREF="06-2.html#BLOB">6.2.3.2   <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 類型</A>。
+
+<A NAME="IDX1056"></A>
+<A NAME="IDX1057"></A>
+<DT><CODE>MEDIUMBLOB</CODE>
+<DD>
+<DT><CODE>MEDIUMTEXT</CODE>
+<DD>
+一個 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 列，最大長度為 16777215 (2^24 - 1) 個字元。查看章節 <A HREF="06-5.html#Silent_column_changes">6.5.3.1  隱式的列定義變化</A>。查看章節 <A HREF="06-2.html#BLOB">6.2.3.2   <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 類型</A>。
+
+<A NAME="IDX1058"></A>
+<A NAME="IDX1059"></A>
+<DT><CODE>LONGBLOB</CODE>
+<DD>
+<DT><CODE>LONGTEXT</CODE>
+<DD>
+一個 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 列，最大長度為 4294967295 (2^32 - 1) 個字元。查看章節 <A HREF="06-5.html#Silent_column_changes">6.5.3.1  隱式的列定義變化</A>。注意，由於伺服器/客戶端的協定以及 MyISAM 表通常有一個 16M 每通信包/表行的限制，你仍然不能使用這個類型的整個範圍。查看章節 <A HREF="06-2.html#BLOB">6.2.3.2   <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 類型</A>。
+
+<A NAME="IDX1060"></A>
+<DT><CODE>ENUM('value1','value2',...)</CODE>
+<DD>
+一個枚舉類型。一個僅能有一個值的字串物件，這個值選自值列 <CODE>'value1'</CODE>、<CODE>'value2'</CODE>、<CODE>...</CODE>、<CODE>NULL</CODE> 或特殊的 <CODE>""</CODE> 出錯值。一個 <CODE>ENUM</CODE> 列可以有最大 65535 不同的值。查看章節 <A HREF="06-2.html#ENUM">6.2.3.3  <CODE>ENUM</CODE> 類型</A>。
+
+<A NAME="IDX1061"></A>
+<DT><CODE>SET('value1','value2',...)</CODE>
+<DD>
+一個集合。一個能有零個或更多個值的字串物件，其中每個值必須選自值列<CODE>'value1'</CODE>、<CODE>'value2'</CODE>、<CODE>...</CODE>。一個 <CODE>SET</CODE> 列可以有最大 64 個成員。查看章節 <A HREF="06-2.html#SET">6.2.3.4  <CODE>SET</CODE> 類型</A>。
+</DL>
+
+
+
+<H3><A NAME="Numeric_types"></A>6.2.1  數位類型</H3>
+
+<P>
+MySQL 支援所有的 ANSI/ISO SQL92 數位類型。這些類型包括準確數位的資料類型(<CODE>NUMERIC</CODE>、<CODE>DECIMAL</CODE>、<CODE>INTEGER</CODE> 和 <CODE>SMALLINT</CODE>)，也包括近似數位的資料類型(<CODE>FLOAT</CODE>、<CODE>REAL</CODE>和 <CODE>DOUBLE PRECISION</CODE>)。關鍵詞 <CODE>INT</CODE> 是 <CODE>INTEGER</CODE> 的同義詞，關鍵詞 <CODE>DEC</CODE> 是 <CODE>DECIMAL</CODE> 的同義詞。
+</P>
+
+<P>
+<CODE>NUMERIC</CODE> 和 <CODE>DECIMAL</CODE> 類型被 MySQL 以同樣的類型實現，這在 SQL92 標準中是允許的。他們用於保存對準確精度有重要要求的值，例如與金錢有關的資料。當以它們中的之一宣告一個列時，精度和數值範圍可以(通常是)被指定﹔例如：
+</P>
+
+<PRE>
+    salary DECIMAL(5,2)
+</PRE>
+
+<P>
+在這個範例中，<CODE>5</CODE> (<CODE>精度(precision)</CODE>) 代表重要的十進制數位的數目，<CODE>2</CODE> (<CODE>資料範圍(scale)</CODE>) 代表在小數點後的數位位數。在這種情況下，因此，<CODE>salary</CODE> 列可以儲存的值範圍是從 <CODE>-99.99</CODE> 到 <CODE>99.99</CODE>。(實際上 MySQL 在這個列中可以儲存的數值可以一直到 <CODE>999.99</CODE>，因為它沒有儲存正數的符號)。
+</p>
+<p><tt>譯者注：</tt>
+<PRE>
+M 與D 對DECIMAL(M, D) 取值範圍的影響
+
+類型說明          取值範圍（MySQL < 3.23）     取值範圍（MySQL >= 3.23）
+DECIMAL(4, 1)        -9.9 到 99.9                  -999.9 到 9999.9
+DECIMAL(5, 1)       -99.9 到 999.9                -9999.9 到 99999.9
+DECIMAL(6, 1)      -999.9 到 9999.9              -99999.9 到 999999.9
+DECIMAL(6, 2)      -99.99 到 999.99              -9999.99 到 99999.99
+DECIMAL(6, 3)      -9.999 到 99.999              -999.999 到 9999.999
+
+# 在MySQL 3.23 及以後的版本中，DECIMAL(M, D) 的取值範圍等於早期版本中的DECIMAL(M + 2, D) 的取值範圍。
+</PRE>
+<tt>註釋結束：</tt>
+<p></P>
+
+<P>
+在 ANSI/ISO SQL92 中，句法 <CODE>DECIMAL(p)</CODE> 等價於 <CODE>DECIMAL(p,0)</CODE>。同樣的，在執行被允許決定值 <CODE>p</CODE> 的地方,句法 <CODE>DECIMAL</CODE> 等價於 <CODE>DECIMAL(p,0)</CODE>。MySQL 目前還不支援 <CODE>DECIMAL</CODE>/<CODE>NUMERIC</CODE> 資料類型的這些變體形式中的任一種。一般來說這並不是一個嚴重的問題，通過明確地控制精度和數值範圍可以得到這些類型的主要功能益處。
+</P>
+
+<P>
+<CODE>DECIMAL</CODE> 和 <CODE>NUMERIC</CODE> 值是作為字串儲存的，而不是作為二進位浮點數，以便保護這些值的十進制精確度。一個字元用於數值的每一位、小數點(如果 <CODE>scale</CODE> &#62; 0) 和 <SAMP>“-”</SAMP> 符號(對於負值)。如果 <CODE>scale</CODE> 是 0，<CODE>DECIMAL</CODE> 和 <CODE>NUMERIC</CODE> 值不包含小數點或小數部分。
+</P>
+
+<P>
+<CODE>DECIMAL</CODE> 和 <CODE>NUMERIC</CODE> 值的最大範圍與 <CODE>DOUBLE</CODE> 一致，但是對於一個給定的 <CODE>DECIMAL</CODE> 或 <CODE>NUMERIC</CODE> 列，它的實際範圍可制定該列時的 <CODE>precision</CODE> 或 <CODE>scale</CODE> 限制。當這樣的列被賦給了小數點的位數超過 <CODE>scale</CODE> 所指定的值時，該將根據 <CODE>scale</CODE> 進行四舍五入。當一個 <CODE>DECIMAL</CODE> 或 <CODE>NUMERIC</CODE> 列被賦與一個大小超過指定(或預設)的 <CODE>precision</CODE> and <CODE>scale</CODE> 的限止範圍時，MySQL 以該列範圍的端點值儲存該值。
+</P>
+
+<tt>範例(譯者注)：</tt>
+<PRE>
+mysql&#62; CREATE TABLE `tA` (
+    -&#62;   `id` int(4) unsigned zerofill NOT NULL,
+    -&#62;   `salary` decimal(5,2),
+    -&#62;   PRIMARY KEY  (`id`)
+    -&#62; ) TYPE=MyISAM;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&#62; INSERT INTO `tA` (`id`, `salary`)
+    -&#62;  VALUES (1, -99.99),     # 以數位方式插入
+    -&#62;         (2, "99.99"),    # 以字串方式插入
+    -&#62;         (3, -999.99), 
+    -&#62;         (4, "9999.99"),
+    -&#62;         (5, -1000.00),   # decimal(5,2)最小範圍為 -999.99 該值插入時結果為 -999.99
+    -&#62;         (6, "10000.00"), # decimal(5,2)最大範圍為 9999.99 該值插入時結果為 9999.99
+    -&#62;         (7, "-99.999"),  # 小數位數超過 scale 指定值，但因以字串方式插入，結果值僅截去多餘部分
+    -&#62;         (8, "99.9999"),
+    -&#62;         (9, -99.999),    # 小數位數超過 scale 指定值，對該值進行四舍五入，結果為 -100.00
+    -&#62;         (10,99.9999);
+Query OK, 10 rows affected (0.00 sec)
+Records: 10  Duplicates: 0  Warnings: 4
+
+mysql&#62; SELECT * FROM `tA`;
++------+---------+
+| id   | salary  |
++------+---------+
+| 0001 |  -99.99 |
+| 0002 |   99.99 |
+| 0003 | -999.99 |
+| 0004 | 9999.99 |
+| 0005 | -999.99 |
+| 0006 | 9999.99 |
+| 0007 |  -99.99 |
+| 0008 |   99.99 |
+| 0009 | -100.00 |
+| 0010 |  100.00 |
++------+---------+
+10 rows in set (0.00 sec)
+
+* 以上結果在 MySQL 4.0.12 中測試
+</PRE>
+<tt>範例結束(譯者注)</tt>
+<P>
+作為對 ANSI/ISO SQL92 標準的一個擴展，MySQL 也支援上面的表格所列出的整型類型 <CODE>TINYINT</CODE>、<CODE>MEDIUMINT</CODE> 和 <CODE>BIGINT</CODE>。另外一個擴展是 MySQL 支援隨意指定一個整型數值的顯示格式，這通過在類型的基本關鍵詞後跟一個括號來實現(例如 <CODE>INT(4)</CODE>)。這個可選的寬度規格說明是用於在數值顯示時，對某些值的寬度短於該列寬度的值進行左填補顯示的，而不是為了限制在該列中儲存值的寬度，也不是為了限制那些超過該列指定寬度的值的可被顯示的數位位數。當與可選的擴展屬性 <CODE>ZEROFILL</CODE> 一起使用時，預設填補用的空格被零代替。舉例來說，一個列被定義為 <CODE>INT(5) ZEROFILL</CODE>，插入的值 <CODE>4</CODE> 被檢索出來時為 <CODE>00004</CODE>。注意，如果在一個整型列中儲存一個超過顯示寬度的更大值時，當 MySQL 為某些復雜的聯結(join)生成臨時表時，你可能會遇到問題，因為在這種情況下，MySQL 信任地認為所有的值均適合原始的列寬度。
+</P>
+<tt>範例(譯者注)：</tt>
+<PRE>
+mysql&#62; CREATE TABLE `tA` (
+    -&#62;   `id` int(4) unsigned zerofill NOT NULL,
+    -&#62;     PRIMARY KEY  (`id`)
+    -&#62; ) TYPE=MyISAM;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&#62; INSERT INTO `tA` (`id`)
+    -&#62;  VALUES (1),(12),(1234),(12345678);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql&#62; SELECT * FROM `tA`;
++----------+
+| id       |
++----------+
+|     0001 |
+|     0012 |
+|     1234 |
+| 12345678 |
++----------+
+4 rows in set (0.00 sec)
+
+* 以上結果在 MySQL 4.0.12 中測試
+</PRE>
+<tt>範例結束(譯者注)</tt>
+<P>
+所有的整型類型可以有一個可選(非標準的)屬性 <CODE>UNSIGNED</CODE>。如果希望在一個列中只允許正值並且需要一個稍大一點的數位範圍，就可以使用無符號值。
+</P>
+
+<P>
+從 MySQL 4.0.2 開始，浮點類型也可以存在 <CODE>UNSIGNED</CODE>。
+與整型類型一致的，這個屬性可以防止在該列中存在負值。而與整型類型不一致的，該列的高部範圍仍然與原範圍保持一致。
+</P>
+
+<P>
+<CODE>FLOAT</CODE> 類型被用於表示近似數位的數值類型。ANSI/ISO SQL92 標準允許一個可選的精度說明(但不是指數的範圍)，跟在 關鍵詞 <CODE>FLOAT</CODE> 後的括號內。MySQL 實現也支援這個可選的精度規格說明。當關鍵詞被用於一個列的類型說明而沒有精度規格說明時，MySQL 使用四個字節來儲存該欄位值。在關鍵詞 <CODE>FLOAT</CODE> 後的括號裡給出兩個數位，這種變形的句法也是被支援的。使用這個選項時，第一個數位繼續表示值儲存所占的字節數，第二個數位指定能被儲存和顯示的跟隨在小數點後的位數(就像 <CODE>DECIMAL</CODE> 和 <CODE>NUMERIC</CODE>)。當 MySQL 被要求為這樣的一個列儲存一個小數點後的小數位數超過指定值的數值時，該值將會被四舍五入，去除額外的位。
+</P>
+
+<tt>範例(譯者注)：</tt>
+<PRE>
+mysql&#62; CREATE TABLE `tA` (
+    -&#62;   `id` int(4) unsigned zerofill NOT NULL,
+    -&#62;   `float_date` float(4,2) unsigned NOT NULL,
+    -&#62;   PRIMARY KEY  (`id`)
+    -&#62; ) TYPE=MyISAM;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&#62; INSERT INTO `tA` (`id`,`float_date`)
+    -&#62;  VALUES (1, -100),        # 插入無效的負值
+    -&#62;         (2, 100.99),      # 以數位方式插入
+    -&#62;         (3, "100.99"),    # 以字串方式插入
+    -&#62;         (4, "100.99999"), # 小數位數超過指定倍數，該值進行四舍五入
+    -&#62;         (5, 100.99999),
+    -&#62;         (6, "100.9911"),
+    -&#62;         (7, 100.9911);
+Query OK, 7 rows affected (0.00 sec)
+Records: 7  Duplicates: 0  Warnings: 1
+
+mysql&#62; SELECT * FROM `tA`;
++------+------------+
+| id   | float_date |
++------+------------+
+| 0001 |       0.00 |
+| 0002 |     100.99 |
+| 0003 |     100.99 |
+| 0004 |     101.00 |
+| 0005 |     101.00 |
+| 0006 |     100.99 |
+| 0007 |     100.99 |
++------+------------+
+7 rows in set (0.00 sec)
+
+* 以上結果在 MySQL 4.0.12 中測試
+</PRE>
+<tt>範例結束(譯者注)</tt>
+
+<P>
+<CODE>REAL</CODE> 和 <CODE>DOUBLE PRECISION</CODE> 類型不接受精度規格說明。作為對 ANSI/ISO SQL92 標準的擴展，MySQL 接受 <CODE>DOUBLE</CODE> 作為 <CODE>DOUBLE PRECISION</CODE> 類型的一個同義詞。標準要求 <CODE>REAL</CODE> 的精度比用於 <CODE>DOUBLE PRECISION</CODE> 的更小，而與之相反的，MySQL 以 8 字節的雙精度浮點值(當不以“ANSI 樣式”運行時)來實現兩者。為了得到最大的可移植性， 近似數位的數值儲存所需代碼應該使用沒有精度或小數位數規格說明的 <CODE>FLOAT</CODE> 或 <CODE>DOUBLE PRECISION</CODE> 類型。
+</P>
+<P>
+當試圖在一個數位列中儲存一個超過該列允許範圍的值時，MySQL 會剪下該值到範圍內的適當端點值，並以結果值代替儲存。
+</P>
+
+<P>
+舉例來說，一個整型列的範圍是 <CODE>-2147483648</CODE> 到 <CODE>2147483647</CODE>。如果試圖在一個 <CODE>INT</CODE> 列中插入值 <CODE>-9999999999</CODE>，該值將會被剪下到該範圍的低部端點，以 <CODE>-2147483648</CODE> 代替儲存。同樣的，如果試圖插入 <CODE>9999999999</CODE>，<CODE>2147483647</CODE> 將被代替儲存。
+</P>
+
+<P>
+如果 <CODE>INT</CODE> 列是 <CODE>UNSIGNED</CODE>的，列的範圍大小是一致的，不過它的端點移動到了 <CODE>0</CODE> 和 <CODE>4294967295</CODE>。如果你試圖儲存 <CODE>-9999999999</CODE> 和 <CODE>9999999999</CODE>，而實際列中儲存的值將會變成 <CODE>0</CODE> 和 <CODE>4294967296</CODE>。
+</P>
+<P>
+對於 <CODE>ALTER TABLE</CODE>、<CODE>LOAD DATA INFILE</CODE>、<CODE>UPDATE</CODE> 和多行 <CODE>INSERT</CODE> 語句，由於剪下發生的轉換，將以“Warnings”被報告。
+</P>
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>類型</STRONG> </TD><TD> <STRONG>占用字節</STRONG> </TD><TD> <STRONG>從</STRONG> </TD><TD> <STRONG>到</STRONG>
+</TD></TR>
+<TR><TD><CODE>TINYINT</CODE> </TD><TD> 1 </TD><TD> -128 </TD><TD> 127
+</TD></TR>
+<TR><TD><CODE>SMALLINT</CODE> </TD><TD> 2 </TD><TD> -32768 </TD><TD> 32767
+</TD></TR>
+<TR><TD><CODE>MEDIUMINT</CODE> </TD><TD> 3 </TD><TD> -8388608 </TD><TD> 8388607
+</TD></TR>
+<TR><TD><CODE>INT</CODE> </TD><TD> 4 </TD><TD> -2147483648 </TD><TD> 2147483647
+</TD></TR>
+<TR><TD><CODE>BIGINT</CODE> </TD><TD> 8 </TD><TD> -9223372036854775808 </TD><TD> 9223372036854775807
+</TD></TR>
+</TABLE>
+
+
+
+<H3><A NAME="Date_and_time_types"></A>6.2.2  Date 和 Time 類型</H3>
+
+<P>
+<A NAME="IDX1062"></A>
+<A NAME="IDX1063"></A>
+
+</P>
+
+<P>
+日期和時間類型有 <CODE>DATETIME</CODE>、<CODE>DATE</CODE>、<CODE>TIMESTAMP</CODE>、<CODE>TIME</CODE> 和 <CODE>YEAR</CODE>。每一個類型均有合法值的範圍，當給它們賦於一個真正不合法的值時，這些值將會被“零”代替。注意，MySQL 允許儲存某個“不嚴格地”合法的日期，例如 <CODE>1999-11-31</CODE>。這樣做的原因是，我們認為應用程式有責任來處理日期合法性的檢查，而不是由 SQL 伺服器來處理。為了“加快”對日期的檢查，MySQL 僅檢查月份應在 0-12 範圍內，以及天在 0-31 範圍內。因為上面所述的範圍定義方式，MySQL 因而允許你在一個 <CODE>DATE</CODE> 或 <CODE>DATETIME</CODE> 列中儲存日或月日均為 0 的日期。當一個應用程式希望儲存一個出生日期，而你並不知準確的出生日月時，這將變得非常有用。在這種情況下，你可以簡單地以 <CODE>1999-00-00</CODE> 或 <CODE>1999-01-00</CODE> 形式儲存日期。(當然你不能期望 <CODE>DATE_SUB()</CODE> 或 <CODE>DATE_ADD</CODE> 之類的函數能正確地處理這樣的日期，並得到正確的值。)
+
+</P>
+<P>
+當使用日期和時間類型工作時，這裡有一些要記住的總則：
+</P>
+
+<UL>
+<LI>
+
+MySQL 對一個給定的日期或時間類型以標準的格式進行檢索，但是它會努力以各種格式相符解釋你所提供的(例如，當你指定一個值，將其賦給一個日期或時間類型或與之比較時)。然而，只在下面部分所描述的格式是被支援的。期望你能夠提供合法的值，如果你使用其它格式的值，可能會造成無法預料的結果。
+
+<LI>
+
+盡管 MySQL 會嘗試以各種格式解釋值，它通常期望日期的年部分放在最左邊。日期必須以年-月-日次序給出(例如， <CODE>'98-09-04'</CODE>)，而不是其它地方常用的月-日-年或日-月-年次序(例如，<CODE>'09-04-98'</CODE>、<CODE>'04-09-98'</CODE>)。
+
+<LI>
+
+如果一個值被用於在數位的語境中，MySQL 將自動地將一個日期或時間類型值轉換成數位，反之亦然。
+
+<LI>
+
+當 MySQL 遇到一個日期或時間類型的值超出範圍或對該類型是一個不合法的值時(查看這個章節的開頭部分)，它會將該類型的值變換到“零”值。(例外的是超出範圍的 <CODE>TIME</CODE> 值將被剪下為適當的 <CODE>TIME</CODE> 範圍端點值。) 下表每種類型的“零”值格式：
+
+<TABLE BORDER WIDTH="95%">
+<TR><TD><STRONG>列類型 </STRONG> </TD><TD> <STRONG>“零”值 </STRONG>
+</TD></TR>
+<TR><TD><CODE>DATETIME</CODE> </TD><TD> <CODE>'0000-00-00 00:00:00'</CODE>
+</TD></TR>
+<TR><TD><CODE>DATE</CODE> </TD><TD> <CODE>'0000-00-00'</CODE>
+</TD></TR>
+<TR><TD><CODE>TIMESTAMP</CODE> </TD><TD> <CODE>00000000000000</CODE> (長度取決於顯示格式)
+</TD></TR>
+<TR><TD><CODE>TIME</CODE> </TD><TD> <CODE>'00:00:00'</CODE>
+</TD></TR>
+<TR><TD><CODE>YEAR</CODE> </TD><TD> <CODE>0000</CODE>
+</TD></TR>
+</TABLE>
+
+<LI>
+
+“零”值是特殊的，但是你可以以表中顯示的值來明確地儲存或參照他們。你也可以使用值<CODE>'0'</CODE> 或 <CODE>0</CODE>，這更易於書寫。
+
+<LI>
+
+在 <CODE>MyODBC</CODE> 2.50.12 和以上的版本中，“零”值的日期和時間值通過 <CODE>MyODBC</CODE> 將被自動轉換成 <CODE>NULL</CODE>，因為 ODBC 不能夠處理這樣的值。
+</UL>
+
+
+
+<H4><A NAME="Y2K_issues"></A>6.2.2.1  Y2K 問題和日期類型</H4>
+
+<P>
+<A NAME="IDX1064"></A>
+<A NAME="IDX1065"></A>
+
+</P>
+<P>
+MySQL 自身是 Y2K 安全的(查看章節  <A HREF="manual1.html#Year_2000_compliance">1.2.5  2000 年兼容性</A>)，但是餘交給 MySQL 的值可能並不是。任何一個包含 2 位年份的值是存在二義性的，因為世紀值是未知的。這樣的值必須被解釋為 4 位格式，因為 MySQL 內部使用四位儲存年份。
+</P>
+
+<P>
+對於 <CODE>DATETIME</CODE>、<CODE>DATE</CODE>、<CODE>TIMESTAMP</CODE> 和 <CODE>YEAR</CODE> 類型，MySQL 使用下列規則解釋存在二義性的年份值：
+</P>
+
+<UL>
+<LI>
+
+在範圍 <CODE>00-69</CODE> 內的年值被轉換為 <CODE>2000-2069</CODE>。
+
+<LI>
+
+在範圍Y <CODE>70-99</CODE> 內的年值被轉換為 <CODE>1970-1999</CODE>。
+</UL>
+
+<P>
+記住，這些規則僅僅提供對於你的資料含義的合理猜測。如果 MySQL 使用的探索法無法得到正確的值，你應該以包含 4 位年份的格式提供一個明確的值。
+</P>
+
+<P>
+<CODE>ORDER BY</CODE> 將以適當的順序對 2 位 <CODE>YEAR/DATE/DATETIME</CODE> 類型排序。
+</P>
+
+<P>
+注意，某些像 <CODE>MIN()</CODE> 和 <CODE>MAX()</CODE> 之類的函數會將 <CODE>TIMESTAMP/DATE</CODE> 轉換為一個數位。這就意味著，一個 2 位年份的時間戳將完全不能與這些函數一同工作。在這種情況下，解決的辦法是將 <CODE>TIMESTAMP/DATE</CODE> 轉換為 4 位年份格式或者使用諸如 <CODE>MIN(DATE_ADD(timestamp,INTERVAL 0 DAYS)) 的方法</CODE>。
+</P>
+
+
+
+<H4><A NAME="DATETIME"></A>6.2.2.2  <CODE>DATETIME</CODE>、<CODE>DATE</CODE> 和 <CODE>TIMESTAMP</CODE> 類型</H4>
+
+<P>
+<A NAME="IDX1066"></A>
+<A NAME="IDX1067"></A>
+<A NAME="IDX1068"></A>
+
+</P>
+<P>
+<CODE>DATETIME</CODE>、<CODE>DATE</CODE> 和 <CODE>TIMESTAMP</CODE> 類型是相似的。這個章節描述了它們的特性以及它們的相似點與不同點。
+</P>
+
+<P>
+<CODE>DATETIME</CODE> 類型可用於需要同時包含日期和時間資訊的值。MySQL 以 <CODE>'YYYY-MM-DD HH:MM:SS'</CODE> 格式檢索與顯示 <CODE>DATETIME</CODE> 類型。支援的範圍是 <CODE>'1000-01-01 00:00:00'</CODE> 到 <CODE>'9999-12-31 23:59:59'</CODE>。(“支援”的含義是，盡管更早的值可能工作，但不能保証他們均可以。)
+</P>
+
+<P>
+<CODE>DATE</CODE> 類型可用於需要一個日期值而不需要時間部分時。MySQL 以 <CODE>'YYYY-MM-DD'</CODE> 格式檢索與顯示 <CODE>DATE</CODE> 值。支援的範圍是 <CODE>'1000-01-01'</CODE> 到 <CODE>'9999-12-31'</CODE>。
+
+</P>
+<P>
+<CODE>TIMESTAMP</CODE> 列類型提供了一種類型，通過它你可以以目前操作的日期和時間自動地標記 <CODE>INSERT</CODE> 或<CODE>UPDATE</CODE> 操作。如果一張表中有多個 <CODE>TIMESTAMP</CODE> 列，只有第一個被自動更新。
+</P>
+
+<P>
+自動更新第一個 <CODE>TIMESTAMP</CODE> 列在下列任何條件下發生：
+</P>
+
+<UL>
+
+<LI>
+列值沒有明確地在一個 <CODE>INSERT</CODE> 或 <CODE>LOAD DATA INFILE</CODE> 語句中被指定。
+
+<LI>
+列值沒有明確地在一個 <CODE>UPDATE</CODE> 語句中被指定，並且其它的一些列值已發生改變。(注意，當一個 <CODE>UPDATE</CODE> 設定一個列值為它原有值時，這將不會引起 <CODE>TIMESTAMP</CODE> 列的更新，因為，如果你設定一個列值為它目前值時，MySQL 為了效率為忽略更新。)
+<LI>
+
+明確地以 <CODE>NULL</CODE> 設定 <CODE>TIMESTAMP</CODE> 列。
+</UL>
+
+<P>
+第一個列以外其它 <CODE>TIMESTAMP</CODE> 列，可以設定到目前的日期和時間，只要將該列賦值 <CODE>NULL</CODE> 或 <CODE>NOW()</CODE>。
+</P>
+
+<P>
+任何 <CODE>TIMESTAMP</CODE> 列均可以被設定一個不同於目前操作日期與時間的值，這通過為該列明確指定一個你所期望的值來實現。這也適用於第一個 <CODE>TIMESTAMP</CODE> 列。這個選擇性是很有用的，舉例來說，當你希望 <CODE>TIMESTAMP</CODE> 列保存該記錄行被新加入時的目前的日期和時間，但該值不再發生改變，無論以後是否對該記錄行進行過更新：
+</P>
+
+<UL>
+<LI>
+當該記錄行被建立時，讓 MySQL 設定該列值。這將初始化該列為目前日期和時間。
+
+<LI>
+以後當你對該記錄行的其它列執行更新時，為 <CODE>TIMESTAMP</CODE> 列值明確地指定為它原來的值。
+</UL>
+
+<P>
+另一方面，你可能發現更容易的方法，使用 <CODE>DATETIME</CODE> 列，當新增記錄行時以 <CODE>NOW()</CODE> 初始化該列，以後在對該記錄行進行更新時不再處理它。
+</P>
+
+<P>
+<tt>範例(譯者注)：</tt>
+<PRE>
+mysql&#62; CREATE TABLE `tA` (
+    -&#62;   `id` int(3) unsigned NOT NULL auto_increment,
+    -&#62;     `date1` timestamp(14) NOT NULL,
+    -&#62;     `date2` timestamp(14) NOT NULL,
+    -&#62;     PRIMARY KEY  (`id`)
+    -&#62; ) TYPE=MyISAM;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&#62; INSERT INTO `tA` SET `id` = 1; 
+Query OK, 1 row affected (0.02 sec)
+
+# 沒有明確地指定第一個 timestamp 列值，該列值被設為插入的目前時刻
+# 沒有明確地指定其它的 timestamp 列值，MySQL 則認為插入的是一個非法值，而該列值被設為0
+
+mysql&#62; INSERT INTO `tA` VALUES (2, NOW(), NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql&#62; SELECT * FROM `tA`;
++----+----------------+----------------+
+| id | date1          | date2          |
++----+----------------+----------------+
+|  1 | 20030503104118 | 00000000000000 |
+|  2 | 20030503104254 | 20030503104254 |
++----+----------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql&#62; UPDATE `tA` SET `id` = 3 WHERE `id` = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+# 對某一記錄行進行了更新，第一個 timestamp 列值也將被更新
+
+mysql&#62; UPDATE `tA` SET `id` = 2 WHERE `id` = 2;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+# MySQL 忽略了這次操作，第一個 timestamp 列值不會被更新
+
+mysql&#62; SELECT * FROM `tA`;
++----+----------------+----------------+
+| id | date1          | date2          |
++----+----------------+----------------+
+|  3 | 20030503104538 | 00000000000000 |
+|  2 | 20030503104254 | 20030503104254 |
++----+----------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql&#62; UPDATE `tA` SET `id` = 1,`date1`=`date1` WHERE `id` = 3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+# 明確地指定了第一個 timestamp 列值為它原有值，該值將不會被更新
+
+mysql&#62; SELECT * FROM `tA`;
++----+----------------+----------------+
+| id | date1          | date2          |
++----+----------------+----------------+
+|  1 | 20030503104538 | 00000000000000 |
+|  2 | 20030503104254 | 20030503104254 |
++----+----------------+----------------+
+2 rows in set (0.00 sec)
+
+* 以上結果在 MySQL 4.0.12 中測試
+</PRE>
+<tt>範例結束(譯者注)</tt>
+<p></P>
+
+<P>
+<CODE>TIMESTAMP</CODE> 值可以從 1970 到 2037 之間的任一時刻，精度為一秒。其值作為數位顯示。
+</P>
+
+<P>
+MySQL 檢索與顯示 <CODE>TIMESTAMP</CODE> 值的格式取決於它的顯示尺寸，描述如下表。“完整”的 <CODE>TIMESTAMP</CODE> 格式是 14 位的，但是 <CODE>TIMESTAMP</CODE> 列可以以一個更短的顯示尺寸建立：
+</P>
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>列類型 </STRONG> </TD><TD> <STRONG>顯示格式 </STRONG>
+</TD></TR>
+<TR><TD><CODE>TIMESTAMP(14)</CODE> </TD><TD> <CODE>YYYYMMDDHHMMSS</CODE>
+</TD></TR>
+<TR><TD><CODE>TIMESTAMP(12)</CODE> </TD><TD> <CODE>YYMMDDHHMMSS</CODE>
+</TD></TR>
+<TR><TD><CODE>TIMESTAMP(10)</CODE> </TD><TD> <CODE>YYMMDDHHMM</CODE>
+</TD></TR>
+<TR><TD><CODE>TIMESTAMP(8)</CODE> </TD><TD> <CODE>YYYYMMDD</CODE>
+</TD></TR>
+<TR><TD><CODE>TIMESTAMP(6)</CODE> </TD><TD> <CODE>YYMMDD</CODE>
+</TD></TR>
+<TR><TD><CODE>TIMESTAMP(4)</CODE> </TD><TD> <CODE>YYMM</CODE>
+</TD></TR>
+<TR><TD><CODE>TIMESTAMP(2)</CODE> </TD><TD> <CODE>YY</CODE>
+</TD></TR>
+</TABLE>
+
+<P>
+所有的 <CODE>TIMESTAMP</CODE> 列均有一個相同的儲存尺寸，而不考慮顯示尺寸的大小。最常見的顯示尺寸為 6、8、12 和 14。你可以在表建立時指定一個任意的顯示尺寸，但是值 0 或 比 14 大的值將會被強制定義為列長 14。在從 1 ~ 13 範圍內的奇數會被強制為下一個更大的偶數。
+</P>
+
+<P>
+<tt>例如(譯者注)：</tt>
+<TABLE BORDER WIDTH="50%">
+<TR><TD><STRONG><tt>欄位定義 </tt></STRONG></TD><TD><STRONG><tt>強制欄位長度 </tt></STRONG></TD></TR>  
+<TR><TD><tt>TIMESTAMP(0) </tt></TD><TD><tt>TIMESTAMP(14) </tt></TD></TR>  
+<TR><TD><tt>TIMESTAMP(15) </tt></TD><TD><tt>TIMESTAMP(14) </tt></TD></TR>  
+<TR><TD><tt>TIMESTAMP(1) </tt></TD><TD><tt>TIMESTAMP(2) </tt></TD></TR>  
+<TR><TD><tt>TIMESTAMP(5) </tt></TD><TD><tt>TIMESTAMP(6) </tt></TD></TR>
+</TABLE>
+
+<p></P>
+
+<P>
+<STRONG>注意：</STRONG>從 MySQL 4.1 開始，<CODE>TIMESTAMP</CODE> 以 <CODE>'YYYY-MM-DD HH:MM:DD'</CODE> 格式作為字串傳回。不同的時間戳長度不再被支援。
+</P>
+
+<P>
+<tt>譯者注：如果你你希望在 MySQL 4.1 中以數位形式傳回時間戳，則必須在該時間戳欄位後加上 +0。從 MySQL 4.0.12 開始，選項 --new 可以被用來使伺服器與 4.1 一樣運作。</tt>
+</P>
+
+<P>
+你可以使用常用的格式集中的任何一個指定 <CODE>DATETIME</CODE>、<CODE>DATE</CODE> 和 <CODE>TIMESTAMP</CODE> 值：
+</P>
+
+<UL>
+<LI>
+一個 <CODE>'YYYY-MM-DD HH:MM:SS'</CODE> 或 <CODE>'YY-MM-DD HH:MM:SS'</CODE> 格式的字串。一個“寬松”的語法是被允許的：以任何標點符號作為日期部分和時間部分中的定界符。例如，<CODE>'98-12-31 11:30:45'</CODE>、<CODE>'98.12.31 1+30+45'</CODE>、<CODE>'98/12/31 11*30*45'</CODE> 和 <CODE>'98@12@31 11^30^45'</CODE> 均是等價的。
+
+<LI>
+一個 <CODE>'YYYY-MM-DD'</CODE> 或 <CODE>'YY-MM-DD'</CODE> 格式的字串。這裡，一個“寬松”的語法同樣也是被允許的：例如，<CODE>'98.12.31'</CODE>、<CODE>'98-12-31'</CODE>、<CODE>'98/12/31'</CODE> 和 <CODE>'98@12@31'</CODE> 是等價的。
+
+<LI>
+一個無定界符的 <CODE>'YYYYMMDDHHMMSS'</CODE> 或 <CODE>'YYMMDDHHMMSS'</CODE> 格式的字串，只要字串看起來像是一個日期。例如，<CODE>'19970523091528'</CODE> 和 <CODE>'970523091528'</CODE> 均被解釋為 <CODE>'1997-05-23 09:15:28'</CODE>，但是 <CODE>'971122129015'</CODE> 卻是違法的(它的分部分是無意義的)，該值被插入時將變成 <CODE>'0000-00-00 00:00:00'</CODE>。
+
+<LI>
+一個無定界符的 <CODE>'YYYYMMDD'</CODE> 或 <CODE>'YYMMDD'</CODE> 格式的字串，只要字串看起來像是一個日期。例如，<CODE>'19970523'</CODE> 和 <CODE>'970523'</CODE> 被解釋成為 <CODE>'1997-05-23'</CODE>，但是 <CODE>'971332'</CODE> 卻是違法的(它的月和日部分是無意義的)，該值被插入時將變成 <CODE>'0000-00-00'</CODE>。
+
+<LI>
+一個 <CODE>YYYYMMDDHHMMSS</CODE> 或 <CODE>YYMMDDHHMMSS</CODE> 格式的數位，只要數位看起來像是一個日期。例如，<CODE>19830905132800</CODE> 和 <CODE>830905132800</CODE> 被解釋成為 <CODE>'1983-09-05 13:28:00'</CODE>。
+
+<LI>
+一個 <CODE>YYYYMMDD</CODE> 或 <CODE>YYMMDD</CODE> 格式的數位，只要數位看起來像是一個日期。例如，<CODE>19830905</CODE> 和 <CODE>830905</CODE> 被解釋成為 <CODE>'1983-09-05'</CODE>。
+
+<LI>
+在一個 <CODE>DATETIME</CODE>、<CODE>DATE</CODE> 或 <CODE>TIMESTAMP</CODE> 語境中，一個函數的傳回值將隨之而變化，例如 <CODE>NOW()</CODE> 或 <CODE>CURRENT_DATE</CODE>。
+</UL>
+
+<P>
+非法的 <CODE>DATETIME</CODE>、<CODE>DATE</CODE> 或 <CODE>TIMESTAMP</CODE> 值將會被轉換到適當形式的“零”值(<CODE>'0000-00-00 00:00:00'</CODE>、<CODE>'0000-00-00'</CODE> 或 <CODE>00000000000000</CODE>)。
+</P>
+
+<P>
+對於以字串格式指定的包含日期定界符的值，不必要為小於 <CODE>10</CODE> 的月或天的值指定 2 位數位。<CODE>'1979-6-9'</CODE> 等同於 <CODE>'1979-06-09'</CODE>。同樣的，對於以字串指定的包含時間定界符的值，不必要為小於 <CODE>10</CODE> 的時、分或秒指定 2 位數位。<CODE>'1979-10-30 1:2:3'</CODE> 等同於 <CODE>'1979-10-30 01:02:03'</CODE>。
+
+</P>
+<P>
+以數位指定的值應該是 6、8、12 或 14 位長。如果數位是 8 或 14 位長的，該值將被假定為年份是由頭 4 位數位給出的 <CODE>YYYYMMDD</CODE> 或 <CODE>YYYYMMDDHHMMSS</CODE> 格式。如果數位是 6 或 12 數位長，它將被假定為年份是由頭 2 位數位給出的 <CODE>YYMMDD</CODE> 或 <CODE>YYMMDDHHMMSS</CODE> 格式。不是這些長度之一的數位通過在值前補零到最接近的長度後解釋。
+</P>
+
+<P>
+<A NAME="IDX1069"></A>
+<A NAME="IDX1070"></A>
+以沒有定界符的字串格式指定的值通過它們給出的長度來解釋。如果字串是 8 或 14 個字元長，則假定年份由前 4 個字元給出。否則，年份由前 2 個字元給出。對於字串中出現的多個部分，字串以從左到右的順序被解釋，以找出年、月、日、時、分和秒值。這就意味著，你不就使用少於 6 個字元的字串。例如，如果指定 <CODE>'9903'</CODE> ，你可能認為它代表 1999年3月，但你將會發現MySQL 會將一個“零”值插入到你的表中。這是因為，年份和月份分別為 <CODE>99</CODE> 和 <CODE>03</CODE>，但是日期部分丟失(為 0)，因此這個值是不合法的。
+</P>
+
+<P>
+<CODE>TIMESTAMP</CODE> 列總是以完全精度儲存給定的合法值，而不考慮顯示尺寸的大小。這包含幾個含義：
+</P>
+
+<UL>
+<LI>
+賦值時總是給出年、月和日，即使你的列類型定義為 <CODE>TIMESTAMP(4)</CODE> 或 <CODE>TIMESTAMP(2)</CODE>。否則，該值將是不合法的，而被 <CODE>0</CODE> 代替儲存。
+
+<P>
+<tt>範例(譯者注)：</tt>
+<PRE>
+mysql&#62; CREATE TABLE `tA` (
+    -&#62;   `id` int(3) unsigned NOT NULL auto_increment,
+    -&#62;     `date1` timestamp(4) NOT NULL,
+    -&#62;     PRIMARY KEY  (`id`)
+    -&#62; ) TYPE=MyISAM;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&#62; INSERT INTO `tA` (`id`,`date1`)
+    -&#62;  VALUES (1,NULL),  # 插入目前日期和時間
+    -&#62;         (2,0305),  # 以數位格式給出值，而值長度小於 6 ，在最左邊補 0 至 6 位數位
+    -&#62;         (3,'0305');# 以字串格式給出值，而值長不包括年、月和日，因而是一個非法值
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 1
+
+mysql&#62; SELECT * FROM `tA`;
++----+-------+
+| id | date1 |
++----+-------+
+|  1 |  0305 |
+|  2 |  0003 |
+|  3 |  0000 |
++----+-------+
+3 rows in set (0.00 sec)
+
+* 以上結果在 MySQL 4.0.12 中測試
+</PRE>
+<tt>範例結束(譯者注)</tt>
+<p></P>
+
+<LI>
+如果以 <CODE>ALTER TABLE</CODE> 拓展一個 <CODE>TIMESTAMP</CODE> 窄列，以前被“隱蔽”的資訊將被顯示出來。
+
+<P>
+<tt>範例(譯者注)：</tt>
+<PRE>
+* 接上例結果
+
+mysql&#62; ALTER TABLE `ta` CHANGE `date1` `date1` TIMESTAMP(11);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+# 設定 `date1` 為 TIMESTAMP(11)，MySQL 會自動將其轉化為 TIMESTAMP(11)
+
+mysql&#62; SELECT * FROM `tA`;
++----+--------------+
+| id | date1        |
++----+--------------+
+|  1 | 030503150142 |
+|  2 | 000305000000 |
+|  3 | 000000000000 |
++----+--------------+
+3 rows in set (0.00 sec)
+
+* 以上結果在 MySQL 4.0.12 中測試
+</PRE>
+<tt>範例結束(譯者注)：</tt>
+<p></P>
+
+<LI>
+同樣的，縮小一個 <CODE>TIMESTAMP</CODE> 列的寬度不會引起資訊的丟失，除了在感覺上值在被顯示時顯示了較少的資訊。
+
+<LI>
+盡管 <CODE>TIMESTAMP</CODE> 列值是以全部精度儲存的，但是 <CODE>UNIX_TIMESTAMP()</CODE> 是唯一能直接操作內部儲存值的函數。其它的函數操作的是格式化後的檢索的值。這就意味著不能夠使用諸如 <CODE>HOUR()</CODE> 或 <CODE>SECOND()</CODE> 之類的函數，除非相關部分存在於格式化後的 <CODE>TIMESTAMP</CODE> 值中。例如，在小於 10 的顯示格式上，為了使 <CODE>TIMESTAMP</CODE> 列中的 <CODE>HH</CODE> 部分能夠顯示，顯示格式的尺寸必須不小於 10，因此在一個更短的 <CODE>TIMESTAMP</CODE> 列值上使用 <CODE>HOUR()</CODE> 將會產生一個無意義的結果。
+<P>
+<tt>範例(譯者注)：</tt>
+<PRE>
+* 接上例結果
+# 下列範例結果與上述結果相悖
+mysql&#62; ALTER TABLE `ta` CHANGE `date1` `date1` TIMESTAMP(4);
+Query OK, 3 rows affected (0.02 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql&#62; SELECT * FROM `tA`;
++----+-------+
+| id | date1 |
++----+-------+
+|  1 |  0305 |
+|  2 |  0003 |
+|  3 |  0000 |
++----+-------+
+3 rows in set (0.01 sec)
+
+mysql&#62; SELECT HOUR(`date1`) FROM `tA`;
++---------------+
+| Hour(`date1`) |
++---------------+
+|            15 |
+|             0 |
+|          NULL |
++---------------+
+3 rows in set (0.02 sec)
+
+mysql&#62; SELECT SECOND(`date1`) FROM `tA`;
++-----------------+
+| second(`date1`) |
++-----------------+
+|              42 |
+|               0 |
+|            NULL |
++-----------------+
+3 rows in set (0.01 sec)
+
+* 以上結果在 MySQL 4.0.12 中測試
+</PRE>
+<tt>範例結束(譯者注)：</tt>
+<p></P>
+
+</UL>
+
+<P>
+在某種程式上，你可以將一個日期值賦給另一種日期類型的物件。然而，這可能會使值產生改變或丟失一部分資訊。
+</P>
+
+<UL>
+<LI>
+如果將一個 <CODE>DATE</CODE> 值賦給一個 <CODE>DATETIME</CODE> 或 <CODE>TIMESTAMP</CODE> 物件，結果值的時間部分將被設為 <CODE>'00:00:00'</CODE>，因為 <CODE>DATE</CODE> 值不包含時間資訊。
+
+<LI>
+如果將一個 <CODE>DATETIME</CODE> 或 <CODE>TIMESTAMP</CODE> 值賦給一個 <CODE>DATE</CODE> 物件，結果值的時間部分被刪除，因為 <CODE>DATE</CODE> 類型不能儲存時間資訊。
+
+<LI>
+
+記住，盡管 <CODE>DATETIME</CODE>、<CODE>DATE</CODE> 和 <CODE>TIMESTAMP</CODE> 值全都可以用同樣的格式集來指定，但所有類型不都有同有同樣的值範圍。例如，<CODE>TIMESTAMP</CODE> 值不能早於 <CODE>1970</CODE> 或晚於 <CODE>2037</CODE>。這就意味著，一個日期例如 <CODE>'1968-01-01'</CODE>，作為一個 <CODE>DATETIME</CODE> 或 <CODE>DATE</CODE> 值是合法的，但不是一個有效的 <CODE>TIMESTAMP</CODE> 值，當它被賦於一個這樣的物件時，它將被轉換為  <CODE>0</CODE>。
+</UL>
+
+<P>
+<A NAME="IDX1071"></A>
+<A NAME="IDX1072"></A>
+當指定日期值時，當心某些失誤：
+</P>
+
+<UL>
+<LI>
+你可能會被以字串指定值時所允許的寬松格式欺騙。例如，一個值如 <CODE>'10:11:12'</CODE> 的，因為分界符 <SAMP>“:”</SAMP> 可能看起來像是一個時間值， 但是當它被用於一個日期語境中時，它將被解釋成為  <CODE>'2010-11-12'</CODE> 年。而值 <CODE>'10:45:15'</CODE> 將被轉換成 <CODE>'0000-00-00'</CODE>，因為 <CODE>'45'</CODE> 是一個不合法的月份。
+
+<LI>
+MySQL 伺服器僅對日期的有效性執行基本的檢驗：天為 <CODE>00-31</CODE>，月為 <CODE>00-12</CODE>，年為 <CODE>1000-9999</CODE>。任何不是這個範圍內的日期將被轉換為 <CODE>0000-00-00</CODE>。請注意，這仍然允許你儲存一個無效的日期例如<CODE>2002-04-31</CODE>。它允許一個 WEB 應用程式不進行進一步的檢查而儲存一個表單中的資料。為了確保一個日期值的有效性，在你的應用程式裡執行有效性檢查。
+
+<LI>
+以兩位數位指定年份是存在二義性的，因為世紀是未知的。MySQL 以下面的規則解釋一個 2 位年份值：
+
+<UL>
+<LI>
+
+<CODE>00-69</CODE> 範圍的年份值被轉換為 <CODE>2000-2069</CODE>。
+
+<LI>
+
+<CODE>70-99</CODE> 範圍的年份值被轉換為 <CODE>1970-1999</CODE>。
+</UL>
+
+</UL>
+
+
+
+<H4><A NAME="TIME"></A>6.2.2.3  <CODE>TIME</CODE> 類型</H4>
+
+<P>
+<A NAME="IDX1073"></A>
+
+</P>
+<P>
+MySQL 以 <CODE>'HH:MM:SS'</CODE> 格式(或對大的小時值時使用 <CODE>'HHH:MM:SS'</CODE> 格式)檢索和顯示 <CODE>TIME</CODE> 值。<CODE>TIME</CODE> 值的範圍可以從 <CODE>'-838:59:59'</CODE> 到 <CODE>'838:59:59'</CODE>。小時部分可以這麼大的原因 是，<CODE>TIME</CODE> 類型不僅可以用於表示一天的時間(這一定不會超過 24 小時)，而且可以用來表示所經過的時間或兩個事件之間的時間間隔(這可能比 24 小時大許多或是一個負值)。
+</P>
+
+<P>
+<CODE>TIME</CODE> 值可以多種格式指定：
+</P>
+
+<UL>
+<LI>
+一個 <CODE>'D HH:MM:SS.fraction'</CODE> 格式的字串。(注意，MySQL 仍然不能為時間列儲存毫秒“fraction”)下面所示的任一種“寬松”的語法均可以被使用：<CODE>HH:MM:SS.fraction</CODE>、<CODE>HH:MM:SS</CODE>、<CODE>HH:MM</CODE>、<CODE>D HH:MM:SS</CODE>、<CODE>D HH:MM</CODE>、<CODE>D HH</CODE> 或 <CODE>SS</CODE>。這裡的 <CODE>D</CODE> 是一個在 0-33 之間的日期。
+
+<LI>
+一個無定界符的 <CODE>'HHMMSS'</CODE> 格式的字串，只要字串看起來像是一個時間。例如：<CODE>'101112'</CODE> 可被理解為 <CODE>'10:11:12'</CODE>，但是 <CODE>'109712'</CODE> 是不合法的(它有一個無意義的分鐘部分)，當被插入時會轉換為 <CODE>'00:00:00'</CODE>。
+
+<LI>
+一個 <CODE>HHMMSS</CODE> 格式的數位，只要數位看起來像一個時間。例如，<CODE>101112</CODE> 可被理解為 <CODE>'10:11:12'</CODE>。下面的任一格式均可被正常理解：<CODE>SS</CODE>、<CODE>MMSS</CODE>、<CODE>HHMMSS</CODE>、<CODE>HHMMSS.fraction</CODE>。注意，MySQL 仍不能保存 毫秒(fraction)部分。
+
+<LI>
+在一個 <CODE>TIME</CODE> 語境中，函數(例如 <CODE>CURRENT_TIME</CODE>)的傳回值將會返一個合理的格式。
+</UL>
+
+<P>
+對於以字串指定的包含時間定界符的 <CODE>TIME</CODE> 值，不必要為小於 <CODE>10</CODE> 的時、分或秒指定 2 位數位。<CODE>'8:3:2'</CODE> 與 <CODE>'08:03:02'</CODE> 是一致的。
+</P>
+
+<P>
+將“短”的 <CODE>TIME</CODE> 值賦給另一個 <CODE>TIME</CODE> 列時要格外小心。如果沒有冒號，MySQL 使用最右位代表秒的假設來解釋值。(MySQL 將 <CODE>TIME</CODE> 值解釋為經過的時間，而不是時刻)。例如，你可能會認為 <CODE>'1112'</CODE> and <CODE>1112</CODE> 的意思就是 <CODE>'11:12:00'</CODE> (11 點過 12 分)，但是 MySQL 卻將它解釋為 <CODE>'00:11:12'</CODE> (11 分，12 秒)。同樣的，<CODE>'12'</CODE> 和 <CODE>12</CODE> 被解釋為 <CODE>'00:00:12'</CODE>。有冒號的 <CODE>TIME</CODE> 值，由於冒號的存在，通常認為是處理過的時刻。這就是說，<CODE>'11:12'</CODE> 就意味著是 <CODE>'11:12:00'</CODE>，而不是 <CODE>'00:11:12'</CODE>。
+</P>
+<P>
+如果值超出了 <CODE>TIME</CODE> 的範圍，但是其它分、秒部分是合法的，它將被剪下到取值範圍的適當端點。例如，<CODE>'-850:00:00'</CODE> 和 <CODE>'850:00:00'</CODE> 將被分別轉換為 <CODE>'-838:59:59'</CODE> 和 <CODE>'838:59:59'</CODE>。
+</P>
+
+<P>
+不合法的 <CODE>TIME</CODE> 值將被轉換為 <CODE>'00:00:00'</CODE>。注意，因為 <CODE>'00:00:00'</CODE> 自身是一個合法的 <CODE>TIME</CODE> 值，這就沒有辦法區分，儲存在一個表中的 <CODE>'00:00:00'</CODE>，原來的值是否就是指定為 <CODE>'00:00:00'</CODE> 或是一個不合法的值。
+</P>
+
+
+
+<H4><A NAME="YEAR"></A>6.2.2.4  <CODE>YEAR</CODE> 類型</H4>
+
+<P>
+<A NAME="IDX1074"></A>
+
+</P>
+<P>
+<CODE>YEAR</CODE> 類型是一個以 1 個字節描述年份的類型。
+</P>
+
+<P>
+MySQL 以 <CODE>YYYY</CODE> 格式檢索和顯示一個 <CODE>YEAR</CODE> 值。範圍是 <CODE>1901</CODE> 到 <CODE>2155</CODE>。
+</P>
+
+<P>
+可以以多個格式指定 <CODE>YEAR</CODE> 值：
+</P>
+
+<UL>
+<LI>
+一個在 <CODE>'1901'</CODE> 到 <CODE>'2155'</CODE> 範圍之內的 4 位字串。
+
+<LI>
+一個在 <CODE>1901</CODE> 到 <CODE>2155</CODE> 範圍之內的 4 位數位。
+
+<LI>
+一個在 <CODE>'00'</CODE> 到 <CODE>'99'</CODE> 範圍之內的 2 位字串。<CODE>'00'</CODE> 到 <CODE>'69'</CODE> 和 <CODE>'70'</CODE> 到 <CODE>'99'</CODE> 範圍內的值將被分別轉換到 <CODE>2000</CODE> 到 <CODE>2069</CODE> 和 <CODE>1970</CODE> 到 <CODE>1999</CODE> 範圍內的 <CODE>YEAR</CODE> 值。
+
+<LI>
+一個在 <CODE>1</CODE> 到 <CODE>99</CODE> 範圍之內的數位。<CODE>1</CODE> 到 <CODE>69</CODE> 和 <CODE>70</CODE> 到 <CODE>99</CODE> 範圍內的值將被分別轉換到 <CODE>2001</CODE> 到 <CODE>2069</CODE> 和 <CODE>1970</CODE> 到 <CODE>1999</CODE> 範圍內的 <CODE>YEAR</CODE> 值。注意，兩位數位的範圍與兩位字串的範圍稍稍有點不同，因為你不能直接地以數位指定一個零值，將它解釋為 <CODE>2000</CODE>。你<STRONG>必須</STRONG> 以一個 <CODE>'0'</CODE> 或 <CODE>'00'</CODE> 格式的字串指定它，否則它將被解釋為 <CODE>0000</CODE>。
+
+<LI>
+在一個 <CODE>YEAR</CODE> 的語境中，函數(例如 <CODE>NOW()</CODE>)的傳回值將會傳回一個合理的格式。
+</UL>
+
+<P>
+不合法的 <CODE>YEAR</CODE> 值將被轉換為 <CODE>0000</CODE>。
+</P>
+
+
+
+<H3><A NAME="String_types"></A>6.2.3  字串類型</H3>
+
+<P>
+<A NAME="IDX1075"></A>
+<A NAME="IDX1076"></A>
+
+</P>
+<P>
+<A NAME="IDX1077"></A>
+<A NAME="IDX1078"></A>
+
+</P>
+
+<P>
+字串類型有 <CODE>CHAR</CODE>、<CODE>VARCHAR</CODE>、<CODE>BLOB</CODE>、<CODE>TEXT</CODE>、<CODE>ENUM</CODE> 和 <CODE>SET</CODE>。這個章節描述這些類型是如何工作的，它們的儲存需求，以及在你的查詢中如何使用它們。
+</P>
+
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>類型 </STRONG> </TD><TD> <STRONG>最大尺寸 </STRONG> </TD><TD> <STRONG>字節 </STRONG>
+</TD></TR>
+<TR><TD><CODE>TINYTEXT</CODE> 或 <CODE>TINYBLOB</CODE> </TD><TD> 2^8-1 </TD><TD> 255
+</TD></TR>
+<TR><TD><CODE>TEXT</CODE> 或 <CODE>BLOB</CODE> </TD><TD> 2^16-1 (64K-1) </TD><TD> 65535
+</TD></TR>
+<TR><TD><CODE>MEDIUMTEXT</CODE> 或 <CODE>MEDIUMBLOB</CODE> </TD><TD> 2^24-1 (16M-1) </TD><TD> 16777215
+</TD></TR>
+<TR><TD><CODE>LONGBLOB</CODE> </TD><TD> 2^32-1 (4G-1) </TD><TD> 4294967295
+</TD></TR>
+</TABLE>
+
+
+
+<H4><A NAME="CHAR"></A>6.2.3.1  <CODE>CHAR</CODE> 和 <CODE>VARCHAR</CODE> 類型</H4>
+
+<P>
+<CODE>CHAR</CODE> 和 <CODE>VARCHAR</CODE> 類型是很相似的，但是它們被儲存與檢索的方式有些不同。
+</P>
+
+<P>
+一個 <CODE>CHAR</CODE> 列的長度被固定為你建立表進所宣告的長度。長度可以是 1 和 255 之間的任一值。(從 MySQL 3.23 之後，<CODE>CHAR</CODE> 的長度可以是 0 到 255。)當 <CODE>CHAR</CODE> 值被儲存時，他們被用空格在右邊填補到指定長度。當 <CODE>CHAR</CODE> 值被檢索時，尾部的空格被截除。
+</P>
+
+<P>
+<CODE>VARCHAR</CODE> 列的值是變長的字串。你可以宣告一個 <CODE>VARCHAR</CODE> 列在  1 到 255, 就像對 <CODE>CHAR</CODE> 列一樣。然而，與 <CODE>CHAR</CODE> 相反的，<CODE>VARCHAR</CODE> 值只以所需的字元數儲存，另加一個字節儲存記錄的長度。值並不被填補﹔相反的，當被儲存時，尾部的空格被截除。(這個截除空格方式不同於 ANSI SQL 規約。)
+</P>
+
+<P>
+如果將一個超過列最大長度的值賦給一個 <CODE>CHAR</CODE> 或 <CODE>VARCHAR</CODE> 列，該值將截斷以適合它。
+</P>
+
+<P>
+下表通過在 <CODE>CHAR(4)</CODE> 和 <CODE>VARCHAR(4)</CODE> 列中儲存不同的字串的結果顯示了兩種類型列的不同：
+</P>
+
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>值 </STRONG> </TD><TD> <CODE>CHAR(4)</CODE> </TD><TD> <STRONG>儲存需求 </STRONG> </TD><TD> <CODE>VARCHAR(4)</CODE> </TD><TD> <STRONG>儲存需求 </STRONG>
+</TD></TR>
+<TR><TD><CODE>''</CODE> </TD><TD> <CODE>'    '</CODE> </TD><TD> 4 字節 </TD><TD> <CODE>''</CODE> </TD><TD> 1 字節
+</TD></TR>
+<TR><TD><CODE>'ab'</CODE> </TD><TD> <CODE>'ab  '</CODE> </TD><TD> 4 字節 </TD><TD> <CODE>'ab'</CODE> </TD><TD> 3 字節
+</TD></TR>
+<TR><TD><CODE>'abcd'</CODE> </TD><TD> <CODE>'abcd'</CODE> </TD><TD> 4 字節 </TD><TD> <CODE>'abcd'</CODE> </TD><TD> 5 字節
+</TD></TR>
+<TR><TD><CODE>'abcdefgh'</CODE> </TD><TD> <CODE>'abcd'</CODE> </TD><TD> 4 字節 </TD><TD> <CODE>'abcd'</CODE> </TD><TD> 5 字節
+</TD></TR>
+</TABLE>
+
+<P>
+在各種情況下，<CODE>CHAR(4)</CODE> 和 <CODE>VARCHAR(4)</CODE> 列的檢索值均是一樣的，因為在 <CODE>CHAR</CODE> 列上檢索值的尾部空格會被截除。
+</P>
+
+<P>
+<CODE>CHAR</CODE> 和 <CODE>VARCHAR</CODE> 列值以省略字母大小寫的方式進行排序和比較，除非在表建立時 <CODE>BINARY</CODE> 屬性被指定。<CODE>BINARY</CODE> 屬性意味著，該列值根據 MySQL 伺服器正在運行的機器的 ASCII 表順序進行字母大小寫敏感的方式排序和比較。<CODE>BINARY</CODE> 並不影響該列如何被儲存和檢索。
+</P>
+
+<P>
+<CODE>BINARY</CODE> 屬性是有粘性的。這就意味著，如果一個被標記為 <CODE>BINARY</CODE> 的列被用於一個表達式中，整個表達式將作為一個 <CODE>BINARY</CODE> 值被比較。
+</P>
+
+<P>
+在表建立時，MySQL 可能會隱式地改變一個 <CODE>CHAR</CODE> 或 <CODE>VARCHAR</CODE> 列的類型。查看章節 <A HREF="06-5.html#Silent_column_changes">6.5.3.1  隱式的列定義變化</A>。
+</P>
+
+
+
+<H4><A NAME="BLOB"></A>6.2.3.2  <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 類型</H4>
+
+<P>
+<A NAME="IDX1079"></A>
+<A NAME="IDX1080"></A>
+
+</P>
+<P>
+一個 <CODE>BLOB</CODE> 是一個可以保存一可變數量的資料的二進位大物件。四個 <CODE>BLOB</CODE> 類型(<CODE>TINYBLOB</CODE>、<CODE>BLOB</CODE>、<CODE>MEDIUMBLOB</CODE> 和 <CODE>LONGBLOB</CODE>)之間的不同僅僅在於他們能保存值的最大長度不一致。查看章節 <A HREF="06-2.html#Storage_requirements">6.2.6  列類型儲存需求</A>。
+</P>
+<P>
+四個 <CODE>TEXT</CODE> 類型(<CODE>TINYTEXT</CODE>、<CODE>TEXT</CODE>、<CODE>MEDIUMTEXT</CODE> 和 <CODE>LONGTEXT</CODE>)對應與四個 <CODE>BLOB</CODE> 類型，並且有相同的最大長度和儲存需求。在 <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 類型之間的唯一差別就是，對 <CODE>BLOB</CODE> 值是以字母大小寫敏感的方式進行排序和比較的，而對 <CODE>TEXT</CODE> 值以忽略字母大小寫方式進行排序和比較。換句話說，<CODE>TEXT</CODE> 是一個忽略字母大小寫的 <CODE>BLOB</CODE>。
+</P>
+
+<P>
+如果將一個超過列類型最大長度的值賦給一個 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 列，該值將被截斷以適應它。
+</P>
+
+<P>
+在大多數方面，可以將一個 <CODE>TEXT</CODE> 列看作是一個你所希望大 <CODE>VARCHAR</CODE> 列。同樣的，<CODE>BLOB</CODE> 列可以看作是一個 <CODE>VARCHAR BINARY</CODE> 列。差別就在於：
+</P>
+
+<UL>
+<LI>
+在 MySQL 3.23.2 和更新的版本中，可以在 <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 列上建立索引。而較老版本的 MySQL 是不支援的。
+
+<LI>
+當 <CODE>BLOB</CODE> and <CODE>TEXT</CODE> 列值被儲存時，尾部的空格不會被剪下，這與 <CODE>VARCHAR</CODE> 列是不一樣的。
+
+<LI>
+<A NAME="IDX1081"></A>
+<A NAME="IDX1082"></A>
+<A NAME="IDX1083"></A>
+<CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 列不可以有 <CODE>DEFAULT</CODE> 值。
+</UL>
+
+<P>
+<CODE>MyODBC</CODE> 以 <CODE>LONGVARBINARY</CODE> 定義 <CODE>BLOB</CODE> 值，以 <CODE>LONGVARCHAR</CODE> 定義 <CODE>TEXT</CODE> 值。
+</P>
+
+<P>
+因為 <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 值可以非常地長，在使用它們時可能會遇到某些限制：
+</P>
+
+<UL>
+<LI>
+如果希望在一個 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 列上使用 <CODE>GROUP BY</CODE> 和 <CODE>ORDER BY</CODE>，必須將該列值轉換為一個定長物件。這樣做的標準做法是使用 <CODE>SUBSTRING</CODE> 函數。例如：
+
+<PRE>
+mysql&#62; SELECT comment FROM tbl_name,SUBSTRING(comment,20) AS substr
+    -&#62;                 ORDER BY substr;
+</PRE>
+
+如果你不這樣做，只有列值的前 <CODE>max_sort_length</CODE> 個字節用於排序。<CODE>max_sort_length</CODE> 預設的值為 1024﹔在啟動 <CODE>mysqld</CODE> 服務時，可以使用 <CODE>-O</CODE> 選項對它進行變更。可以在一個包含 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 值的表達式上進行分組，通過指定列的位置或使用一個別名：
+
+<PRE>
+mysql&#62; SELECT id,SUBSTRING(blob_col,1,100) FROM tbl_name GROUP BY 2;
+mysql&#62; SELECT id,SUBSTRING(blob_col,1,100) AS b FROM tbl_name GROUP BY b;
+</PRE>
+
+<LI>
+一個 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 物件的最大尺寸由其類型決定，但是在客戶端和伺服器之間實際所能傳送的最大值，是由可用記憶體總數和通訊緩衝區的大小來決定的。你可以改變報文緩衝區的大小，但必須在伺服器端與客戶端同時這麼做。查看章節 <A HREF="manual1.html#Server_parameters">5.5.2  調節伺服器參數</A>。
+</UL>
+
+<P>
+注意，每個 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 值在內部由一個獨立分配的物件表示。這與其它所有的列類型不一樣，當表被打開時，它們被按每列分配一次儲存。
+</P>
+
+
+
+<H4><A NAME="ENUM"></A>6.2.3.3  <CODE>ENUM</CODE> 類型</H4>
+
+<P>
+<A NAME="IDX1084"></A>
+
+</P>
+<P>
+<CODE>ENUM</CODE> 是一個字串物件，其值通常選自一個允許值清單中，該清單在表建立時的列規格說明中被明確地列舉。
+</P>
+
+<P>
+在下列某些情況下，值也可以是空串(<CODE>""</CODE>) 或 <CODE>NULL</CODE>：
+</P>
+
+<UL>
+<LI>
+如果將一個無效值插入一個 <CODE>ENUM</CODE> (即，一個不在允許值清單中的字串)，空字串將作為一個特殊的錯誤值被插入。事實上，這個字串有別於一個“普通的”空字串，因為這個字串有個數位索引值為 0。稍後有更詳細描述。
+
+<LI>
+如果一個 <CODE>ENUM</CODE> 被宣告為 <CODE>NULL</CODE>，<CODE>NULL</CODE> 也是該列的一個合法值，並且該列的預設值也將為 <CODE>NULL</CODE>。如果一個 <CODE>ENUM</CODE> 被宣告為 <CODE>NOT NULL</CODE>，該列的預設值將是該清單所允許值的第一個成員。
+</UL>
+
+<P>
+每個枚舉值均有一個索引值：
+</P>
+
+<UL>
+<LI>
+在列說明中清單值所允許的成員值被從 1 開始編號。
+
+<LI>
+空字串錯誤值的索引值為 0。這就意味著，你可以使用下面所示的 <CODE>SELECT</CODE> 語句找出被賦於無效 <CODE>ENUM</CODE> 值的記錄行。
+
+<PRE>
+mysql&#62; SELECT * FROM tbl_name WHERE enum_col=0;
+</PRE>
+
+<LI>
+<CODE>NULL</CODE> 值的索引值為 <CODE>NULL</CODE>。
+</UL>
+
+<P>
+例如，指定為 <CODE>ENUM("one", "two", "three")</CODE> 的一個列，可以有下面所顯示的任一值。每個值的索引值也如下所示：
+</P>
+
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>值 </STRONG> </TD><TD> <STRONG>索引值 </STRONG>
+</TD></TR>
+<TR><TD><CODE>NULL</CODE> </TD><TD> <CODE>NULL</CODE>
+</TD></TR>
+<TR><TD><CODE>""</CODE> </TD><TD> 0
+</TD></TR>
+<TR><TD><CODE>"one"</CODE> </TD><TD> 1
+</TD></TR>
+<TR><TD><CODE>"two"</CODE> </TD><TD> 2
+</TD></TR>
+<TR><TD><CODE>"three"</CODE> </TD><TD> 3
+</TD></TR>
+</TABLE>
+
+<P>
+換個枚舉最大可以有 65535 個成員值。
+
+</P>
+<P>
+從 MySQL 3.23.51 開始，當表被建立時，<CODE>ENUM</CODE> 值尾部的空格將會自動刪除。
+</P>
+
+<P>
+當為一個 <CODE>ENUM</CODE> 列賦值時，字母的大小寫是無關緊要的。然而，以後從列中檢索出來的值的大小寫卻是相符於建立表時所指定的允許值。
+</P>
+
+<P>
+如果在一個數位語境中檢索一個<CODE>ENUM</CODE>，列值的索引值將被傳回。例如，你可以像這樣使用數位值檢索一個 <CODE>ENUM</CODE> 列：
+</P>
+
+<PRE>
+mysql&#62; SELECT enum_col+0 FROM tbl_name;
+</PRE>
+
+<P>
+如果將一個數位儲存到一個 <CODE>ENUM</CODE> 中，數位被當作為一個索引值，並且儲存的值是該索引值所對應的枚舉成員。(但是，這在 <CODE>LOAD DATA</CODE> 將不能工作，因為它視所有的輸入均為字串。)
+在一個 <CODE>ENUM</CODE> 字串中儲存數位是不明智的，因為它可能會打亂思維。
+</P>
+
+<P>
+<CODE>ENUM</CODE> 值依照列規格說明中的清單順序進行排序。(換句話說，<CODE>ENUM</CODE> 值依照它們的索引號排序。)舉例來說，對於 <CODE>ENUM("a", "b")</CODE> <CODE>"a"</CODE> 排在 <CODE>"b"</CODE> 後，但是對於 <CODE>ENUM("b", "a")</CODE> ，<CODE>"b"</CODE> 卻排在 <CODE>"a"</CODE> 之前。空字串排在非空字串前，<CODE>NULL</CODE> 值排在其它所有的枚舉值前。為了防止意想不到的結果，建議依照字母的順序定義 <CODE>ENUM</CODE> 清單。也可以通過使用 <CODE>GROUP BY CONCAT(col)</CODE> 來確定該以字母順序排序而不是以索引值。
+</P>
+
+<P>
+如果希望得到一個 <CODE>ENUM</CODE> 列的所有可能值，可以使用 <CODE>SHOW COLUMNS FROM table_name LIKE enum_column_name</CODE> 並分析第二列的 <CODE>ENUM</CODE> 定義。
+</P>
+
+
+
+<H4><A NAME="SET"></A>6.2.3.4  <CODE>SET</CODE> 類型</H4>
+
+<P>
+<A NAME="IDX1085"></A>
+
+</P>
+<P>
+<CODE>SET</CODE> 是一個字串物件，它可以有 0 或更多個值，每個值均必須選自一個允許值清單中，該清單在表建立時被指定。包含多個集合成員的 <CODE>SET</CODE> 列值，由逗號(<SAMP>“,”</SAMP>)將各成員分隔。由此推論，<CODE>SET</CODE> 成員值自身不應該包含逗號。
+</P>
+
+<P>
+例如，一個指定為 <CODE>SET("one", "two") NOT NULL</CODE> 的列可以有下列任一值：
+</P>
+
+<PRE>
+""
+"one"
+"two"
+"one,two"
+</PRE>
+
+<P>
+一個 <CODE>SET</CODE> 最大可以有 64 個不同的成員。
+</P>
+
+<P>
+從 3.23.51 開始，當表被建立時，<CODE>SET</CODE> 值尾部的空格將被自動地刪除。
+</P>
+
+<P>
+MySQL 以數位值儲存 <CODE>SET</CODE> 值，以被儲存值的低階比特位(bit)對應於第一個集合成員。如果在一個數位語境中檢索一個 <CODE>SET</CODE> 值，檢索的值把比特位設定為對應組成列值的集合成員。例如，你可以使用下面所示的範例從一個 <CODE>SET</CODE> 列中檢索出一個數位：
+</P>
+
+<PRE>
+mysql&#62; SELECT set_col+0 FROM tbl_name;
+</PRE>
+
+<P>
+如果將一個數位儲存到一個 <CODE>SET</CODE> 列中，被設定的數位的二進位表示法的比特位決定列值中的集合成員。假設一個列被定義為 <CODE>SET("a","b","c","d")</CODE>。那麼它的成員有下面所示的比特值：
+</P>
+
+<TABLE BORDER WIDTH="100%">
+<TR><TD><CODE>SET</CODE> <STRONG>成員</STRONG> </TD><TD> <STRONG>十進制值 </STRONG> </TD><TD> <STRONG>二進位值</STRONG>
+</TD></TR>
+<TR><TD><CODE>a</CODE> </TD><TD> <CODE>1</CODE> </TD><TD> <CODE>0001</CODE>
+</TD></TR>
+<TR><TD><CODE>b</CODE> </TD><TD> <CODE>2</CODE> </TD><TD> <CODE>0010</CODE>
+</TD></TR>
+<TR><TD><CODE>c</CODE> </TD><TD> <CODE>4</CODE> </TD><TD> <CODE>0100</CODE>
+</TD></TR>
+<TR><TD><CODE>d</CODE> </TD><TD> <CODE>8</CODE> </TD><TD> <CODE>1000</CODE>
+</TD></TR>
+</TABLE>
+
+<P>
+如果將值 <CODE>9</CODE>(二進位的 <CODE>1001</CODE>) 賦給這個列，那麼 <CODE>SET</CODE> 值的第一個和第四個成員 <CODE>"a"</CODE> 和 <CODE>"d"</CODE> 被選擇，結果值為 <CODE>"a,d"</CODE>。
+</P>
+
+<P>
+對於包含超過一個 <CODE>SET</CODE> 成員的值，當你插入值時，無所謂以什麼順序列出成員。也無所謂給出的值被列舉了多少次。當以後檢索該值時，在值中的每個成員將出現一次，根據他們在表建立時所指定的順序列出成員。例如，如果一個列被定義為 <CODE>SET("a","b","c","d")</CODE>，那麼，<CODE>"a,d"</CODE>、<CODE>"d,a"</CODE> 和 <CODE>"d,a,a,d,d"</CODE> 在被檢索時均將被視為 <CODE>"a,d"</CODE>。
+</P>
+
+<P>
+如果將一個不支援的值賦於一個 <CODE>SET</CODE> 列，該值將被忽略。
+</P>
+
+<P>
+<CODE>SET</CODE> 以數位順序排序。<CODE>NULL</CODE> 值排在非 <CODE>NULL</CODE> <CODE>SET</CODE> 值之前。
+</P>
+
+<P>
+通常，可以使用 <CODE>LIKE</CODE> 運算子或 <CODE>FIND_IN_SET()</CODE> 函數執行在一個 <CODE>SET</CODE> 列上的 <CODE>SELECT</CODE>：
+</P>
+
+<PRE>
+mysql&#62; SELECT * FROM tbl_name WHERE set_col LIKE '%value%';
+mysql&#62; SELECT * FROM tbl_name WHERE FIND_IN_SET('value',set_col)&#62;0;
+</PRE>
+
+<P>
+但是，下列範例也可以工作：
+</P>
+
+<PRE>
+mysql&#62; SELECT * FROM tbl_name WHERE set_col = 'val1,val2';
+mysql&#62; SELECT * FROM tbl_name WHERE set_col &#38; 1;
+</PRE>
+
+<P>
+第一個語句尋找一個精確的相符。第二個語句尋找包含第一個集合成員的值。
+</P>
+
+<P>
+如果希望得到一個 <CODE>SET</CODE> 列的所有可能值，可以使用 <CODE>SHOW COLUMNS FROM table_name LIKE set_column_name</CODE> 並分析第二列的 <CODE>SET</CODE> 定義。
+</P>
+
+
+
+<H3><A NAME="Choosing_types"></A>6.2.4  為列選擇正確的類型</H3>
+
+<P>
+<A NAME="IDX1086"></A>
+<A NAME="IDX1087"></A>
+
+</P>
+<P>
+為了更有效地使用儲存空間，在任何情況下均嘗試使用最精確的類型。例如，如果一個整數列被用於在 <CODE>1</CODE> 和 <CODE>99999</CODE> 之間的值，<CODE>MEDIUMINT UNSIGNED</CODE> 是最好的類型。
+</P>
+
+<P>
+精確地表示貨幣值是一個常見的問題。在 MySQL 中，可以使用 <CODE>DECIMAL</CODE> 類型。它是作為一個字串儲存的，因而不會發生精度損失的情況。如果精度不是太重要的，那 <CODE>DOUBLE</CODE> 類型也是一個不錯的選擇。
+</P>
+
+<P>
+對於高精度，總是能轉換一個儲存在 <CODE>BIGINT</CODE> 中的定點類型。這將允許你以整型進行任何的計算，並在必要的時候將結果轉換回浮點值。
+</P>
+
+
+
+<H3><A NAME="Other-vendor_column_types"></A>6.2.5  使用來自其它的資料庫引擎的列類型</H3>
+
+<P>
+<A NAME="IDX1088"></A>
+<A NAME="IDX1089"></A>
+<A NAME="IDX1090"></A>
+
+</P>
+<P>
+為了更容易地使用為其它供應商的 SQL 實現而編寫的代碼，MySQL 以下表所示的形式映射列類型。這些映射使得從其它資料庫引擎移動表到 MySQL 更容易：
+</P>
+
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>其它提供商的類型 </STRONG> </TD><TD> <STRONG>MySQL 類型 </STRONG>
+</TD></TR>
+<TR><TD><CODE>BINARY(NUM)</CODE> </TD><TD> <CODE>CHAR(NUM) BINARY</CODE>
+</TD></TR>
+<TR><TD><CODE>CHAR VARYING(NUM)</CODE> </TD><TD> <CODE>VARCHAR(NUM)</CODE>
+</TD></TR>
+<TR><TD><CODE>FLOAT4</CODE> </TD><TD> <CODE>FLOAT</CODE>
+</TD></TR>
+<TR><TD><CODE>FLOAT8</CODE> </TD><TD> <CODE>DOUBLE</CODE>
+</TD></TR>
+<TR><TD><CODE>INT1</CODE> </TD><TD> <CODE>TINYINT</CODE>
+</TD></TR>
+<TR><TD><CODE>INT2</CODE> </TD><TD> <CODE>SMALLINT</CODE>
+</TD></TR>
+<TR><TD><CODE>INT3</CODE> </TD><TD> <CODE>MEDIUMINT</CODE>
+</TD></TR>
+<TR><TD><CODE>INT4</CODE> </TD><TD> <CODE>INT</CODE>
+</TD></TR>
+<TR><TD><CODE>INT8</CODE> </TD><TD> <CODE>BIGINT</CODE>
+</TD></TR>
+<TR><TD><CODE>LONG VARBINARY</CODE> </TD><TD> <CODE>MEDIUMBLOB</CODE>
+</TD></TR>
+<TR><TD><CODE>LONG VARCHAR</CODE> </TD><TD> <CODE>MEDIUMTEXT</CODE>
+</TD></TR>
+<TR><TD><CODE>MIDDLEINT</CODE> </TD><TD> <CODE>MEDIUMINT</CODE>
+</TD></TR>
+<TR><TD><CODE>VARBINARY(NUM)</CODE> </TD><TD> <CODE>VARCHAR(NUM) BINARY</CODE>
+</TD></TR>
+</TABLE>
+
+<P>
+列類型映射在表建立時發生。如果你使用其它供應商使用的類型建立一個表，然後發出一個 <CODE>DESCRIBE tbl_name</CODE> 語句，MySQL 將使用相等價的 MySQL 類型報告表結構。
+</P>
+
+
+
+<H3><A NAME="Storage_requirements"></A>6.2.6  列類型儲存需求</H3>
+
+<P>
+<A NAME="IDX1091"></A>
+<A NAME="IDX1092"></A>
+
+</P>
+<P>
+每個由 MySQL 支援的列類型的儲存需求按類型在下面列出。
+</P>
+
+<P>
+<A NAME="IDX1093"></A>
+<A NAME="IDX1094"></A>
+
+</P>
+
+<H4>6.2.6.1  數位類型儲存需求</H4>
+
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>列類型 </STRONG> </TD><TD> <STRONG>儲存需求 </STRONG>
+</TD></TR>
+<TR><TD><CODE>TINYINT</CODE> </TD><TD> 1 字節
+</TD></TR>
+<TR><TD><CODE>SMALLINT</CODE> </TD><TD> 2 字節
+</TD></TR>
+<TR><TD><CODE>MEDIUMINT</CODE> </TD><TD> 3 字節
+</TD></TR>
+<TR><TD><CODE>INT</CODE> </TD><TD> 4 字節
+</TD></TR>
+<TR><TD><CODE>INTEGER</CODE> </TD><TD> 4 字節
+</TD></TR>
+<TR><TD><CODE>BIGINT</CODE> </TD><TD> 8 字節
+</TD></TR>
+<TR><TD><CODE>FLOAT(X)</CODE> </TD><TD> 4 if X &#60;= 24 or 8 ，if 25 &#60;= X &#60;= 53
+</TD></TR>
+<TR><TD><CODE>FLOAT</CODE> </TD><TD> 4 字節
+</TD></TR>
+<TR><TD><CODE>DOUBLE</CODE> </TD><TD> 8 字節
+</TD></TR>
+<TR><TD><CODE>DOUBLE PRECISION</CODE> </TD><TD> 8 字節
+</TD></TR>
+<TR><TD><CODE>REAL</CODE> </TD><TD> 8 字節
+</TD></TR>
+<TR><TD><CODE>DECIMAL(M,D)</CODE> </TD><TD> <CODE>M+2</CODE> 字節 if D &#62; 0，<CODE>M+1</CODE> 字節 if D = 0 (<CODE>D</CODE>+2, if <CODE>M &#60; D</CODE>)
+</TD></TR>
+<TR><TD><CODE>NUMERIC(M,D)</CODE> </TD><TD> <CODE>M+2</CODE> 字節 if D &#62; 0, <CODE>M+1</CODE> 字節 if D = 0 (<CODE>D</CODE>+2, if <CODE>M &#60; D</CODE>)
+</TD></TR>
+</TABLE>
+
+<P>
+<A NAME="IDX1095"></A>
+<A NAME="IDX1096"></A>
+<A NAME="IDX1097"></A>
+<A NAME="IDX1098"></A>
+
+</P>
+
+<H4>6.2.6.2  日期和時間類型儲存需求</H4>
+
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>列類型 </STRONG> </TD><TD> <STRONG>儲存需求 </STRONG>
+</TD></TR>
+<TR><TD><CODE>DATE</CODE> </TD><TD> 3 字節
+</TD></TR>
+<TR><TD><CODE>DATETIME</CODE> </TD><TD> 8 字節
+</TD></TR>
+<TR><TD><CODE>TIMESTAMP</CODE> </TD><TD> 4 字節
+</TD></TR>
+<TR><TD><CODE>TIME</CODE> </TD><TD> 3 字節
+</TD></TR>
+<TR><TD><CODE>YEAR</CODE> </TD><TD> 1 字節
+</TD></TR>
+</TABLE>
+
+
+<H4>6.2.6.3  字串類型儲存需求</H4>
+
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>列類型 </STRONG> </TD><TD> <STRONG>儲存需求 </STRONG>
+</TD></TR>
+<TR><TD><CODE>CHAR(M)</CODE> </TD><TD> <CODE>M</CODE> 字節, <CODE>1 &#60;= M &#60;= 255</CODE>
+</TD></TR>
+<TR><TD><CODE>VARCHAR(M)</CODE> </TD><TD> <CODE>L</CODE>+1 字節, where <CODE>L &#60;= M</CODE> and
+<CODE>1 &#60;= M &#60;= 255</CODE>
+</TD></TR>
+<TR><TD><CODE>TINYBLOB</CODE>, <CODE>TINYTEXT</CODE> </TD><TD> <CODE>L</CODE>+1 字節,
+where <CODE>L</CODE> &#60; 2^8
+</TD></TR>
+<TR><TD><CODE>BLOB</CODE>, <CODE>TEXT</CODE> </TD><TD> <CODE>L</CODE>+2 字節,
+where <CODE>L</CODE> &#60; 2^16
+</TD></TR>
+<TR><TD><CODE>MEDIUMBLOB</CODE>, <CODE>MEDIUMTEXT</CODE> </TD><TD> <CODE>L</CODE>+3 字節,
+where <CODE>L</CODE> &#60; 2^24
+</TD></TR>
+<TR><TD><CODE>LONGBLOB</CODE>, <CODE>LONGTEXT</CODE> </TD><TD> <CODE>L</CODE>+4 字節,
+where <CODE>L</CODE> &#60; 2^32
+</TD></TR>
+<TR><TD><CODE>ENUM('value1','value2',...)</CODE> </TD><TD> 1 or 2 字節, 取決於枚舉值的數量(最大值為 65535)
+</TD></TR>
+<TR><TD><CODE>SET('value1','value2',...)</CODE> </TD><TD> 1, 2, 3, 4 or 8 字節, 取決於集合成員數量(最大 64 個成員)
+</TD></TR>
+</TABLE>
+
+<P>
+<A NAME="IDX1099"></A>
+<A NAME="IDX1100"></A>
+<A NAME="IDX1101"></A>
+<CODE>VARCHAR</CODE> 和 <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 類型是變長的類型，其儲存需求取決於列值的實際長度(上表中以 <CODE>L</CODE> 表示)，而不是取決於類型的最大可能尺寸。例如，一個 <CODE>VARCHAR(10)</CODE> 列可以保存最大長度為 10 個字元的字串。實際儲存需求為字串長度 (<CODE>L</CODE>)，再加上 1 個字節用於記錄該字串的長度。對於字串 <CODE>'abcd'</CODE>，<CODE>L</CODE> 為 4，它的儲存需求為 5 字節。
+</P>
+
+<P>
+<CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 類型需要 1、2、3 或 4 字節記錄列值的長度，這取決於該類型的最大可能長度。查看章節 <A HREF="06-2.html#BLOB">6.2.3.2  <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 類型</A>。
+</P>
+
+<P>
+如果一個表包含任何變長類型的列類型，記錄格式也將是變長的。注意，當一個表被建立時，在某種情況下，MySQL 會將一個列從一個變長類型轉換成一個定長類型，或相反的。查看章節 <A HREF="06-5.html#Silent_column_changes">6.5.3.1  隱式的列定義變化</A>。
+
+</P>
+<P>
+<A NAME="IDX1102"></A>
+一個 <CODE>ENUM</CODE> 物件的大小取決於不同枚舉值的數量。一個字節被用於枚舉時，最大可支援 255 個可能值。2 個字節被用於枚舉時，最大可支援到 65535 個值。查看章節 <A HREF="06-2.html#ENUM">6.2.3.3  <CODE>ENUM</CODE> 類型</A>。
+</P>
+
+<P>
+<A NAME="IDX1103"></A>
+一個 <CODE>SET</CODE> 物件的大小取決於不同集合成員的數量。如果集合的大小是 <CODE>N</CODE>，則物件占用 <CODE>(N+7)/8</CODE> 個字節，四舍五入為 1、2、3、4 或 8 個字節。一個 <CODE>SET</CODE> 可以有最多 64 個成員。查看章節 <A HREF="06-2.html#SET">6.2.3.4  <CODE>SET</CODE> 類型</A>。
+</P>
+
+<P>
+<A NAME="IDX1104"></A>
+<CODE>MyISAM</CODE> 表的記錄行最大尺寸為 65534 字節。每個 <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 列只占用相對於這個尺寸中的 5-9 個字節。
+</P>
+
+
+<H2>&nbsp;</H2>
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="../../flash/onlined41d.html?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+ 
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-2.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+</HTML>

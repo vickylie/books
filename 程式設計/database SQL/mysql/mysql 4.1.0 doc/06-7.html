@@ -1,0 +1,285 @@
+  <HTML>
+  
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-7.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+<HEAD>
+  <TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+   <style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+   <META http-equiv="Content-Type" content="text/html; charset=big5">
+   <META name="description" content="MySQL 4.1.0  中文參考手冊">
+   <META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+   <LINK rel="shortcut icon" href="shuixin13.ico" />
+   <LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+
+  </HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+<H1>MySQL Reference Manual for version 4.1.0-alpha.</H1>
+<P>
+<P><HR>
+<H2><A NAME="Transactional_Commands"></A>6.7 MySQL 事務與鎖定命令</H2>
+
+<H3><A NAME="COMMIT"></A>6.7.1  <CODE>BEGIN/COMMIT/ROLLBACK</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1506"></A>
+<A NAME="IDX1507"></A>
+<A NAME="IDX1508"></A>
+<A NAME="IDX1509"></A>
+
+</P>
+<P>
+預設的，MySQL 運行在 <CODE>autocommit</CODE> 樣式。這就意味著，當你執行完一個更新時，MySQL 將立刻將更新儲存到硬碟上。
+</P>
+
+<P>
+如果你使用事務安全表 (例如 <CODE>InnoDB</CODE>、<CODE>BDB</CODE>)，通過下面的命令，你可以設定 MySQL 為非 <CODE>autocommit</CODE> 樣式：
+</P>
+
+<PRE>
+SET AUTOCOMMIT=0
+</PRE>
+
+<P>
+在此之後，你必須使用 <CODE>COMMIT</CODE> 來儲存你的變更到硬碟上，或者使用 <CODE>ROLLBACK</CODE> ，如果你希望忽略從你的事務開始所做的變更。
+</P>
+
+<P>
+如果你希望為一系列語句從 <CODE>AUTOCOMMIT</CODE> 樣式轉換，你可以使用 <CODE>START TRANSACTION</CODE> 或 <CODE>BEGIN</CODE> 或 <CODE>BEGIN WORK</CODE> 語句：
+</P>
+
+<PRE>
+START TRANSACTION;
+SELECT @A:=SUM(salary) FROM table1 WHERE type=1;
+UPDATE table2 SET summmary=@A WHERE type=1;
+COMMIT;
+</PRE>
+
+<P>
+<CODE>START TRANSACTION</CODE> 在 MySQL 4.0.11 中被加入﹔這是被推荐的開始一個特別(ad-hoc)事務的方式，因為這是 ANSI SQL 句法。
+</P>
+
+<P>
+注意，如果你使用的是一個非事務安全表，變更會立刻被儲存，不受 <CODE>autocommit</CODE> 樣式狀態的約束。
+</P>
+
+<P>
+當你更新了一個非事務表後，如果你執行一個 <CODE>ROLLBACK</CODE>，你將得到一個錯誤 (<CODE>ER_WARNING_NOT_COMPLETE_ROLLBACK</CODE>) 作為一個警告。所有事務安全表將被恢復，但是非事務安全表將不會改變。
+</P>
+
+<P>
+如果你使用 <CODE>START TRANSACTION</CODE> 或 <CODE>SET AUTOCOMMIT=0</CODE>，你應該使用 MySQL 二進位日誌做備份以代替老的更新日誌。事務處理被以一個大塊形式儲存在二進位日誌中，在 <CODE>COMMIT</CODE> 上面，為了保護回滾的事務，而不是被儲存的。查看章節  <A HREF="manual-2.html#Binary_log">4.9.4  二進位日誌</A>。
+
+如果您使用起動事務處理或集AUTOCOMMIT=0 ，您應該使用MySQL 二進位日誌為備份代替更舊的更新日誌。 事務處理儲存在二進位登錄一大塊，做，保証, 滾的事務處理不儲存。 參見部分4 。9.4 二進位日誌。
+
+</P>
+<P>
+下列命令自動的結束一個事務 (就好像你在執行這個命令之前，做了一個 <CODE>COMMIT</CODE>)：
+</P>
+
+<TABLE BORDER WIDTH="95%">
+<TR><TD><STRONG>命令 </STRONG> </TD><TD> <STRONG>命令 </STRONG> </TD><TD> <STRONG>命令 </STRONG>
+</TD></TR>
+<TR><TD><CODE>ALTER TABLE</CODE> </TD><TD> <CODE>BEGIN</CODE> </TD><TD> <CODE>CREATE INDEX</CODE>
+</TD></TR>
+<TR><TD><CODE>DROP DATABASE</CODE> </TD><TD> <CODE>DROP TABLE</CODE> </TD><TD> <CODE>RENAME TABLE</CODE>
+</TD></TR>
+<TR><TD><CODE>TRUNCATE</CODE> </TD><TD>&nbsp;  </TD><TD>&nbsp;  
+</TD></TR>
+</TABLE>
+
+<P>
+你可以使用 <CODE>SET TRANSACTION ISOLATION LEVEL ...</CODE> 改變事務的隔離級。查看章節 <A HREF="06-7.html#SET_TRANSACTION">6.7.3  <CODE>SET TRANSACTION</CODE> 句法</A>。
+
+</P>
+
+
+
+<H3><A NAME="LOCK_TABLES"></A>6.7.2  <CODE>LOCK TABLES/UNLOCK TABLES</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1510"></A>
+<A NAME="IDX1511"></A>
+
+</P>
+
+<PRE>
+LOCK TABLES tbl_name [AS alias] {READ [LOCAL] | [LOW_PRIORITY] WRITE}
+            [, tbl_name [AS alias] {READ [LOCAL] | [LOW_PRIORITY] WRITE} ...]
+...
+UNLOCK TABLES
+</PRE>
+
+<P>
+<CODE>LOCK TABLES</CODE> 為目前線程鎖定表。<CODE>UNLOCK TABLES</CODE> 釋放目前線程擁有的所有鎖定。當線程發出另一個 <CODE>LOCK TABLES</CODE>，或當與伺服器的連線被關閉時，被目前線程鎖定的所有表將被自動地解鎖。
+</P>
+
+<P>
+為了在 MySQL 4.0.2 使用 <CODE>LOCK TABLES</CODE> ，你必須擁有一個全局的 <CODE>LOCK TABLES</CODE> 權限和一個在相關表上的 <CODE>SELECT</CODE> 權限。在 MySQL 3.23 中，你對該表需要有 <CODE>SELECT</CODE>、<CODE>insert</CODE>、<CODE>DELETE</CODE> 和 <CODE>UPDATE</CODE> 權限。
+</P>
+
+<P>
+使用 <CODE>LOCK TABLES</CODE> 的主要原因是，仿效事務處理或在更新表時得到更快的速度。此後會有更詳細的描述。
+</P>
+
+<P>
+如果一個線程在一個表上得到一個 <CODE>READ</CODE> 鎖，該線程 (和所有其它線程) 只能從表中讀取。如果一個線程在一個表上得到一個 <CODE>WRITE</CODE> 鎖，那麼只有擁有這個鎖的線程可以從表中讀取和寫表。其它的線程被阻塞。
+</P>
+
+<P>
+<CODE>READ LOCAL</CODE> 和 <CODE>READ</CODE> 之間的不同就在於，當鎖被加載時，<CODE>READ LOCAL</CODE> 允許非衝突(non-conflicting) <CODE>INSERT</CODE> 語句執行。如果當你加載著鎖時從 MySQL 外部操作資料庫文件，這將仍不能被使用。
+</P>
+
+<P>
+當你使用 <CODE>LOCK TABLES</CODE> 是地，你必須鎖定所有你將使用的表，並且必須使用與你的查詢中將使用的別名相同！如果你在一個查詢中多次使用一個表(用別名)，你必須為每一個別名獲得一個鎖。
+</P>
+
+<P>
+<CODE>WRITE</CODE> 鎖通過比 <CODE>READ</CODE> 鎖有更高的權限，以確保更新被盡快地處理。這就意味著，如果一個線程獲得一個 <CODE>READ</CODE> 鎖，而同時另外一個線程請求一個 <CODE>WRITE</CODE> 鎖，並發的 <CODE>READ</CODE> 鎖請求將等待直到 
+<CODE>WRITE</CODE> 線程得到了鎖並釋放了它。你可以使用 <CODE>LOW_PRIORITY WRITE</CODE> 鎖，當該線程在等待 <CODE>WRITE</CODE> 鎖時，它將允許其它的線程獲得 <CODE>READ</CODE> 鎖。
+
+
+你應該只使用 <CODE>LOW_PRIORITY WRITE</CODE> 鎖，如果你確信這將是最後一次，當沒有線程將擁有 <CODE>READ</CODE> 鎖。 
+
+
+</P>
+<P>
+<CODE>LOCK TABLES</CODE> 工作如下：
+
+<OL>
+<LI>
+以內部定義的次序排序所有被鎖定的表 (從使用者立場說，該次序是不明確的)。
+
+<LI>
+如果一個表被以一個讀鎖和一個寫鎖鎖定，將寫鎖放在讀鎖之前。
+
+<LI>
+一次只鎖定一個表，只到線程得到所有的鎖定。
+
+</OL>
+
+<P>
+這個方案是為了確保，表鎖定死鎖釋放。 對於這個樣式你仍然有些其它事情需要知道：
+</P>
+
+<P>
+如果你對一個表使用一個 <CODE>LOW_PRIORITY WRITE</CODE> 鎖定，這就意味著，MySQL 將等待這個鎖，直到沒有線程請求一個 <CODE>READ</CODE> 鎖。當線程得到了 <CODE>WRITE</CODE> 鎖，並等待獲得鎖定表清單中的下一個表的鎖定時，其它所有的線程將等待 <CODE>WRITE</CODE> 鎖被釋放。如果這在你的應用程式中會引起一個嚴重的問題，你應該考慮將你的某些表轉換為事務安全表。
+</P>
+
+<P>
+你可以使用 <CODE>KILL</CODE> 安全地殺死一個正在表鎖定的線程。查看章節 <A HREF="manual1.html#KILL">4.5.5  <CODE>KILL</CODE> 句法</A>。
+</P>
+
+<P>
+注意，你<STRONG>不應該</STRONG> 鎖定你正在對其使用 <CODE>INSERT DELAYED</CODE> 的表。這是因為，在這種情況下，<CODE>INSERT</CODE> 是通過單獨的線程完成的。
+</P>
+
+<P>
+通常，你不需要鎖定任何表，因為所有單 <CODE>UPDATE</CODE> 語句都是原幾的﹔其它的線程無法幹擾目前執行的 SQL 語句。當你無論如何希望鎖定表時，這裡有一些情況：
+</P>
+
+<UL>
+<LI>
+如果你在一束表上運行許多操作，鎖定你將要使用的表，這會更快一些。當然有不利的方面，其它線程將不能更新一個 <CODE>READ</CODE> 鎖的表，並且沒有其它線程要以讀取一個 <CODE>WRITE</CODE> 鎖的表。
+
+在 <CODE>LOCK TABLES</CODE> 下，某些事運行得更快一些的原因是，MySQL 將不會轉儲清除被鎖定表鍵高速緩衝，直到 <CODE>UNLOCK TABLES</CODE> 被調用 (通常鍵高速緩衝在每個 SQL 語句後都會被轉儲清除)。這將加速在 <CODE>MyISAM</CODE> 表上的插入、更新、刪除。
+
+<P></P>
+
+<LI>
+如果你在 MySQL 中正在使用一個不支援事務的儲存引擎，如果你希望能確保沒有其它的線程會出現在一個 <CODE>SELECT</CODE> 和 一個 <CODE>UPDATE</CODE> 之間，你必須使用 <CODE>LOCK TABLES</CODE> 。下面的範例顯示為了安全地執行，這裡需要<CODE>LOCK TABLES</CODE> ：
+
+<PRE>
+mysql&#62; LOCK TABLES trans READ, customer WRITE;
+mysql&#62; SELECT SUM(value) FROM trans WHERE customer_id=some_id;
+mysql&#62; UPDATE customer SET total_value=sum_from_previous_statement
+    -&#62;        WHERE customer_id=some_id;
+mysql&#62; UNLOCK TABLES;
+</PRE>
+
+不使用 <CODE>LOCK TABLES</CODE>，將可能發生在 <CODE>SELECT</CODE> 和 <CODE>UPDATE</CODE> 語句執行期間有另外一個線程可能在 <CODE>trans</CODE> 表中插入一行新記錄。
+
+</UL>
+
+<P>
+通過使用遞增更新 (<CODE>UPDATE customer SET value=value+new_value</CODE>) 或 <CODE>LAST_INSERT_ID()</CODE> 函數，你可以在很多情況下避免使用 <CODE>LOCK TABLES</CODE>。
+</P>
+
+<P>
+你也可以使用使用者級鎖定函數 <CODE>GET_LOCK()</CODE> 和 <CODE>RELEASE_LOCK()</CODE> 解決一些情況，這些鎖被保存在伺服器上的一個哈希表中，並以 <CODE>pthread_mutex_lock()</CODE> 和 <CODE>pthread_mutex_unlock()</CODE> 實現以獲得高速度。查看章節 <A HREF="06-3.html#Miscellaneous_functions">6.3.6.2  輔助功能函數</A>。
+</P>
+
+<P>
+查看章節 <A HREF="manual1.html#Internal_locking">5.3.1  MySQL 如何鎖定表</A>，以獲取關於鎖定方案的更多資訊。
+</P>
+
+<P>
+你可以使用 <CODE>FLUSH TABLES WITH READ LOCK</CODE> 命令以讀鎖鎖定所有資料庫中的所有表。查看章節 <A HREF="manual1.html#FLUSH">4.5.3  <CODE>FLUSH</CODE> 句法</A>。如果你有一個可以及時建立文件快照的文件系統，例如 Veritas，這將是得到備份的非常方便方式。
+</P>
+
+<P>
+<STRONG>注意：</STRONG><CODE>LOCK TABLES</CODE> 不是事務安全的，在嘗試鎖定一個表之前，將自動地提交所有的活動事務。
+</P>
+
+
+
+<H3><A NAME="SET_TRANSACTION"></A>6.7.3  <CODE>SET TRANSACTION</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1512"></A>
+<A NAME="IDX1513"></A>
+
+</P>
+
+<PRE>
+SET [GLOBAL | SESSION] TRANSACTION ISOLATION LEVEL
+{ READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ | SERIALIZABLE }
+</PRE>
+
+<P>
+設定全局的、整個會話或下一個事務的事務隔離級。
+</P>
+
+<P>
+預設行為是設定下一個(未啟動的)事務的隔離級。如果你使用 <CODE>GLOBAL</CODE> 關鍵詞，語句為所有在那個點上建立的新連線設定預設的全局事務隔離級。為了這樣做，你需要有 <CODE>SUPER</CODE> 權限。使用 <CODE>SESSION</CODE> 關鍵詞為目前連線所有將來執行的事務設定預設的事務隔離級。
+</P>
+
+<P>
+你可以使用 <CODE>--transaction-isolation=...</CODE> 為 <CODE>mysqld</CODE> 設定預設的全局隔離級。查看章節 <A HREF="manual1.html#Command-line_options">4.1.1  <CODE>mysqld</CODE>  命令行選項</A>。
+</P>
+
+
+<H2>&nbsp;</H2>
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="../../flash/onlined41d.html?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+ 
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-7.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+</HTML>

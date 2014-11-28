@@ -1,0 +1,1696 @@
+  <HTML>
+  
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-4.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+<HEAD>
+  <TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+   <style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+   <META http-equiv="Content-Type" content="text/html; charset=big5">
+   <META name="description" content="MySQL 4.1.0  中文參考手冊">
+   <META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+   <LINK rel="shortcut icon" href="shuixin13.ico" />
+   <LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+
+  </HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+<H1>MySQL Reference Manual for version 4.1.0-alpha.</H1>
+<P>
+<P><HR>
+<H2><A NAME="Data_Manipulation"></A>6.4 資料操縱：<CODE>SELECT</CODE>, <CODE>INSERT</CODE>, 
+  <CODE>UPDATE</CODE>, <CODE>DELETE</CODE></H2>
+
+<H3><A NAME="SELECT"></A>6.4.1  <CODE>SELECT</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1387"></A>
+
+</P>
+
+<PRE>
+SELECT [STRAIGHT_JOIN]
+       [SQL_SMALL_RESULT] [SQL_BIG_RESULT] [SQL_BUFFER_RESULT]
+       [SQL_CACHE | SQL_NO_CACHE] [SQL_CALC_FOUND_ROWS] [HIGH_PRIORITY]
+       [DISTINCT | DISTINCTROW | ALL]
+    select_expression,...
+    [INTO {OUTFILE | DUMPFILE} 'file_name' export_options]
+    [FROM table_references
+      [WHERE where_definition]
+      [GROUP BY {unsigned_integer | col_name | formula} [ASC | DESC], ...]
+      [HAVING where_definition]
+      [ORDER BY {unsigned_integer | col_name | formula} [ASC | DESC] ,...]
+      [LIMIT [offset,] rows | rows OFFSET offset]
+      [PROCEDURE procedure_name(argument_list)]
+      [FOR UPDATE | LOCK IN SHARE MODE]]
+</PRE>
+
+<P>
+<CODE>SELECT</CODE> 用於檢索從一個或多個表中選取出的行。<CODE>select_expression</CODE> 表示你希望檢索的列。
+<CODE>SELECT</CODE> 也可以被用於檢索沒有參照任何表的計算列。例如：
+</P>
+
+<PRE>
+mysql&#62; SELECT 1 + 1;
+         -&#62; 2
+</PRE>
+
+<P>
+所有使用的關鍵詞必須嚴格以上面所顯示的次序被給出。舉例來說，一個 <CODE>HAVING</CODE> 幾句必須出現在 <CODE>GROUP BY</CODE> 幾句後，在 <CODE>ORDER BY</CODE> 字句之前。
+
+</P>
+
+<UL>
+
+<LI>
+<A NAME="IDX1388"></A>
+<A NAME="IDX1389"></A>
+一個 <CODE>SELECT</CODE> 表達式可以使用 <CODE>AS</CODE> 指定一個別名。別名可以當作表達式的列名，用於 <CODE>ORDER BY</CODE> 或 <CODE>HAVING</CODE> 幾句中。例如：
+
+<PRE>
+mysql&#62; SELECT CONCAT(last_name,', ',first_name) AS full_name
+    FROM mytable ORDER BY full_name;
+</PRE>
+
+<LI>
+在一個 <CODE>WHERE</CODE> 幾句中使用一個列別名是不允許的，因為，當 <CODE>WHERE</CODE> 幾句被執行時，列值可能還沒有被計算確定。查看章節 <A HREF="manual2.html#Problems_with_alias">A.5.4  使用 <CODE>alias</CODE> 的限制</A>。
+
+<P></P>
+
+<LI>
+
+<A NAME="IDX1390"></A>
+<A NAME="IDX1391"></A>
+<A NAME="IDX1392"></A>
+<A NAME="IDX1393"></A>
+<A NAME="IDX1394"></A>
+<A NAME="IDX1395"></A>
+<CODE>FROM table_references</CODE> 幾句表示從哪個表中檢索記錄行。如果你命名超過超過一個表，並執行一個 join。對於 join 句法的資訊，查看章節 <A HREF="06-4.html#JOIN">6.4.1.1  <CODE>JOIN</CODE> 句法</A>。對於每個參照的表，你可以順便指定一個別名。
+
+<PRE>
+table_name [[AS] alias] [[USE INDEX (key_list)] | [IGNORE INDEX (key_list)] | FORCE INDEX (key_list)]]
+</PRE>
+
+到 MySQL 3.23.12 時，當 MySQL 在從一個表中檢索資訊時，你可以提示它選擇了哪一個索引。如果 <CODE>EXPLAIN</CODE> 顯示 MySQL 使用了可能的索引清單中錯誤的索引，這個特性將是很有用的。通過指定 <CODE>USE INDEX (key_list)</CODE>，你可以告訴 MySQL 使用可能的索引中最合適的一個索引在表中尋找記錄行。可選的二選一句法 <CODE>IGNORE INDEX (key_list)</CODE> 可被用於告訴 MySQL 不使用特定的索引。
+
+在 MySQL 4.0.9 中，你也可以使用 <CODE>FORCE INDEX</CODE>。這個有點像 <CODE>USE INDEX (key_list)</CODE>，但是有了這個附加物，一個表的掃描被採用時，將會有非常大的開銷。換句法說，如果沒有方法使用給定的索引在表中尋找記錄行，這時表掃描才會被使用。
+
+<CODE>USE/IGNORE/FORCE KEY</CODE> 分別是 <CODE>USE/IGNORE/FORCE INDEX</CODE> 的同義詞。
+
+<P></P>
+
+<LI>
+你可以以 <CODE>tbl_name</CODE> (在目前的資料庫中) 參照一張表，或以 <CODE>dbname.tbl_name</CODE> 明確地指定其個資料。
+你要以以 <CODE>col_name</CODE>、<CODE>tbl_name.col_name</CODE> 或 <CODE>db_name.tbl_name.col_name</CODE> 參照一個列。  
+你不需要在一個 <CODE>SELECT</CODE> 語句中參照的列前指定 <CODE>tbl_name</CODE> 或 <CODE>db_name.tbl_name</CODE> 前綴，除非參照列存在二義性。查看章節 <A HREF="06-1.html#Legal_names">6.1.2  資料庫、表、索引、列和別名</A>，對於有歧義的列參照需要更加顯式的列參照格式。
+
+<P></P>
+
+<LI>
+
+<A NAME="IDX1396"></A>
+<A NAME="IDX1397"></A>
+一個表的參照可以使用 <CODE>tbl_name [AS] alias_name</CODE> 給以別名：
+
+<PRE>
+mysql&#62; SELECT t1.name, t2.salary FROM employee AS t1, info AS t2
+    -&#62;        WHERE t1.name = t2.name;
+mysql&#62; SELECT t1.name, t2.salary FROM employee t1, info t2
+    -&#62;        WHERE t1.name = t2.name;
+</PRE>
+
+<LI>
+選取出來用於輸出的列可以在 <CODE>ORDER BY</CODE> 和 <CODE>GROUP BY</CODE> 幾句中使用列名、列的別名或列的位置來參照。列的位置從 1 開始：
+
+<PRE>
+mysql&#62; SELECT college, region, seed FROM tournament
+    -&#62;        ORDER BY region, seed;
+mysql&#62; SELECT college, region AS r, seed AS s FROM tournament
+    -&#62;        ORDER BY r, s;
+mysql&#62; SELECT college, region, seed FROM tournament
+    -&#62;        ORDER BY 2, 3;
+</PRE>
+
+為了以倒序排序，可以在 ORDER BY 幾句中用於排序的列名後加入一個 <CODE>DESC</CODE> (遞減 descending)關鍵詞。預設為升序排序﹔這也可以通過使用 <CODE>ASC</CODE> 關鍵詞明確指定。
+
+<P></P>
+
+<LI>
+
+在 <CODE>WHERE</CODE> 幾句中可以使用 MySQL 支援的任何函數。查看章節 <A HREF="06-3.html#Functions">6.3  用於 <CODE>SELECT</CODE> 和 <CODE>WHERE</CODE> 幾句的函數</A>。
+
+<P></P>
+
+<LI>
+<CODE>HAVING</CODE> 幾句可以參照任何列或在 <CODE>select_expression</CODE> 中命名的別名。它在最後被執行，僅僅就在項目被送到客戶端之前，不進行任何最佳化。所以不要對應該放在 <CODE>WHERE</CODE> 幾句中的項目使用 <CODE>HAVING</CODE>。舉例來說，不要寫成這樣：
+
+<PRE>
+mysql&#62; SELECT col_name FROM tbl_name HAVING col_name &#62; 0;
+</PRE>
+
+用這個代替：
+
+<PRE>
+mysql&#62; SELECT col_name FROM tbl_name WHERE col_name &#62; 0;
+</PRE>
+
+在 MySQL 3.22.5 或以後的版本中，你也可以這下面的形式書寫一個查詢：
+
+<PRE>
+mysql&#62; SELECT user,MAX(salary) FROM users
+    -&#62;        GROUP BY user HAVING MAX(salary)&#62;10;
+</PRE>
+
+在較早的 MySQL 版本中，你可能需要用下面的代替了：
+
+<PRE>
+mysql&#62; SELECT user,MAX(salary) AS sum FROM users
+    -&#62;        group by user HAVING sum&#62;10;
+</PRE>
+
+<LI>
+
+<CODE>DISTINCT</CODE>、<CODE>DISTINCTROW</CODE> 和 <CODE>ALL</CODE> 選項指定重復的記錄行是否被傳回。預設為 (<CODE>ALL</CODE>)，傳回所有相符的記錄行。<CODE>DISTINCT</CODE> 和 <CODE>DISTINCTROW</CODE> 是同義詞，它指定結果集重復的記錄行被排除。
+
+<P></P>
+
+<LI>
+所有以 <CODE>SQL_</CODE> 開頭、<CODE>STRAIGHT_JOIN</CODE> 和 <CODE>HIGH_PRIORITY</CODE> 的選項是 MySQL 對 ANSI SQL 的擴展。
+
+<P></P>
+
+<LI>
+
+<CODE>HIGH_PRIORITY</CODE> 將給 <CODE>SELECT</CODE> 語句比更新一個表有更高的優先級。你只應該對非常快的或需要立即傳回的查詢使用它。 如果一個表已被讀鎖定，甚至是有一個更新語句正在等待表的釋放，一個 <CODE>SELECT HIGH_PRIORITY</CODE> 查詢也將會執行。
+
+<P></P>
+
+<LI>
+<CODE>SQL_BIG_RESULT</CODE> 可以與 <CODE>GROUP BY</CODE> 或 <CODE>DISTINCT</CODE> 一同使用，以告訴最佳化器結果集將有許多記錄行。在這種情況下，如果需要，MySQL 將直接使用基於硬碟的臨時表。同樣的，在這種情況下，MySQL 更愿意以 <CODE>GROUP BY</CODE> 上的一個鍵進行排序而不是建立一個臨時表。
+
+<P></P>
+
+<LI>
+<CODE>SQL_BUFFER_RESULT</CODE> 將強制把結果放入一個臨時表。這將有助於 MySQL 盡早地釋放表和有助於將大的結果集傳送到客戶端。
+
+<P></P>
+
+<LI>
+<CODE>SQL_SMALL_RESULT</CODE>, 一個 MySQL 特有的選項，可以與 <CODE>GROUP BY</CODE> 或 <CODE>DISTINCT</CODE> 一同使用，以告訴最佳化器結果集將會很小。在這種情況下，MySQL 將使用快速的臨時表儲存結果表，而不是使用排序。在 MySQL 3.23 中，這通常是不需要的。
+
+<P></P>
+
+<LI>
+<CODE>SQL_CALC_FOUND_ROWS</CODE> (版本 4.0.0 和更新的) 告訴 MySQL 計算在不考慮 <CODE>LIMIT</CODE> 幾句時結果集中將有多少行記錄。然後使用 <CODE>SELECT FOUND_ROWS()</CODE> 可以檢索到記錄行的數目。查看章節 <A HREF="06-3.html#Miscellaneous_functions">6.3.6.2  輔助功能函數</A>。
+
+請注意，在早於 4.1.0 的版本中，<CODE>LIMIT 0</CODE> 是不工作的，它將被最佳化為立即傳回(結果集的記錄數為 0)。查看章節 <A HREF="manual1.html#LIMIT_optimisation">5.2.8  MySQL 如何最佳化 <CODE>LIMIT</CODE></A>。
+
+<P></P>
+
+<LI>
+如果你使用了 <CODE>QUERY_CACHE_TYPE=2</CODE> (<CODE>DEMAND</CODE>)，<CODE>SQL_CACHE</CODE> 告訴 MySQL 將儲存查詢結果放入查詢高速快取內。查看章節 <A HREF="06-9.html#Query_Cache">6.9  MySQL 的查詢高速快取</A>。
+
+<P></P>
+
+<LI>
+<CODE>SQL_NO_CACHE</CODE> 告訴 MySQL 不允許將查詢結果儲存到查詢快取內。查看章節 <A HREF="06-9.html#Query_Cache">6.9  MySQL 的查詢高速快取</A>。
+
+<P></P>
+
+<LI>
+<A NAME="IDX1398"></A>
+如果使用了 <CODE>GROUP BY</CODE>，輸出記錄將會依照 <CODE>GROUP BY</CODE> 列進行排序，就好像你對所有 <CODE>GROUP BY</CODE> 中的所有欄位使用了 <CODE>ORDER BY</CODE>。MySQL 擴展了 <CODE>GROUP BY</CODE> 的用法，所以你也可以在 <CODE>GROUP BY</CODE> 中指定 <CODE>ASC</CODE> 和 <CODE>DESC</CODE>：
+
+<PRE>
+SELECT a,COUNT(b) FROM test_table GROUP BY a DESC
+</PRE>
+
+<LI>
+MySQL 擴展了的 <CODE>GROUP BY</CODE> 用法允許你選取沒有在 <CODE>GROUP BY</CODE> 幾句中提及的欄位。
+如果你的查詢沒有得到你所期望的結果，請查看 <CODE>GROUP BY</CODE> 中的描述。
+查看章節 <A HREF="06-3.html#Group_by_functions">6.3.7  用於 <CODE>GROUP BY</CODE> 幾句的函數</A>。
+
+<P></P>
+
+<LI>
+<A NAME="IDX1399"></A>
+<CODE>STRAIGHT_JOIN</CODE> 強制最佳化器以表在 <CODE>FROM</CODE> 幾句中列出的順序聯結。如果最佳化器以一個非最佳化的次序聯結各表，你可以使用它來加速一個查詢。查看章節 <A HREF="manual1.html#EXPLAIN">5.2.1  <CODE>EXPLAIN</CODE> 句法(得到有關 <CODE>SELECT</CODE> 的資訊)</A>。
+
+<P></P>
+
+<LI>
+<CODE>LIMIT</CODE> 幾句可以被用於強制 <CODE>SELECT</CODE> 語句傳回指定的記錄數。<CODE>LIMIT</CODE> 接受一個或兩個數位參數。參數必須是一個整數常數。如果給定兩個參數，第一個參數指定第一個傳回記錄行的偏移量，第二個參數指定傳回記錄行的最大數目。初始記錄行的偏移量是 0(而不是 1)：
+
+為了與 PostgreSQL 兼容，MySQL 也支援句法：
+<CODE>LIMIT # OFFSET #</CODE>。
+
+
+<PRE>
+mysql&#62; SELECT * FROM table LIMIT 5,10;  # 檢索記錄行 6-15
+</PRE>
+
+為了檢索從某一個偏移量到記錄集的結束所有的記錄行，可以指定第二個參數為 -1：
+
+<PRE>
+mysql&#62; SELECT * FROM table LIMIT 95,-1; # 檢索記錄行 96-last.
+</PRE>
+
+如果只給定一個參數，它表示傳回最大的記錄行數目：
+
+<PRE>
+mysql&#62; SELECT * FROM table LIMIT 5;     # 檢索前 5 個記錄行
+</PRE>
+
+換句話說，<CODE>LIMIT n</CODE> 等價於 <CODE>LIMIT 0,n</CODE>。
+
+<P></P>
+
+<LI>
+<A NAME="IDX1400"></A>
+<CODE>SELECT ... INTO OUTFILE 'file_name'</CODE> 格式的 <CODE>SELECT</CODE> 將選擇的記錄行寫入一個文件。文件被建立在伺服器主機上，並且不可以是已存在的 (不管別的，這可以防止資料庫表和文件例如 <TT>`/etc/passwd'</TT> 被破壞)。你必須在伺服器主機上有 <CODE>FILE</CODE> 權限來使用這個形式的 <CODE>SELECT</CODE>。
+
+<CODE>SELECT ... INTO OUTFILE</CODE> 主要是有意於讓你能夠在服務主機上快速地轉儲一個表。如果你希望將結果文件建立在其它的主機上，而不是伺服器上，你就不能使用 <CODE>SELECT ... INTO OUTFILE</CODE>。在這種情況下，你應該使用某些客戶端程式例如  <CODE>mysqldump --tab</CODE> 或 <CODE>mysql -e "SELECT ..." &#62; outfile</CODE> 產生文件來代替它。
+
+<CODE>SELECT ...  INTO OUTFILE</CODE> 是 <CODE>LOAD DATA INFILE</CODE> 的逆操作﹔
+語句中的 <CODE>export_options</CODE> 部分的句法由 <CODE>FIELDS</CODE> 和 <CODE>LINES</CODE> 幾句組成，它們與與用在 <CODE>LOAD DATA INFILE</CODE> 語句中的相同。
+查看章節 <A HREF="06-4.html#LOAD_DATA">6.4.9  <CODE>LOAD DATA INFILE</CODE> 句法</A>。
+
+在結果純文字文件中，只有下列的字元被 <CODE>ESCAPED BY</CODE> 指定的字元轉義：
+
+<UL>
+<LI><CODE>ESCAPED BY</CODE> 字元
+
+<LI>在 <CODE>FIELDS TERMINATED BY</CODE> 中的第一個字元
+
+<LI>在 <CODE>LINES TERMINATED BY</CODE> 中的第一個字元
+
+</UL>
+
+另外，<CODE>ASCII 0</CODE> 被轉換到 <CODE>ESCAPED BY</CODE> 後而跟一個 0 (<CODE>ASCII 48</CODE>)。
+
+上述行為的原因是，你<STRONG>必須</STRONG> 轉義任何 <CODE>FIELDS TERMINATED BY</CODE>、<CODE>ESCAPED BY</CODE> 或<CODE>LINES TERMINATED BY</CODE> 字元，以便能可靠地將文件讀回。<CODE>ASCII 0</CODE> 被轉義是為了更容易地使用某些分頁程式查看它。
+
+因為結果文件並不需要遵從 SQL 句法，所以其它是不需要轉義。
+
+下面的範例得到的文件是可用於許多老程式的格式。
+
+<PRE>
+SELECT a,b,a+b INTO OUTFILE "/tmp/result.text"
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY "\n"
+FROM test_table;
+</PRE>
+
+<LI>
+
+<A NAME="IDX1401"></A>
+如果使用 <CODE>INTO DUMPFILE</CODE> 代替 <CODE>INTO OUTFILE</CODE>，MySQL 將在文件中只寫一行，沒任何列或行端接和任何轉義。如果你希望儲存一個 blob 列到文件中，這是非常有用的。
+
+<LI>
+注意，任何由 <CODE>INTO OUTFILE</CODE> 和 <CODE>INTO DUMPFILE</CODE> 建立的文件將被所有使用者可讀寫！原因是，
+MySQL 伺服器不能夠建立一個其他使用者擁有的文件，(你決不應該以 root 身份運行 <CODE>mysqld</CODE>)，該文件必須是公共可讀寫的，以便於你能操作它。
+
+<P></P>
+
+<LI>
+
+如果你以頁/行鎖使用在一個儲存引擎上 <CODE>FOR UPDATE</CODE>，被檢索的記錄行將被寫鎖。
+</UL>
+
+
+
+<H4><A NAME="JOIN"></A>6.4.1.1  <CODE>JOIN</CODE> 句法</H4>
+
+<P>
+<A NAME="IDX1402"></A>
+<A NAME="IDX1403"></A>
+<A NAME="IDX1404"></A>
+<A NAME="IDX1405"></A>
+<A NAME="IDX1406"></A>
+<A NAME="IDX1407"></A>
+<A NAME="IDX1408"></A>
+<A NAME="IDX1409"></A>
+<A NAME="IDX1410"></A>
+<A NAME="IDX1411"></A>
+<A NAME="IDX1412"></A>
+<A NAME="IDX1413"></A>
+</P>
+
+<P>
+MySQL 支援在 <CODE>SELECT</CODE> 中使用下面所示的 <CODE>JOIN</CODE> 句法：
+</P>
+
+<PRE>
+table_reference, table_reference
+table_reference [CROSS] JOIN table_reference
+table_reference INNER JOIN table_reference join_condition
+table_reference STRAIGHT_JOIN table_reference
+table_reference LEFT [OUTER] JOIN table_reference join_condition
+table_reference LEFT [OUTER] JOIN table_reference
+table_reference NATURAL [LEFT [OUTER]] JOIN table_reference
+{ OJ table_reference LEFT OUTER JOIN table_reference ON conditional_expr }
+table_reference RIGHT [OUTER] JOIN table_reference join_condition
+table_reference RIGHT [OUTER] JOIN table_reference
+table_reference NATURAL [RIGHT [OUTER]] JOIN table_reference
+</PRE>
+
+<P>
+<CODE>table_reference</CODE> 定義如下：
+</P>
+<A NAME="IDX1414"></A>
+
+<PRE>
+table_name [[AS] alias] [[USE INDEX (key_list)] | [IGNORE INDEX (key_list)] | [FORCE INDEX (key_list)]]
+</PRE>
+
+<P>
+<CODE>join_condition</CODE> 定義如下：
+</P>
+
+<PRE>
+ON conditional_expr |
+USING (column_list)
+</PRE>
+
+<P>
+通常不應該在 <CODE>ON</CODE> 存在任何條件式，它是用於限制在結果集中有哪個行的(對於這個規則也有例外)。如果你希望哪個記錄行應該在結果中，你必須在 <CODE>WHERE</CODE> 幾句中限制它。
+</P>
+
+<P>
+注意，在早於 3.23.17 的版本中，<CODE>INNER JOIN</CODE> 不接受一個 <CODE>join_condition</CODE>！
+</P>
+
+<P>
+<A NAME="IDX1415"></A>
+<A NAME="IDX1416"></A>
+上面所顯示的最後一個 <CODE>LEFT OUTER JOIN</CODE> 句法僅僅是為了與 ODBC 兼容而存在的：
+</P>
+
+<UL>
+<LI>
+一個表參照可以使用 <CODE>tbl_name AS alias_name</CODE> 或 <CODE>tbl_name alias_name</CODE> 命以別名：
+
+<PRE>
+mysql&#62; SELECT t1.name, t2.salary FROM employee AS t1, info AS t2
+    -&#62;        WHERE t1.name = t2.name;
+</PRE>
+
+<LI>
+<CODE>ON</CODE> 條件是可以用在一個 <CODE>WHERE</CODE> 幾句中的任何形式的條件。
+
+<P></P>
+
+<LI>
+如果在一個 <CODE>LEFT JOIN</CODE> 的 <CODE>ON</CODE> 或 <CODE>USING</CODE> 部分中右表沒有相符的記錄，一個所有列被設定為 <CODE>NULL</CODE> 的記錄行將被用於右表。你可以通過這個行為找到一個表在另一個表中沒有配對物的記錄：
+
+<PRE>
+mysql&#62; SELECT table1.* FROM table1
+    -&#62;        LEFT JOIN table2 ON table1.id=table2.id
+    -&#62;        WHERE table2.id IS NULL;
+</PRE>
+
+這個範例在 <CODE>table1</CODE> 中找到所有的記錄行，其 <CODE>id</CODE> 值沒有出現在 <CODE>table2</CODE> 中(即，所有在 <CODE>table1</CODE> 存在的，但在 <CODE>table2</CODE> 中沒有對應記錄的記錄行)。當然，這是假定 <CODE>table2.id</CODE> 被宣告為 <CODE>NOT NULL</CODE> 的。查看章節 <A HREF="manual1.html#LEFT_JOIN_optimisation">5.2.6  MySQL 如何最佳化 <CODE>LEFT JOIN</CODE> 和 <CODE>RIGHT JOIN</CODE></A>。
+
+<P></P>
+
+<LI>
+<CODE>USING</CODE> <CODE>(column_list)</CODE> 幾句指定了一個列的清單，清單的中列必須同時存在於兩個表中。例如 <CODE>USING</CODE> 幾句如下所示：
+
+<PRE>
+A LEFT JOIN B USING (C1,C2,C3,...)
+</PRE>
+
+它可以被定義為在語義上等同於一個這樣的 <CODE>ON</CODE> 表達式：
+
+<PRE>
+A.C1=B.C1 AND A.C2=B.C2 AND A.C3=B.C3,...
+</PRE>
+
+<LI>
+兩個表的 <CODE>NATURAL [LEFT] JOIN</CODE> 被定義為在語義上等同於使用了 <CODE>USING</CODE> 幾句指定存在於兩張表中的所有列的一個 <CODE>INNER JOIN</CODE> 或一個 <CODE>LEFT JOIN</CODE>。
+
+<P></P>
+
+<LI>
+<A NAME="IDX1417"></A>
+<CODE>INNER JOIN</CODE> 和 <CODE>,</CODE> (逗號) 在語義上是等同的。都是在所有的表之間進行一個全聯結。通常，在 WHERE 條件中指定表應該如何聯結。
+
+<P></P>
+
+<LI>
+<CODE>RIGHT JOIN</CODE> 作用類似於 <CODE>LEFT JOIN</CODE>。為了保持資料庫邊的代碼上精簡，<CODE>LEFT JOIN</CODE> 被推荐使用來代替 <CODE>RIGHT JOIN</CODE>。
+
+<P></P>
+
+<LI>
+<A NAME="IDX1418"></A>
+<CODE>STRAIGHT_JOIN</CODE> 等同於 <CODE>JOIN</CODE>，除了左表先於右表被讀入。當聯結最佳化器將表的順序放錯時(很少)，這可用於這種情況。
+
+<P></P>
+
+<LI>
+<A NAME="IDX1419"></A>
+<A NAME="IDX1420"></A>
+<A NAME="IDX1421"></A>
+到 MySQL 3.23.12 時，當 MySQL 在從一個表中檢索資訊時，你可以提示它選擇了哪一個索引。如果 <CODE>EXPLAIN</CODE> 顯示 MySQL 使用了可能的索引清單中錯誤的索引，這個特性將是很有用的。通過指定 <CODE>USE INDEX (key_list)</CODE>，你可以告訴 MySQL 使用可能的索引中最合適的一個索引在表中尋找記錄行。可選的二選一句法 <CODE>IGNORE INDEX (key_list)</CODE> 可被用於告訴 MySQL 不使用特定的索引。
+
+<A NAME="IDX1422"></A>
+在 MySQL 4.0.9 中，你也可以使用 <CODE>FORCE INDEX</CODE>。這個有點像 <CODE>USE INDEX (key_list)</CODE>，但是有了這個附加物，一個表的掃描被採用時，將會有非常大的開銷。換句法說，如果沒有方法使用給定的索引在表中尋找記錄行，這時表掃描才會被使用。
+
+<A NAME="IDX1423"></A>
+<A NAME="IDX1424"></A>
+<CODE>USE/IGNORE/FORCE KEY</CODE> 分別是 <CODE>USE/IGNORE/FORCE INDEX</CODE> 的同義詞。
+
+</UL>
+
+<P>
+一些範例：
+</P>
+
+<PRE>
+mysql&#62; SELECT * FROM table1,table2 WHERE table1.id=table2.id;
+mysql&#62; SELECT * FROM table1 LEFT JOIN table2 ON table1.id=table2.id;
+mysql&#62; SELECT * FROM table1 LEFT JOIN table2 USING (id);
+mysql&#62; SELECT * FROM table1 LEFT JOIN table2 ON table1.id=table2.id
+    -&#62;          LEFT JOIN table3 ON table2.id=table3.id;
+mysql&#62; SELECT * FROM table1 USE INDEX (key1,key2)
+    -&#62;          WHERE key1=1 AND key2=2 AND key3=3;
+mysql&#62; SELECT * FROM table1 IGNORE INDEX (key3)
+    -&#62;          WHERE key1=1 AND key2=2 AND key3=3;
+</PRE>
+
+<P>
+查看章節 <A HREF="manual1.html#LEFT_JOIN_optimisation">5.2.6  MySQL 如何最佳化 <CODE>LEFT JOIN</CODE> 和 <CODE>RIGHT JOIN</CODE></A>。
+</P>
+
+
+
+<H4><A NAME="UNION"></A>6.4.1.2  <CODE>UNION</CODE> 句法</H4>
+
+<P>
+<A NAME="IDX1425"></A>
+
+</P>
+
+<PRE>
+SELECT ...
+UNION [ALL]
+SELECT ...
+  [UNION
+   SELECT ...]
+</PRE>
+
+<P>
+<CODE>UNION</CODE> 在 MySQL 4.0.0 中被實現。
+</P>
+
+<P>
+<CODE>UNION</CODE> 用於將多個 <CODE>SELECT</CODE> 語句的結果聯合到一個結果集中。
+</P>
+
+<P>
+在 <CODE>SELECT</CODE> 中的 select_expression 部分列出的列必須具有同樣的類型。第一個 <CODE>SELECT</CODE> 查詢中使用的列名將作為結果集的列名傳回。
+</P>
+
+<P>
+<CODE>SELECT</CODE> 命令是一個普通的選擇命令，但是有下列的限制：
+</P>
+
+<UL>
+<LI>
+只有最後一個 <CODE>SELECT</CODE> 命令可以有 <CODE>INTO OUTFILE</CODE>。
+</UL>
+
+<P>
+如果你不為 <CODE>UNION</CODE> 使用關鍵詞 <CODE>ALL</CODE>，所有傳回的記錄行將是唯一的，就好像你為整個傳回集使用了一個 <CODE>DISTINCT</CODE>。如果你指定了 <CODE>ALL</CODE>，那麼你將得到從所有使用的 <CODE>SELECT</CODE> 語句中傳回的所有相符記錄行。
+</P>
+
+<P>
+如果你希望對整個 <CODE>UNION</CODE> 結果使用一個 <CODE>ORDER BY</CODE>，你應該使用圓括號：
+</P>
+
+<PRE>
+(SELECT a FROM table_name WHERE a=10 AND B=1 ORDER BY a LIMIT 10)
+UNION
+(SELECT a FROM table_name WHERE a=11 AND B=2 ORDER BY a LIMIT 10)
+ORDER BY a;
+</PRE>
+
+<P>
+<A NAME="IDX1426"></A>
+
+
+<H3><A NAME="HANDLER"></A>6.4.2  <CODE>HANDLER</CODE> 句法</H3>
+
+
+<PRE>
+HANDLER tbl_name OPEN [ AS alias ]
+HANDLER tbl_name READ index_name { = | &#62;= | &#60;= | &#60; } (value1,value2,...)
+    [ WHERE ... ] [LIMIT ... ]
+HANDLER tbl_name READ index_name { FIRST | NEXT | PREV | LAST }
+    [ WHERE ... ] [LIMIT ... ]
+HANDLER tbl_name READ { FIRST | NEXT }
+    [ WHERE ... ] [LIMIT ... ]
+HANDLER tbl_name CLOSE
+</PRE>
+
+<P>
+<CODE>HANDLER</CODE> 語句提供了直接存取 <CODE>MyISAM</CODE> 表儲存引擎的接口。
+</P>
+
+<P>
+<CODE>HANDLER</CODE> 語句的第一個形式打開一個表，通過後來的 <CODE>HANDLER ... READ</CODE> 語句使它可讀取。這個表物件將不能被其它線程共享，也不會被關閉，除非線程調用 <CODE>HANDLER tbl_name CLOSE</CODE> 或線程關閉。
+</P>
+
+<P>
+第二個形式讀取指定的索引遵從那個條件並且適合 <CODE>WHERE</CODE> 條件的一行(或更多的，由 <CODE>LIMIT</CODE> 幾句指定)。
+如果索引由幾個部分組成(範圍有幾個列)，值以逗號分隔的清單指定﹔如果只提供的一部分值，那麼第一個列是必需的。
+</P>
+
+<P>
+第三個形式從表中以索引的順序讀取相符 <CODE>WHERE</CODE> 條件的一行(或更多的，由 <CODE>LIMIT</CODE> 幾句指定)。
+</P>
+
+<P>
+第四個形式(沒有索引清單)從表中以自然的列順序(在資料文件中儲存的次序)讀取相符 <CODE>WHERE</CODE> 條件的一行(或更多的，由 <CODE>LIMIT</CODE> 幾句指定)。如果期望做一個全表掃描，它將比 <CODE>HANDLER tbl_name READ index_name</CODE> 更快。
+</P>
+
+<P>
+<CODE>HANDLER ... CLOSE</CODE> 關閉一個以 <CODE>HANDLER ... OPEN</CODE> 打開的表。
+</P>
+
+<P>
+<CODE>HANDLER</CODE> 是一個稍微低級的語句。舉例來說，它不提供一致性約束。更確切地說，<CODE>HANDLER ... OPEN</CODE> <STRONG>不</STRONG> 接受一個表的快照，並且 <STRONG>不</STRONG> 鎖定表。這就意味著在一個 <CODE>HANDLER ... OPEN</CODE> 被執行後，表資料仍會被 (這個或其它的線程) 修改，這些修改可能在 <CODE>HANDLER ... NEXT</CODE> 和 <CODE>HANDLER ... PREV</CODE> 掃描中才會部分地出現。
+</P>
+
+<P>
+使用這個接口代替普通 SQL 的原因是：
+</P>
+
+<UL>
+<LI>
+它比 <CODE>SELECT</CODE> 快，因為：
+
+<UL>
+<LI>
+在 <CODE>HANDLER OPEN</CODE> 中，一個指定的儲存引擎被分配給目前線程。
+
+<LI>
+較少的復雜解析。
+
+<LI>
+沒有最佳化器和沒有查詢檢查開銷。
+
+<LI>
+在兩個處理請求之間不需要鎖定使用的表。
+
+<LI>
+接口處理機並不提供一個一致性的查看資料 (舉例來說，讀污染 dirty-reads 是允許的)，因而，儲存引擎可以做 SQL 通常不允許的最佳化。
+
+</UL>
+
+<LI>
+它使得更加容易地移植一個使用對 MySQL 的 ISAM 類似接口的應用程式。
+
+<LI>
+它允許你在一個以 SQL 不容易完成(在某些不可能的完全)的情況下遍歷一個資料庫。當使用提供了一個交談式的使用者接口存取資料庫的應用程式時，接口處理機是更加自然的查看資料的方式。
+</UL>
+
+
+
+<H3><A NAME="INSERT"></A>6.4.3  <CODE>INSERT</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1427"></A>
+
+</P>
+
+<PRE>
+    INSERT [LOW_PRIORITY | DELAYED] [IGNORE]
+        [INTO] tbl_name [(col_name,...)]
+        VALUES ((expression | DEFAULT),...),(...),...
+        [ ON DUPLICATE KEY UPDATE col_name=expression, ... ]
+or  INSERT [LOW_PRIORITY | DELAYED] [IGNORE]
+        [INTO] tbl_name [(col_name,...)]
+        SELECT ...
+or  INSERT [LOW_PRIORITY | DELAYED] [IGNORE]
+        [INTO] tbl_name
+        SET col_name=(expression | DEFAULT), ...
+        [ ON DUPLICATE KEY UPDATE col_name=expression, ... ]
+
+</PRE>
+
+<P>
+<CODE>INSERT</CODE> 將新行插入到一個已存在的表中。<CODE>INSERT ...  VALUES</CODE> 形式的語句基於明確的值插入記錄行。<CODE>INSERT ... SELECT</CODE> 形式的語句從另一個或多個表中選取出值，並將其插入。有多重值清單的 <CODE>INSERT ... VALUES</CODE> 形式的語句在 MySQL 3.22.5 或更新的版本中被支援。<CODE>col_name=expression</CODE> 句法在 
+MySQL 3.22.10 或更新的版本中得到支援。
+</P>
+
+<P>
+<CODE>tbl_name</CODE> 是記錄將要被插入的表。列名清單或 <CODE>SET</CODE> 幾句指出語句指定的值賦給哪個列：
+</P>
+
+<UL>
+<LI>
+如果在 <CODE>INSERT ... VALUES</CODE> 或 <CODE>INSERT ... SELECT</CODE> 中沒有指定列清單，那麼所有列的值必須在 <CODE>VALUES()</CODE> 清單中或由 <CODE>SELECT</CODE> 提供。如果你不知道表的列的次序，可以使用 <CODE>DESCRIBE tbl_name</CODE> 來決定它。
+
+<P></P>
+<LI>
+
+<A NAME="IDX1428"></A>
+任何沒有明確指定一個值的列均會被設定為它的預設值。舉例來說，如果你指定的一個列清單沒有指定表中所有的列，未指定的列將被設定為它們的預設值。預設值賦值的描述在章節 <A HREF="06-5.html#CREATE_TABLE">6.5.3  <CODE>CREATE TABLE</CODE> 句法</A>。
+
+你也可以使用關鍵詞 <CODE>DEFAULT</CODE> 來將一個列設定為它的預設值(這在 MySQL 4.0.3 中被新加入)。這使它更加容易地書寫賦予值到所有除了幾列的 <CODE>INSERT</CODE> 語句，因為它允許您避免書寫一個不完全的 <CODE>VALUES()</CODE> 的清單(在該清單沒有包含表中的每個列的列值)。否則，你將不得不在 <CODE>VALUES()</CODE> 清單中寫出列清單指定對應的值。
+
+MySQL 通常都會為每個欄位設定一個預設值。這是某些強加在 MySQL 上的，在事務型表與非事務型表中均工作。
+
+我們的觀點是在應用程式端檢查欄位的內容，而不是在資料庫伺服器端。
+
+<P></P>
+
+<LI>
+一個 <CODE>expression</CODE> 可以參照先前在值清單中設定的任何列。例如，你可以這樣：
+
+<PRE>
+mysql&#62; INSERT INTO tbl_name (col1,col2) VALUES(15,col1*2);
+</PRE>
+
+但是不能這樣：
+
+<PRE>
+mysql&#62; INSERT INTO tbl_name (col1,col2) VALUES(col2*2,15);
+</PRE>
+
+<LI>
+如果你指定關鍵詞 <CODE>LOW_PRIORITY</CODE>，<CODE>INSERT</CODE> 的執行將會被延遲，直到沒有其它客戶端正在讀取表。在這種情況下，客戶端不得不等待插入語句被完成，如果表被頻繁地使用，那麼這將會花費很長一段時間。這與 <CODE>INSERT DELAYED</CODE> 讓客戶端立即繼續執行正好相反。查看章節 <A HREF="6-4.html#INSERT_DELAYED">6.4.4  <CODE>INSERT DELAYED</CODE> 句法</A>。注意，<CODE>LOW_PRIORITY</CODE> 通常不對 <CODE>MyISAM</CODE> 使用，因為這將禁止並發的插入。查看章節 <A HREF="manual2.html#MyISAM">7.1  <CODE>MyISAM</CODE> 表</A>。
+
+<P></P>
+
+<LI>
+如果你在一個有許多條記錄行值的 <CODE>INSERT</CODE> 中指定關鍵詞 <CODE>IGNORE</CODE>，任何在表中現有的 <CODE>PRIMARY</CODE> 或 <CODE>UNIQUE</CODE> 鍵上重復的記錄行均會被忽略而不被插入。如果你不指定 <CODE>IGNORE</CODE>，當有任何記錄行在一個現有的鍵值上重復時，插入均會被中止。你可以通過 C API 函數 <CODE>mysql_info()</CODE> 測定共有多少記錄行被插入到表中。
+
+<P></P>
+
+<LI>
+
+如果你指定 <CODE>ON DUPLICATE KEY UPDATE</CODE> 幾句(在 MySQL 4.1.0 中被新加入)，並且被插入的一個記錄行在 <CODE>PRIMARY</CODE> 或 <CODE>UNIQUE</CODE> 鍵上將會產生一個重復值，那麼老的記錄行將被 <CODE>UPDATE</CODE>。舉例來說：
+
+
+<PRE>
+mysql&#62; INSERT INTO table (a,b,c) VALUES (1,2,3)
+   --&#62; ON DUPLICATE KEY UPDATE c=c+1;
+</PRE>
+
+假設列 <CODE>a</CODE> 被定義為 <CODE>UNIQUE</CODE>，並且已存在了一個 <CODE>1</CODE>，它將與下面的語句產生同樣的結果：
+
+<PRE>
+mysql&#62; UPDATE table SET c=c+1 WHERE a=1;
+</PRE>
+
+<STRONG>注意：</STRONG>如果列 <CODE>b</CODE> 也是唯一的，<CODE>UPDATE</CODE> 命令將要被寫成這樣：
+
+
+<PRE>
+mysql&#62; UPDATE table SET c=c+1 WHERE a=1 OR b=2 LIMIT 1;
+</PRE>
+
+並且如果 <CODE>a=1 OR b=2</CODE> 相符幾個記錄行，只有 <STRONG>一個</STRONG> 記錄行將被更新！大體上，在有多重 <CODE>UNIQUE</CODE> 鍵的表上，你應該盡是避免使用 <CODE>ON DUPLICATE KEY</CODE> 幾句。
+
+當使用了 <CODE>ON DUPLICATE KEY UPDATE</CODE> 後，<CODE>DELAYED</CODE> 選項將被忽略。
+
+<P></P>
+
+<LI>
+如果 MySQL 被設定為使用 <CODE>DONT_USE_DEFAULT_FIELDS</CODE> 選項，<CODE>INSERT</CODE> 語句將產生一個錯誤，除非你為所有需要一個非 <CODE>NULL</CODE> 值的列明確指定值。查看章節 <A HREF="manual1.html#configure_options">2.3.3  典型的 <CODE>configure</CODE> 選項</A>。
+
+<P></P>
+
+<LI>
+通過使用 <CODE>mysql_insert_id</CODE> 函數你可以找到用於一個 <CODE>AUTO_INCREMENT</CODE> 列的值。查看章節 <A HREF="manual2.html#mysql_insert_id">8.1.3.130  <CODE>mysql_insert_id()</CODE></A>。
+</UL>
+
+<P>
+<A NAME="IDX1429"></A>
+如果你使用 <CODE>INSERT ... SELECT</CODE> 或一個 <CODE>INSERT ... VALUES</CODE> 語句插入多值列，你可以使用 C API 函數 
+<CODE>mysql_info()</CODE> 得到查詢的資訊。資訊字串的格式如下：
+</P>
+
+<PRE>
+Records: 100 Duplicates: 0 Warnings: 0
+</PRE>
+
+<P>
+<CODE>Duplicates</CODE> 指出因與某些現有的唯一索引值重復而不能被插入的記錄行數目。<CODE>Warnings</CODE> 指出在嘗試插入的列值中在某些方面可能有問題的數目。在下列任何一個條件下，警告都會發生：
+</P>
+
+<UL>
+<LI>
+
+向一個定義為 <CODE>NOT NULL</CODE> 的列中插入 <CODE>NULL</CODE> 值。該列被設定為它的預設值。
+
+
+<LI>
+將一個超出列範圍的值賦給一個數位列。該值被剪下到該範圍內的適當的端點。
+
+<LI>
+將一個例如 <CODE>'10.34 a'</CODE> 的值賦給一個數位列。尾部的無用資訊將被剝離，保留數位部分並將其插入。如果該值看起來根本就不是一個數位，該列將被設定為 <CODE>0</CODE>。
+
+<LI>
+將一個超出了列最大長度的字串插入到一個 <CODE>CHAR</CODE>、<CODE>VARCHAR</CODE>、<CODE>TEXT</CODE> 或 <CODE>BLOB</CODE> 列中。該值將被剪下到該列的最大長度。
+
+<LI>
+將一個對列類型不合法的值插入到一個日期或時間列中。該列被適當格式的零值。
+</UL>
+
+<P>
+<A NAME="IDX1430"></A>
+<A NAME="IDX1431"></A>
+
+</P>
+
+
+
+<H4><A NAME="INSERT_SELECT"></A>6.4.3.1  <CODE>INSERT ... SELECT</CODE> 句法</H4>
+
+
+<PRE>
+INSERT [LOW_PRIORITY] [IGNORE] [INTO] tbl_name [(column list)] SELECT ...
+</PRE>
+
+<P>
+使用 <CODE>INSERT ... SELECT</CODE> 語句，你可以從一個或多個表中讀取多個記錄行，並將其快速地插入到一個表中。
+</P>
+
+<PRE>
+INSERT INTO tblTemp2 (fldID) SELECT tblTemp1.fldOrder_ID FROM tblTemp1 WHERE
+tblTemp1.fldOrder_ID &#62; 100;
+</PRE>
+
+<P>
+一個 <CODE>INSERT ... SELECT</CODE> 語句有下列條件的限止：
+</P>
+
+<UL>
+<LI>
+<CODE>INSERT</CODE> 語句中的目標表不能在 <CODE>SELECT</CODE> 查詢部分的 <CODE>FROM</CODE> 幾句中出現，因為在 ANSI SQL 中，禁止你從正在插入的表中 <CODE>SELECT</CODE>。(問題是因為，<CODE>SELECT</CODE> 可能會發現在同一運行期內先前被插入的記錄。當使用幾選擇幾句時，這種情況將會更容易混淆！)
+
+<LI>
+
+<CODE>AUTO_INCREMENT</CODE> 列像平常一樣工作。
+
+<LI>
+你可以使用 C API 函數 <CODE>mysql_info()</CODE> 得到查詢的資訊。查看章節 <A HREF="06-4.html#INSERT">6.4.3  <CODE>INSERT</CODE> 句法</A>。
+
+<LI>
+為了確保二進位日誌可以被用於重建最初的表，MySQL 將不允許在 <CODE>INSERT ... SELECT</CODE> 期間並發的插入。
+</UL>
+
+<P>
+你當然也可以使用 <CODE>REPLACE</CODE> 代替 <CODE>INSERT</CODE> 來蓋寫老的記錄行。
+</P>
+
+
+
+<H3><A NAME="INSERT_DELAYED"></A>6.4.4  <CODE>INSERT DELAYED</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1432"></A>
+<A NAME="IDX1433"></A>
+
+</P>
+<P>
+<A NAME="IDX1434"></A>
+
+</P>
+
+<PRE>
+INSERT DELAYED ...
+</PRE>
+
+<P>
+<CODE>INSERT</CODE> 語句的 <CODE>DELAYED</CODE> 選項是一個 MySQL 特有的選項，如果你的客戶端不能等待 <CODE>INSERT</CODE> 的完成，這將會是很有用的。This is a common problem when you use MySQL for logging and
+當你打開日誌記錄使用 MySQL 並且你周期性的需花費很長時間才完成的 <CODE>SELECT</CODE> 和 <CODE>UPDATE</CODE> 語句時，這將是一個很普遍的問題。<CODE>DELAYED</CODE> 在 MySQL 3.22.15 中被引入。它是 MySQL 對 ANSI SQL92 的一個擴展。
+</P>
+
+<P>
+<CODE>INSERT DELAYED</CODE> 僅僅工作與 <CODE>ISAM</CODE> 和 <CODE>MyISAM</CODE> 表。注意，因為 <CODE>MyISAM</CODE> 表支援並發的 <CODE>SELECT</CODE> 和 <CODE>INSERT</CODE>，如果在資料文件中沒有閒置的塊，那你將很少需要對 <CODE>MyISAM</CODE> 表使用 <CODE>INSERT DELAYED</CODE>。查看章節 <A HREF="manual2.html#MyISAM">7.1  <CODE>MyISAM</CODE> 表</A>。
+</P>
+
+<P>
+當你使用 <CODE>INSERT DELAYED</CODE> 時，客戶端將立即得到一個 OK，當表不被任何其它線程使用時，該行將被插入。
+</P>
+
+<P>
+使用 <CODE>INSERT DELAYED</CODE> 的另一個主要的好處就是，從很多客戶端來的插入請求會被打包在一起並寫入一個塊中。這比做許多單獨的插入要快的多。
+</P>
+
+<P>
+注意，目前的記錄行佇列是被儲存在記憶體中的，一直到他們被插入到表中。這就意味著，如果你使用強制的方法(<CODE>kill -9</CODE>) 殺死 <CODE>mysqld</CODE>，或者如果意外地死掉，任何沒有寫到硬碟中的記錄行佇列都將會丟失！
+</P>
+
+<P>
+下面詳細地描述當你為 <CODE>INSERT</CODE> 或 <CODE>REPLACE</CODE> 使用 <CODE>DELAYED</CODE> 選項時會發生什麼。在這個描述中，“線程”是遇到一個 <CODE>INSERT DELAYED</CODE> 命令的線程，“處理器”是處理所有對於一個特定表的 <CODE>INSERT DELAYED</CODE> 語句的線程。
+
+</P>
+
+<UL>
+<LI>
+當一個線程對一個表執行一個 <CODE>DELAYED</CODE> 語句時，將會建立一個處理器線程用以處理對該表的所有 <CODE>DELAYED</CODE> 語句，除非這樣的處理器已經存在。
+
+<P></P>
+
+<LI>
+線程檢查處理器是否已經獲得了一個 <CODE>DELAYED</CODE> 鎖﹔如果還沒有，這告訴處理程式去獲得。即使其它的線程已在表上加了一個 <CODE>READ</CODE> 或 <CODE>WRITE</CODE> 鎖，也能獲得 <CODE>DELAYED</CODE> 鎖。然而，處理器將等待所有的 <CODE>ALTER TABLE</CODE> 鎖或 <CODE>FLUSH TABLES</CODE> 以保証表結構是最新的。
+
+<P></P>
+
+<LI>
+線程執行 <CODE>INSERT</CODE> 語句，但是並不將記錄行寫到表中，它將最終的記錄行的副本放到被處理器線程管理的佇列中。任何語法錯誤都會被線程發現並報告給客戶程式。
+
+<P></P>
+
+<LI>
+客戶端不能報告結果記錄行中重復次數或 <CODE>AUTO_INCREMENT</CODE> 值﹔它不能從伺服器獲得它們，因為 <CODE>INSERT</CODE> 早在插入操作被完成之前就傳回了。如果你使用 C API，<CODE>mysql_info()</CODE> 函數也因同樣的原因而不能獲得任何有意義的資訊。
+
+<P></P>
+
+<LI>
+當記錄行被插入到表中時，二進位的日誌文件將被處理器線程更新。對於多記錄行的插入，當第一個記錄行被插入時，二進位日誌被更新。
+
+<P></P>
+
+<LI>
+當每寫入 <CODE>delayed_insert_limit</CODE> 個記錄行後，處理器檢查是否仍有任何 <CODE>SELECT</CODE> 語句沒有解決。如果是這樣，處理器允許在繼續之前讓這些語句先執行。
+
+<P></P>
+
+<A NAME="IDX1435"></A>
+<A NAME="IDX1436"></A>
+<LI>
+當處理器發現在它的佇列中沒有太多的記錄行時，表將被解鎖。如果在 <CODE>delayed_insert_timeout</CODE> 秒內沒有接收到新的 <CODE>INSERT DELAYED</CODE> 命令，處理器線程將終止。
+
+<P></P>
+
+<LI>
+如果在一個特定的處理器佇列中已有超過 <CODE>delayed_queue_size</CODE> 個記錄行未被解決，線程要求 <CODE>INSERT DELAYED</CODE> 等待，只到在佇列中有可用空間。這樣做是為了保証 <CODE>mysqld</CODE> 伺服器對延遲記憶體佇列不使用全部的記憶體。
+
+<P></P>
+
+<LI>
+處理器線程在 MySQL 程序清單中的 <CODE>Command</CODE> 列上顯示為 <CODE>delayed_insert</CODE>。如果執行一個 <CODE>FLUSH TABLES</CODE> 命令或以 <CODE>KILL thread_id</CODE> 殺死它，它將會被殺死。然而，它在退出前會首先將所佇列記錄行保存到表中。這些期間，它將不再接收其它線程的任何新的 <CODE>INSERT</CODE> 命令。如果再此之後執行一個 <CODE>INSERT
+DELAYED</CODE> 命令，一個新處理器線程將會被建立。
+
+注意，上面的意思是，如果一個 <CODE>INSERT DELAYED</CODE> 處理器已在運行，那麼 <CODE>INSERT DELAYED</CODE> 命令將有比正常 <CODE>INSERT</CODE> 命令更高的優先級！其它的更新命令將不得不等到 <CODE>INSERT DELAYED</CODE> 佇列被清空，殺死處理器線程(以 <CODE>KILL thread_id</CODE>) 或執行 <CODE>FLUSH TABLES</CODE>。
+
+<P></P>
+
+<LI>
+下列狀態變數提供了有關 <CODE>INSERT DELAYED</CODE> 命令的資訊：
+
+<TABLE BORDER WIDTH="90%">
+<TR><TD><STRONG>變數 </STRONG> </TD><TD> <STRONG>含義 </STRONG>
+</TD></TR>
+<TR><TD><CODE>Delayed_insert_threads</CODE> </TD><TD> 處理器線程數目
+</TD></TR>
+<TR><TD><CODE>Delayed_writes</CODE> </TD><TD> 使用 <CODE>INSERT DELAYED</CODE> 寫入的記錄行的數目
+</TD></TR>
+<TR><TD><CODE>Not_flushed_delayed_rows</CODE> </TD><TD> 等待被寫入的記錄行數目
+</TD></TR>
+</TABLE>
+
+通過發出一個 <CODE>SHOW STATUS</CODE> 語句或通過執行一個 <CODE>mysqladmin extended-status</CODE> 命令，你可以查看這些變數。
+</UL>
+
+<P>
+注意，如果表沒有在使用中，<CODE>INSERT DELAYED</CODE> 將比一個正常的 INSERT 慢。讓伺服器為你使用 <CODE>INSERT DELAYED</CODE> 的每張表處理一個單獨的線程，也是有額外的開銷的。這就意味著，你應該在確定你的確需要它時才使用 <CODE>INSERT DELAYED</CODE>。
+</P>
+
+
+
+<H3><A NAME="UPDATE"></A>6.4.5  <CODE>UPDATE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1437"></A>
+
+</P>
+
+<PRE>
+UPDATE [LOW_PRIORITY] [IGNORE] tbl_name
+    SET col_name1=expr1 [, col_name2=expr2 ...]
+    [WHERE where_definition]
+    [ORDER BY ...]
+    [LIMIT rows]
+
+or
+
+UPDATE [LOW_PRIORITY] [IGNORE] tbl_name [, tbl_name ...]
+    SET col_name1=expr1 [, col_name2=expr2 ...]
+    [WHERE where_definition]
+</PRE>
+
+<P>
+<CODE>UPDATE</CODE> 以新的值更新現存表中行的列。<CODE>SET</CODE> 幾句指出要修改哪個列和他們應該給定的值。<CODE>WHERE</CODE> 幾句如果被給出，指定哪個記錄行應該被更新。否則，所有的記錄行被更新。如果 <CODE>ORDER BY</CODE> 幾句被指定，記錄行將被以指定的次序更新。
+</P>
+
+<P>
+如果你指定關鍵詞 <CODE>LOW_PRIORITY</CODE>，<CODE>UPDATE</CODE> 的執行將被延遲，直到沒有其它的客戶端正在讀取表。
+</P>
+<P>
+如果你指定關鍵詞 <CODE>IGNORE</CODE>，該更新語句將不會異常中止，即使在更新過程中出現重復鍵錯誤。導致衝突的記錄行將不會被更新。
+</P>
+
+<P>
+如果在一個表達式中從 <CODE>tbl_name</CODE> 中存取一個列，<CODE>UPDATE</CODE> 使用列的目前值。舉例來說，下面的語句設定 <CODE>age</CODE> 列值為它的目前值加 1 ：
+</P>
+
+<PRE>
+mysql&#62; UPDATE persondata SET age=age+1;
+</PRE>
+
+<P>
+<CODE>UPDATE</CODE> 賦值是從左到右計算的。舉例來說，下列語句將 <CODE>age</CODE> 列設定為它的兩倍，然後再加 1 ：
+
+</P>
+
+<PRE>
+mysql&#62; UPDATE persondata SET age=age*2, age=age+1;
+</PRE>
+
+<P>
+如果你設定列為其目前的值，MySQL 注意到這點，並不更新它。
+</P>
+
+<P>
+<A NAME="IDX1438"></A>
+<CODE>UPDATE</CODE> 傳回實際被改變的記錄行數目。在 MySQL 3.22 或更新的版本中，C API 函數 <CODE>mysql_info()</CODE>
+傳回被相符並更新的記錄行數目，以及在 <CODE>UPDATE</CODE> 期間發生的警告的數目。
+</P>
+
+<P>
+在 MySQL 3.23 中，你可以使用 <CODE>LIMIT #</CODE> 來確保只有給定的記錄行數目被變更。
+</P>
+
+<P>
+如果一個 <CODE>ORDER BY</CODE> 幾句被使用(從 MySQL 4.0.0 開始支援)，記錄行將以指定的次序被更新。這實際上只有連同 <CODE>LIMIT</CODE> 一起才有用。
+</P>
+<P>
+從 MySQL 4.0.4 開始，你也可以執行一個包含多個表的 <CODE>UPDATE</CODE> 的操作：
+</P>
+
+<PRE>
+UPDATE items,month SET items.price=month.price
+WHERE items.id=month.id;
+</PRE>
+
+<P>
+注意：多表 <CODE>UPDATE</CODE> 不可以使用 <CODE>ORDER BY</CODE> 或 <CODE>LIMIT</CODE>。
+</P>
+
+
+
+<H3><A NAME="DELETE"></A>6.4.6  <CODE>DELETE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1439"></A>
+
+</P>
+
+<PRE>
+DELETE [LOW_PRIORITY] [QUICK] FROM table_name
+       [WHERE where_definition]
+       [ORDER BY ...]
+       [LIMIT rows]
+
+or
+
+DELETE [LOW_PRIORITY] [QUICK] table_name[.*] [, table_name[.*] ...]
+       FROM table-references
+       [WHERE where_definition]
+
+or
+
+DELETE [LOW_PRIORITY] [QUICK]
+       FROM table_name[.*] [, table_name[.*] ...]
+       USING table-references
+       [WHERE where_definition]
+</PRE>
+
+<P>
+<CODE>DELETE</CODE> 從 <CODE>table_name</CODE> 中刪除 <CODE>where_definition</CODE> 中給定條件的記錄行，並傳回刪除的記錄數目。
+</P>
+
+<P>
+如果你發出一個沒有 <CODE>WHERE</CODE> 幾句的 <CODE>DELETE</CODE>，所有的記錄行將被刪除。如果你以 <CODE>AUTOCOMMIT</CODE> 樣式執行它，那麼它類似於 <CODE>TRUNCATE</CODE>。查看章節 <A HREF="06-4.html#TRUNCATE">6.4.7  <CODE>TRUNCATE</CODE> 句法</A>。在 MySQL 3.23 中，沒有一個 <CODE>WHERE</CODE> 幾句的 <CODE>DELETE</CODE> 將傳回零作為受影響的記錄數目。
+</P>
+
+<P>
+當你刪除所有記錄行時，如果你真的希望知道多少條記錄被刪除，你可以使用一個這種形式的 <CODE>DELETE</CODE> 語句：
+</P>
+
+<PRE>
+mysql&#62; DELETE FROM table_name WHERE 1&#62;0;
+</PRE>
+
+<P>
+注意，這將比一個沒有 <CODE>WHERE</CODE> 幾句的  <CODE>DELETE FROM table_name</CODE> 語句慢，因為它一次只刪除一行。
+</P>
+
+<P>
+如果你指定關鍵詞 <CODE>LOW_PRIORITY</CODE>，<CODE>DELETE</CODE> 的執行將被延遲，直到沒有其它的客戶端正在讀取表。
+</P>
+
+<P>
+如果你指定關鍵詞 <CODE>QUICK</CODE>，那麼在刪除過程中儲存引擎將不會歸並索引葉，這可能會加速某些類型的刪除操作。
+</P>
+
+<P>
+在 <CODE>MyISAM</CODE> 表中，刪除了的記錄被放在一個連結表中維護，以後的 <CODE>INSERT</CODE> 操作將重新使用刪除後的記錄位置。為了回收閑置的空間，並減小文件尺寸，使用 <CODE>OPTIMIZE TABLE</CODE> 語句或 <CODE>myisamchk</CODE> 實用程式重新組織表。<CODE>OPTIMIZE TABLE</CODE> 使用比較容易，但是 <CODE>myisamchk</CODE> 更快點。查看章節 <A HREF="manual1.html#OPTIMIZE_TABLE">4.5.1  <CODE>OPTIMIZE TABLE</CODE> 句法</A> 和章節 <A HREF="manual1.html#Optimisation">4.4.6.10  表最佳化</A>。
+</P>
+
+<P>
+第一個多表刪除格式從 MySQL 4.0.0 開始被支援。第二個多表刪除格式從  MySQL 4.0.2 開始被支援。
+</P>
+
+<P>
+僅僅在 <CODE>FROM</CODE> 或 <CODE>USING</CODE> 幾句 <STRONG>之前</STRONG> 列出的表中的相符記錄行被刪除。效果就是，你要以從多個表中同時刪除記錄行，並且同樣可以有其它的表用於檢索。
+</P>
+<P>
+在表名後的 <CODE>.*</CODE> 僅僅是為了兼容 <CODE>Access</CODE>：
+
+</P>
+
+<PRE>
+DELETE t1,t2 FROM t1,t2,t3 WHERE t1.id=t2.id AND t2.id=t3.id
+
+or
+
+DELETE FROM t1,t2 USING t1,t2,t3 WHERE t1.id=t2.id AND t2.id=t3.id
+</PRE>
+
+<P>
+在上面的情況下，我們僅僅從 <CODE>t1</CODE> 和 <CODE>t2</CODE> 表中刪除相符的記錄行。
+</P>
+
+<P>
+如果一個 <CODE>ORDER BY</CODE> 幾句被使用(從 MySQL 4.0.0 開始支援), 記錄行將以指定的次序刪除。這實際上只有連同 <CODE>LIMIT</CODE> 一起才有用。範例如下：
+
+</P>
+
+<PRE>
+DELETE FROM somelog
+WHERE user = 'jcole'
+ORDER BY timestamp
+LIMIT 1
+</PRE>
+
+<P>
+這將刪除相符 <CODE>WHERE</CODE> 幾句的，並且最早被插入(通過 <CODE>timestamp</CODE> 來確定)的記錄行。
+</P>
+
+<P>
+<CODE>DELETE</CODE> 語句的<CODE>LIMIT rows</CODE> 選項是 MySQL 特有的，它告訴伺服器在控制權被傳回到客戶端之前可被刪除的最大記錄行數目。這可以用來確保一個特定的 <CODE>DELETE</CODE> 命令不會占用太長的時間。你可以簡單地重復使用 <CODE>DELETE</CODE> 命令，直到被影響的記錄行數目小於 <CODE>LIMIT</CODE> 值。
+</P>
+
+<P>
+從 MySQL 4.0 開始，在 <CODE>DELETE</CODE> 語句中可以指定多個表，用以從一個表中刪除依賴於多表中的特殊情況的記錄行。然而，在一個多表刪除中，不能使用 <CODE>ORDER BY</CODE> 或 <CODE>LIMIT</CODE>。
+</P>
+
+
+
+<H3><A NAME="TRUNCATE"></A>6.4.7  <CODE>TRUNCATE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1440"></A>
+
+</P>
+
+<PRE>
+TRUNCATE TABLE table_name
+</PRE>
+
+<P>
+在 3.23 中，<CODE>TRUNCATE TABLE</CODE> 被映射為 <CODE>COMMIT ; DELETE FROM table_name</CODE>。查看章節 <A HREF="06-4.html#DELETE">6.4.6  <CODE>DELETE</CODE> 句法</A>。
+</P>
+
+<P>
+在下面的方式中，<CODE>TRUNCATE TABLE</CODE> 不同於 <CODE>DELETE FROM ...</CODE>：
+</P>
+
+<UL>
+<LI>
+刪簡操作撤銷並重建表，這將比一個接一個地刪除記錄行要快得多。
+
+<LI>
+非事務安全的﹔如果存在一個活動的事務或一個有效的表鎖定，你將會得到一個錯誤。
+
+<LI>
+不傳回刪除了的記錄行數目。
+
+<LI>
+只要表定義文件 <TT>`table_name.frm'</TT> 是有效的，即使資料或索引文件已經被損壞，也可以通過這種方式重建表。
+</UL>
+
+<P>
+<CODE>TRUNCATE</CODE> 是一個 Oracle SQL 的擴展。
+
+</P>
+
+
+<H3><A NAME="REPLACE"></A>6.4.8  <CODE>REPLACE</CODE>句法</H3>
+
+<P>
+<A NAME="IDX1441"></A>
+
+</P>
+
+<PRE>
+    REPLACE [LOW_PRIORITY | DELAYED]
+        [INTO] tbl_name [(col_name,...)]
+        VALUES (expression,...),(...),...
+or  REPLACE [LOW_PRIORITY | DELAYED]
+        [INTO] tbl_name [(col_name,...)]
+        SELECT ...
+or  REPLACE [LOW_PRIORITY | DELAYED]
+        [INTO] tbl_name
+        SET col_name=expression, col_name=expression,...
+</PRE>
+
+<P>
+<CODE>REPLACE</CODE> 功能與 <CODE>INSERT</CODE> 完全一樣，除了如果在表中存在一個老的記錄與新記錄在一個 <CODE>UNIQUE</CODE> 或 <CODE>PRIMARY KEY</CODE> 上有相同的值，那麼在新記錄被插入之前，老的記錄將被刪除。查看章節 <A HREF="06-4.html#INSERT">6.4.3  <CODE>INSERT</CODE> 句法</A>。
+</P>
+
+<P>
+換句話說，你不可以從一個 <CODE>REPLACE</CODE> 中存取老的記錄行的值。某些老的 MySQL 版本中，你或許可以這樣做，但是這是一個 Bug，現在已被修正了。
+</P>
+
+<P>
+為了能夠使用 <CODE>REPLACE</CODE>，你必須有對該表的 <CODE>INSERT</CODE> 和 <CODE>DELETE</CODE> 權限。
+</P>
+
+<P>
+當你使用一個 <CODE>REPLACE</CODE> 時，如果新的記錄行代替了老的記錄行，<CODE>mysql_affected_rows()</CODE> 將傳回 2。這是因為在新行被插入之前，重復記錄行被先刪除了。
+</P>
+
+<P>
+這個事實使得判斷 <CODE>REPLACE</CODE> 是否是加入一條記錄還是取代一條記錄很容易：檢查受影響記錄行的值是 1 (加入)還是 2(取代)。
+</P>
+
+<P>
+注意，除非你使用一個 <CODE>UNIQUE</CODE> 索引或 <CODE>PRIMARY KEY</CODE> ，使用 <CODE>REPLACE</CODE> 命令是沒有感覺的，因為它會僅僅執行一個 <CODE>INSERT</CODE>。
+</P>
+
+
+
+<H3><A NAME="LOAD_DATA"></A>6.4.9  <CODE>LOAD DATA INFILE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1442"></A>
+
+</P>
+
+<PRE>
+LOAD DATA [LOW_PRIORITY | CONCURRENT] [LOCAL] INFILE 'file_name.txt'
+    [REPLACE | IGNORE]
+    INTO TABLE tbl_name
+    [FIELDS
+        [TERMINATED BY '\t']
+        [[OPTIONALLY] ENCLOSED BY '']
+        [ESCAPED BY '\\' ]
+    ]
+    [LINES TERMINATED BY '\n']
+    [IGNORE number LINES]
+    [(col_name,...)]
+</PRE>
+
+<P>
+<CODE>LOAD DATA INFILE</CODE> 語句以非常高的速度從一個純文字文件中讀取記錄行並插入到一個表中。如果 <CODE>LOCAL</CODE> 關鍵詞被指定，文件從客戶端主機讀取。如果 <CODE>LOCAL</CODE> 沒有被指定，文件必須位於伺服器上。(<CODE>LOCAL</CODE> 在 MySQL 3.22.6 或更新的版本中被支援。)
+</P>
+
+<P>
+由於安全性的原因，當讀取位於伺服器端的純文字文件時，文件必須處於資料庫目錄或可被所有人讀取的地方。同時，為了對伺服器端的文件使用 <CODE>LOAD DATA INFILE</CODE>，你必須在伺服器主機上有 <CODE>FILE</CODE> 權限。查看章節 <A HREF="manual1.html#Privileges_provided">4.2.7  由 MySQL 提供的權限</A>。
+</P>
+
+<P>
+在 MySQL 3.23.49 和 MySQL 4.0.2 中，只有當你沒有以 <CODE>--local-infile=0</CODE> 選項啟動 <CODE>mysqld</CODE>，或你沒有禁止你的客戶端程式支援 <CODE>LOCAL</CODE>的情況下，<CODE>LOCAL</CODE> 才會工作。查看章節 <A HREF="manual1.html#LOAD_DATA_LOCAL">4.2.4  LOAD DATA LOCAL 的安全性問題</A>.
+
+</P>
+<P>
+如果你指定關鍵詞 <CODE>LOW_PRIORITY</CODE>，<CODE>LOAD DATA</CODE> 語句的執行將會被延遲，直到沒有其它的客戶端正在讀取表。
+</P>
+
+<P>
+如果你對一個 <CODE>MyISAM</CODE> 表指定關鍵詞 <CODE>CONCURRENT</CODE>，那麼當 <CODE>LOAD DATA</CODE>正在執行時，其它的線程仍可以從表中檢索資料。使用這個選項時，如果同時也有其它的線程正在使用表，這當然會有一點影響 <CODE>LOAD DATA</CODE> 的執行性能。
+</P>
+
+<P>
+使用 <CODE>LOCAL</CODE> 將比讓伺服器直接存取文件要慢一些，因為文件的內容必須從客戶端主機傳送到伺服器主機。而在另一方面，你不再需要有 <CODE>FILE</CODE> 權限用於裝載本地文件。
+</P>
+
+<P>
+如果你使用先於 MySQL 3.23.24 的版本，你不能夠以 <CODE>LOAD DATA INFILE</CODE> 讀取一個 FIFO 。如果你需要從一個 FIFO (例如，gunzip 的輸出文件) 中讀取，可以使用 <CODE>LOAD DATA LOCAL INFILE</CODE> 代替。
+</P>
+
+<P>
+<A NAME="IDX1443"></A>
+你也可以使用 <CODE>mysqlimport</CODE> 實用程式裝載資料文件﹔它通過發送一個 <CODE>LOAD DATA INFILE</CODE> 命令到伺服器來動作。<CODE>--local</CODE> 選項使得 <CODE>mysqlimport</CODE> 從客戶端主機讀取資料文件。如果客戶端與伺服器支援壓縮協定，你可以指定 <CODE>--compress</CODE> 選項，以在較慢的網路中獲得更好的性能。
+</P>
+
+<P>
+當從伺服器主機定位文件時，伺服器使用下列規則：
+</P>
+
+<UL>
+<LI>
+如果給定一個完整的路徑，伺服器使用該路徑名。
+
+<LI>
+如果給定一個有一個或多個前置構件的相對路徑，伺服器以相對伺服器的資料目錄搜尋文件。
+
+<LI>
+如果給定一個沒有前置構件的文件名，伺服器從目前資料庫的資料庫目錄搜尋文件。
+
+</UL>
+
+<P>
+注意，這些規則意味著，一個以 <TT>`./myfile.txt'</TT> 給出的文件是從伺服器的資料目錄中讀取的，然而，以 <TT>`myfile.txt'</TT> 給出的一個文件是從目前資料庫的資料目錄下讀取的。舉例來說，下面的 <CODE>LOAD DATA</CODE> 語句從 <CODE>db1</CODE> 資料庫目錄下讀取文件 <TT>`data.txt'</TT>，因為 <CODE>db1</CODE> 是目前資料庫，即使該語句明確地指定讀取的文件被放入到 <CODE>db2</CODE> 資料庫中的一個表中：
+</P>
+
+<PRE>
+mysql&#62; USE db1;
+mysql&#62; LOAD DATA INFILE "data.txt" INTO TABLE db2.my_table;
+</PRE>
+
+<P>
+<CODE>REPLACE</CODE> 和 <CODE>IGNORE</CODE> 關鍵詞控制對與現有的記錄在唯一鍵值上重復的記錄的處理。如果你指定 <CODE>REPLACE</CODE>，新的記錄行將取代有相同唯一鍵值的現有記錄行。如果你指定 <CODE>IGNORE</CODE>，將跳過與現有的記錄行在唯一鍵值上重復的輸入記錄行。如果你沒有指定任何一個選項，當重復鍵值出現時，將會發生一個錯誤，純文字文件的剩餘部分也將被忽略。
+</P>
+
+<P>
+如果你使用 <CODE>LOCAL</CODE> 關鍵詞從一個本地文件中讀取資料，在此操作過程中，伺服器沒有辦法停止文件的傳送，因此預設的處理方式就好像是 <CODE>IGNORE</CODE> 被指定一樣。
+</P>
+
+<P>
+如果你在一個空的 <CODE>MyISAM</CODE> 表上使用 <CODE>LOAD DATA INFILE</CODE>，所有非唯一索引會以一個分批方式被建立(就像 <CODE>REPAIR</CODE>)。當有許多索引時，這通常可以使 <CODE>LOAD DATA INFILE</CODE> 更快一些。
+</P>
+
+<P>
+<CODE>LOAD DATA INFILE</CODE> 的 <CODE>SELECT ... INTO OUTFILE</CODE> 的逆操作。查看章節 <A HREF="06-4.html#SELECT">6.4.1  <CODE>SELECT</CODE> 句法</A>。
+使用 <CODE>SELECT ... INTO OUTFILE</CODE> 將資料從一個資料庫寫到一個文件中。使用 <CODE>LOAD DATA INFILE</CODE> 讀取文件到資料庫中。兩個命令的 <CODE>FIELDS</CODE> 和 <CODE>LINES</CODE> 幾句的句法是一樣的。兩個幾句都是可選的，但是如果兩個同時被指定，<CODE>FIELDS</CODE> 幾句必須出現在 <CODE>LINES</CODE> 幾句之前。
+</P>
+
+<P>
+如果你指定一個 <CODE>FIELDS</CODE> 幾句，它的幾句 (<CODE>TERMINATED BY</CODE>、<CODE>[OPTIONALLY] ENCLOSED
+BY</CODE> 和 <CODE>ESCAPED BY</CODE>) 也是可選的，不過，你必須至少指定它們中的一個。
+</P>
+
+<P>
+如果你沒有指定一個 <CODE>FIELDS</CODE> 幾句，預設的相同於如果你這樣寫：
+</P>
+
+<PRE>
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+</PRE>
+
+<P>
+如果你沒有指定一個 <CODE>LINES</CODE> 幾句，預設的相同於如果你這樣寫：
+</P>
+
+<PRE>
+LINES TERMINATED BY '\n'
+</PRE>
+
+<P>
+換句話說，當讀取輸入時，預設值導致 <CODE>LOAD DATA INFILE</CODE> 表現如下：
+</P>
+
+<UL>
+<LI>
+在換行符處尋找行的邊界。
+
+<LI>
+在定位符處將行分開放到欄位中。
+
+<LI>
+不認為欄位由任何引號字元封裝。
+
+<LI>
+將有 <SAMP>“\”</SAMP> 開頭的定位符、換行符或 <SAMP>`\'</SAMP> 解釋為欄位值的一個文字字元。
+</UL>
+
+<P>
+相反的，當寫入輸出時，預設值導致 <CODE>SELECT ... INTO OUTFILE</CODE> 表現如下：
+</P>
+
+<UL>
+<LI>
+
+在欄位值間加上定位符。
+
+<LI>
+不用任何引號字元封裝欄位。
+
+<LI>
+使用 <SAMP>“\”</SAMP> 轉義出現在欄位值中的定位符、換行符或 <SAMP>`\'</SAMP> 字元案例。
+
+<LI>
+在行的結尾處加上換行符。
+
+</UL>
+
+<P>
+注意，為了寫 <CODE>FIELDS ESCAPED BY '\\'</CODE>，你必須指定兩個反斜線，該值會作為一個反斜線被讀入。
+</P>
+
+<P>
+<CODE>IGNORE number LINES</CODE> 選項可被用於忽略文件開頭處的一個列名的頭：
+</P>
+
+<PRE>
+mysql&#62; LOAD DATA INFILE "/tmp/file_name" INTO TABLE test IGNORE 1 LINES;
+</PRE>
+
+<P>
+當你一前一後地使用 <CODE>SELECT ... INTO OUTFILE</CODE> 和 <CODE>LOAD DATA INFILE</CODE> 將資料從一個資料庫寫到一個文件中，然後再從文件中將它讀入資料庫中時，兩個命令的欄位和行處理選項必須相符。否則，<CODE>LOAD DATA INFILE</CODE> 將不能正確地解釋文件內容。假設你使用 <CODE>SELECT ... INTO OUTFILE</CODE> 以逗號分隔欄位的方式將資料寫入到一個文件中：
+</P>
+
+<PRE>
+mysql&#62; SELECT * INTO OUTFILE 'data.txt'
+    -&#62;          FIELDS TERMINATED BY ','
+    -&#62;          FROM ...;
+</PRE>
+
+<P>
+為了將由逗號分隔的文件讀回時，正確的語句應該是：
+</P>
+
+<PRE>
+mysql&#62; LOAD DATA INFILE 'data.txt' INTO TABLE table2
+    -&#62;           FIELDS TERMINATED BY ',';
+</PRE>
+
+<P>
+如果你試圖用下面所示的語句讀取文件，它將不會工作，因為命令 <CODE>LOAD DATA INFILE</CODE> 以定位符區分欄位值：
+</P>
+
+<PRE>
+mysql&#62; LOAD DATA INFILE 'data.txt' INTO TABLE table2
+    -&#62;           FIELDS TERMINATED BY '\t';
+</PRE>
+
+<P>
+可能的結果是每個輸入行將被解釋為一個單獨的欄位。
+</P>
+
+<P>
+<CODE>LOAD DATA INFILE</CODE> 也可以被用來讀取從外部來源獲得的文件。例如，dBASE 格式的文件，欄位以逗號分隔並以雙引號包圍著。如果文件中的行以一個換行符終止，那麼下面所示的可以說明你將用來裝載文件的欄位和行處理選項：
+</P>
+
+<PRE>
+mysql&#62; LOAD DATA INFILE 'data.txt' INTO TABLE tbl_name
+    -&#62;           FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+    -&#62;           LINES TERMINATED BY '\n';
+</PRE>
+
+<P>
+任何欄位和行處理選項都可以指定一個空字串(<CODE>''</CODE>)。如果不是空的，<CODE>FIELDS [OPTIONALLY] ENCLOSED BY</CODE> 和 <CODE>FIELDS ESCAPED BY</CODE> 值必須是一個單個字元。<CODE>FIELDS TERMINATED BY</CODE> 和 <CODE>LINES TERMINATED BY</CODE> 值可以超過一個字元。例如，為了寫入由回車換行符終止的行，或讀取包含這樣的行的文件，應該指定一個 <CODE>LINES TERMINATED BY '\r\n'</CODE> 幾句。
+</P>
+
+<P>
+舉例來說，為了讀取一個文件到一個 SQL 表中，文件以一行 <CODE>%%</CODE> 分隔(開玩笑的)，你可以這樣做：
+</P>
+
+<PRE>
+CREATE TABLE jokes (a INT NOT NULL AUTO_INCREMENT PRIMARY KEY, joke TEXT
+NOT NULL);
+LOAD DATA INFILE "/tmp/jokes.txt" INTO TABLE jokes FIELDS TERMINATED BY ""
+LINES TERMINATED BY "\n%%\n" (joke);
+</PRE>
+
+<P>
+<CODE>FIELDS [OPTIONALLY] ENCLOSED BY</CODE> 控制欄位的包圍字元。對於輸出 (<CODE>SELECT ... INTO OUTFILE</CODE>)，如果你省略單詞 <CODE>OPTIONALLY</CODE>，所有的欄位被 <CODE>ENCLOSED BY</CODE> 字元包圍。這樣的一個輸出文件(以一個逗號作為欄位分界符)範例如下：
+</P>
+
+<PRE>
+"1","a string","100.20"
+"2","a string containing a , comma","102.20"
+"3","a string containing a \" quote","102.20"
+"4","a string containing a \", quote and comma","102.20"
+</PRE>
+
+<P>
+如果你指定 <CODE>OPTIONALLY</CODE>，<CODE>ENCLOSED BY</CODE> 字元僅被作用於包圍 <CODE>CHAR</CODE> 和 <CODE>VARCHAR</CODE> 欄位：
+
+</P>
+
+<PRE>
+1,"a string",100.20
+2,"a string containing a , comma",102.20
+3,"a string containing a \" quote",102.20
+4,"a string containing a \", quote and comma",102.20
+</PRE>
+
+<P>
+注意，在一個欄位值中出現的 <CODE>ENCLOSED BY</CODE> 字元，通過用 <CODE>ESCAPED BY</CODE> 字元作為其前綴對其轉義。同時也要注意，如果你指定一個空的 <CODE>ESCAPED BY</CODE> 值，可能會產生不能被 <CODE>LOAD DATA INFILE</CODE> 正確讀出的輸出文件。例如，如果轉義字元為空，上面顯示的輸出將變成如下顯示的輸出。請注意第四行的第二個欄位，它包含一個逗號跟在一個引號後的兩個字元，這(錯誤的)看起來像是一個欄位的終止：
+</P>
+
+<PRE>
+1,"a string",100.20
+2,"a string containing a , comma",102.20
+3,"a string containing a " quote",102.20
+4,"a string containing a ", quote and comma",102.20
+</PRE>
+
+<P>
+對於輸入，<CODE>ENCLOSED BY</CODE> 字元如果存在，它將從欄位值的尾部被剝離。(不管 <CODE>OPTIONALLY</CODE> 是否被指定，都是這樣﹔對於輸入解釋，<CODE>OPTIONALLY</CODE> 不會影響它。) 由<CODE>ESCAPED BY</CODE> 字元領先於 <CODE>ENCLOSED BY</CODE>  字元的出現，將被解釋為目前欄位值的一部分。另外，在欄位中出現的重復的 <CODE>ENCLOSED BY</CODE> 字元被解釋為單個 <CODE>ENCLOSED BY</CODE> ，只要欄位本身也是以該字元開始的。例如，如果 <CODE>ENCLOSED BY '"'</CODE> 被指定，引號將做如下處理：
+</P>
+
+<PRE>
+"The ""BIG"" boss"  -&#62; The "BIG" boss
+The "BIG" boss      -&#62; The "BIG" boss
+The ""BIG"" boss    -&#62; The ""BIG"" boss
+</PRE>
+
+<P>
+<CODE>FIELDS ESCAPED BY</CODE> 控制如何寫入或讀出特殊字元。如果 <CODE>FIELDS ESCAPED BY</CODE> 字元不是空的，它將被用於做為下列輸出字元的前綴：
+
+<UL>
+<LI>
+<CODE>FIELDS ESCAPED BY</CODE> 字元
+
+<LI>
+<CODE>FIELDS [OPTIONALLY] ENCLOSED BY</CODE> 字元
+
+<LI>
+<CODE>FIELDS TERMINATED BY</CODE> 和 <CODE>LINES TERMINATED BY</CODE> 值的第一個字元。
+
+<LI>
+ASCII <CODE>0</CODE> (實際上在轉義字元後寫上 ASCII <CODE>'0'</CODE>，而不是一個零值字節)
+</UL>
+
+<P>
+如果 <CODE>FIELDS ESCAPED BY</CODE> 字元為空，沒有字元被轉義。指定一個空的轉義字元可能不是一個好的主意，特別是如果你的資料欄位值中包含剛才清單中的任何字元時。
+</P>
+
+<P>
+對於輸入，如果 <CODE>FIELDS ESCAPED BY</CODE> 字元不為空，該字元的出現將會被剝離，後續的字元在字面上做為欄位值的一部分。除了一個轉義的 <SAMP>“0”</SAMP> 或 <SAMP>“N”</SAMP> (即，<CODE>\0</CODE> 或<CODE>\N</CODE>，如果轉義字元為 <SAMP>`\'</SAMP>)。這些序列被解釋為 ASCII <CODE>0</CODE> (一個零值字節) 和 <CODE>NULL</CODE>。查看下面的有關 <CODE>NULL</CODE> 處理的規則。
+</P>
+
+<P>
+關於更多的 <SAMP>“\”</SAMP> 轉義句法資訊，查看章節 <A HREF="06-1.html#Literals">6.1.1  文字：怎麼寫字串與數位</A>。
+</P>
+
+<P>
+在某些情況下，欄位與行處理相互作用：
+</P>
+
+<UL>
+<LI>
+如果 <CODE>LINES TERMINATED BY</CODE> 是一個空字串，<CODE>FIELDS TERMINATED BY</CODE> 是非空的，行也用 <CODE>FIELDS TERMINATED BY</CODE> 終止。
+
+<LI>
+如果 <CODE>FIELDS TERMINATED BY</CODE> 和 <CODE>FIELDS ENCLOSED BY</CODE> 值都是空的 (<CODE>''</CODE>)，一個固定行(無定界符) 格式被使用。用固定行格式時，在欄位之間不使用分隔符。代替的，列值的寫入和讀取使用列的“顯示”寬度。例如，如果一個列被定義為 <CODE>INT(7)</CODE>，列的值將使用 7 個字元的欄位被寫入。對於輸入，列值通過讀取 7 個字元來獲得。固定行格式也影響對 <CODE>NULL</CODE> 值的處理﹔見下面。注意，如果你正在使用一個多字節的字元集，固定長度格式將不能工作。
+
+</UL>
+
+<P>
+<CODE>NULL</CODE> 值的處理有很多，取決於你所使用的 <CODE>FIELDS</CODE> 和 <CODE>LINES</CODE> 選項：
+</P>
+
+<UL>
+<LI>
+對於預設的 <CODE>FIELDS</CODE> 和 <CODE>LINES</CODE> 值，輸出時，<CODE>NULL</CODE> 被寫成 <CODE>\N</CODE>，當讀入時，<CODE>\N</CODE> 被作為 <CODE>NULL</CODE> 讀入(假設 <CODE>ESCAPED BY</CODE> 字元為 <SAMP>“\”</SAMP>)。
+
+<LI>
+如果 <CODE>FIELDS ENCLOSED BY</CODE> 是非空的，一個欄位包含文字詞 <CODE>NULL</CODE> 的，它的值做為一個 <CODE>NULL</CODE> 值被讀入 (這不同於被 <CODE>FIELDS ENCLOSED BY</CODE> 包圍的詞 <CODE>NULL</CODE>，它是被作為 <CODE>'NULL'</CODE> 讀入的)。
+
+<LI>
+如果 <CODE>FIELDS ESCAPED BY</CODE> 是空的，<CODE>NULL</CODE> 值被寫為詞 <CODE>NULL</CODE>。
+
+<LI>
+用固定行格式時 (它發生於 <CODE>FIELDS TERMINATED BY</CODE> 和 <CODE>FIELDS ENCLOSED BY</CODE> 兩者均為空)，<CODE>NULL</CODE> 被寫為一個空的字串。注意，當將表中的 <CODE>NULL</CODE> 值和空字串一起寫到文件中時，它們將被混淆，因為它們都是作為空字串被寫入的。如果你在文件時，需要對他們兩個進行區分，你不應該使用固定行格式。
+
+</UL>
+
+<P>
+一些不能被 <CODE>LOAD DATA INFILE</CODE> 支援的情況：
+
+<UL>
+
+<LI>
+固定尺寸的記錄行 (<CODE>FIELDS TERMINATED BY</CODE> 和 <CODE>FIELDS ENCLOSED BY</CODE> 均為空) 和 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 列。
+
+<LI>
+如果你指定一個分隔符與另一個相同，或是另一個的前綴，<CODE>LOAD DATA INFILE</CODE> 可能會不能正確地解釋輸入。例如，下列的 <CODE>FIELDS</CODE> 幾句將會產生問題：
+
+<PRE>
+FIELDS TERMINATED BY '"' ENCLOSED BY '"'
+</PRE>
+
+<LI>
+如果 <CODE>FIELDS ESCAPED BY</CODE> 為空，一個欄位值中包含有 <CODE>FIELDS ENCLOSED BY</CODE> 或 <CODE>LINES TERMINATED BY</CODE> 被 <CODE>FIELDS TERMINATED BY</CODE> 跟隨的值時，將會引起 <CODE>LOAD DATA INFILE</CODE> 過早地停止讀取一個欄位或一行。這是因為 <CODE>LOAD DATA INFILE</CODE> 不能夠正確地決定欄位或行值在哪裡結果。
+</UL>
+
+<P>
+下面的範例將裝載 <CODE>persondata</CODE> 表的所有列：
+</P>
+
+<PRE>
+mysql&#62; LOAD DATA INFILE 'persondata.txt' INTO TABLE persondata;
+</PRE>
+
+<P>
+沒有欄位列被指定，因而 <CODE>LOAD DATA INFILE</CODE> 認為輸入行包含表列中所有的欄位。使用預設的 <CODE>FIELDS</CODE> 和
+<CODE>LINES</CODE> 值。
+</P>
+
+<P>
+如果你希望裝載表中的某些列，那指定一個欄位清單：
+</P>
+
+<PRE>
+mysql&#62; LOAD DATA INFILE 'persondata.txt'
+    -&#62;           INTO TABLE persondata (col1,col2,...);
+</PRE>
+
+<P>
+如果輸入文件的欄位次序不同於表中列的順序，你也必須指定一個欄位清單。否則 MySQL 不知道如何將輸入欄位與表中的列相符。
+</P>
+
+<P>
+如果一個行有很少的欄位，沒有輸入欄位的列將被設定為預設值。預設值賦值在章節 <A HREF="06-5.html#CREATE_TABLE">6.5.3  <CODE>CREATE TABLE</CODE> 句法</A> 中被描述。
+</P>
+
+<P>
+一個空的欄位值不同於欄位值丟失的解釋：
+</P>
+
+<UL>
+<LI>
+對於字串類型，列被設定為空字串。
+
+<LI>
+對於數位類型，列被設定為 <CODE>0</CODE>。
+
+<LI>
+對於日期和時間類型，列被設定為適合列類型的“零”值。查看章節 <A HREF="06-2.html#Date_and_time_types">6.2.2  Date 和 Time 類型</A>。
+</UL>
+
+<P>
+注意，如果在一個 <CODE>INSERT</CODE> 或 <CODE>UPDATE</CODE> 語句中明確地將一個空字串賦給一個字串、數位或日期或時間類型，你會得到與上面相同的結果。
+</P>
+
+<P>如果對 <CODE>TIMESTAMP</CODE> 列指定一個 <CODE>NULL</CODE> 值，或者當欄位清單被指定時， <CODE>TIMESTAMP</CODE> 在欄位清單中被遺漏(僅僅第一個 <CODE>TIMESTAMP</CODE> 列被影響)，<CODE>TIMESTAMP</CODE> 列會被設定為目前的日期和時間。
+</P>
+
+<P>
+如果輸入的記錄行有太多的欄位，多餘的欄位將被忽略，並增加警告的數目。
+</P>
+
+<P>
+<CODE>LOAD DATA INFILE</CODE> 認為所有的輸入均是字串，因而，對於  <CODE>ENUM</CODE> 或 <CODE>SET</CODE> 列，你不能以 <CODE>INSERT</CODE> 語句的形式為其設定數位值。所有的 <CODE>ENUM</CODE> 和 <CODE>SET</CODE> 必須以字串指定！
+</P>
+
+<P>
+<A NAME="IDX1444"></A>
+如果你正在使用 C API，當 <CODE>LOAD DATA INFILE</CODE> 查詢結束時，你可以調用 API 函數 <CODE>mysql_info()</CODE> 獲得有關查詢的資訊。資訊串的格式如下：
+</P>
+
+<PRE>
+Records: 1  Deleted: 0  Skipped: 0  Warnings: 0
+</PRE>
+
+<P>
+警告會在某些情況下發生，這些情況與值通過 <CODE>INSERT</CODE> 語句插入時發生警告的情況一樣 (查看章節 <A HREF="06-4.html#INSERT">6.4.3  <CODE>INSERT</CODE> 句法</A>)，但是 <CODE>LOAD DATA INFILE</CODE> 有一點與它不一樣，當在輸入行中有太多或過少的欄位，它也會產生警告。警告不會被儲存在任何地主﹔警告的數目僅能表示一切是否順利。如果得到警告，並希望確切地知道為什麼會得到它們，一個方法就是使用 <CODE>SELECT ... INTO OUTFILE</CODE>，將它保存到另外一個文件中，並與原先的輸入文件進行比較。
+</P>
+
+<P>
+如果你需要 <CODE>LOAD DATA</CODE> 從一個管道中讀取，你可以使用下面的技巧：
+</P>
+
+<PRE>
+mkfifo /mysql/db/x/x
+chmod 666 /mysql/db/x/x
+cat &#60; /dev/tcp/10.1.1.12/4711 &#62; /nt/mysql/db/x/x
+mysql -e "LOAD DATA INFILE 'x' INTO TABLE x" x
+</PRE>
+
+<P>
+如果你使用的版本早於 MySQL 3.23.25，你只能通過 <CODE>LOAD DATA LOCAL INFILE</CODE> 來執行上面。
+</P>
+
+<P>
+有關 <CODE>INSERT</CODE> 相對 <CODE>LOAD DATA INFILE</CODE> 的效率和加快 <CODE>LOAD DATA INFILE</CODE> 的更多資訊，請查看章節 <A HREF="manual1.html#Insert_speed">5.2.9  <CODE>INSERT</CODE> 查詢的速度</A>。
+</P>
+
+
+
+<H3><A NAME="DO">6.4.10  <CODE>DO</CODE> 句法</A></H3>
+
+<P>
+<A NAME="IDX1445"></A>
+
+</P>
+
+<PRE>
+DO expression, [expression, ...]
+</PRE>
+
+<P>
+執行表達式，但不傳回任何結果。這是 <CODE>SELECT expression, expression</CODE> 的一個縮寫，但是當你並不關心結果時，它稍有點優勢，因為它稍稍快一點。
+</P>
+
+<P>
+這主要有益於有副作用的函數，比如 <CODE>RELEASE_LOCK</CODE>。
+</P>
+
+
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="../../flash/onlined41d.html?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+ 
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-4.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+</HTML>

@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh" lang="zh-TW">
+<head>
+<meta name="generator" content="HTML Tidy for Linux/x86 (vers 1st November 2003), see www.w3.org" />
+<title>[簡報] Gearman</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="copyright" content="Copyright &#169; 2005 W3C (MIT, ERCIM, Keio)" />
+<meta name="font-size-adjustment" content="-2" />
+<link rel="stylesheet" href="slidy.css" type="text/css" media="screen, projection, print" />
+<link rel="stylesheet" href="w3c-blue2.css" type="text/css" media="screen, projection, print" />
+<script src="slidy.js" charset="utf-8" type="text/javascript"> </script>
+</head>
+<body >
+<style type="text/css">
+@font-face { font-family: Mido; src: url(./rc/Mido.otf); }
+@font-face { font-family: Mido; font-weight: bold; src: url(./rc/Mido.otf); }
+body       { background: url(./rc/background.jpg); font-family: Mido, "細明體", Georgia, "Times New Roman", Times, serif, "Gill Sans MT", "Gill Sans", GillSans, sans-serif; }
+</style>
+
+
+<div class="background">
+    <img alt="" id="head-icon" src="icon-blue.png" />
+</div>
+<div class="slide cover title">
+    <img class="hidden" src="bullet.png" alt="" />
+    <img class="hidden" src="fold.gif" alt="" />
+    <img class="hidden" src="unfold.gif" alt="" />
+    <img class="hidden" src="fold-dim.gif" alt="" />
+    <img class="hidden" src="nofold-dim.gif" alt="" />
+    <img class="hidden" src="unfold-dim.gif" alt="" />
+    <img class="hidden" src="bullet-fold.gif" alt="" />
+    <img class="hidden" src="bullet-unfold.gif" alt="" />
+    <img class="hidden" src="bullet-fold-dim.gif" alt="" />
+    <img class="hidden" src="bullet-nofold-dim.gif" alt="" />
+    <img class="hidden" src="bullet-unfold-dim.gif" alt="" />
+    <img src="rc/queue.jpg" /><br clear="all" />
+    <h1>Queue { Q }</h1>
+    <p>
+        排程應用
+    </p>
+
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>序</h1>
+    <p></p>
+    <ol class="">
+        <li>困難</li>
+        <li>crontab</li>
+        <li>queue</li>
+        <li>support</li>
+        <li>gearman</li>
+        <li>demo</li>
+    </ol>
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>困難</h1>
+    <ul class="incremental">
+        <li>深夜時呼叫程式處理作業</li>
+        <li>工作可分派給空閒的Ｎ個伺服器來作業</li>
+        <li>可以一次分派多個工作給負載能力強的伺服器來作業</li>
+        <li>先丟的工作可以先執行</li>
+        <li>例如：</li>
+        <li>　　　　半夜發電子報</li>
+        <li>　　　　背景轉換照片與影音檔案</li>
+        <li>　　　　用戶寄送特定時間的電子賀卡</li>
+        <li>　　　　每小時批送訂單</li>
+        <li>　　　　more ......</li>
+    </ul>
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>crontab</h1>
+    <ul class="incremental">
+        <li>可以非即時作業</li>
+        <li>可以循環作業</li>
+        <li>可以做簡易的分流負載</li>
+        <li>不易做到多工作同時執行</li>
+        <li>其它</li>
+    </ul>
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>queue 需求</h1>
+    <ul class="incremental">
+        <li>必須要能 非即時、循環作業</li>
+        <li>必須要能 分散式、分流負載</li>
+        <li>必須要能 多種類多工作同時執行作業</li>
+        <li>必須要能 先後順序，並且不能重覆取得該作業</li>
+        <li>其它</li>
+    </ul>
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>support</h1>
+    <ul class="incremental">
+        <li>
+            <ul class="">
+                <li>0MQ</li>
+                <li>Amazon Simple Queue System (SQS)</li>
+                <li>Apache MQ</li>
+                <li>Apache Qpid</li>
+                <li style="color:#d00">Beanstalkd</li>
+                <li style="color:#d00">Dropr</li>
+                <li>Gearman (Perl system by Danga)</li>
+                <li style="color:#d00">Gearman (C)</li>
+                <li>Microsoft Message Queuing (MSMQ)</li>
+                <li>Minimalist Queue Services (MQS) abandoned project</li>
+                <li>Q4M (MySQL Pluggable storage engine)</li>
+                <li>OpenAMQ</li>
+                <li>Open Source Message Queue (OSMQ)</li>
+                <li>Peafowl</li>
+                <li>RabbitMQ</li>
+                <li>Red Hat Enterprise MRG</li>
+                <li>Starling</li>
+                <li>Sun Java System Message Queue</li>
+                <li>Z Message Queue (abandoned project)</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1><img src="rc/beb.jpg" /></h1>
+
+    <div class="incremental" style="margin-left: 4em; position: relative;">
+        <table width="860" border="1" cellpadding="0" cellspacing="0" style="word-break:break-all; word-wrap:break-word; table-layout:fixed;">
+            <tbody>
+                <tr>
+                    <td colspan="6">Queue</td>
+                </tr>
+                <tr>
+                    <td width=""></td>
+                    <td width="">crontab<br />(no queue)</td>
+                    <td width="">php shell<br />(no queue)</td>
+                    <td width="">Dropr</td>
+                    <td width="">Beanstalkd</td>
+                    <td width="">Gearman</td>
+                </tr>
+                <tr>
+                    <td>language</td>
+                    <td>crontab</td>
+                    <td>php</td>
+                    <td>php,shell</td>
+                    <td>c</td>
+                    <td>c</td>
+                </tr>
+                <tr>
+                    <td>call server</td>
+                    <td></td>
+                    <td></td>
+                    <td>curl (web)</td>
+                    <td>Yes</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>server重啟後的工作能銜接</td>
+                    <td></td>
+                    <td></td>
+                    <td>Yes</td>
+                    <td>Yes</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>server中斷時的工作會如何</td>
+                    <td></td>
+                    <td></td>
+                    <td>重新執行</td>
+                    <td>?</td>
+                    <td>重新執行(＊)</td>
+                </tr>
+                <tr>
+                    <td>效能</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>勝</td>
+                    <td>勝</td>
+                </tr>
+                <tr>
+                    <td>memory</td>
+                    <td></td>
+                    <td></td>
+                    <td>?</td>
+                    <td>0.5Mb</td>
+                    <td>1.4Mb</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>gearman 自我介紹</h1>
+    <ul class="incremental" >
+        <li>gearman ＝ 齒輪男</li>
+        <li><img src="rc/gearman2.jpg" width="160" /></li>
+        <li><img src="rc/gearman3.jpg" width="160" /></li>
+        <li><img src="rc/gearman1.jpg" width="160" /></li>
+    </ul>
+</div>
+
+<div class="slide">
+    <h1>齒輪男生平</h1>
+    <ul class="incremental" >
+        <li>生於 2005 年, 目前 5 歲左右</li>
+        <li>為 LiveJournal.com 工作</li>
+        <li>resize photo by perl</li>
+        <li>2008 年用 C 重新撰寫</li>
+        <li>經歷: <br />
+                Digg: 45+servers, 400k jobs/day <br />
+                Yahoo: 60+ servers, 6M jobs/day <br />
+                Xing.com <br />
+                金山逍遙網 <br />
+                同時也是 MogileFS 的核心組件 ( MogileFS 是分布式文件存儲的解決方案) <br />
+        </li>
+    </ul>
+</div>
+
+<div class="slide">
+    <h1>為何選擇 gearman</h1>
+    <ul class="incremental" >
+        <li>Open Source</li>
+        <li>Multi-language</li>
+        <li>Fast</li>
+        <li>mysql backup by queue</li>
+        <li>Multi-worker</li>
+        <li>Multi-server</li>
+    </ul>
+</div>
+
+<div class="slide">
+    <h1>gearman 使用上的限制</h1>
+    <ul class="incremental">
+        <li>在虛擬主機上可能會無法使用 gearman</li>
+        <li>在 windows 主機上無法使用 gearman</li>
+        <li>其它~</li>
+    </ul>
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>gearman 流程介紹</h1>
+    <ul class="incremental" >
+        <li><img src="rc/Gearman Stack.png" /></li>
+        <li><img src="rc/Gearman Cluster.png" /></li>
+        <li style="top: -530px; left:530px; position: relative;" >稍撓信服務</li>
+        <li style="top: -530px; left:530px; position: relative;" ><img src="rc/code0.jpg" /></li>
+        <li style="top: -530px; left:530px; position: relative;" ><img src="rc/code1.jpg" /></li>
+        <li style="top: -530px; left:530px; position: relative;" ><img src="rc/code2.jpg" /></li>
+
+    </ul>
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>在那裡～♪　在那裡～♬</h1>
+
+    <div class="incremental" style="margin-left: 4em; position: relative;">
+        <img src="rc/where1.jpg" style="position: static; vertical-align: bottom;" />
+        <img src="rc/where2.jpg" style="position: absolute; left: 0pt; top: 0pt;" />
+    </div>
+
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>如何安裝 by Ubuntu</h1>
+    <ul class="incremental" >
+        <li>install</li>
+        <li>　　vi /etc/apt/sources.list.d/gearman-developers-ppa-karmic.list</li>
+        <li>　　　　deb http://ppa.launchpad.net/gearman-developers/ppa/ubuntu karmic main</li>
+        <li>　　apt-get install libevent-dev gearman libgearman libgearman-dev dirzzle</li>
+        <li>　　pecl install channel://pecl.php.net/gearman-0.7.0</li>
+        <li>init</li>
+        <li>　　/etc/init.d/gearman-job-server start</li>
+        <li>　　gearmand -q libdrizzle --libdrizzle-host=127.0.0.1 \ <br />
+            　　　　　　--libdrizzle-user=root --libdrizzle-password=root \ <br />
+            　　　　　　--libdrizzle-db=gearman --libdrizzle-table=gearman_queue_table \ <br />
+            　　　　　　-vvv --libdrizzle-mysql -d -u root <br />
+        </li>
+    </ul>
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1><img src="rc/logo_gearman.gif" /></h1>
+    <p>其它功能參閱</p>
+    <ul class="" >
+        <li>http://tw2.php.net/manual/en/class.gearmanclient.php</li>
+        <li>http://tw2.php.net/manual/en/class.gearmanjob.php</li>
+        <li>http://tw2.php.net/manual/en/class.gearmantask.php</li>
+        <li>http://tw2.php.net/manual/en/class.gearmanworker.php</li>
+    </ul>
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>Resource</h1>
+    <p>resource list</p>
+    <ul>
+        <li>原文</li>
+        <li>　　http://www.darkcoding.net/software/choosing-a-message-queue-for-python-on-ubuntu-on-a-vps/</li>
+        <li>中文</li>
+        <li>　　http://blog.1983th.cn/2010/04/gearman/</li>
+        <li>　　http://www.yeeach.com/digg/%25E6%258A%2580%25E6%259C%25AF-%25E9%25AB%2598%25E6%2580%25A7%25E8%2583%25BD%25E6%259C%258D%25E5%258A%25A1/Gearman_%E7%A9%B7%E4%BA%BA%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F/</li>
+        <li>原文PDF</li>
+        <li>　　http://oddments.org/wiki/data/media/presentations/drizzle/libdrizzle_200904_mysql_uc.pdf</li>
+        <li>　　http://oddments.org/wiki/data/media/presentations/gearman/gearman_200904_mysql_uc.pdf</li>
+        <li>　　http://oddments.org/wiki/data/media/presentations/gearman/gearman_200904_percona.pdf</li>
+    </ul>
+</div>
+
+<!-- ================================================================================ -->
+<div class="slide">
+    <h1>Slide Shows in XHTML</h1>
+
+    <ul>
+        <li>Control
+            <ul>
+                <li>Left , Right , PgUp , PgDn </li>
+                <li>Home , End</li>
+                <li>C - list</li>
+                <li>F11 to go full screen and back</li>
+                <li>F - toggles the display of the footer</li>
+                <li>A - toggles display of current vs all slides
+                    <ul>
+                        <li>Use the "A" key when you want to view or print all slides</li>
+                        <li>Try it now to see how to include notes for handouts (this is explained in the notes following this slide)</li>
+                    </ul>
+                </li>
+                <li>Font sizes automatically adapt to browser window size
+                    <ul>
+                        <li>use <strong>S</strong> and <strong>B</strong> keys for manual control (or &lt; and &gt;, or the <strong>-</strong> and <strong>+</strong> keys on the number pad</li>
+                        <li>See also the <a href="#(13)">use of the meta element for adjusting the default Slidy behavior</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<!-- ================================================================================ -->
+</body>
+</html>

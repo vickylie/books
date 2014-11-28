@@ -1,0 +1,3706 @@
+  <HTML>
+  
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-3.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+<HEAD>
+  <TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+   <style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+   <META http-equiv="Content-Type" content="text/html; charset=big5">
+   <META name="description" content="MySQL 4.1.0  中文參考手冊">
+   <META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+   <LINK rel="shortcut icon" href="shuixin13.ico" />
+   <LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+
+  </HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+<H1>MySQL Reference Manual for version 4.1.0-alpha.</H1>
+<P>
+<P><HR>
+<H2><A NAME="Functions"></A>6.3  用於 <CODE>SELECT</CODE> 和 <CODE>WHERE</CODE> 幾句的函數</H2>
+
+<P> 一個 SQL 語句中的 <CODE>select_expression</CODE> 或 <CODE>where_definition</CODE> 
+  可由任何使用了下面所描述函數的表達式組成。 </P>
+<P>
+包含 <CODE>NULL</CODE> 的表達式總是得出一個 <CODE>NULL</CODE> 值結果，除非表達式中的操作和函數在文件中有另外的說明。
+</P>
+
+<P>
+<STRONG>注意：</STRONG>在一個函數名和跟隨它的括號之間必須不存在空格。這有助於 MySQL 語法分析程式區分函數調用和對恰巧與函數同名表或列的參照。然而，參數左右兩邊的空格卻是允許的。
+</P>
+<P>
+你可以強制 MySQL 接受函數名後存在空格的形式，這需要通過以 <CODE>--ansi</CODE> 選項啟動 <CODE>mysqld</CODE>，或在 <CODE>mysql_connect()</CODE> 中使用 <CODE>CLIENT_IGNORE_SPACE</CODE>，但是，在這種情況下，所有的函數名均將成為保留字。查看章節 <A HREF="manual1.html#ANSI_mode">1.8.2  以 ANSI 樣式運行 MySQL</A>.
+
+</P>
+<P>
+為了簡潔，從 <CODE>mysql</CODE> 程式輸出的範例以縮寫的形式顯示。因此：
+</P>
+
+<PRE>
+mysql&#62; SELECT MOD(29,9);
+1 rows in set (0.00 sec)
+
++-----------+
+| mod(29,9) |
++-----------+
+|         2 |
++-----------+
+</PRE>
+
+<P>
+將被顯示為這樣：
+</P>
+
+<PRE>
+mysql&#62; SELECT MOD(29,9);
+        -&#62; 2
+</PRE>
+
+
+
+<H3><A NAME="Non-typed_Operators"></A>6.3.1  無類型的特殊運算幾和函數</H3>
+
+
+
+<H4><A NAME="Parentheses"></A>6.3.1.1  圓括號</H4>
+
+<P> ( ... ) </P>
+
+<P>
+括號，使用它來強制一個表達式的計算順序。
+</P>
+
+<PRE>
+mysql&#62; SELECT 1+2*3;
+        -&#62; 7
+mysql&#62; SELECT (1+2)*3;
+        -&#62; 9
+</PRE>
+
+
+
+<H4><A NAME="Comparison_Operators"></A>6.3.1.2  比較運算幾</H4>
+
+<P> 比較運算幾的結果是 <CODE>1</CODE> (TRUE)、<CODE>0</CODE> (FALSE) 或 <CODE>NULL</CODE>。這些函數可工作於數位和字串上。根據需要，字串將會自動地被轉換到數位，以及數位被轉換成字串(比如在 
+  Perl 中)。 </P>
+<P>
+MySQL 使用下列規則進行比較：
+</P>
+
+<UL>
+<LI>
+如果一個或兩個參數是 <CODE>NULL</CODE>，比較的結果是 <CODE>NULL</CODE>，除了 <CODE>&#60;=&#62;</CODE> 運算幾。
+
+<LI>
+如果在一個比較操作中兩個參數均是字串，他們將作為字串被比較。
+
+<LI>
+如果兩個參數均是整數，他們作為整數被比較。
+
+<LI>
+十六進制值如果不與一個數位進行比較，那麼它將當作一個二進位字串。
+
+  <LI> 如果參數之一是一個 <CODE>TIMESTAMP</CODE> 或 <CODE>DATETIME</CODE> 列，而另一參數是一個常數，在比較執行之前，這個常數被轉換為一個時間戳。這樣做是為了對 
+    ODBC 更友好。 
+  <LI>
+在所有其它情況下，參數作為浮點(real)數位被比較。
+</UL>
+
+<P>
+預設地，字串使用目前字元集以忽略字母大小寫的方式進行比較(預設的字元集為 ISO-8859-1 Latin1，它對英語處理得很出色)。
+</P>
+
+<P>
+下面的範例演示了對於比較操作字串到數位的轉換：
+</P>
+
+<PRE>
+mysql&#62; SELECT 1 &#62; '6x';
+         -&#62; 0
+mysql&#62; SELECT 7 &#62; '6x';
+         -&#62; 1
+mysql&#62; SELECT 0 &#62; 'x6';
+         -&#62; 0
+mysql&#62; SELECT 0 = 'x6';
+         -&#62; 1
+</PRE>
+
+<DL COMPACT>
+
+<DT><CODE>=</CODE>
+<DD>
+<A NAME="IDX1115"></A>
+ <A NAME="IDX1116"></A>
+ 
+等於：
+
+<PRE>
+mysql&#62; SELECT 1 = 0;
+        -&#62; 0
+mysql&#62; SELECT '0' = 0;
+        -&#62; 1
+mysql&#62; SELECT '0.0' = 0;
+        -&#62; 1
+mysql&#62; SELECT '0.01' = 0;
+        -&#62; 0
+mysql&#62; SELECT '.01' = 0.01;
+        -&#62; 1
+</PRE>
+
+<A NAME="IDX1117"></A>
+<A NAME="IDX1118"></A>
+<A NAME="IDX1119"></A>
+<A NAME="IDX1120"></A>
+<DT><CODE>&#60;&#62;</CODE>
+<DD>
+<DT><CODE>!=</CODE>
+<DD>
+不等於：
+
+<PRE>
+mysql&#62; SELECT '.01' &#60;&#62; '0.01';
+        -&#62; 1
+mysql&#62; SELECT .01 &#60;&#62; '0.01';
+        -&#62; 0
+mysql&#62; SELECT 'zapp' &#60;&#62; 'zappp';
+        -&#62; 1
+</PRE>
+
+<A NAME="IDX1121"></A>
+<A NAME="IDX1122"></A>
+<DT><CODE>&#60;=</CODE>
+<DD>
+小於或等於：
+
+<PRE>
+mysql&#62; SELECT 0.1 &#60;= 2;
+        -&#62; 1
+</PRE>
+
+<A NAME="IDX1123"></A>
+<A NAME="IDX1124"></A>
+<DT><CODE>&#60;</CODE>
+<DD>
+小於：
+
+<PRE>
+mysql&#62; SELECT 2 &#60; 2;
+        -&#62; 0
+</PRE>
+
+<A NAME="IDX1125"></A>
+<A NAME="IDX1126"></A>
+<DT><CODE>&#62;=</CODE>
+<DD>
+大於或等於：
+
+<PRE>
+mysql&#62; SELECT 2 &#62;= 2;
+        -&#62; 1
+</PRE>
+
+<A NAME="IDX1127"></A>
+<A NAME="IDX1128"></A>
+<DT><CODE>&#62;</CODE>
+<DD>
+大於：
+
+<PRE>
+mysql&#62; SELECT 2 &#62; 2;
+        -&#62; 0
+</PRE>
+
+<A NAME="IDX1129"></A>
+<A NAME="IDX1130"></A>
+<DT><CODE>&#60;=&#62;</CODE>
+<DD>
+NULL 值安全等於：
+
+<PRE>
+mysql&#62; SELECT 1 &#60;=&#62; 1, NULL &#60;=&#62; NULL, 1 &#60;=&#62; NULL;
+        -&#62; 1 1 0
+</PRE>
+
+<A NAME="IDX1131"></A>
+<A NAME="IDX1132"></A>
+<A NAME="IDX1133"></A>
+<DT><CODE>IS NULL</CODE>
+<DD>
+<DT><CODE>IS NOT NULL</CODE>
+<DD>
+測試一個值是或不是 <CODE>NULL</CODE>:
+
+<PRE>
+mysql&#62; SELECT 1 IS NULL, 0 IS NULL, NULL IS NULL;
+        -&#62; 0 0 1
+mysql&#62; SELECT 1 IS NOT NULL, 0 IS NOT NULL, NULL IS NOT NULL;
+        -&#62; 1 1 0
+</PRE>
+
+<A NAME="IDX1134"></A>
+<A NAME="IDX1135"></A>
+為了能夠與其它程式更好的工作，在使用 <CODE>IS NULL</CODE> 是 MySQL 支援下列額外選擇性：
+
+<UL>
+<LI>
+
+通過它，你可以找到最後插入的記錄行：
+<PRE>
+SELECT * FROM tbl_name WHERE auto_col IS NULL
+</PRE>
+
+這個操作可以通過設定 <CODE>SQL_AUTO_IS_NULL=0</CODE> 來禁止。查看章節 <A HREF="manual.html#SET_OPTION">5.5.6  <CODE>SET</CODE> 句法</A>.
+<LI>
+
+對於 <CODE>NOT NULL</CODE>  的 <CODE>DATE</CODE> 和 <CODE>DATETIME</CODE> 列，可以通過使用下列語句找到特殊的值 <CODE>0000-00-00</CODE>：
+
+<PRE>
+SELECT * FROM tbl_name WHERE date_column IS NULL
+</PRE>
+
+這需要通過某些 ODBC 應用程式才能工作(因為 ODBC 不支援一個 <CODE>0000-00-00</CODE> 日期)
+</UL>
+<P></P>
+<A NAME="IDX1136"></A>
+<DT><CODE>expr BETWEEN min AND max</CODE>
+<DD>
+如果 <CODE>expr</CODE> 大於或等於 <CODE>min</CODE> ，並且 <CODE>expr</CODE> 小於或等於 <CODE>max</CODE>，<CODE>BETWEEN</CODE> 傳回 <CODE>1</CODE>，否則傳回 <CODE>0</CODE>。它等價於表達式 <CODE>(min &#60;= expr AND expr &#60;= max)</CODE> ，只要所有的參數均是相同的類型。 否則類型會依照上面的規則發生轉換，但是應用於所有三個參數。<STRONG>注意</STRONG>，在 MySQL 4.0.5 之前，參數被轉換到 <CODE>expr</CODE> 的類型。
+
+
+<PRE>
+mysql&#62; SELECT 1 BETWEEN 2 AND 3;
+        -&#62; 0
+mysql&#62; SELECT 'b' BETWEEN 'a' AND 'c';
+        -&#62; 1
+mysql&#62; SELECT 2 BETWEEN 2 AND '3';
+        -&#62; 1
+mysql&#62; SELECT 2 BETWEEN 2 AND 'x-3';
+        -&#62; 0
+</PRE>
+
+<A NAME="IDX1137"></A>
+<DT><CODE>expr NOT BETWEEN min AND max</CODE>
+<DD>
+等同於 <CODE>NOT (expr BETWEEN min AND max)</CODE>。
+
+<P></P>
+
+<A NAME="IDX1138"></A>
+<DT><CODE>expr IN (value,...)</CODE>
+<DD>
+如果 <CODE>expr</CODE> 是 <CODE>IN</CODE> 清單中的作一值，它將傳回 <CODE>1</CODE>，否則傳回 <CODE>0</CODE>。如果所有的值均是常數，那麼所有的值被依照 <CODE>expr</CODE> 的類型進行計算和排序。然後以一個二進位搜尋方式完成項目的搜尋。這就意味著，如果 <CODE>IN</CODE> 清單完全由常陣列成，<CODE>IN</CODE> 將是非常快的。如果 <CODE>expr</CODE> 是一個字母大小寫敏感的字串表達式，字串比較將以大小寫敏感方式執行：
+
+<PRE>
+mysql&#62; SELECT 2 IN (0,3,5,'wefwf');
+        -&#62; 0
+mysql&#62; SELECT 'wefwf' IN (0,3,5,'wefwf');
+        -&#62; 1
+</PRE>
+
+從 MySQL 4.1 開始(符合 SQL-99 標準)，如果左手邊的表達式是 <CODE>NULL</CODE>，或者在清單中沒有發現相相符的值並且清單中的一個表達式是 <CODE>NULL</CODE>，<CODE>IN</CODE> 均傳回 <CODE>NULL</CODE>。
+
+<P></P>
+
+<A NAME="IDX1139"></A>
+<DT><CODE>expr NOT IN (value,...)</CODE>
+<DD>
+等同於 <CODE>NOT (expr IN (value,...))</CODE>。
+
+<P></P>
+
+<A NAME="IDX1140"></A>
+<DT><CODE>ISNULL(expr)</CODE>
+<DD>
+如果 <CODE>expr</CODE> 是 <CODE>NULL</CODE>，<CODE>ISNULL()</CODE> 傳回 <CODE>1</CODE>，否則傳回 <CODE>0</CODE>：
+
+<PRE>
+mysql&#62; SELECT ISNULL(1+1);
+        -&#62; 0
+mysql&#62; SELECT ISNULL(1/0);
+        -&#62; 1
+</PRE>
+
+注意，對 <CODE>NULL</CODE> 值使用 <CODE>=</CODE> 進行比較總是為 false ！
+
+<A NAME="IDX1141"></A>
+<A NAME="IDX1142"></A>
+<DT><CODE>COALESCE(list)</CODE>
+<DD>
+傳回清單中第一個非 <CODE>NULL</CODE> 的元素：
+
+<PRE>
+mysql&#62; SELECT COALESCE(NULL,1);
+        -&#62; 1
+mysql&#62; SELECT COALESCE(NULL,NULL,NULL);
+        -&#62; NULL
+</PRE>
+
+<A NAME="IDX1143"></A>
+<DT><CODE>INTERVAL(N,N1,N2,N3,...)</CODE>
+<DD>
+Returns  如果 <CODE>N</CODE> &#60; <CODE>N1</CODE> 傳回 <CODE>0</CODE>，如果 <CODE>N</CODE> &#60; <CODE>N2</CODE> 傳回 <CODE>1</CODE>，等等。所有的參數均被當作整數。為了函數能正確地工作，它要求 <CODE>N1</CODE> &#60; <CODE>N2</CODE> &#60; <CODE>N3</CODE> &#60; <CODE>...</CODE> &#60; <CODE>Nn</CODE>。這是因為它使用的是一個二進位的搜尋(非常地快)：
+
+<PRE>
+mysql&#62; SELECT INTERVAL(23, 1, 15, 17, 30, 44, 200);
+        -&#62; 3
+mysql&#62; SELECT INTERVAL(10, 1, 10, 100, 1000);
+        -&#62; 2
+mysql&#62; SELECT INTERVAL(22, 23, 30, 44, 200);
+        -&#62; 0
+</PRE>
+
+</DL>
+
+<P>
+如果以任何一個標準運算幾(<CODE>=</CODE>, <CODE>&#60;&#62;</CODE>..., 但除了 <CODE>LIKE</CODE>)對一個忽略大小寫的字串進行比較，尾部的空白空間(空格、TAB 和換行)均被忽略。
+
+</P>
+
+<PRE>
+mysql&#62; SELECT "a" ="A \n";
+        -&#62; 1
+</PRE>
+
+
+
+<H4><A NAME="Logical_Operators"></A>6.3.1.3  邏輯運算幾</H4>
+
+<P>
+<A NAME="IDX1144"></A>
+<A NAME="IDX1145"></A>
+
+</P>
+<P> 在 SQL 中，所有的邏輯運算幾傳回的值均為 TRUE、FALSE 或 NULL (未知)。在 MySQL 中，它們由 <CODE>1</CODE> 
+  (TRUE)、<CODE>0</CODE> (FALSE) 和 <CODE>NULL</CODE> 實現。這些大部分在不同的 SQL 資料庫間是相同的，然而某些可能會以一個非零值傳回 
+  TRUE。</P>
+<DL COMPACT> 
+  <DT><CODE>NOT</CODE>
+  <DD>
+<A NAME="IDX1146"></A>
+ <A NAME="IDX1147"></A>
+ 
+<DT><CODE>!</CODE>
+<DD>
+邏輯非。
+如果操作數為 <CODE>0</CODE>，傳回 <CODE>1</CODE>﹔如果操作數為非零，傳回 <CODE>0</CODE>﹔如果操作數為 <CODE>NOT NULL</CODE>，傳回 <CODE>NULL</CODE>。
+
+<PRE>
+mysql&#62; SELECT NOT 10;
+        -&#62; 0
+mysql&#62; SELECT NOT 0;
+        -&#62; 1
+mysql&#62; SELECT NOT NULL;
+        -&#62; NULL
+mysql&#62; SELECT ! (1+1);
+        -&#62; 0
+mysql&#62; SELECT ! 1+1;
+        -&#62; 1
+</PRE>
+
+最後一個範例傳回 <CODE>1</CODE>，因為表達式是與 <CODE>(!1)+1</CODE> 一樣被計算的。
+
+<P></P>
+
+<A NAME="IDX1148"></A>
+<A NAME="IDX1149"></A>
+<DT><CODE>AND</CODE>
+<DD>
+<DT><CODE>&#38;&</CODE>
+<DD>
+邏輯與。
+如果所有的操作數都是非零或非 <CODE>NULL</CODE> 的，傳回 <CODE>1</CODE>﹔如果有一個或多個操作數為 <CODE>0</CODE> ，則傳回 <CODE>0</CODE>，只要操作數中有 <CODE>NULL</CODE> 傳回值就為 <CODE>NULL</CODE>。
+
+<PRE>
+mysql&#62; SELECT 1 &#38;& 1;
+        -&#62; 1
+mysql&#62; SELECT 1 &#38;& 0;
+        -&#62; 0
+mysql&#62; SELECT 1 &#38;& NULL;
+        -&#62; NULL
+mysql&#62; SELECT 0 &#38;& NULL;
+        -&#62; 0
+mysql&#62; SELECT NULL &#38;& 0;
+        -&#62; 0
+</PRE>
+
+請注意，在 MySQL 4.0.5 以前版本中，當遇到一個 <CODE>NULL</CODE> 時就停止計算，而不是繼續程序檢查可能存在的<CODE>0</CODE>。這就意味著，在這些版本中，<CODE>SELECT (NULL AND 0)</CODE> 傳回 <CODE>NULL</CODE>，而不是 <CODE>0</CODE>。在 4.0.5 中，代碼已被重新設計了，已便於在任何仍然使用最佳化情況下，傳回值總是能如 ANSI 所規定的那樣。
+
+<A NAME="IDX1150"></A>
+<A NAME="IDX1151"></A>
+<DT><CODE>OR</CODE>
+<DD>
+<DT><CODE>||</CODE>
+<DD>
+邏輯或。
+如果任何一個操作數是非零的，傳回值為 <CODE>1</CODE>，如果任一操作數為 <CODE>NULL</CODE>，傳回值為 <CODE>NULL</CODE>，否則傳回 <CODE>0</CODE>。
+
+<PRE>
+mysql&#62; SELECT 1 || 1;
+        -&#62; 1
+mysql&#62; SELECT 1 || 0;
+        -&#62; 1
+mysql&#62; SELECT 0 || 0;
+        -&#62; 0
+mysql&#62; SELECT 0 || NULL;
+        -&#62; NULL
+mysql&#62; SELECT 1 || NULL;
+        -&#62; 1
+</PRE>
+
+<A NAME="IDX1152"></A>
+<DT><CODE>XOR</CODE>
+<DD>
+邏輯異或。
+如果任一操作數為 <CODE>NULL</CODE>，傳回值為 <CODE>NULL</CODE>。對於非 <CODE>NULL</CODE> 的操作數，如果有奇數個非零的操作數，結果傳回為 <CODE>1</CODE>，否則傳回 <CODE>0</CODE>。
+
+<PRE>
+mysql&#62; SELECT 1 XOR 1;
+        -&#62; 0
+mysql&#62; SELECT 1 XOR 0;
+        -&#62; 1
+mysql&#62; SELECT 1 XOR NULL;
+        -&#62; NULL
+mysql&#62; SELECT 1 XOR 1 XOR 1;
+        -&#62; 1
+</PRE>
+
+<CODE>a XOR b</CODE> 算術相等於 <CODE>(a AND (NOT b)) OR ((NOT a) and b)</CODE>。
+
+<CODE>XOR</CODE> 在 MySQL 4.0.2 中被加入。
+</DL>
+
+
+
+<H4><A NAME="Control_flow_functions"></A>6.3.1.4  控制流函數</H4>
+
+<P>
+<A NAME="IDX1153"></A>
+<A NAME="IDX1154"></A>
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>IFNULL(expr1,expr2)</CODE>
+<DD>
+<A NAME="IDX1155"></A>
+ <A NAME="IDX1156"></A>
+ 
+如果 <CODE>expr1</CODE> 為非 <CODE>NULL</CODE> 的，<CODE>IFNULL()</CODE> 傳回 <CODE>expr1</CODE>，否則傳回 <CODE>expr2</CODE>。<CODE>IFNULL()</CODE> 傳回一個數位或字串值，這取決於它被使用的語境：
+
+<PRE>
+mysql&#62; SELECT IFNULL(1,0);
+        -&#62; 1
+mysql&#62; SELECT IFNULL(NULL,10);
+        -&#62; 10
+mysql&#62; SELECT IFNULL(1/0,10);
+        -&#62; 10
+mysql&#62; SELECT IFNULL(1/0,'yes');
+        -&#62; 'yes'
+</PRE>
+
+在 MySQL 4.0.6 和更新版本中，<CODE>IFNULL(expr1,expr2)</CODE> 的預設傳回值以 <CODE>STRING</CODE>、<CODE>REAL</CODE> 或 <CODE>INTEGER</CODE> 順序更加'general'了兩個表達式。當你基於一個表達式建立一個表或在一個臨時表中 MySQL 不得不儲存一個從 <CODE>IFNULL()</CODE> 傳回的值時，這個與較早 MySQL 版本的不同將更加值得注意。
+
+
+<PRE>
+CREATE TABLE foo SELECT IFNULL(1,"test") as test;
+</PRE>
+
+在 MySQL 4.0.6 中，列 'test' 的類型為 <CODE>CHAR(4)</CODE>，然而在較早的版本中，你得到的卻是 <CODE>BIGINT</CODE>。
+
+<P></P>
+
+<A NAME="IDX1157"></A>
+<DT><CODE>NULLIF(expr1,expr2)</CODE>
+<DD>
+如果 <CODE>expr1 = expr2</CODE> 為真，傳回 <CODE>NULL</CODE>，否則傳回 <CODE>expr1</CODE>。
+它等同於 <CODE>CASE WHEN x = y THEN NULL ELSE x END</CODE>：
+
+<PRE>
+mysql&#62; SELECT NULLIF(1,1);
+        -&#62; NULL
+mysql&#62; SELECT NULLIF(1,2);
+        -&#62; 1
+</PRE>
+
+注意，如果參數不相等，在 MySQL 中，<CODE>expr1</CODE> 被求值兩次。
+
+<P></P>
+
+<A NAME="IDX1158"></A>
+<DT><CODE>IF(expr1,expr2,expr3)</CODE>
+<DD>
+如果 <CODE>expr1</CODE> 為真(<CODE>expr1 &#60;&#62; 0</CODE> 以及 <CODE>expr1 &#60;&#62; NULL</CODE>)，那麼 <CODE>IF()</CODE> 傳回 <CODE>expr2</CODE>，否則傳回 <CODE>expr3</CODE>。<CODE>IF()</CODE> 傳回一個數位或字串，這取決於它被使用的語境：
+
+<PRE>
+mysql&#62; SELECT IF(1&#62;2,2,3);
+        -&#62; 3
+mysql&#62; SELECT IF(1&#60;2,'yes','no');
+        -&#62; 'yes'
+mysql&#62; SELECT IF(STRCMP('test','test1'),'no','yes');
+        -&#62; 'no'
+</PRE>
+
+如果 <CODE>expr2</CODE> 或 <CODE>expr3</CODE> 明確地為 <CODE>NULL</CODE>，那麼函數 <CODE>IF()</CODE> 的傳回值類型為非 <CODE>NULL</CODE> 列的類型。(這在選擇在 MySQL 4.0.3 中新加入)。
+
+<CODE>expr1</CODE> 是作為一個整數值被計算的，這就意味著，如果測試的是一個浮點型或字串值，就必須進行比較操作：
+
+<PRE>
+mysql&#62; SELECT IF(0.1,1,0);
+        -&#62; 0
+mysql&#62; SELECT IF(0.1&#60;&#62;0,1,0);
+        -&#62; 1
+</PRE>
+
+在上面第一種情況下，<CODE>IF(0.1)</CODE> 傳回 <CODE>0</CODE>，是因為 <CODE>0.1</CODE> 被轉換為一個整數值，傳回 <CODE>IF(0)</CODE> 的測試結果。這可能不是你所期望的。在第二種情況下，比較測試原浮點數是否為一個非零值。比較的結果被作為整數使用。
+
+預設的 <CODE>IF()</CODE> 傳回值類型 (當結果儲存在臨時表中時，這是非常重要的) 在 MySQL 3.23 中按下列方式確定：
+
+<TABLE BORDER WIDTH="95%">
+<TR><TD><STRONG>表達式 </STRONG> </TD><TD> <STRONG>傳回值 </STRONG>
+</TD></TR>
+<TR><TD>表達式(expr2)或表達式(expr3)傳回值為字串 </TD><TD> 字串
+</TD></TR>
+<TR><TD>表達式(expr2)或表達式(expr3)傳回值為浮點型值 </TD><TD> 浮點型
+</TD></TR>
+<TR><TD>表達式(expr2)或表達式(expr3)傳回值為整型 </TD><TD> 整型
+</TD></TR>
+</TABLE>
+
+如果表達式(expr2)和表達式(expr3)均是字串，同時兩個字串均是忽略字母大小寫的，那麼傳回值也是忽略字母大小寫的(從 MySQL 3.23.51 開始)。
+
+<P></P>
+
+<A NAME="IDX1159"></A>
+<DT><CODE>CASE value WHEN [compare-value] THEN result [WHEN [compare-value] THEN result ...] [ELSE result] END</CODE>
+<DD>
+<DT><CODE>CASE WHEN [condition] THEN result [WHEN [condition] THEN result ...] [ELSE result] END</CODE>
+<DD>
+第一個形式當 <CODE>value=compare-value</CODE> 時傳回 <CODE>result</CODE>。第二個形式當第一個為真值的 <CODE>condition</CODE> 出現時，傳回該條件的結果。如果沒有相符的結果值，那麼 <CODE>ELSE</CODE> 後的結果將被傳回。如果沒有 <CODE>ELSE</CODE> 部分，那麼 <CODE>NULL</CODE> 被傳回：
+
+<PRE>
+mysql&#62; SELECT CASE 1 WHEN 1 THEN "one"
+           WHEN 2 THEN "two" ELSE "more" END;
+       -&#62; "one"
+mysql&#62; SELECT CASE WHEN 1&#62;0 THEN "true" ELSE "false" END;
+       -&#62; "true"
+mysql&#62; SELECT CASE BINARY "B" WHEN "a" THEN 1 WHEN "b" THEN 2 END;
+       -&#62; NULL
+</PRE>
+
+</DL>
+
+<P>
+傳回值的類型 (<CODE>INTEGER</CODE>、<CODE>DOUBLE</CODE> 或 <CODE>STRING</CODE>) 與第一個傳回值(第一個 <CODE>THEN</CODE> 後的表達式)的類型相同。
+</P>
+
+
+
+<H3><A NAME="String_functions"></A>6.3.2  字串函數</H3>
+
+<P>
+<A NAME="IDX1160"></A>
+<A NAME="IDX1161"></A>
+
+</P>
+<P>
+如果傳回結果的長度超過伺服器參數 <CODE>max_allowed_packet</CODE> 的大小，字串值函數將傳回 <CODE>NULL</CODE>。查看章節 <A HREF="manual1.html#Server_parameters">5.5.2  調節伺服器參數</A>。
+</P>
+
+<P>
+對於操作字串位置的函數，第一個位置被標記為 1。
+</P>
+
+<DL COMPACT>
+
+<DT><CODE>ASCII(str)</CODE>
+<DD>
+<A NAME="IDX1162"></A>
+ 
+傳回字串 <CODE>str</CODE> 最左邊的那個字元的 ASCII 碼值。如果 <CODE>str</CODE> 是一個空字串，那麼傳回值為 <CODE>0</CODE>。如果 <CODE>str</CODE> 是一個 <CODE>NULL</CODE>，傳回值也是 <CODE>NULL</CODE>：
+
+<PRE>
+mysql&#62; SELECT ASCII('2');
+        -&#62; 50
+mysql&#62; SELECT ASCII(2);
+        -&#62; 50
+mysql&#62; SELECT ASCII('dx');
+        -&#62; 100
+</PRE>
+
+也可參看 <CODE>ORD()</CODE> 函數。
+
+<P></P>
+
+<A NAME="IDX1163"></A>
+<DT><CODE>ORD(str)</CODE>
+<DD>
+如果字串 <CODE>str</CODE> 的最左邊的字元是一個多字節的字元，根據多字節字元的成分字元的 ASCII 碼值通過下面的公式計算傳回那個的編碼：<CODE>((first byte ASCII code)*256+(second byte ASCII code))[*256+third byte ASCII code...]</CODE>。如果最左邊的字元不是一個多字節字元，傳回值與 <CODE>ASCII()</CODE> 函數相同：
+
+<PRE>
+mysql&#62; SELECT ORD('2');
+        -&#62; 50
+</PRE>
+
+<A NAME="IDX1164"></A>
+<DT><CODE>CONV(N,from_base,to_base)</CODE>
+<DD>
+在不同的數位基數之間轉換數位。將數位 <CODE>N</CODE> 從 <CODE>from_base</CODE> 轉換到 <CODE>to_base</CODE>，並以字串表示形式傳回。如果任何一個參數為 <CODE>NULL</CODE>，那麼傳回值也為 <CODE>NULL</CODE>。參數 <CODE>N</CODE> 被解釋為是一個整數，但是也可以被指定為一個整數或一個字串。最小基為 <CODE>2</CODE>，最大基為 <CODE>36</CODE>。如果 <CODE>to_base</CODE> 是一個負值，<CODE>N</CODE> 將被看作為是一個有符號數位。否則，<CODE>N</CODE> 被視為是無符號的。<CODE>CONV</CODE> 以 64 位精度工作：
+
+<PRE>
+mysql&#62; SELECT CONV("a",16,2);
+        -&#62; '1010'
+mysql&#62; SELECT CONV("6E",18,8);
+        -&#62; '172'
+mysql&#62; SELECT CONV(-17,10,-18);
+        -&#62; '-H'
+mysql&#62; SELECT CONV(10+"10"+'10'+0xa,10,10);
+        -&#62; '40'
+</PRE>
+
+<A NAME="IDX1165"></A>
+<DT><CODE>BIN(N)</CODE>
+<DD>
+傳回 <CODE>N</CODE> 的字串表示的二進位值形式，在這裡，<CODE>N</CODE> 長長的(<CODE>BIGINT</CODE>)數位。這個函數等價於 <CODE>CONV(N,10,2)</CODE>。如果 <CODE>N</CODE> 是一個 <CODE>NULL</CODE>，傳回值也是 <CODE>NULL</CODE>：
+
+<PRE>
+mysql&#62; SELECT BIN(12);
+        -&#62; '1100'
+</PRE>
+
+<A NAME="IDX1166"></A>
+<DT><CODE>OCT(N)</CODE>
+<DD>
+傳回 <CODE>N</CODE> 的字串表示的八進制值形式，在這裡，<CODE>N</CODE> 是一個長長的數位。這個函數等價於 <CODE>CONV(N,10,8)</CODE>。如果 <CODE>N</CODE> 是一個 <CODE>NULL</CODE>，傳回值也是 <CODE>NULL</CODE> ：
+
+<PRE>
+mysql&#62; SELECT OCT(12);
+        -&#62; '14'
+</PRE>
+
+<A NAME="IDX1167"></A>
+<DT><CODE>HEX(N_or_S)</CODE>
+<DD>
+如果 N_OR_S 是一個數位，傳回 <CODE>N</CODE> 的字串表示的十六進制值形式，這裡 <CODE>N</CODE> 是一個長長的(<CODE>BIGINT</CODE>)數位。這個函數等價於 <CODE>CONV(N,10,16)</CODE>。
+
+如果 N_OR_S 是一個字串，N_OR_S 中的每個字元均被轉換為 2 位十六進制數位，並以十六進制的字串形式傳回。這是 <CODE>0xff</CODE> 形式的字串反轉操作。
+
+<PRE>
+mysql&#62; SELECT HEX(255);
+        -&#62; 'FF'
+mysql&#62; SELECT HEX("abc");
+        -&#62; 616263
+mysql&#62; SELECT 0x616263;
+        -&#62; "abc"
+</PRE>
+
+<A NAME="IDX1168"></A>
+<DT><CODE>CHAR(N,...)</CODE>
+<DD>
+<CODE>CHAR()</CODE> 以整數類型解釋參數，傳回這個整數所代表的 ASCII 碼值給出的字元組成的字串。<CODE>NULL</CODE> 值將被忽略：
+
+<PRE>
+mysql&#62; SELECT CHAR(77,121,83,81,'76');
+        -&#62; 'MySQL'
+mysql&#62; SELECT CHAR(77,77.3,'77.3');
+        -&#62; 'MMM'
+</PRE>
+
+<A NAME="IDX1169"></A>
+<DT><CODE>CONCAT(str1,str2,...)</CODE>
+<DD>
+將參數連線成字串傳回。如果有任何一個參數為 <CODE>NULL</CODE>，傳回值也為 <CODE>NULL</CODE>。可以有超過 2 個的參數。數位參數將被轉換為相等價的字串形式：
+
+<PRE>
+mysql&#62; SELECT CONCAT('My', 'S', 'QL');
+        -&#62; 'MySQL'
+mysql&#62; SELECT CONCAT('My', NULL, 'QL');
+        -&#62; NULL
+mysql&#62; SELECT CONCAT(14.3);
+        -&#62; '14.3'
+</PRE>
+
+<A NAME="IDX1170"></A>
+<DT><CODE>CONCAT_WS(separator, str1, str2,...)</CODE>
+<DD>
+<CODE>CONCAT_WS()</CODE> 支援 CONCAT 加上一個分隔符，它是一個特殊形式的 <CODE>CONCAT()</CODE>。第一個參數剩餘參數間的分隔符。分隔符可以是與剩餘參數一樣的字串。如果分隔符是 <CODE>NULL</CODE>，傳回值也將為 <CODE>NULL</CODE>。這個函數會跳過分隔符參數後的任何 <CODE>NULL</CODE> 和空字串。分隔符將被加到被連線的字串之間：
+
+<PRE>
+mysql&#62; SELECT CONCAT_WS(",","First name","Second name","Last Name");
+       -&#62; 'First name,Second name,Last Name'
+mysql&#62; SELECT CONCAT_WS(",","First name",NULL,"Last Name");
+       -&#62; 'First name,Last Name'
+</PRE>
+
+<A NAME="IDX1171"></A>
+<A NAME="IDX1172"></A>
+<A NAME="IDX1173"></A>
+<A NAME="IDX1174"></A>
+<DT><CODE>LENGTH(str)</CODE>
+<DD>
+<DT><CODE>OCTET_LENGTH(str)</CODE>
+<DD>
+<DT><CODE>CHAR_LENGTH(str)</CODE>
+<DD>
+<DT><CODE>CHARACTER_LENGTH(str)</CODE>
+<DD>
+傳回字串 <CODE>str</CODE> 的長度：
+
+<PRE>
+mysql&#62; SELECT LENGTH('text');
+        -&#62; 4
+mysql&#62; SELECT OCTET_LENGTH('text');
+        -&#62; 4
+</PRE>
+
+注意，<CODE>CHAR_LENGTH()</CODE> 和 <CODE>CHARACTER_LENGTH()</CODE> 對於多字節字元只計數一次。
+
+<P></P>
+
+<A NAME="IDX1175"></A>
+<DT><CODE>BIT_LENGTH(str)</CODE>
+<DD>
+傳回字串 <CODE>str</CODE> 的比特長度：
+
+<PRE>
+mysql&#62; SELECT BIT_LENGTH('text');
+        -&#62; 32
+</PRE>
+
+<A NAME="IDX1176"></A>
+<A NAME="IDX1177"></A>
+<DT><CODE>LOCATE(substr,str)</CODE>
+<DD>
+<DT><CODE>POSITION(substr IN str)</CODE>
+<DD>
+傳回幾串 <CODE>substr</CODE> 在字串 <CODE>str</CODE> 中第一次出現的位置。如果幾串 <CODE>substr</CODE> 在 <CODE>str</CODE> 中不存在，傳回值為 <CODE>0</CODE>：
+
+<PRE>
+mysql&#62; SELECT LOCATE('bar', 'foobarbar');
+        -&#62; 4
+mysql&#62; SELECT LOCATE('xbar', 'foobar');
+        -&#62; 0
+</PRE>
+
+這個函數是多字節安全的。在 MySQL 3.23 中，這個函數是字母大小寫敏感的，當在 MySQL 4.0 中時，如有任一參數是一個二進位字串，它才是字母大小寫敏感的。
+
+<P></P>
+
+<A NAME="IDX1178"></A>
+<DT><CODE>LOCATE(substr,str,pos)</CODE>
+<DD>
+傳回幾串 <CODE>substr</CODE> 在字串 <CODE>str</CODE> 中的第 <CODE>pos</CODE> 位置後第一次出現的位置。如果 <CODE>substr</CODE> 不在 <CODE>str</CODE> 中傳回 <CODE>0</CODE> ：
+
+<PRE>
+mysql&#62; SELECT LOCATE('bar', 'foobarbar',5);
+        -&#62; 7
+</PRE>
+
+這個函數是多字節安全的。在 MySQL 3.23 中，這個函數是字母大小寫敏感的，當在 MySQL 4.0 中時，如有任一參數是一個二進位字串，它才是字母大小寫敏感的。
+
+<P></P>
+
+<A NAME="IDX1179"></A>
+<DT><CODE>INSTR(str,substr)</CODE>
+<DD>
+傳回幾串 <CODE>substr</CODE> 在字串 <CODE>str</CODE> 中第一次出現的位置。這與有兩個參數形式的 <CODE>LOCATE()</CODE> 相似，只是參數的位置被顛倒了：
+
+<PRE>
+mysql&#62; SELECT INSTR('foobarbar', 'bar');
+        -&#62; 4
+mysql&#62; SELECT INSTR('xbar', 'foobar');
+        -&#62; 0
+</PRE>
+
+這個函數是多字節安全的。在 MySQL 3.23 中，這個函數是字母大小寫敏感的，當在 MySQL 4.0 中時，如有任一參數是一個二進位字串，它才是字母大小寫敏感的。
+
+<P></P>
+
+<A NAME="IDX1180"></A>
+<DT><CODE>LPAD(str,len,padstr)</CODE>
+<DD>
+用字串 <CODE>padstr</CODE> 對 <CODE>str</CODE> 進行左邊填補直至它的長度達到 <CODE>len</CODE> 個字元長度，然後傳回 <CODE>str</CODE>。如果 <CODE>str</CODE> 的長度長於 <CODE>len'</CODE>，那麼它將被截除到 <CODE>len</CODE> 個字元。
+
+<PRE>
+mysql&#62; SELECT LPAD('hi',4,'??');
+        -&#62; '??hi'
+</PRE>
+
+<A NAME="IDX1181"></A>
+<DT><CODE>RPAD(str,len,padstr)</CODE>
+<DD>
+用字串 <CODE>padstr</CODE> 對 <CODE>str</CODE> 進行右邊填補直至它的長度達到 <CODE>len</CODE> 個字元長度，然後傳回 <CODE>str</CODE>。如果 <CODE>str</CODE> 的長度長於 <CODE>len'</CODE>，那麼它將被截除到 <CODE>len</CODE> 個字元。
+
+
+<PRE>
+mysql&#62; SELECT RPAD('hi',5,'?');
+        -&#62; 'hi???'
+</PRE>
+
+<A NAME="IDX1182"></A>
+<DT><CODE>LEFT(str,len)</CODE>
+<DD>
+傳回字串 <CODE>str</CODE> 中最左邊的 <CODE>len</CODE> 個字元：
+
+<PRE>
+mysql&#62; SELECT LEFT('foobarbar', 5);
+        -&#62; 'fooba'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1183"></A>
+<DT><CODE>RIGHT(str,len)</CODE>
+<DD>
+傳回字串 <CODE>str</CODE> 中最右邊的 <CODE>len</CODE> 個字元：
+
+<PRE>
+mysql&#62; SELECT RIGHT('foobarbar', 4);
+        -&#62; 'rbar'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1184"></A>
+<A NAME="IDX1185"></A>
+<DT><CODE>SUBSTRING(str,pos,len)</CODE>
+<DD>
+<DT><CODE>SUBSTRING(str FROM pos FOR len)</CODE>
+<DD>
+<DT><CODE>MID(str,pos,len)</CODE>
+<DD>
+從字串 <CODE>str</CODE> 的 <CODE>pos</CODE> 位置起傳回 <CODE>len</CODE> 個字元的幾串。使用 <CODE>FROM</CODE> 的變體形式是 ANSI SQL92 的句法：
+
+<PRE>
+mysql&#62; SELECT SUBSTRING('Quadratically',5,6);
+        -&#62; 'ratica'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1186"></A>
+<DT><CODE>SUBSTRING(str,pos)</CODE>
+<DD>
+<DT><CODE>SUBSTRING(str FROM pos)</CODE>
+<DD>
+從字串 <CODE>str</CODE> 的 <CODE>pos</CODE> 位置起傳回幾串：
+
+<PRE>
+mysql&#62; SELECT SUBSTRING('Quadratically',5);
+        -&#62; 'ratically'
+mysql&#62; SELECT SUBSTRING('foobarbar' FROM 4);
+        -&#62; 'barbar'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1187"></A>
+<DT><CODE>SUBSTRING_INDEX(str,delim,count)</CODE>
+<DD>
+傳回字串 <CODE>str</CODE> 中在第 <CODE>count</CODE> 個出現的分隔符 <CODE>delim</CODE> 之前的幾串。如果 <CODE>count</CODE> 是一個正數，傳回從最後的(從左邊開始計數)分隔符到左邊所有字元。如果 <CODE>count</CODE> 是負數，傳回從最後的(從右邊開始計數)分隔符到右邊所有字元：
+
+<PRE>
+mysql&#62; SELECT SUBSTRING_INDEX('www.mysql.com', '.', 2);
+        -&#62; 'www.mysql'
+mysql&#62; SELECT SUBSTRING_INDEX('www.mysql.com', '.', -2);
+        -&#62; 'mysql.com'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1188"></A>
+<DT><CODE>LTRIM(str)</CODE>
+<DD>
+傳回移除了領頭的空格字元後的 <CODE>str</CODE>：
+
+<PRE>
+mysql&#62; SELECT LTRIM('  barbar');
+        -&#62; 'barbar'
+</PRE>
+
+<P></P>
+<A NAME="IDX1189"></A>
+<DT><CODE>RTRIM(str)</CODE>
+<DD>
+傳回移除了尾部的空格字元後的 <CODE>str</CODE>：
+
+
+<PRE>
+mysql&#62; SELECT RTRIM('barbar   ');
+        -&#62; 'barbar'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1190"></A>
+<DT><CODE>TRIM([[BOTH | LEADING | TRAILING] [remstr] FROM] str)</CODE>
+<DD>
+移除字串 <CODE>str</CODE> 中所有的 <CODE>remstr</CODE> 前綴或後綴，然後將其傳回。如果沒有任何 <CODE>BOTH</CODE>、<CODE>LEADING</CODE> 或 <CODE>TRAILING</CODE> 修飾符被給出，<CODE>BOTH</CODE> 被假定。如果 <CODE>remstr</CODE> 沒有被指定，空格將被移除：
+
+<PRE>
+mysql&#62; SELECT TRIM('  bar   ');
+        -&#62; 'bar'
+mysql&#62; SELECT TRIM(LEADING 'x' FROM 'xxxbarxxx');
+        -&#62; 'barxxx'
+mysql&#62; SELECT TRIM(BOTH 'x' FROM 'xxxbarxxx');
+        -&#62; 'bar'
+mysql&#62; SELECT TRIM(TRAILING 'xyz' FROM 'barxxyz');
+        -&#62; 'barx'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1191"></A>
+<DT><CODE>SOUNDEX(str)</CODE>
+<DD>
+傳回 <CODE>str</CODE> 的近音字。兩個發音差不多的字串應該有同樣的近音字。一個標準的近音字為 4 個字元長，但是函數 <CODE>SOUNDEX()</CODE> 卻傳回一個任意長的字串。你可以在結果上使用 <CODE>SUBSTRING()</CODE> 標準的近音字。提供的字元中所有的非數位字母的字元均被忽略。所有在 A-Z 範圍之外的國際 alpha 字元被視為元音：
+
+<PRE>
+mysql&#62; SELECT SOUNDEX('Hello');
+        -&#62; 'H400'
+mysql&#62; SELECT SOUNDEX('Quadratically');
+        -&#62; 'Q36324'
+</PRE>
+
+<P></P>
+
+<A NAME="IDX1192"></A>
+<DT><CODE>SPACE(N)</CODE>
+<DD>
+傳回有 <CODE>N</CODE> 空格字元組成的字串：
+
+<PRE>
+mysql&#62; SELECT SPACE(6);
+        -&#62; '      '
+</PRE>
+
+<P></P>
+
+<A NAME="IDX1193"></A>
+<DT><CODE>REPLACE(str,from_str,to_str)</CODE>
+<DD>
+在字串 <CODE>str</CODE> 中所有出現的字串 <CODE>from_str</CODE> 均被 <CODE>to_str</CODE>取代，然後傳回這個字串：
+
+<PRE>
+mysql&#62; SELECT REPLACE('www.mysql.com', 'w', 'Ww');
+        -&#62; 'WwWwWw.mysql.com'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1194"></A>
+<DT><CODE>REPEAT(str,count)</CODE>
+<DD>
+傳回一個由重復了 <CODE>count</CODE> 次的字串 <CODE>str</CODE> 組成的字串。如果 <CODE>count &#60;= 0</CODE>，傳回一個空字串。如果 <CODE>str</CODE> 或 <CODE>count</CODE> 是 <CODE>NULL</CODE>，傳回值也為 <CODE>NULL</CODE>：
+
+<PRE>
+mysql&#62; SELECT REPEAT('MySQL', 3);
+        -&#62; 'MySQLMySQLMySQL'
+</PRE>
+
+<P></P>
+
+<A NAME="IDX1195"></A>
+<DT><CODE>REVERSE(str)</CODE>
+<DD>
+以顛倒的字元順序傳回字串 <CODE>str</CODE>：
+<PRE>
+mysql&#62; SELECT REVERSE('abc');
+        -&#62; 'cba'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1196"></A>
+<DT><CODE>INSERT(str,pos,len,newstr)</CODE>
+<DD>
+在字串 <CODE>str</CODE> 中，將從 <CODE>pos</CODE> 位置開始，<CODE>len</CODE> 個字元長的幾串取代為字串 <CODE>newstr</CODE> ，然後將結果傳回：
+
+
+<PRE>
+mysql&#62; SELECT INSERT('Quadratic', 3, 4, 'What');
+        -&#62; 'QuWhattic'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1197"></A>
+<DT><CODE>ELT(N,str1,str2,str3,...)</CODE>
+<DD>
+如果 <CODE>N</CODE> = <CODE>1</CODE>，傳回 <CODE>str1</CODE>，如果<CODE>N</CODE> =
+<CODE>2</CODE>，傳回 <CODE>str2</CODE>，等等。如果 <CODE>N</CODE> 小於 <CODE>1</CODE> 或大於參數的數量，傳回 <CODE>NULL</CODE>。<CODE>ELT()</CODE> <CODE>FIELD()</CODE> 反運算：
+
+<PRE>
+mysql&#62; SELECT ELT(1, 'ej', 'Heja', 'hej', 'foo');
+        -&#62; 'ej'
+mysql&#62; SELECT ELT(4, 'ej', 'Heja', 'hej', 'foo');
+        -&#62; 'foo'
+</PRE>
+
+<P></P>
+
+<A NAME="IDX1198"></A>
+<DT><CODE>FIELD(str,str1,str2,str3,...)</CODE>
+<DD>
+傳回 <CODE>str</CODE> 在清單 <CODE>str1</CODE>, <CODE>str2</CODE>, <CODE>str3</CODE>, <CODE>...</CODE> 中的索引。如果 <CODE>str</CODE> 沒有發現，傳回 <CODE>0</CODE>。<CODE>FIELD()</CODE> 是 <CODE>ELT()</CODE> 的反運算：
+
+<PRE>
+mysql&#62; SELECT FIELD('ej', 'Hej', 'ej', 'Heja', 'hej', 'foo');
+        -&#62; 2
+mysql&#62; SELECT FIELD('fo', 'Hej', 'ej', 'Heja', 'hej', 'foo');
+        -&#62; 0
+</PRE>
+
+<P></P>
+
+<A NAME="IDX1199"></A>
+<DT><CODE>FIND_IN_SET(str,strlist)</CODE>
+<DD>
+Returns a value 如果字串 <CODE>str</CODE> 在由 <CODE>N</CODE> 個幾串組成的清單 <CODE>strlist</CODE> 中，傳回一個 <CODE>1</CODE> 到 <CODE>N</CODE> 的值。一個字串清單是由通過字元 <SAMP>“,”</SAMP> 分隔的多個幾串組成。如果第一個參數是一個常數位元串，並且第二個參數是一個 <CODE>SET</CODE> 列類型，<CODE>FIND_IN_SET()</CODE> 函數將被最佳化為使用位運算！如果 <CODE>str</CODE> 在不 <CODE>strlist</CODE> 中或者如果 <CODE>strlist</CODE> 是一個空串，傳回值為 <CODE>0</CODE>。如果任何一個參數為 <CODE>NULL</CODE>，傳回值也是 <CODE>NULL</CODE>。如果第一個參數包含一個 <SAMP>“,”</SAMP>，這個函數將完全不能工作：
+
+<PRE>
+mysql&#62; SELECT FIND_IN_SET('b','a,b,c,d');
+        -&#62; 2
+</PRE>
+
+<P></P>
+
+<A NAME="IDX1200"></A>
+<DT><CODE>MAKE_SET(bits,str1,str2,...)</CODE>
+<DD>
+傳回一個集合 (包含由字元 <SAMP>“,”</SAMP> 分隔的多個幾串組成的一個字串)，它由在 <CODE>bits</CODE> 集合中有相應的比特位的字串組成。<CODE>str1</CODE> 對應於比特位 0，<CODE>str2</CODE> 對應比特位 1，等等。在 <CODE>str1</CODE>, <CODE>str2</CODE>, <CODE>...</CODE> 中的 <CODE>NULL</CODE> 串不允許被加入到結果中：
+
+<PRE>
+mysql&#62; SELECT MAKE_SET(1,'a','b','c');
+        -&#62; 'a'
+mysql&#62; SELECT MAKE_SET(1 | 4,'hello','nice','world');
+        -&#62; 'hello,world'
+mysql&#62; SELECT MAKE_SET(0,'a','b','c');
+        -&#62; ''
+</PRE>
+
+<P></P>
+
+<A NAME="IDX1201"></A>
+<DT><CODE>EXPORT_SET(bits,on,off,[separator,[number_of_bits]])</CODE>
+<DD>
+傳回一個字串，對於在 'bits' 中的每個比特字位，你將得到一個 'on' 字元，而如果比特字位是一個清零比特位(reset bit)你將得到一個 'off' 字串。每個字串均被“分隔符”(預設為“,”)分隔，並且只有 'number_of_bits'(預設為 64) 個 'bits' 被使用：
+
+
+<PRE>
+mysql&#62; SELECT EXPORT_SET(5,'Y','N',',',4)
+        -&#62; Y,N,Y,N
+</PRE>
+
+
+<tt>範例(譯者注)：</tt>
+<PRE>
+mysql&#62; select EXPORT_SET(1,'1','0','',5);
+        -&#62; 10000 
+# 最左邊第一位為 2 的 0 次冪
+
+mysql&#62; select EXPORT_SET(2,'1','0','',5);
+        -&#62; 01000
+# 最左邊第一位為 2 的 0 次冪，第二位為 2 的 1 次冪        
+
+mysql&#62; select EXPORT_SET(4,'1','0','',5);
+        -&#62; 00100
+# 最左邊第一位為 2 的 0 次冪，第二位為 2 的 1 次冪，第三位為 2 的 2 次冪  
+
+mysql&#62; select EXPORT_SET(15,'1','0','',5);
+        -&#62; 11110
+# 最左邊第一位為 2 的 1 次冪，第四位為 2 的 3 次冪  
+
+mysql&#62; select EXPORT_SET(16,'1','0','',5);
+        -&#62; 00001
+# 最左邊第一位為 2 的 1 次冪，第五位為 2 的 4 次冪 
+
+
+# 以上結果在 MySQL 4.0.12 中測試通過
+</PRE>
+<tt> 範例結束(譯者注) </tt>
+<P></P>
+
+<A NAME="IDX1202"></A>
+<A NAME="IDX1203"></A>
+<DT><CODE>LCASE(str)</CODE>
+<DD>
+<DT><CODE>LOWER(str)</CODE>
+<DD>
+依照目前字元集設定映射(預設為 ISO-8859-1 Latin1)，將字串 <CODE>str</CODE> 中的所有字元改變為小寫，然後傳回該值：
+
+<PRE>
+mysql&#62; SELECT LCASE('QUADRATICALLY');
+        -&#62; 'quadratically'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1204"></A>
+<A NAME="IDX1205"></A>
+<DT><CODE>UCASE(str)</CODE>
+<DD>
+<DT><CODE>UPPER(str)</CODE>
+<DD>
+依照目前字元集設定映射(預設為 ISO-8859-1 Latin1)，將字串 <CODE>str</CODE> 中的所有字元改變為大寫，然後傳回該值：
+
+<PRE>
+mysql&#62; SELECT UCASE('Hej');
+        -&#62; 'HEJ'
+</PRE>
+
+這個函數是多字節安全的。
+
+<P></P>
+
+<A NAME="IDX1206"></A>
+<A NAME="IDX1207"></A>
+<DT><CODE>LOAD_FILE(file_name)</CODE>
+<DD>
+讀入文件，並將文件內容作為一個字串傳回。這個文件必須在伺服器上，必須指定文件完整的路徑名，並且你必須有 <CODE>FILE</CODE> 權限。文件必須完全可讀，並且小於 <CODE>max_allowed_packet</CODE>。
+
+如果該文件不存在，或因為上面的任一原因而不能被讀出，函數傳回 <CODE>NULL</CODE>：
+
+<PRE>
+mysql&#62; UPDATE tbl_name
+           SET blob_column=LOAD_FILE("/tmp/picture")
+           WHERE id=1;
+</PRE>
+
+如果你沒有使用 MySQL  3.23，你不得不在你的應用程式中讀取文件，以文件的資訊建立一個 <CODE>INSERT</CODE> 語句，來更新資料庫。如果你使用 MySQL++ 庫，下面有一個範例，詳細請查看 <a HREF="../../../www.mysql.com/documentation/mysql++/mysql++-examples.html" target="_blank">http://www.mysql.com/documentation/mysql++/mysql++-examples.html</a>。
+
+<P></P>
+
+<A NAME="IDX1208"></A>
+<DT><CODE>QUOTE(str)</CODE>
+<DD>
+參照一個字串，並傳回一個結果，該結果可作為一個適當轉義過的資料值在一個 SQL 語句中使用。字串被單引號包圍著傳回，並且在該字串中每個單引號(<SAMP>“'”</SAMP>)、反斜線符號(<SAMP>“\”</SAMP>)、ASCII NUL 和 Control-Z 出現的地方，在該字元之前均被加上了一個反斜線。如果參數是 <CODE>NULL</CODE>，那麼結果值是一個沒有單引號包圍的單詞 “NULL”。
+
+<CODE>QUOTE</CODE> 函數在 MySQL  4.0.3 中被加入。
+
+<PRE>
+mysql&#62; SELECT QUOTE("Don't");
+        -&#62; 'Don\'t!'
+mysql&#62; SELECT QUOTE(NULL);
+        -&#62; NULL
+</PRE>
+
+</DL>
+
+
+
+<H4><A NAME="String_comparison_functions"></A>6.3.2.1  字串比較函數</H4>
+
+<P>
+<A NAME="IDX1209"></A>
+<A NAME="IDX1210"></A>
+
+</P>
+<P>
+在必要的時候，MySQL 會自動地將數位轉換到字串，反之亦然：
+</P>
+
+<PRE>
+mysql&#62; SELECT 1+"1";
+        -&#62; 2
+mysql&#62; SELECT CONCAT(2,' test');
+        -&#62; '2 test'
+</PRE>
+
+<P>
+如果你希望明確地將一個數位轉換為字串，將它參數傳遞到 <CODE>CONCAT()</CODE> 中。
+</P>
+
+<P>
+如果將一個二進位字串作為參數傳遞給一個字串函數，結果傳回也是一個二進位字串。一個數位被轉換到字串，該字串被視為是一個二進位字串。這僅僅會影響結果。
+</P>
+
+<P>
+<A NAME="IDX1211"></A>
+<A NAME="IDX1212"></A>
+</P>
+
+<P>
+通常，只要字串比較中的任何一個表達式是區分大小寫的，比較就會以字母大小寫敏感方式執行。
+</P>
+<DL COMPACT>
+
+<DT><CODE>expr LIKE pat [ESCAPE 'escape-char']</CODE>
+<DD>
+<A NAME="IDX1213"></A>
+ 
+使用 SQL 的簡單的正規表達式進行比較的樣式相符。傳回 <CODE>1</CODE> (TRUE) 或 <CODE>0</CODE> (FALSE)。可以在樣式中使用下面所示的兩個通配符字元與 <CODE>LIKE</CODE> 配合：
+
+<TABLE BORDER WIDTH="90%">
+<TR><TD><STRONG>字元 </STRONG> </TD><TD> <STRONG>含義</STRONG>
+</TD></TR>
+<TR><TD><CODE>%</CODE> </TD><TD> 相符任意多個字元，甚至是零個字元
+</TD></TR>
+<TR><TD><CODE>_</CODE> </TD><TD> 嚴格地相符一個字元
+</TD></TR>
+</TABLE>
+
+
+<PRE>
+mysql&#62; SELECT 'David!' LIKE 'David_';
+        -&#62; 1
+mysql&#62; SELECT 'David!' LIKE '%D%v%';
+        -&#62; 1
+</PRE>
+
+為了測試一個含有通配符的文字案例，可以用轉義符加在能配符前。如果沒有明確指定 <CODE>ESCAPE</CODE> 字元，假定為 <SAMP>“\”</SAMP>：
+
+<TABLE BORDER WIDTH="90%">
+<TR><TD><STRONG>字串 </STRONG> </TD><TD> <STRONG>含義 </STRONG>
+</TD></TR>
+<TR><TD><CODE>\%</CODE> </TD><TD> 相符一個 <CODE>%</CODE> 字元
+</TD></TR>
+<TR><TD><CODE>\_</CODE> </TD><TD> 相符一個 <CODE>_</CODE> 字元
+</TD></TR>
+</TABLE>
+
+
+<PRE>
+mysql&#62; SELECT 'David!' LIKE 'David\_';
+        -&#62; 0
+mysql&#62; SELECT 'David_' LIKE 'David\_';
+        -&#62; 1
+</PRE>
+
+為了指定一個不同的轉義字元，可以使用 <CODE>ESCAPE</CODE> 幾句：
+
+<PRE>
+mysql&#62; SELECT 'David_' LIKE 'David|_' ESCAPE '|';
+        -&#62; 1
+</PRE>
+
+下面兩個語句表明，字串比較是忽略大小寫的，除非任一操作數是一個二進位字串：
+
+<PRE>
+mysql&#62; SELECT 'abc' LIKE 'ABC';
+        -&#62; 1
+mysql&#62; SELECT 'abc' LIKE BINARY 'ABC';
+        -&#62; 0
+</PRE>
+
+<CODE>LIKE</CODE> 允許用在一個數位表達式上。(這是 MySQL 對 ANSI SQL <CODE>LIKE</CODE> 的擴展。)
+
+<PRE>
+mysql&#62; SELECT 10 LIKE '1%';
+        -&#62; 1
+</PRE>
+
+注意：因為 MySQL 在字串中使用的是 C 的轉義句法(例如 <SAMP>“\n”</SAMP>)，所以在 <CODE>LIKE</CODE> 字串中使用的任何一個 <SAMP>“\”</SAMP> 必須被雙寫。例如，為了尋找 <SAMP>“\n”</SAMP>，必須以 <SAMP>“\\n”</SAMP> 形式指定它。為了尋找 <SAMP>“\”</SAMP>，必須指定它為 <SAMP>“\\\\”</SAMP> (反斜線被語法分析器剝離一次，另一次在樣式相符時完成，留下一條單獨的反斜線被相符)。
+
+<P></P>
+
+<A NAME="IDX1214"></A>
+<DT><CODE>expr NOT LIKE pat [ESCAPE 'escape-char']</CODE>
+<DD>
+相同於 <CODE>NOT (expr LIKE pat [ESCAPE 'escape-char'])</CODE>。
+
+<P></P>
+
+<A NAME="IDX1215"></A>
+<DT><CODE>expr SOUNDS LIKE expr</CODE>
+<DD>
+等同於 <CODE>SOUNDEX(expr)=SOUNDEX(expr)</CODE> (適用於 MySQL 4.1 或更新的版本)。
+
+<A NAME="IDX1216"></A>
+<A NAME="IDX1217"></A>
+<A NAME="IDX1218"></A>
+<A NAME="IDX1219"></A>
+
+<P></P>
+
+<DT><CODE>expr REGEXP pat</CODE>
+<DD>
+<DT><CODE>expr RLIKE pat</CODE>
+<DD>
+依照樣式 <CODE>pat</CODE> 對字串表達式 <CODE>expr</CODE> 執行一個樣式比較。樣式可以是一個擴展的正則表達式。查看章節 <A HREF="manual2.html#Regexp">G  MySQL 正則表達式</A>。Returns 如果表達式 <CODE>expr</CODE> 相符 <CODE>pat</CODE>，傳回 <CODE>1</CODE>，否則傳回 <CODE>0</CODE>。<CODE>RLIKE</CODE> 是 <CODE>REGEXP</CODE> 的同義詞，它提供了與 <CODE>mSQL</CODE> 的兼容。注意：MySQL 在字串中使用的是 C 的轉義句法(例如 <SAMP>“\n”</SAMP>)，所以在 <CODE>REGEXP</CODE> 字串中使用的任何一個 <SAMP>“\”</SAMP> 必須被雙寫。在 MySQL 3.23.4 中，<CODE>REGEXP</CODE> 對於正常的(不是二進位)字串是忽略大小寫的：
+
+<PRE>
+mysql&#62; SELECT 'Monty!' REGEXP 'm%y%%';
+        -&#62; 0
+mysql&#62; SELECT 'Monty!' REGEXP '.*';
+        -&#62; 1
+mysql&#62; SELECT 'new*\n*line' REGEXP 'new\\*.\\*line';
+        -&#62; 1
+mysql&#62; SELECT "a" REGEXP "A", "a" REGEXP BINARY "A";
+        -&#62; 1  0
+mysql&#62; SELECT "a" REGEXP "^[a-d]";
+        -&#62; 1
+</PRE>
+
+當決定一個字元的類型時，<CODE>REGEXP</CODE> 和 <CODE>RLIKE</CODE> 使用目前使用的字元集(預設為 ISO-8859-1 Latin1)。
+
+<P></P>
+
+<A NAME="IDX1220"></A>
+<DT><CODE>expr NOT REGEXP pat</CODE>
+<DD>
+<DT><CODE>expr NOT RLIKE pat</CODE>
+<DD>
+等同於 <CODE>NOT (expr REGEXP pat)</CODE>。
+
+<P></P>
+
+<A NAME="IDX1221"></A>
+<DT><CODE>STRCMP(expr1,expr2)</CODE>
+<DD>
+
+如果字串是相同，<CODE>STRCMP()</CODE> 傳回 <CODE>0</CODE>，如果第一個參數根據目前排序次序小於第二個參數，傳回 <CODE>-1</CODE>，否則傳回 <CODE>1</CODE>：
+
+<PRE>
+mysql&#62; SELECT STRCMP('text', 'text2');
+        -&#62; -1
+mysql&#62; SELECT STRCMP('text2', 'text');
+        -&#62; 1
+mysql&#62; SELECT STRCMP('text', 'text');
+        -&#62; 0
+</PRE>
+
+<P></P>
+
+<A NAME="IDX1222"></A>
+<DT><CODE>MATCH (col1,col2,...) AGAINST (expr)</CODE>
+<DD>
+<DT><CODE>MATCH (col1,col2,...) AGAINST (expr IN BOOLEAN MODE)</CODE>
+<DD>
+<CODE>MATCH ... AGAINST()</CODE> 用於全文搜尋，傳回在列 <CODE>(col1,col2,...)</CODE> 和查詢 <CODE>expr</CODE> 之間純文字的相關相似的尺度。相關性是一個正的浮點型數位。零相關性意味著不相似。<CODE>MATCH ... AGAINST()</CODE> 可用於 MySQL 3.23.23 或更新的版本中。<CODE>IN BOOLEAN MODE</CODE> 擴展在 MySQL 4.0.1 中被新加入。詳細描述和使用範例，請查看 <A HREF="06-8.html#Fulltext_Search">6.8  MySQL 全文搜尋</A>。
+</DL>
+
+
+
+<H4><A NAME="Case_Sensitivity_Operators"></A>6.3.2.2  字母大小寫敏感性</H4>
+
+<P>
+<A NAME="IDX1223"></A>
+
+</P>
+<P>
+<A NAME="IDX1224"></A>
+<A NAME="IDX1225"></A>
+
+</P>
+<DL COMPACT>
+
+<DT><CODE><CODE>BINARY</CODE></CODE>
+<DD>
+<A NAME="IDX1226"></A>
+ 
+<CODE>BINARY</CODE> 運算子將跟在它後面的字串強制作為一個二進位字串。這可以很容易地強制一個列的比較以字母大小寫敏感方式進行，即使該列沒有定義為 <CODE>BINARY</CODE> 或 <CODE>BLOB</CODE>?
+<PRE>
+mysql&#62; SELECT "a" = "A";
+        -&#62; 1
+mysql&#62; SELECT BINARY "a" = "A";
+        -&#62; 0
+</PRE>
+
+<CODE>BINARY string</CODE> 是 <CODE>CAST(string AS BINARY)</CODE> 的縮寫。查看章節 <A HREF="06-3.html#Cast_Functions">6.3.5  Cast 函數</A>。<CODE>BINARY</CODE> 在 MySQL 3.23.0 中被加入。
+
+注意，當將一個索引列強制為 <CODE>BINARY</CODE> 時，在某些語境中，MySQL 將不能有效地使用索引。
+</DL>
+
+<P>
+如果希望對一個 blob 進行忽略字母大小的比較時，你通常可以在比較前將它轉換到大寫：
+</P>
+
+<PRE>
+SELECT 'A' LIKE UPPER(blob_col) FROM table_name;
+</PRE>
+
+<P>
+我們計劃不久推出在不同字元集間的轉化，以使字串比較有更好的伸縮性。
+</P>
+
+
+
+<H3><A NAME="Numeric_Functions"></A>6.3.3  數位函數</H3>
+
+
+
+<H4><A NAME="Arithmetic_functions"></A>6.3.3.1  算術運算</H4>
+
+<P>
+<A NAME="IDX1227"></A>
+常用的算術運算子均是可用的。注意，如果兩個參數均是整型，<SAMP>`-'</SAMP>, <SAMP>`+'</SAMP> 和 <SAMP>`*'</SAMP> 以 <CODE>BIGINT</CODE> (64 位)精度運算並傳回結果！如果一個參數是一個無符號的整數，另一個參數也是一個整數，結果也將是一個無符號整數。查看章節 <A HREF="06-3.html#Cast_Functions">6.3.5  Cast 函數</A>。
+
+</P>
+<P>
+<A NAME="IDX1228"></A>
+<A NAME="IDX1229"></A>
+<DL COMPACT>
+
+<DT><CODE>+</CODE>
+<DD>
+<A NAME="IDX1230"></A>
+ <A NAME="IDX1231"></A>
+ 
+加法：
+
+<PRE>
+mysql&#62; SELECT 3+5;
+        -&#62; 8
+</PRE>
+
+<A NAME="IDX1232"></A>
+<A NAME="IDX1233"></A>
+<DT><CODE>-</CODE>
+<DD>
+減法：
+
+<PRE>
+mysql&#62; SELECT 3-5;
+        -&#62; -2
+</PRE>
+
+<A NAME="IDX1234"></A>
+<A NAME="IDX1235"></A>
+<DT><CODE>*</CODE>
+<DD>
+乘法：
+
+<PRE>
+mysql&#62; SELECT 3*5;
+        -&#62; 15
+mysql&#62; SELECT 18014398509481984*18014398509481984.0;
+        -&#62; 324518553658426726783156020576256.0
+mysql&#62; SELECT 18014398509481984*18014398509481984;
+        -&#62; 0
+</PRE>
+
+最後一個表達式的結果是錯誤的，這是因為乘法結果超過了 64 位 <CODE>BIGINT</CODE> 計算範圍。
+
+<A NAME="IDX1236"></A>
+<A NAME="IDX1237"></A>
+<DT><CODE>/</CODE>
+<DD>
+除法：
+
+<PRE>
+mysql&#62; SELECT 3/5;
+        -&#62; 0.60
+</PRE>
+
+被 0 除將傳回一個 <CODE>NULL</CODE> 結果：
+
+<PRE>
+mysql&#62; SELECT 102/(1-1);
+        -&#62; NULL
+</PRE>
+
+只有當在一個結果被轉換到一個整數的語境中執行時，除法將會以 <CODE>BIGINT</CODE> 進行算術計算。
+
+</DL>
+
+
+
+<H4><A NAME="Mathematical_functions"></A>6.3.3.2  數學函數</H4>
+<P>
+所有的數學函數在發生錯誤的情況下，均傳回 <CODE>NULL</CODE>。
+</P>
+
+<P>
+<A NAME="IDX1238"></A>
+<A NAME="IDX1239"></A>
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>-</CODE>
+<DD>
+<A NAME="IDX1240"></A>
+ <A NAME="IDX1241"></A>
+ <A NAME="IDX1242"></A>
+ 
+一元減。 改變參數的符號：
+
+<PRE>
+mysql&#62; SELECT - 2;
+        -&#62; -2
+</PRE>
+
+注意，如果這個運算子被用於一個 <CODE>BIGINT</CODE>，傳回值也是一個 <CODE>BIGINT</CODE>！這就意味著，應該避免在一個可能有值 <CODE>-2^63</CODE> 的整數上使用 <CODE>-</CODE> 運算子！
+
+<P></P>
+
+<A NAME="IDX1243"></A>
+<DT><CODE>ABS(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的絕對值：
+
+<PRE>
+mysql&#62; SELECT ABS(2);
+        -&#62; 2
+mysql&#62; SELECT ABS(-32);
+        -&#62; 32
+</PRE>
+
+這個函數可安全地使用於 <CODE>BIGINT</CODE> 值。
+
+<P></P>
+
+<A NAME="IDX1244"></A>
+<DT><CODE>SIGN(X)</CODE>
+<DD>
+以 <CODE>-1</CODE>、<CODE>0</CODE> 或 <CODE>1</CODE> 方式傳回參數的符號，它取決於參數 <CODE>X</CODE> 是負數、0 或正數。
+
+<PRE>
+mysql&#62; SELECT SIGN(-32);
+        -&#62; -1
+mysql&#62; SELECT SIGN(0);
+        -&#62; 0
+mysql&#62; SELECT SIGN(234);
+        -&#62; 1
+</PRE>
+
+<A NAME="IDX1245"></A>
+<A NAME="IDX1246"></A>
+<A NAME="IDX1247"></A>
+<DT><CODE>MOD(N,M)</CODE>
+<DD>
+<DT><CODE>%</CODE>
+<DD>
+取模 (就如 C 中的 <CODE>%</CODE> 運算子)。傳回 <CODE>N</CODE> 被 <CODE>M</CODE> 除後的餘數：
+
+<PRE>
+mysql&#62; SELECT MOD(234, 10);
+        -&#62; 4
+mysql&#62; SELECT 253 % 7;
+        -&#62; 1
+mysql&#62; SELECT MOD(29,9);
+        -&#62; 2
+mysql&#62; SELECT 29 MOD 9;
+        -&#62; 2
+</PRE>
+
+這個函數可安全地使用於 <CODE>BIGINT</CODE> 值。最後一個範例可在 MySQL 4.1 中工作。
+
+<P></P>
+
+<A NAME="IDX1248"></A>
+<DT><CODE>FLOOR(X)</CODE>
+<DD>
+傳回不大於 <CODE>X</CODE> 的最大整數值：
+
+<PRE>
+mysql&#62; SELECT FLOOR(1.23);
+        -&#62; 1
+mysql&#62; SELECT FLOOR(-1.23);
+        -&#62; -2
+</PRE>
+
+注意，傳回值被轉換為一個 <CODE>BIGINT</CODE>！
+
+<P></P>
+
+<A NAME="IDX1249"></A>
+<DT><CODE>CEILING(X)</CODE>
+<DD>
+傳回不小於 <CODE>X</CODE> 的最小整數：
+
+<PRE>
+mysql&#62; SELECT CEILING(1.23);
+        -&#62; 2
+mysql&#62; SELECT CEILING(-1.23);
+        -&#62; -1
+</PRE>
+
+注意，傳回值被轉換為一個 <CODE>BIGINT</CODE>！
+
+<P></P>
+
+<A NAME="IDX1250"></A>
+<DT><CODE>ROUND(X)</CODE>
+<DD>
+<DT><CODE>ROUND(X,D)</CODE>
+<DD>
+將參數 <CODE>X</CODE> 四舍五入到最近的整數，然後傳回。
+兩個參數的形式是將一個數位四舍五入到 <CODE>D</CODE> 個小數後傳回。
+
+<PRE>
+mysql&#62; SELECT ROUND(-1.23);
+        -&#62; -1
+mysql&#62; SELECT ROUND(-1.58);
+        -&#62; -2
+mysql&#62; SELECT ROUND(1.58);
+        -&#62; 2
+mysql&#62; SELECT ROUND(1.298, 1);
+        -&#62; 1.3
+mysql&#62; SELECT ROUND(1.298, 0);
+        -&#62; 1
+</PRE>
+
+注意，當參數在兩個整數之間時， <CODE>ROUND()</CODE> 的行為取決於 C 庫的實現。某些取整到最近的偶數，總是向下取，總是向上取，也可能總是接近於零。如果你需要某種取整類型，應該使用一個明確定義的函數比如 <CODE>TRUNCATE()</CODE> 或 <CODE>FLOOR()</CODE> 代替。
+
+<P></P>
+
+<A NAME="IDX1251"></A>
+<DT><CODE>DIV</CODE>
+<DD>
+整除。
+類似於 <CODE>FLOOR()</CODE>，但是它可安全地用於 <CODE>BIGINT</CODE> 值。
+
+<PRE>
+mysql&#62; SELECT 5 DIV 2
+	-&#62; 2
+</PRE>
+
+<CODE>DIV</CODE> 在 MySQL 4.1.0 中新加入。
+
+<P></P>
+
+<A NAME="IDX1252"></A>
+<DT><CODE>EXP(X)</CODE>
+<DD>
+傳回值 <CODE>e</CODE> (自然對數的底) 的 <CODE>X</CODE> 次方：
+
+<PRE>
+mysql&#62; SELECT EXP(2);
+        -&#62; 7.389056
+mysql&#62; SELECT EXP(-2);
+        -&#62; 0.135335
+</PRE>
+
+<A NAME="IDX1253"></A>
+<DT><CODE>LN(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的自然對數：
+
+<PRE>
+mysql&#62; SELECT LN(2);
+        -&#62; 0.693147
+mysql&#62; SELECT LN(-2);
+        -&#62; NULL
+</PRE>
+
+這個函數在 MySQL  4.0.3 被新加入。
+在 MySQL 中，它是 <CODE>LOG(X)</CODE> 的同義詞。
+
+<P></P>
+
+<A NAME="IDX1254"></A>
+<DT><CODE>LOG(X)</CODE>
+<DD>
+<DT><CODE>LOG(B,X)</CODE>
+<DD>
+如果以一個參數調用，它傳回 <CODE>X</CODE> 的自然對數：
+
+<PRE>
+mysql&#62; SELECT LOG(2);
+        -&#62; 0.693147
+mysql&#62; SELECT LOG(-2);
+        -&#62; NULL
+</PRE>
+
+如果以兩個參數調用，這個函數傳回 <CODE>X</CODE> 任意底 <CODE>B</CODE> 的對數：
+
+<PRE>
+mysql&#62; SELECT LOG(2,65536);
+        -&#62; 16.000000
+mysql&#62; SELECT LOG(1,100);
+        -&#62; NULL
+</PRE>
+
+任意底選項在 MySQL 4.0.3 中被加入。<CODE>LOG(B,X)</CODE> 等價於 <CODE>LOG(X)/LOG(B)</CODE>。
+
+<P></P>
+
+<A NAME="IDX1255"></A>
+<DT><CODE>LOG2(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的以 2 為底的對數：
+
+<PRE>
+mysql&#62; SELECT LOG2(65536);
+        -&#62; 16.000000
+mysql&#62; SELECT LOG2(-100);
+        -&#62; NULL
+</PRE>
+
+<CODE>LOG2()</CODE> 通常可以用於計數出一個數位需要多少個比特位用於儲存它。這個函數在 MySQL  4.0.3 中被加入。在更早的版本中，可以使用 <CODE>LOG(X)/LOG(2)</CODE> 來代替它。
+
+<P></P>
+
+<A NAME="IDX1256"></A>
+<DT><CODE>LOG10(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 以 10 為底的對數：
+
+<PRE>
+mysql&#62; SELECT LOG10(2);
+        -&#62; 0.301030
+mysql&#62; SELECT LOG10(100);
+        -&#62; 2.000000
+mysql&#62; SELECT LOG10(-100);
+        -&#62; NULL
+</PRE>
+
+<A NAME="IDX1257"></A>
+<A NAME="IDX1258"></A>
+<DT><CODE>POW(X,Y)</CODE>
+<DD>
+<DT><CODE>POWER(X,Y)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的 <CODE>Y</CODE> 冪：
+
+<PRE>
+mysql&#62; SELECT POW(2,2);
+        -&#62; 4.000000
+mysql&#62; SELECT POW(2,-2);
+        -&#62; 0.250000
+</PRE>
+
+<A NAME="IDX1259"></A>
+<DT><CODE>SQRT(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的非否平方根：
+
+<PRE>
+mysql&#62; SELECT SQRT(4);
+        -&#62; 2.000000
+mysql&#62; SELECT SQRT(20);
+        -&#62; 4.472136
+</PRE>
+
+<A NAME="IDX1260"></A>
+<DT><CODE>PI()</CODE>
+<DD>
+傳回 PI 值(圓周率)。缺少顯示 5 位小數，但是在 MySQL 內部，為 PI 使用全部的雙精度。
+
+<PRE>
+mysql&#62; SELECT PI();
+        -&#62; 3.141593
+mysql&#62; SELECT PI()+0.000000000000000000;
+        -&#62; 3.141592653589793116
+</PRE>
+
+<A NAME="IDX1261"></A>
+<DT><CODE>COS(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的餘弦，在這裡，<CODE>X</CODE> 以弧度給出：
+
+<PRE>
+mysql&#62; SELECT COS(PI());
+        -&#62; -1.000000
+</PRE>
+
+<A NAME="IDX1262"></A>
+<DT><CODE>SIN(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的正弦，在這裡，<CODE>X</CODE> 以弧度給出：
+
+<PRE>
+mysql&#62; SELECT SIN(PI());
+        -&#62; 0.000000
+</PRE>
+
+<A NAME="IDX1263"></A>
+<DT><CODE>TAN(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的正切，在這裡，<CODE>X</CODE> 以弧度給出：
+
+<PRE>
+mysql&#62; SELECT TAN(PI()+1);
+        -&#62; 1.557408
+</PRE>
+
+<A NAME="IDX1264"></A>
+<DT><CODE>ACOS(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的反餘弦，更確切地說，傳回餘弦值為 <CODE>X</CODE> 的值。如果 <CODE>X</CODE> 不在 <CODE>-1</CODE> 到 <CODE>1</CODE> 之間的範圍內，傳回 <CODE>NULL</CODE>：
+
+<PRE>
+mysql&#62; SELECT ACOS(1);
+        -&#62; 0.000000
+mysql&#62; SELECT ACOS(1.0001);
+        -&#62; NULL
+mysql&#62; SELECT ACOS(0);
+        -&#62; 1.570796
+</PRE>
+
+<A NAME="IDX1265"></A>
+<DT><CODE>ASIN(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的反正弦，更確切地說，傳回正弦值為 <CODE>X</CODE> 的值。如果 <CODE>X</CODE> 不在 <CODE>-1</CODE> 到 <CODE>1</CODE> 之間的範圍內，傳回 <CODE>NULL</CODE>：
+
+<PRE>
+mysql&#62; SELECT ASIN(0.2);
+        -&#62; 0.201358
+mysql&#62; SELECT ASIN('foo');
+        -&#62; 0.000000
+</PRE>
+
+<A NAME="IDX1266"></A>
+<DT><CODE>ATAN(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的反正切， 更確切地說，傳回正切值為 <CODE>X</CODE> 的值：
+
+<PRE>
+mysql&#62; SELECT ATAN(2);
+        -&#62; 1.107149
+mysql&#62; SELECT ATAN(-2);
+        -&#62; -1.107149
+</PRE>
+
+<A NAME="IDX1267"></A>
+<DT><CODE>ATAN(Y,X)</CODE>
+<DD>
+<DT><CODE>ATAN2(Y,X)</CODE>
+<DD>
+傳回兩個變數 <CODE>X</CODE> 和 <CODE>Y</CODE> 的反正切。它類似於計算 <CODE>Y / X</CODE> 的反正切，除了兩個參數的符號用於決定結果的象限：
+
+<PRE>
+mysql&#62; SELECT ATAN(-2,2);
+        -&#62; -0.785398
+mysql&#62; SELECT ATAN2(PI(),0);
+        -&#62; 1.570796
+</PRE>
+
+<A NAME="IDX1268"></A>
+<DT><CODE>COT(X)</CODE>
+<DD>
+傳回 <CODE>X</CODE> 的餘切：
+
+<PRE>
+mysql&#62; SELECT COT(12);
+        -&#62; -1.57267341
+mysql&#62; SELECT COT(0);
+        -&#62; NULL
+</PRE>
+
+<A NAME="IDX1269"></A>
+<DT><CODE>RAND()</CODE>
+<DD>
+<DT><CODE>RAND(N)</CODE>
+<DD>
+傳回一個範圍在 <CODE>0</CODE> 到 <CODE>1.0</CODE> 之間的隨機浮點值。
+如果一個整數參數 <CODE>N</CODE> 被指定，它被當做種幾值使用(用於產生一個可重復的數值)：
+
+<PRE>
+mysql&#62; SELECT RAND();
+        -&#62; 0.9233482386203
+mysql&#62; SELECT RAND(20);
+        -&#62; 0.15888261251047
+mysql&#62; SELECT RAND(20);
+        -&#62; 0.15888261251047
+mysql&#62; SELECT RAND();
+        -&#62; 0.63553050033332
+mysql&#62; SELECT RAND();
+        -&#62; 0.70100469486881
+</PRE>
+
+在一個 <CODE>ORDER BY</CODE> 幾句中，不可以使用 <CODE>RAND()</CODE> 值使用一個列，因為 <CODE>ORDER BY</CODE> 將多次重復計算列。從 MySQL 3.23 開始，你可以使用：<CODE>SELECT * FROM table_name ORDER BY RAND()</CODE>，這有利於得到一個來自 <CODE>SELECT * FROM table1,table2 WHERE a=b AND c&#60;d ORDER BY RAND() LIMIT 1000</CODE> 的集合中的隨機樣本。
+
+注意，在一個 <CODE>WHERE</CODE> 幾句中的 <CODE>RAND()</CODE> 將在每次 <CODE>WHERE</CODE> 執行時被重新計算。
+
+<CODE>RAND()</CODE> 並不是預期完美的隨機數發生器，但是可以代替做為產生特別的隨機數一個快速的方法，這樣便於在兩個不同平台下的同一 MySQL 版本間移動。
+
+<P></P>
+
+<A NAME="IDX1270"></A>
+<DT><CODE>LEAST(X,Y,...)</CODE>
+<DD>
+有兩個或更多個參數，傳回最小(最小值)的參數。參數使用下列規則進行比較：
+
+<UL>
+<LI>
+如果傳回值用於一個 <CODE>INTEGER</CODE> 語境，或所有的參數是整數值，它們作為整數比較。
+
+<LI>
+如果傳回值用於一個 <CODE>REAL</CODE> 語境，或所有的參數均是實數值，它們作為實數被比較。
+
+<LI>
+如果任何一個參數是字母大小寫敏感的，參數作為大小寫敏感的字串進行比較。
+
+<LI>
+在其它情況下，參數做為忽略大小寫的字元中進行比較：
+</UL>
+
+
+<PRE>
+mysql&#62; SELECT LEAST(2,0);
+        -&#62; 0
+mysql&#62; SELECT LEAST(34.0,3.0,5.0,767.0);
+        -&#62; 3.0
+mysql&#62; SELECT LEAST("B","A","C");
+        -&#62; "A"
+</PRE>
+
+在早於 MySQL 3.22.5 的版本中，你可以使用 <CODE>MIN()</CODE> 代替 <CODE>LEAST</CODE>。
+
+<P></P>
+
+<A NAME="IDX1271"></A>
+<DT><CODE>GREATEST(X,Y,...)</CODE>
+<DD>
+傳回最大(最大值)參數。
+參數使用與 <CODE>LEAST</CODE> 一致的規則進行比較：
+
+<PRE>
+mysql&#62; SELECT GREATEST(2,0);
+        -&#62; 2
+mysql&#62; SELECT GREATEST(34.0,3.0,5.0,767.0);
+        -&#62; 767.0
+mysql&#62; SELECT GREATEST("B","A","C");
+        -&#62; "C"
+</PRE>
+
+在早於 MySQL 3.22.5 的版本中，可以使用 <CODE>MAX()</CODE> 代替 <CODE>GREATEST</CODE>。
+
+<P></P>
+
+<A NAME="IDX1272"></A>
+<DT><CODE>DEGREES(X)</CODE>
+<DD>
+將參數 <CODE>X</CODE> 從弧度轉換為角度，然後傳回：
+
+<PRE>
+mysql&#62; SELECT DEGREES(PI());
+        -&#62; 180.000000
+</PRE>
+
+<A NAME="IDX1273"></A>
+<DT><CODE>RADIANS(X)</CODE>
+<DD>
+將參數 <CODE>X</CODE> 從角度轉換為弧度，然後傳回：
+
+<PRE>
+mysql&#62; SELECT RADIANS(90);
+        -&#62; 1.570796
+</PRE>
+
+<A NAME="IDX1274"></A>
+<DT><CODE>TRUNCATE(X,D)</CODE>
+<DD>
+將數值 <CODE>X</CODE> 截到 <CODE>D</CODE> 個小數，然後傳回。如果 <CODE>D</CODE> 為 <CODE>0</CODE>，結果將不包含小數點和小數部分：
+
+<PRE>
+mysql&#62; SELECT TRUNCATE(1.223,1);
+        -&#62; 1.2
+mysql&#62; SELECT TRUNCATE(1.999,1);
+        -&#62; 1.9
+mysql&#62; SELECT TRUNCATE(1.999,0);
+        -&#62; 1
+mysql&#62; SELECT TRUNCATE(-1.999,1);
+        -&#62; -1.9
+</PRE>
+
+從 MySQL 3.23.51 開始，所有數位被四舍五入到零。
+
+如果 <CODE>D</CODE> 是負數，那麼數位的整個部分被對準零位輸出：
+
+<PRE>
+mysql&#62; SELECT TRUNCATE(122,-2);
+       -&#62; 100
+</PRE>
+
+注意， 十進值小數在計算機中通常不以精確數位儲存，而是雙精度型的值，你可能會被下列結果所愚弄：
+
+<A NAME="IDX1275"></A>
+
+<PRE>
+mysql&#62; SELECT TRUNCATE(10.28*100,0);
+       -&#62; 1027
+</PRE>
+
+上面結果的發生是因為 10.28 實際上是以某些像 10.2799999999999999 的形式被儲存的。
+</DL>
+
+
+
+<H3><A NAME="Date_and_time_functions"></A>6.3.4  日期和時間函數</H3>
+
+<P>
+<A NAME="IDX1276"></A>
+<A NAME="IDX1277"></A>
+
+</P>
+<P>
+對於每個類型的值範圍以及日期和時間值有效指定格式，請查看章節 <A HREF="06-2.html#Date_and_time_types">6.2.2  Date 和 Time 類型</A>。
+</P>
+
+<P>
+這裡是一個使用日期函數的範例。下面的查詢選擇所有 <CODE>date_col</CODE> 值在最後 30 天內的記錄。
+</P>
+
+<PRE>
+mysql&#62; SELECT something FROM tbl_name
+           WHERE TO_DAYS(NOW()) - TO_DAYS(date_col) &#60;= 30;
+</PRE>
+
+<DL COMPACT>
+
+<DT><CODE>DAYOFWEEK(date)</CODE>
+<DD>
+<A NAME="IDX1278"></A>
+ 
+傳回 <CODE>date</CODE> 的星期索引(<CODE>1</CODE> = Sunday, <CODE>2</CODE> = Monday, ... <CODE>7</CODE> =
+Saturday)。索引值符合 ODBC 的標準。
+
+
+<PRE>
+mysql&#62; SELECT DAYOFWEEK('1998-02-03');
+        -&#62; 3
+</PRE>
+
+<A NAME="IDX1279"></A>
+<DT><CODE>WEEKDAY(date)</CODE>
+<DD>
+傳回 <CODE>date</CODE> 的星期索引(<CODE>0</CODE> = Monday, <CODE>1</CODE> = Tuesday, ... <CODE>6</CODE> = Sunday)：
+
+
+<PRE>
+mysql&#62; SELECT WEEKDAY('1998-02-03 22:23:00');
+        -&#62; 1
+mysql&#62; SELECT WEEKDAY('1997-11-05');
+        -&#62; 2
+</PRE>
+
+<A NAME="IDX1280"></A>
+<DT><CODE>DAYOFMONTH(date)</CODE>
+<DD>
+傳回 <CODE>date</CODE> 是一月中的第幾天，範圍為 <CODE>1</CODE> 到 <CODE>31</CODE>：
+
+
+<PRE>
+mysql&#62; SELECT DAYOFMONTH('1998-02-03');
+        -&#62; 3
+</PRE>
+
+<A NAME="IDX1281"></A>
+<DT><CODE>DAYOFYEAR(date)</CODE>
+<DD>
+傳回 <CODE>date</CODE> 是一年中的第幾天，範圍為 <CODE>1</CODE> 到 <CODE>366</CODE>：
+
+
+<PRE>
+mysql&#62; SELECT DAYOFYEAR('1998-02-03');
+        -&#62; 34
+</PRE>
+
+<A NAME="IDX1282"></A>
+<DT><CODE>MONTH(date)</CODE>
+<DD>
+傳回 <CODE>date</CODE> 中的月份，範圍為 <CODE>1</CODE> 到 <CODE>12</CODE>：
+
+
+<PRE>
+mysql&#62; SELECT MONTH('1998-02-03');
+        -&#62; 2
+</PRE>
+
+<A NAME="IDX1283"></A>
+<DT><CODE>DAYNAME(date)</CODE>
+<DD>
+傳回 <CODE>date</CODE> 的星期名：
+
+
+<PRE>
+mysql&#62; SELECT DAYNAME("1998-02-05");
+        -&#62; 'Thursday'
+</PRE>
+
+<A NAME="IDX1284"></A>
+<DT><CODE>MONTHNAME(date)</CODE>
+<DD>
+傳回 <CODE>date</CODE> 的月份名：
+
+
+<PRE>
+mysql&#62; SELECT MONTHNAME("1998-02-05");
+        -&#62; 'February'
+</PRE>
+
+<A NAME="IDX1285"></A>
+<DT><CODE>QUARTER(date)</CODE>
+<DD>
+傳回 <CODE>date</CODE> 在一年中的季度，範圍為 <CODE>1</CODE> 到 <CODE>4</CODE>：
+
+
+<PRE>
+mysql&#62; SELECT QUARTER('98-04-01');
+        -&#62; 2
+</PRE>
+
+<A NAME="IDX1286"></A>
+<DT><CODE>WEEK(date)</CODE>
+<DD>
+<DT><CODE>WEEK(date,first)</CODE>
+<DD>
+對於星期日是一周中的第一天的場合，如果函數只有一個參數調用，傳回 <CODE>date</CODE> 為一年的第幾周，傳回值範圍為 <CODE>0</CODE> 到 <CODE>53</CODE> (是的，可能有第 53 周的開始)。兩個參數形式的 <CODE>WEEK()</CODE> 允許你指定一周是否以星期日或星期一開始，以及傳回值為 <CODE>0-53</CODE> 還是 <CODE>1-52</CODE>。
+
+這裡的一個表顯示第二個參數是如何工作的：
+
+<TABLE BORDER WIDTH="90%">
+<TR><TD><STRONG>值 </STRONG> </TD><TD> <CODE>含義 </CODE>
+</TD></TR>
+<TR><TD>0 </TD><TD> 一周以星期日開始，傳回值範圍為 0-53
+</TD></TR>
+<TR><TD>1 </TD><TD> 一周以星期一開始，傳回值範圍為 0-53
+</TD></TR>
+<TR><TD>2 </TD><TD> 一周以星期日開始，傳回值範圍為 1-53
+</TD></TR>
+<TR><TD>3 </TD><TD> 一周以星期一開始，傳回值範圍為 1-53 (ISO 8601)
+</TD></TR>
+</TABLE>
+
+
+<PRE>
+mysql&#62; SELECT WEEK('1998-02-20');
+        -&#62; 7
+mysql&#62; SELECT WEEK('1998-02-20',0);
+        -&#62; 7
+mysql&#62; SELECT WEEK('1998-02-20',1);
+        -&#62; 8
+mysql&#62; SELECT WEEK('1998-12-31',1);
+        -&#62; 53
+</PRE>
+
+注意，在版本 4.0 中，<CODE>WEEK(#,0)</CODE> 被變更為相符 USA 歷法。
+
+注意，如果一周是上一年的最後一周，當你沒有使用 2 或 3 做為可選參數時，MySQL 將傳回 0：
+
+<PRE>
+mysql&#62; SELECT YEAR('2000-01-01'), WEEK('2000-01-01',0);
+        -&#62; 2000, 0
+mysql&#62; SELECT WEEK('2000-01-01',2);
+        -&#62; 52
+</PRE>
+
+你可能會爭辯說，當給定的日期值實際上是 1999 年的第 52 周的一部分時，MySQL 對 <CODE>WEEK()</CODE> 函數應該傳回 <CODE>52</CODE>。我們決定傳回 0 ，是因為我們希望該函數傳回“在指定年份中是第幾周”。
+當與其它的提取日期值中的月日值的函數結合使用時，這使得 <CODE>WEEK()</CODE> 函數的用法可靠。
+
+如果你更希望能得到恰當的年-周值，那麼你應該使用參數 2 或 3 做為可選參數，或者使用函數 <CODE>YEARWEEK()</CODE> ：
+
+<PRE>
+mysql&#62; SELECT YEARWEEK('2000-01-01');
+        -&#62; 199952
+mysql&#62; SELECT MID(YEARWEEK('2000-01-01'),5,2);
+        -&#62; 52
+</PRE>
+
+<A NAME="IDX1287"></A>
+<DT><CODE>YEAR(date)</CODE>
+<DD>
+傳回 <CODE>date</CODE> 的年份，範圍為 <CODE>1000</CODE> 到 <CODE>9999</CODE>：
+
+
+<PRE>
+mysql&#62; SELECT YEAR('98-02-03');
+        -&#62; 1998
+</PRE>
+
+<DT><CODE>YEARWEEK(date)</CODE>
+<DD>
+<DT><CODE>YEARWEEK(date,first)</CODE>
+<DD>
+傳回一個日期值是的哪一年的哪一周。第二個參數的形式與作用完全與 <CODE>WEEK()</CODE> 的第二個參數一致。注意，對於給定的日期參數是一年的第一周或最後一周的，傳回的年份值可能與日期參數給出的年份不一致：
+
+<PRE>
+mysql&#62; SELECT YEARWEEK('1987-01-01');
+        -&#62; 198653
+</PRE>
+
+注意，對於可選參數 0 或 1，周值的傳回值不同於 <CODE>WEEK()</CODE> 函數所傳回值(<CODE>0</CODE>)， <CODE>WEEK()</CODE> 根據給定的年語境傳回周值。
+
+<A NAME="IDX1288"></A>
+<DT><CODE>HOUR(time)</CODE>
+<DD>
+傳回 <CODE>time</CODE> 的小時值，範圍為 <CODE>0</CODE> 到 <CODE>23</CODE>：
+
+
+<PRE>
+mysql&#62; SELECT HOUR('10:05:03');
+        -&#62; 10
+</PRE>
+
+<A NAME="IDX1289"></A>
+<DT><CODE>MINUTE(time)</CODE>
+<DD>
+傳回 <CODE>time</CODE> 的分鐘值，範圍為 <CODE>0</CODE> 到 <CODE>59</CODE>：
+
+
+<PRE>
+mysql&#62; SELECT MINUTE('98-02-03 10:05:03');
+        -&#62; 5
+</PRE>
+
+<A NAME="IDX1290"></A>
+<DT><CODE>SECOND(time)</CODE>
+<DD>
+傳回 <CODE>time</CODE> 的秒值，範圍為 <CODE>0</CODE> 到 <CODE>59</CODE>：
+
+
+<PRE>
+mysql&#62; SELECT SECOND('10:05:03');
+        -&#62; 3
+</PRE>
+
+<A NAME="IDX1291"></A>
+<DT><CODE>PERIOD_ADD(P,N)</CODE>
+<DD>
+增加 <CODE>N</CODE> 個月到時期 <CODE>P</CODE>(格式為 <CODE>YYMM</CODE> 或 <CODE>YYYYMM</CODE>)中。以  <CODE>YYYYMM</CODE> 格式傳回值。
+
+注意，期間參數 <CODE>P</CODE> <STRONG>不是</STRONG> 一個日期值：
+
+
+<PRE>
+mysql&#62; SELECT PERIOD_ADD(9801,2);
+        -&#62; 199803
+</PRE>
+
+<A NAME="IDX1292"></A>
+<DT><CODE>PERIOD_DIFF(P1,P2)</CODE>
+<DD>
+傳回時期 <CODE>P1</CODE> 和 <CODE>P2</CODE> 之間的月數。<CODE>P1</CODE> 和 <CODE>P2</CODE> 應該以 <CODE>YYMM</CODE> 或 <CODE>YYYYMM</CODE> 指定。
+
+注意，時期參數 <CODE>P1</CODE> 和 <CODE>P2</CODE> <STRONG>不是</STRONG> 日期值：
+
+
+<PRE>
+mysql&#62; SELECT PERIOD_DIFF(9802,199703);
+        -&#62; 11
+</PRE>
+
+<A NAME="IDX1293"></A>
+<A NAME="IDX1294"></A>
+<A NAME="IDX1295"></A>
+<A NAME="IDX1296"></A>
+<DT><CODE>DATE_ADD(date,INTERVAL expr type)</CODE>
+<DD>
+<DT><CODE>DATE_SUB(date,INTERVAL expr type)</CODE>
+<DD>
+<DT><CODE>ADDDATE(date,INTERVAL expr type)</CODE>
+<DD>
+<DT><CODE>SUBDATE(date,INTERVAL expr type)</CODE>
+<DD>
+這些函數執行日期的算術運算。<CODE>ADDDATE()</CODE> 和 <CODE>SUBDATE()</CODE> 分別是 <CODE>DATE_ADD()</CODE> 和 <CODE>DATE_SUB()</CODE> 的同義詞。
+
+在 MySQL 3.23 中，如果表達式的右邊是一個日期值或一個日期時間型欄位，你可以使用 <CODE>+</CODE> 和 <CODE>-</CODE> 代替 <CODE>DATE_ADD()</CODE> 和 <CODE>DATE_SUB()</CODE>(範例如下)。
+
+參數 <CODE>date</CODE> 是一個 <CODE>DATETIME</CODE> 或 <CODE>DATE</CODE> 值，指定一個日期的開始。<CODE>expr</CODE> 是一個表達式，指定從開始日期上增加還是減去間隔值。<CODE>expr</CODE> 是一個字串﹔它可以以一個 <SAMP>“-”</SAMP> 領頭表示一個負的間隔值。<CODE>type</CODE> 是一個關鍵詞，它標志著表達式以何格式被解釋。
+
+下表顯示 <CODE>type</CODE> 和 <CODE>expr</CODE> 參數是如何關聯的：
+
+<TABLE BORDER WIDTH="90%">
+<TR><TD><CODE>type</CODE> <STRONG>值</STRONG> </TD><TD> <CODE>expr</CODE> <STRONG>期望的格式</STRONG>
+</TD></TR>
+<TR><TD><CODE>SECOND</CODE> </TD><TD> <CODE>SECONDS</CODE>
+</TD></TR>
+<TR><TD><CODE>MINUTE</CODE> </TD><TD> <CODE>MINUTES</CODE>
+</TD></TR>
+<TR><TD><CODE>HOUR</CODE> </TD><TD> <CODE>HOURS</CODE>
+</TD></TR>
+<TR><TD><CODE>DAY</CODE> </TD><TD> <CODE>DAYS</CODE>
+</TD></TR>
+<TR><TD><CODE>MONTH</CODE> </TD><TD> <CODE>MONTHS</CODE>
+</TD></TR>
+<TR><TD><CODE>YEAR</CODE> </TD><TD> <CODE>YEARS</CODE>
+</TD></TR>
+<TR><TD><CODE>MINUTE_SECOND</CODE> </TD><TD> <CODE>"MINUTES:SECONDS"</CODE>
+</TD></TR>
+<TR><TD><CODE>HOUR_MINUTE</CODE> </TD><TD> <CODE>"HOURS:MINUTES"</CODE>
+</TD></TR>
+<TR><TD><CODE>DAY_HOUR</CODE> </TD><TD> <CODE>"DAYS HOURS"</CODE>
+</TD></TR>
+<TR><TD><CODE>YEAR_MONTH</CODE> </TD><TD> <CODE>"YEARS-MONTHS"</CODE>
+</TD></TR>
+<TR><TD><CODE>HOUR_SECOND</CODE> </TD><TD> <CODE>"HOURS:MINUTES:SECONDS"</CODE>
+</TD></TR>
+<TR><TD><CODE>DAY_MINUTE</CODE> </TD><TD> <CODE>"DAYS HOURS:MINUTES"</CODE>
+</TD></TR>
+<TR><TD><CODE>DAY_SECOND</CODE> </TD><TD> <CODE>"DAYS HOURS:MINUTES:SECONDS"</CODE>
+</TD></TR>
+</TABLE>
+
+在 <CODE>expr</CODE> 的格式中，MySQL 允許任何字元作為定界符。表中所顯示的是建議的定界字元。如果 <CODE>date</CODE> 參數是一個 <CODE>DATE</CODE> 值，並且計算的間隔僅僅有 <CODE>YEAR</CODE>、<CODE>MONTH</CODE> 和 <CODE>DAY</CODE> 部分(沒有時間部分)，那麼傳回值也是一個 <CODE>DATE</CODE> 值。否則傳回值是一個 <CODE>DATETIME</CODE> 值：
+
+<PRE>
+mysql&#62; SELECT "1997-12-31 23:59:59" + INTERVAL 1 SECOND;
+        -&#62; 1998-01-01 00:00:00
+mysql&#62; SELECT INTERVAL 1 DAY + "1997-12-31";
+        -&#62; 1998-01-01
+mysql&#62; SELECT "1998-01-01" - INTERVAL 1 SECOND;
+       -&#62; 1997-12-31 23:59:59
+mysql&#62; SELECT DATE_ADD("1997-12-31 23:59:59",
+    -&#62;                 INTERVAL 1 SECOND);
+        -&#62; 1998-01-01 00:00:00
+mysql&#62; SELECT DATE_ADD("1997-12-31 23:59:59",
+    -&#62;                 INTERVAL 1 DAY);
+        -&#62; 1998-01-01 23:59:59
+mysql&#62; SELECT DATE_ADD("1997-12-31 23:59:59",
+    -&#62;                 INTERVAL "1:1" MINUTE_SECOND);
+        -&#62; 1998-01-01 00:01:00
+mysql&#62; SELECT DATE_SUB("1998-01-01 00:00:00",
+    -&#62;                 INTERVAL "1 1:1:1" DAY_SECOND);
+        -&#62; 1997-12-30 22:58:59
+mysql&#62; SELECT DATE_ADD("1998-01-01 00:00:00",
+    -&#62;                 INTERVAL "-1 10" DAY_HOUR);
+        -&#62; 1997-12-30 14:00:00
+mysql&#62; SELECT DATE_SUB("1998-01-02", INTERVAL 31 DAY);
+        -&#62; 1997-12-02
+</PRE>
+
+如果你指定了一個太短的間隔值(沒有包括 <CODE>type</CODE> 關鍵詞所期望的所有間隔部分)，MySQL 假設你遺漏了間隔值的最左邊部分。例如，如果指定一個 <CODE>type</CODE> 為 <CODE>DAY_SECOND</CODE>，那麼 <CODE>expr</CODE> 值被期望包含天、小時、分鐘和秒部分。如果你象 <CODE>"1:10"</CODE> 樣指定一個值，MySQL 假設天和小時部分被遺漏了，指定的值代表分鐘和秒。換句話說，<CODE>"1:10" DAY_SECOND</CODE> 被解釋為等價於 <CODE>"1:10" MINUTE_SECOND</CODE>。這類似於 MySQL 解釋 <CODE>TIME</CODE> 值為經過的時間而不是一天的時刻。
+
+注意，如果依著包含一個時間部分的間隔增加或減少一個日期值，該日期值將被自動地轉換到一個日期時間值：
+
+<PRE>
+mysql&#62; SELECT DATE_ADD("1999-01-01", INTERVAL 1 DAY);
+       -&#62; 1999-01-02
+mysql&#62; SELECT DATE_ADD("1999-01-01", INTERVAL 1 HOUR);
+       -&#62; 1999-01-01 01:00:00
+</PRE>
+
+如果你使用了確定不正確的日期，傳回結果將是 <CODE>NULL</CODE>。如果你增加 <CODE>MONTH</CODE>、<CODE>YEAR_MONTH</CODE> 或 <CODE>YEAR</CODE>，並且結果日期的天比新月份的最大天數還大，那麼它將被調整到新月份的最大天數：
+
+<PRE>
+mysql&#62; SELECT DATE_ADD('1998-01-30', INTERVAL 1 MONTH);
+        -&#62; 1998-02-28
+</PRE>
+
+注意，上面的範例中，單詞 <CODE>INTERVAL</CODE> 和關鍵詞 <CODE>type</CODE> 是不區分字母大小寫的。
+
+<P></P>
+
+<A NAME="IDX1297"></A>
+<DT><CODE>EXTRACT(type FROM date)</CODE>
+<DD>
+<CODE>EXTRACT()</CODE> 函數使用與 <CODE>DATE_ADD()</CODE> 或 <CODE>DATE_SUB()</CODE> 一致的間隔類型，但是它用於指定從日期中提取的部分，而不是進行日期算術運算。
+
+<PRE>
+mysql&#62; SELECT EXTRACT(YEAR FROM "1999-07-02");
+       -&#62; 1999
+mysql&#62; SELECT EXTRACT(YEAR_MONTH FROM "1999-07-02 01:02:03");
+       -&#62; 199907
+mysql&#62; SELECT EXTRACT(DAY_MINUTE FROM "1999-07-02 01:02:03");
+       -&#62; 20102
+</PRE>
+
+<A NAME="IDX1298"></A>
+<DT><CODE>TO_DAYS(date)</CODE>
+<DD>
+給出一個日期 <CODE>date</CODE>，傳回一個天數(從 0 年開始的天數)：
+
+<PRE>
+mysql&#62; SELECT TO_DAYS(950501);
+        -&#62; 728779
+mysql&#62; SELECT TO_DAYS('1997-10-07');
+        -&#62; 729669
+</PRE>
+
+<CODE>TO_DAYS()</CODE> 無意於使用先於格裡高裡歷法(即現行的陽歷)(1582)出現的值，因為它不考慮當歷法改變時所遺失的天數。
+
+<P></P>
+
+<A NAME="IDX1299"></A>
+<DT><CODE>FROM_DAYS(N)</CODE>
+<DD>
+給出一個天數 <CODE>N</CODE>，傳回一個 <CODE>DATE</CODE> 值：
+
+<PRE>
+mysql&#62; SELECT FROM_DAYS(729669);
+        -&#62; '1997-10-07'
+</PRE>
+
+<CODE>FROM_DAYS()</CODE> 無意於使用先於格裡高裡歷法(1582)出現的值，因為它不考慮當歷法改變時所遺失的天數。
+
+<P></P>
+
+<A NAME="IDX1300"></A>
+<DT><CODE>DATE_FORMAT(date,format)</CODE>
+<DD>
+依照 <CODE>format</CODE> 字串格式化 <CODE>date</CODE> 值。下面的修飾符可被用於 <CODE>format</CODE> 字串中：
+<TABLE BORDER WIDTH="90%">
+<TR><TD><STRONG>修飾符 </STRONG> </TD><TD> <STRONG>含義 </STRONG>
+</TD></TR>
+<TR><TD><CODE>%M</CODE> </TD><TD> 月的名字 (<CODE>January</CODE>..<CODE>December</CODE>)
+</TD></TR>
+<TR><TD><CODE>%W</CODE> </TD><TD> 星期的名字 (<CODE>Sunday</CODE>..<CODE>Saturday</CODE>)
+</TD></TR>
+<TR><TD><CODE>%D</CODE> </TD><TD> 有英文後綴的某月的第幾天 (<CODE>0th</CODE>, <CODE>1st</CODE>, <CODE>2nd</CODE>, <CODE>3rd</CODE>, etc.)
+</TD></TR>
+<TR><TD><CODE>%Y</CODE> </TD><TD> 年份，數位的，4 位
+</TD></TR>
+<TR><TD><CODE>%y</CODE> </TD><TD> 年份，數位的，2 位 
+</TD></TR>
+<TR><TD><CODE>%X</CODE> </TD><TD> 周值的年份，星期日是一個星期的第一天，數位的，4 位，與 '%V' 一同使用
+</TD></TR>
+<TR><TD><CODE>%x</CODE> </TD><TD> 周值的年份，星期一是一個星期的第一天，數位的，4 位，與 '%v' 一同使用
+</TD></TR>
+<TR><TD><CODE>%a</CODE> </TD><TD> 縮寫的星期名 (<CODE>Sun</CODE>..<CODE>Sat</CODE>)
+</TD></TR>
+<TR><TD><CODE>%d</CODE> </TD><TD> 月份中的天數，數位的 (<CODE>00</CODE>..<CODE>31</CODE>)
+</TD></TR>
+<TR><TD><CODE>%e</CODE> </TD><TD> 月份中的天數，數位的 (<CODE>0</CODE>..<CODE>31</CODE>)
+</TD></TR>
+<TR><TD><CODE>%m</CODE> </TD><TD> 月，數位的 (<CODE>00</CODE>..<CODE>12</CODE>)
+</TD></TR>
+<TR><TD><CODE>%c</CODE> </TD><TD> 月，數位的 (<CODE>0</CODE>..<CODE>12</CODE>)
+</TD></TR>
+<TR><TD><CODE>%b</CODE> </TD><TD> 縮寫的月份名 (<CODE>Jan</CODE>..<CODE>Dec</CODE>)
+</TD></TR>
+<TR><TD><CODE>%j</CODE> </TD><TD> 一年中的天數 (<CODE>001</CODE>..<CODE>366</CODE>)
+</TD></TR>
+<TR><TD><CODE>%H</CODE> </TD><TD> 小時 (<CODE>00</CODE>..<CODE>23</CODE>)
+</TD></TR>
+<TR><TD><CODE>%k</CODE> </TD><TD> 小時 (<CODE>0</CODE>..<CODE>23</CODE>)
+</TD></TR>
+<TR><TD><CODE>%h</CODE> </TD><TD> 小時 (<CODE>01</CODE>..<CODE>12</CODE>)
+</TD></TR>
+<TR><TD><CODE>%I</CODE> </TD><TD> 小時 (<CODE>01</CODE>..<CODE>12</CODE>)
+</TD></TR>
+<TR><TD><CODE>%l</CODE> </TD><TD> 小時 (<CODE>1</CODE>..<CODE>12</CODE>)
+</TD></TR>
+<TR><TD><CODE>%i</CODE> </TD><TD> 分鐘，數位的 (<CODE>00</CODE>..<CODE>59</CODE>)
+</TD></TR>
+<TR><TD><CODE>%r</CODE> </TD><TD> 時間，12 小時 (<CODE>hh:mm:ss [AP]M</CODE>)
+</TD></TR>
+<TR><TD><CODE>%T</CODE> </TD><TD> 時間，24 小時 (<CODE>hh:mm:ss</CODE>)
+</TD></TR>
+<TR><TD><CODE>%S</CODE> </TD><TD> 秒 (<CODE>00</CODE>..<CODE>59</CODE>)
+</TD></TR>
+<TR><TD><CODE>%s</CODE> </TD><TD> 秒 (<CODE>00</CODE>..<CODE>59</CODE>)
+</TD></TR>
+<TR><TD><CODE>%p</CODE> </TD><TD> <CODE>AM</CODE> 或 <CODE>PM</CODE>
+</TD></TR>
+<TR><TD><CODE>%w</CODE> </TD><TD> 一周中的天數 (<CODE>0</CODE>=Sunday..<CODE>6</CODE>=Saturday)
+</TD></TR>
+<TR><TD><CODE>%U</CODE> </TD><TD> 星期 (<CODE>00</CODE>..<CODE>53</CODE>)，星期日是一個星期的第一天
+</TD></TR>
+<TR><TD><CODE>%u</CODE> </TD><TD> 星期 (<CODE>00</CODE>..<CODE>53</CODE>)，星期一是一個星期的第一天
+</TD></TR>
+<TR><TD><CODE>%V</CODE> </TD><TD> 星期 (<CODE>01</CODE>..<CODE>53</CODE>)，星期日是一個星期的第一天。與 '%X' 一起使用
+</TD></TR>
+<TR><TD><CODE>%v</CODE> </TD><TD> 星期 (<CODE>01</CODE>..<CODE>53</CODE>)，星期一是一個星期的第一天。與 '%x' 一起使用
+</TD></TR>
+<TR><TD><CODE>%%</CODE> </TD><TD> 一個字母 <SAMP>“%”</SAMP>
+</TD></TR>
+</TABLE>
+
+所有其它的字元不經過解釋，直接復制到結果中：
+
+<PRE>
+mysql&#62; SELECT DATE_FORMAT('1997-10-04 22:23:00', '%W %M %Y');
+        -&#62; 'Saturday October 1997'
+mysql&#62; SELECT DATE_FORMAT('1997-10-04 22:23:00', '%H:%i:%s');
+        -&#62; '22:23:00'
+mysql&#62; SELECT DATE_FORMAT('1997-10-04 22:23:00',
+                          '%D %y %a %d %m %b %j');
+        -&#62; '4th 97 Sat 04 10 Oct 277'
+mysql&#62; SELECT DATE_FORMAT('1997-10-04 22:23:00',
+                          '%H %k %I %r %T %S %w');
+        -&#62; '22 22 10 10:23:00 PM 22:23:00 00 6'
+mysql&#62; SELECT DATE_FORMAT('1999-01-01', '%X %V');
+        -&#62; '1998 52'
+</PRE>
+
+在 MySQL 3.23 中，在格式修飾符前需要字元 <SAMP>`%'</SAMP>。在更早的 MySQL 版本中，<SAMP>`%'</SAMP> 是可選的。
+
+月份與天修飾符的範圍從零開始的原因是，在 MySQL 3.23 中，它允許儲存不完善的日期值(例如 <CODE>'2004-00-00'</CODE>)。
+
+<P></P>
+
+<A NAME="IDX1301"></A>
+<DT><CODE>TIME_FORMAT(time,format)</CODE>
+<DD>
+它的使用方法與上面的 <CODE>DATE_FORMAT()</CODE> 函數相似，但是 <CODE>format</CODE> 字串只包含處理小時、分和秒的那些格式修飾符。使用其它的修飾符會產生一個 <CODE>NULL</CODE> 值或 <CODE>0</CODE>。
+
+<P></P>
+
+<A NAME="IDX1302"></A>
+<A NAME="IDX1303"></A>
+<DT><CODE>CURDATE()</CODE>
+<DD>
+<DT><CODE>CURRENT_DATE</CODE>
+<DD>
+以 <CODE>'YYYY-MM-DD'</CODE> 或 <CODE>YYYYMMDD</CODE> 格式傳回目前的日期值，傳回的格式取決於該函數是用於字串還是數位語境中：
+
+<PRE>
+mysql&#62; SELECT CURDATE();
+        -&#62; '1997-12-15'
+mysql&#62; SELECT CURDATE() + 0;
+        -&#62; 19971215
+</PRE>
+
+<A NAME="IDX1304"></A>
+<A NAME="IDX1305"></A>
+<DT><CODE>CURTIME()</CODE>
+<DD>
+<DT><CODE>CURRENT_TIME</CODE>
+<DD>
+以 <CODE>'HH:MM:SS'</CODE> 或 <CODE>HHMMSS</CODE> 格式傳回目前的時間值，傳回的格式取決於該函數是用於字串還是數位語境中：
+
+<PRE>
+mysql&#62; SELECT CURTIME();
+        -&#62; '23:50:26'
+mysql&#62; SELECT CURTIME() + 0;
+        -&#62; 235026
+</PRE>
+
+<A NAME="IDX1306"></A>
+<A NAME="IDX1307"></A>
+<A NAME="IDX1308"></A>
+<DT><CODE>NOW()</CODE>
+<DD>
+<DT><CODE>SYSDATE()</CODE>
+<DD>
+<DT><CODE>CURRENT_TIMESTAMP</CODE>
+<DD>
+以 <CODE>'YYYY-MM-DD HH:MM:SS'</CODE> 或 <CODE>YYYYMMDDHHMMSS</CODE> 格式傳回目前的日期時間值，傳回的格式取決於該函數是用於字串還是數位語境中：
+
+<PRE>
+mysql&#62; SELECT NOW();
+        -&#62; '1997-12-15 23:50:26'
+mysql&#62; SELECT NOW() + 0;
+        -&#62; 19971215235026
+</PRE>
+
+注意，函數 <CODE>NOW()</CODE> 在每個查詢中只計算一次，也就是在查詢開始執行時。這就是說，如果在一個單獨的查詢中多次參照了 <CODE>NOW()</CODE>，它只會給出值都是一個相同的時間。
+
+<P></P>
+
+<A NAME="IDX1309"></A>
+<DT><CODE>UNIX_TIMESTAMP()</CODE>
+<DD>
+<DT><CODE>UNIX_TIMESTAMP(date)</CODE>
+<DD>
+如果調用時沒有參數，以無符號的整數形式傳回一個 Unix 時間戳(從 <CODE>'1970-01-01 00:00:00'</CODE> GMT 開始的秒數)。如果以一個參數 <CODE>date</CODE> 調用 <CODE>UNIX_TIMESTAMP()</CODE>，它將傳回該參數值從 <CODE>'1970-01-01
+00:00:00'</CODE> GMT 開始經過的秒數值。<CODE>date</CODE> 可以是一個 <CODE>DATE</CODE> 字串，一個 <CODE>DATETIME</CODE> 字串，一個 <CODE>TIMESTAMP</CODE>，或者以一個 <CODE>YYMMDD</CODE> 或 <CODE>YYYYMMDD</CODE> 顯示的本地時間：
+
+<PRE>
+mysql&#62; SELECT UNIX_TIMESTAMP();
+        -&#62; 882226357
+mysql&#62; SELECT UNIX_TIMESTAMP('1997-10-04 22:23:00');
+        -&#62; 875996580
+</PRE>
+
+當 <CODE>UNIX_TIMESTAMP</CODE> 被用於一個 <CODE>TIMESTAMP</CODE> 列時，函數直接傳回一個內部的時間戳值，而不進行一個隱含地 “string-to-unix-timestamp” 轉換。
+如果你傳遞一個超出範圍的日期參數給 <CODE>UNIX_TIMESTAMP()</CODE> ，它將傳回 0，但是請注意，MySQL 對其僅僅進行基本的檢驗(年範圍 1970-2037，月份 01-12，日期 01-31)。
+
+如果你希望減去 <CODE>UNIX_TIMESTAMP()</CODE> 列，你應該需要將結果強制轉換為一有符號整數。查看章節 <A HREF="06-3.html#Cast_Functions">6.3.5  Cast 函數</A>。
+
+<P></P>
+
+<A NAME="IDX1310"></A>
+<DT><CODE>FROM_UNIXTIME(unix_timestamp [,format])</CODE>
+<DD>
+以 <CODE>'YYYY-MM-DD HH:MM:SS'</CODE> 或 <CODE>YYYYMMDDHHMMSS</CODE> 格式傳回一個 <CODE>unix_timestamp</CODE> 參數值，傳回值的形式取決於該函數使用於字串還是數位語境。
+
+如果 <CODE>format</CODE> 給出，傳回值依 <CODE>format</CODE> 字串被格式。<CODE>format</CODE> 可以包含與 <CODE>DATE_FORMAT()</CODE> 函數同樣的修飾符。
+
+<PRE>
+mysql&#62; SELECT FROM_UNIXTIME(875996580);
+        -&#62; '1997-10-04 22:23:00'
+mysql&#62; SELECT FROM_UNIXTIME(875996580) + 0;
+        -&#62; 19971004222300
+mysql&#62; SELECT FROM_UNIXTIME(UNIX_TIMESTAMP(),
+                            '%Y %D %M %h:%i:%s %x');
+        -&#62; '1997 23rd December 03:43:30 1997'
+</PRE>
+
+<A NAME="IDX1311"></A>
+<DT><CODE>SEC_TO_TIME(seconds)</CODE>
+<DD>
+以 <CODE>'HH:MM:SS'</CODE> 或 <CODE>HHMMSS</CODE> 格式傳回參數 <CODE>seconds</CODE> 被轉換到時分秒後的值，傳回值的形式取決於該函數使用於字串還是數位語境：
+
+<PRE>
+mysql&#62; SELECT SEC_TO_TIME(2378);
+        -&#62; '00:39:38'
+mysql&#62; SELECT SEC_TO_TIME(2378) + 0;
+        -&#62; 3938
+</PRE>
+
+<A NAME="IDX1312"></A>
+<DT><CODE>TIME_TO_SEC(time)</CODE>
+<DD>
+將參數 <CODE>time</CODE> 轉換為秒數後傳回：
+
+<PRE>
+mysql&#62; SELECT TIME_TO_SEC('22:23:00');
+        -&#62; 80580
+mysql&#62; SELECT TIME_TO_SEC('00:39:38');
+        -&#62; 2378
+</PRE>
+
+</DL>
+
+
+
+<H3><A NAME="Cast_Functions"></A>6.3.5  Cast 函數</H3>
+
+<P>
+<CODE>CAST</CODE> 函數的句法如下：
+</P>
+<P>
+<A NAME="IDX1313"></A>
+<A NAME="IDX1314"></A>
+
+</P>
+
+<PRE>
+CAST(expression AS type)
+
+或
+
+CONVERT(expression,type)
+</PRE>
+
+<P>
+<CODE>type</CODE> 可以是下面的任一個：
+
+<UL>
+<LI>
+
+<CODE>BINARY</CODE>
+<LI>
+
+<CODE>CHAR</CODE> (4.0.6 中新加入)
+<LI>
+
+<CODE>DATE</CODE>
+<LI>
+
+<CODE>DATETIME</CODE>
+<LI>
+
+<CODE>SIGNED {INTEGER}</CODE>
+<LI>
+
+<CODE>TIME</CODE>
+<LI>
+
+<CODE>UNSIGNED {INTEGER}</CODE>
+</UL>
+
+<P>
+<CODE>CAST()</CODE> 是 ANSI SQL99 的句法，<CODE>CONVERT()</CODE> 是 ODBC 的句法。
+
+</P>
+<P>
+CAST 函數主要用於以特殊的 <CODE>CREATE ... SELECT</CODE> 形式建立一個列時：
+</P>
+
+<PRE>
+CREATE TABLE new_table SELECT CAST('2000-01-01' AS DATE);
+</PRE>
+
+<P>
+<CODE>CAST(string AS BINARY</CODE> 與 <CODE>BINARY string</CODE> 是相同的。
+<CODE>CAST(expr AS CHAR</CODE> 表示一個使用目前預設字元集的字串。
+</P>
+<P>
+為了將一個字串轉換成一個數位值，通常不需要做任何事情﹔只要將字串值當做一個數位即可：
+</P>
+
+<PRE>
+mysql&#62; SELECT 1+'1';
+       -&#62; 2
+</PRE>
+
+<P>
+如果在一個字串語境中使用一個數位，該數位會被自動地轉換為一個 <CODE>BINARY</CODE> 字串。
+</P>
+
+<PRE>
+mysql&#62; SELECT CONCAT("hello you ",2);
+       -&#62;  "hello you 2"
+</PRE>
+
+<P>
+MySQL 支援兩方是有符號的和無符號的 64 位值的算術運算。如果你使用一個數位運算子(比如 <CODE>+</CODE>)，並且其中的一個操作數是 <CODE>unsigned integer</CODE>，那麼結果將是無符號的。為了不考慮這些問題，你可以使用 <CODE>SIGNED</CODE> 和 <CODE>UNSIGNED</CODE> CAST 運算子來，它會分別地強制運算到一個有符號的或一個無符號的 64 位整數。
+</P>
+
+<PRE>
+mysql&#62; SELECT CAST(1-2 AS UNSIGNED)
+        -&#62; 18446744073709551615
+mysql&#62; SELECT CAST(CAST(1-2 AS UNSIGNED) AS SIGNED);
+        -&#62; -1
+</PRE>
+
+<P>
+注意，如果任一個操作數是一個浮點值(在這種語境下，<CODE>DECIMAL()</CODE> 被當作是一個浮點數值)，結果也將是一個浮點數值，並且結果不受上面的規則影響。
+</P>
+
+<PRE>
+mysql&#62; SELECT CAST(1 AS UNSIGNED) -2.0
+        -&#62; -1.0
+</PRE>
+
+<P>
+如果在一個算術運算中使用一個字串，它將被轉換為一個浮點數位。
+</P>
+
+<P>
+函數 <CODE>CAST()</CODE> 和 <CODE>CONVERT()</CODE> 在 MySQL 4.0.2 中被加入。
+</P>
+
+<P>
+為了完全支援 <CODE>BIGINT</CODE>，在 MySQL 4.0 中對無符號值的處理發生了改變。如果希望你的代碼在 MySQL 4.0 和 3.23 中均能夠正常運行(在這種情況下，你或許不能夠使用 CAST 函數)，當進行兩個無符號整數列的減法時，你可以使用下面的技巧得到一個有符號的結果：
+</P>
+
+<PRE>
+SELECT (unsigned_column_1+0.0)-(unsigned_column_2+0.0);
+</PRE>
+
+<P>
+這個做法是在進行減法之前，先將無符號列轉換為一個浮點數。
+</P>
+<P>
+如果你將舊的 MySQL 應用程式移植到 MySQL 4.0 時，在 <CODE>UNSIGNED</CODE> 列上出現了問題，你可以在啟動 <CODE>mysqld</CODE> 時使用 <CODE>--sql-mode=NO_UNSIGNED_SUBTRACTION</CODE> 選項。注意，只要你使用了這個選項，你將不能直接地使用 <CODE>UNSIGNED BIGINT</CODE> 列類型。
+</P>
+
+
+<H3><A NAME="Other_Functions"></A>6.3.6  其它函數</H3>
+
+
+
+<H4><A NAME="Bit_functions"></A>6.3.6.1  位函數</H4>
+
+<P>
+<A NAME="IDX1315"></A>
+<A NAME="IDX1316"></A>
+<A NAME="IDX1317"></A>
+<A NAME="IDX1318"></A>
+
+</P>
+<P>
+MySQL 使用 <CODE>BIGINT</CODE> (64 位) 算法進行位運算，因而這些運算子有一個 64 位的最大範圍。
+</P>
+
+<DL COMPACT>
+
+<DT><CODE>|</CODE>
+<DD>
+<A NAME="IDX1319"></A>
+ <A NAME="IDX1320"></A>
+ 
+位或
+
+<PRE>
+mysql&#62; SELECT 29 | 15;
+        -&#62; 31
+</PRE>
+
+傳回值是一個 64 位的無符號整數。
+
+<P></P>
+
+<A NAME="IDX1321"></A>
+<A NAME="IDX1322"></A>
+<DT><CODE>&#38;</CODE>
+<DD>
+位與
+
+<PRE>
+mysql&#62; SELECT 29 &#38; 15;
+        -&#62; 13
+</PRE>
+
+傳回值是一個 64 位的無符號整數。
+
+<P></P>
+
+<A NAME="IDX1323"></A>
+<A NAME="IDX1324"></A>
+<DT><CODE>^</CODE>
+<DD>
+位異或
+
+<PRE>
+mysql&#62; SELECT 1 ^ 1;
+        -&#62; 0
+mysql&#62; SELECT 1 ^ 0;
+        -&#62; 1
+mysql&#62; SELECT 11 ^ 3;
+        -&#62; 8
+</PRE>
+
+傳回值是一個 64 位的無符號整數。
+
+<CODE>XOR</CODE> 在 MySQL 4.0.2 中被加入。
+
+<P></P>
+
+<A NAME="IDX1325"></A>
+<DT><CODE>&#60;&#60;</CODE>
+<DD>
+左移一個長長的數位(<CODE>BIGINT</CODE>)：
+
+<PRE>
+mysql&#62; SELECT 1 &#60;&#60; 2;
+        -&#62; 4
+</PRE>
+
+傳回值是一個 64 位的無符號整數。
+
+<P></P>
+
+<A NAME="IDX1326"></A>
+<DT><CODE>&#62;&#62;</CODE>
+<DD>
+右移一個長長的數位(<CODE>BIGINT</CODE>)：
+
+<PRE>
+mysql&#62; SELECT 4 &#62;&#62; 2;
+        -&#62; 1
+</PRE>
+
+傳回值是一個 64 位的無符號整數。
+
+<P></P>
+
+<A NAME="IDX1327"></A>
+<DT><CODE>~</CODE>
+<DD>
+置反所有位：
+
+<PRE>
+mysql&#62; SELECT 5 &#38; ~1;
+        -&#62; 4
+</PRE>
+
+傳回值是一個 64 位的無符號整數。
+
+<P></P>
+
+<A NAME="IDX1328"></A>
+<DT><CODE>BIT_COUNT(N)</CODE>
+<DD>
+傳回在參數 <CODE>N</CODE> 中內嵌的比特位數量：
+
+<PRE>
+mysql&#62; SELECT BIT_COUNT(29);
+        -&#62; 4
+</PRE>
+
+</DL>
+
+
+
+<H4><A NAME="Miscellaneous_functions"></A>6.3.6.2  輔助功能函數</H4>
+
+<P>
+<A NAME="IDX1329"></A>
+<A NAME="IDX1330"></A>
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>DATABASE()</CODE>
+<DD>
+<A NAME="IDX1331"></A>
+ 
+傳回目前資料庫名：
+
+
+<PRE>
+mysql&#62; SELECT DATABASE();
+        -&#62; 'test'
+</PRE>
+
+如果沒有目前資料庫，<CODE>DATABASE()</CODE> 傳回一個空字串。
+
+<A NAME="IDX1332"></A>
+<A NAME="IDX1333"></A>
+<A NAME="IDX1334"></A>
+<DT><CODE>USER()</CODE>
+<DD>
+<DT><CODE>SYSTEM_USER()</CODE>
+<DD>
+<DT><CODE>SESSION_USER()</CODE>
+<DD>
+傳回目前 MySQL 使用者名：
+
+
+<PRE>
+mysql&#62; SELECT USER();
+        -&#62; 'davida@localhost'
+</PRE>
+
+在 MySQL 3.22.11 或更新的版本中，傳回值包含使用者名和客戶機的主機名。你可以象下面所示的僅取出使用者名部分(無論值是否包含一個主機名部分，它均能正常工作)：
+
+<PRE>
+mysql&#62; SELECT SUBSTRING_INDEX(USER(),"@",1);
+        -&#62; 'davida'
+</PRE>
+
+<A NAME="IDX1335"></A>
+<DT><CODE>CURRENT_USER()</CODE>
+<DD>
+傳回目前會話被驗証相符的使用者名：
+
+<PRE>
+mysql&#62; SELECT USER();
+        -&#62; 'davida@localhost'
+mysql&#62; SELECT * FROM mysql.user;
+        -&#62; ERROR 1044: Access denied for user: '@localhost' to database 'mysql'
+mysql&#62; SELECT CURRENT_USER();
+        -&#62; '@localhost'
+</PRE>
+
+<A NAME="IDX1336"></A>
+<A NAME="IDX1337"></A>
+<DT><CODE>PASSWORD(str)</CODE>
+<DD>
+<DT><CODE>OLD_PASSWORD(str)</CODE>
+<DD>
+從純純文字密碼 <CODE>str</CODE> 計算一個密碼字串。這個函數用於對儲存到授權表 <CODE>user</CODE> 的<CODE>Password</CODE> 列中的 MySQL 密碼進行加密。
+
+<PRE>
+mysql&#62; SELECT PASSWORD('badpwd');
+        -&#62; '7f84554057dd964b'
+</PRE>
+
+<A NAME="IDX1338"></A>
+<CODE>PASSWORD()</CODE> 加密是不可逆的。
+
+<CODE>PASSWORD()</CODE> 不以與 Unix 密碼加密相同的方式進行密碼加密。參見 <CODE>ENCRYPT()</CODE>。 
+
+<STRONG>注意，</STRONG>
+<CODE>PASSWORD()</CODE> 函數是用於在 MySQL 服務中驗証系統的，你<STRONG>不應該</STRONG> 在你的應用程式中使用它。你可以使用 <CODE>MD5()</CODE> 或 <CODE>SHA1()</CODE> 代替使用它。同樣查看 <CODE>RFC-2195</CODE> 可獲得有關應用程式的密碼處理與安全驗証的更多資訊。
+
+<A NAME="IDX1339"></A>
+<DT><CODE>ENCRYPT(str[,salt])</CODE>
+<DD>
+Encrypt使用 Unix <CODE>crypt()</CODE> 系統調用加密 <CODE>str</CODE> 。參數 <CODE>salt</CODE> 應該是一個有兩個字元的字串，(在 MySQL 3.22.16 中，<CODE>salt</CODE> 可以超過兩個字元。)：
+
+<PRE>
+mysql&#62; SELECT ENCRYPT("hello");
+        -&#62; 'VxuFAJXVARROc'
+</PRE>
+
+如果 <CODE>crypt()</CODE> 在你的系統上不可用，<CODE>ENCRYPT()</CODE> 總是傳回 <CODE>NULL</CODE>。
+
+<CODE>ENCRYPT()</CODE> 只保留 <CODE>str</CODE> 中前 8 個字元，而忽略其它所有的，至少在某些系統上是這樣的。這取決於底層 <CODE>crypt()</CODE> 系統調用的行為。
+
+<P></P>
+
+<A NAME="IDX1340"></A>
+<DT><CODE>ENCODE(str,pass_str)</CODE>
+<DD>
+使用 <CODE>pass_str</CODE> 做為密鑰加密 <CODE>str</CODE>。使用 <CODE>DECODE()</CODE> 解密結果。結果是一個與 <CODE>string</CODE> 一樣長的二進位字元。如果希望將它保存到一個列中，請使用 <CODE>BLOB</CODE> 列類型。
+
+<P></P>
+
+<A NAME="IDX1341"></A>
+<DT><CODE>DECODE(crypt_str,pass_str)</CODE>
+<DD>
+使用 <CODE>pass_str</CODE> 作為密鑰解密加密後的字串 <CODE>crypt_str</CODE>。<CODE>crypt_str</CODE> 應該是一個由 <CODE>ENCODE()</CODE> 傳回的字串。
+
+<P></P>
+
+<A NAME="IDX1342"></A>
+<DT><CODE>MD5(string)</CODE>
+<DD>
+計算一個字串的 MD5 128 位校驗和。值作為一個 32 位的十六進制數位傳回，例如，被用於一個哈希(hash)鍵：
+
+<PRE>
+mysql&#62; SELECT MD5("testing");
+        -&#62; 'ae2b1fca515949e5d54fb22b8ed95575'
+</PRE>
+
+這是 "RSA 資料安全公司的 MD5 訊息-摘要算法"。
+
+<P></P>
+
+<A NAME="IDX1343"></A>
+<A NAME="IDX1344"></A>
+<DT><CODE>SHA1(string)</CODE>
+<DD>
+<DT><CODE>SHA(string)</CODE>
+<DD>
+計算一個字串的 SHA1 160 位校驗和（在 RFC 3174 (Secure Hash Algorithm) 中被描述)。傳回值是一個 40 位的十六進制數位，或在輸入參數為 <CODE>NULL</CODE> 的情況下，傳回值為 <CODE>NULL</CODE>。一個使用這個函數的可能就是用於一個哈希鍵。你也可以使用它作為儲存密碼時的密碼安全函數。
+
+<PRE>
+mysql&#62; SELECT SHA1("abc");
+        -&#62; 'a9993e364706816aba3e25717850c26c9cd0d89d'
+</PRE>
+
+<CODE>SHA1()</CODE> 在MySQL 4.0.2 中被加入，並可被當做比 <CODE>MD5()</CODE> 加密更安全的等價物。<CODE>SHA()</CODE> 是 <CODE>SHA1()</CODE> 的同義詞。
+
+<P></P>
+
+<A NAME="IDX1345"></A>
+<A NAME="IDX1346"></A>
+<DT><CODE>AES_ENCRYPT(string,key_string)</CODE>
+<DD>
+<DT><CODE>AES_DECRYPT(string,key_string)</CODE>
+<DD>
+這些函數允許使用官方的 AES(Advanced Encryption Standardadvanced 先進的密碼技術標準) 算法加密/解密資料。加密時使用 128 位長的密鑰，但是你可以通過修改源碼將其擴展到 256 位。我們選擇 128 位是因為它更快一點並且已足夠安全了。
+
+輸入的參數可以是任意長度的。如果任何一個參數是 <CODE>NULL</CODE>，這個函數傳回值也將是 <CODE>NULL</CODE>。
+
+因為 AES 是一個塊級的算法，加密不同長度的字串時會對其進行填充，因而結果字串的長度也可以通過 
+16*(trunc(string_length/16)+1) 計算出。
+
+如果 <CODE>AES_DECRYPT()</CODE> 發現資料無效或錯誤的填料，它將傳回 <CODE>NULL</CODE>。可是，如果輸入的資料或密鑰是無效的，函數仍然可能傳回一個非 <CODE>NULL</CODE> 值 (可能是無用的資訊)。
+
+通過修改你的 SQL 語句，你可以使用 AES 函數以一個加密的形式儲存資料：
+
+<PRE>
+INSERT INTO t VALUES (1,AES_ENCRYPT("text","password"));
+</PRE>
+
+盡量避免在一個連線上的每個查詢中傳遞密鑰，這樣可以得到更高的安全性，上述方式可以通過連線時在伺服器端儲存密鑰來完成：
+
+<PRE>
+SELECT @password:="my password";
+INSERT INTO t VALUES (1,AES_ENCRYPT("text",@password));
+</PRE>
+
+<CODE>AES_ENCRYPT()</CODE> 和 <CODE>AES_DECRYPT()</CODE> 在 MySQL 4.0.2 中被加入，可以被考慮為目前 MySQL 中可用的加解密函數中最密碼安全的。
+
+<P></P>
+
+<A NAME="IDX1347"></A>
+<DT><CODE>DES_ENCRYPT(string_to_encrypt [, (key_number | key_string) ] )</CODE>
+<DD>
+使用 Triple-DES 算法以給定的密鑰對字串加密。
+
+注意，只有配置了 MySQL 對 SSL 的支援，這個函數才能正常工作。查看章節 <A HREF="manual.html#Secure_connections">4.3.9  使用安全地連線</A>。
+
+編碼密鑰以下列各項方法選擇：
+
+<TABLE BORDER WIDTH="90%">
+<TR><TD><STRONG>參數 </STRONG> </TD><TD> <STRONG>含義 </STRONG>
+</TD></TR>
+<TR><TD>只有一個參數 </TD><TD>
+<CODE>des-key-file</CODE> 中的第一個密鑰被使用。
+</TD></TR>
+<TR><TD>key number </TD><TD>
+<CODE>des-key-file</CODE> 中給定的密鑰 (0-9) 被使用。
+</TD></TR>
+<TR><TD>string </TD><TD>
+給定的 <CODE>key_string</CODE> 將被用於加密 <CODE>string_to_encrypt</CODE>。
+</TD></TR>
+</TABLE>
+
+傳回字串是一個二進位字串，並且第一個字元是 <CODE>CHAR(128 | key_number)</CODE>。
+
+128 被加入是為了更加容易地辨識一個加密密鑰。如果你使用一個字串密鑰，<CODE>key_number</CODE> 將是 127。
+
+當發生錯誤時，這個函數傳回 <CODE>NULL</CODE>。
+
+傳回字串的長度將為：<CODE>new_length= org_length + (8-(org_length % 8))+1</CODE>。
+
+<CODE>des-key-file</CODE> 的格式如下：
+
+<PRE>
+key_number des_key_string
+key_number des_key_string
+</PRE>
+
+每個 <CODE>key_number</CODE> 必須是一個在 0 到 9 範圍之內的數位。文件中的行可以是任何次序的。<CODE>des_key_string</CODE> 是用於加密訊息的字串。在數位與密鑰之間至少要有一個空格。如果你沒在 <CODE>DES_ENCRYPT()</CODE> 指定任何密鑰參數，那麼文件中的第一個密鑰將被預設使用。
+
+以 <CODE>FLUSH DES_KEY_FILE</CODE> 命令，你可以告訴 MySQL 從密鑰文件中讀取新的密鑰值。這個操作需要你有 <CODE>Reload_priv</CODE> 權限。
+ 
+有一套預設密鑰的一個好處就是，它給應用程式一個檢查存在的加密列值的方法，而不需要給最終使用者解密這些值的權限。
+
+
+<PRE>
+mysql&#62; SELECT customer_address FROM customer_table WHERE
+       crypted_credit_card = DES_ENCRYPT("credit_card_number");
+</PRE>
+
+<A NAME="IDX1348"></A>
+<DT><CODE>DES_DECRYPT(string_to_decrypt [, key_string])</CODE>
+<DD>
+解密 <CODE>DES_ENCRYPT()</CODE> 加密後的字串。
+
+注意，只有配置了 MySQL 對 SSL 的支援，這個函數才能正常工作。查看章節 <A HREF="manual1.html#Secure_connections">4.3.9  使用安全地連線</A>。
+
+如果 <CODE>key_string</CODE> 參數沒有給出，<CODE>DES_DECRYPT()</CODE> 檢查加密字串的第一個字節，以確定用於加密原始字串的 DES 密鑰數位，然後從 <CODE>des-key-file</CODE> 讀取密鑰用於解密訊息。為了能這樣工作，該使用者必須有 <CODE>SUPER</CODE> 權限。
+
+如果將一個 <CODE>key_string</CODE> 參數傳遞給該函數，這個字串將被作為解密訊息的密鑰。
+
+如果 <CODE>string_to_decrypt</CODE> 看上去不像是一個加密字串，MySQL 將傳回給定的 <CODE>string_to_decrypt</CODE>。
+
+當發生錯誤時，該函數傳回 <CODE>NULL</CODE>。
+
+<P></P>
+
+<A NAME="IDX1349"></A>
+<DT><CODE>LAST_INSERT_ID([expr])</CODE>
+<DD>
+傳回被插入到一個 <CODE>AUTO_INCREMENT</CODE> 列中的最後一個自動產生的值。查看章節 <A HREF="manual2.html#mysql_insert_id">8.1.3.130  <CODE>mysql_insert_id()</CODE></A>。
+
+
+<PRE>
+mysql&#62; SELECT LAST_INSERT_ID();
+        -&#62; 195
+</PRE>
+
+最後產生的 ID 是以每個連線為基礎在伺服器端被維護的。它不可能被其它的客戶端連線改變。如果你以一個非特殊值(即一個非 <CODE>NULL</CODE> 和非 <CODE>0</CODE> 的值)更新其它的 <CODE>AUTO_INCREMENT</CODE>，它甚至也不會改變。
+
+如果你在同一時間內以一個插入語句插入了許多記錄行，<CODE>LAST_INSERT_ID()</CODE> 將傳回第一個被插入行的值。這樣做的原因是因為，這可能列容易地在其它伺服器上再現同一條 <CODE>INSERT</CODE> 語句。
+
+<A NAME="IDX1350"></A>
+如果 <CODE>expr</CODE> 被作為一個參數傳遞給 <CODE>LAST_INSERT_ID()</CODE>，那麼函數將傳回這個參數的值，並且被設定為 <CODE>LAST_INSERT_ID()</CODE> 傳回的下一個值。這可被用於模擬一個序列：
+
+首先建立一個表：
+
+
+<PRE>
+mysql&#62; CREATE TABLE sequence (id INT NOT NULL);
+mysql&#62; INSERT INTO sequence VALUES (0);
+</PRE>
+
+然後這個表可以被用來以下面的方式產生序列值：
+
+<PRE>
+mysql&#62; UPDATE sequence SET id=LAST_INSERT_ID(id+1);
+</PRE>
+
+你也可以不調用 <CODE>LAST_INSERT_ID()</CODE> 產生序列，但是以這種方式使用這個函數的作用就是，ID 值是在伺服器端敘談最後的自動產生值被維護的(是多使用者安全的)。你可以檢索這的新的 ID 值，就好像讀取 MySQL 中任何正常的 <CODE>AUTO_INCREMENT</CODE> 值一樣。舉例來說，<CODE>LAST_INSERT_ID()</CODE>(無任何參數) 將傳回一個新的 ID。C API 函數
+<CODE>mysql_insert_id()</CODE> 也可以用來得到這個值。
+
+注意，由於 <CODE>mysql_insert_id()</CODE> 僅僅只能用於在 <CODE>INSERT</CODE> 和 <CODE>UPDATE</CODE> 語句的更新之後，所以在執行了其它的 SQL 語句(比如 <CODE>SELECT</CODE> 或 <CODE>SET</CODE>)之後，你不能夠使用 C API 函數檢索到 <CODE>LAST_INSERT_ID(expr)</CODE> 的值。
+
+<P></P>
+
+<A NAME="IDX1351"></A>
+<DT><CODE>FORMAT(X,D)</CODE>
+<DD>
+將數位 <CODE>X</CODE> 格式化為一個 <CODE>'#,###,###.##'</CODE> 的形式，四舍五入到 <CODE>D</CODE> 位小數。如果 <CODE>D</CODE> 為 <CODE>0</CODE>，傳回的結果將沒有小數點和小數部分：
+
+<PRE>
+mysql&#62; SELECT FORMAT(12332.123456, 4);
+        -&#62; '12,332.1235'
+mysql&#62; SELECT FORMAT(12332.1,4);
+        -&#62; '12,332.1000'
+mysql&#62; SELECT FORMAT(12332.2,0);
+        -&#62; '12,332'
+</PRE>
+
+<A NAME="IDX1352"></A>
+<DT><CODE>VERSION()</CODE>
+<DD>
+以一個字串形式傳回 MySQL 伺服器的版本：
+
+
+<PRE>
+mysql&#62; SELECT VERSION();
+        -&#62; '3.23.13-log'
+</PRE>
+
+注意，如果你的版本以 <CODE>-log</CODE> 結果，那就意味著日誌是被設為可用的。
+
+<P></P>
+
+<A NAME="IDX1353"></A>
+<DT><CODE>CONNECTION_ID()</CODE>
+<DD>
+傳回目前連線的連線 ID(<CODE>thread_id</CODE>)。每個連線均有一個自己唯一的 id：
+
+<PRE>
+mysql&#62; SELECT CONNECTION_ID();
+        -&#62; 1
+</PRE>
+
+<A NAME="IDX1354"></A>
+<A NAME="IDX1355"></A>
+<DT><CODE>GET_LOCK(str,timeout)</CODE>
+<DD>
+嘗試獲得一個由字串 <CODE>str</CODE> 給定名字的鎖定與一個 <CODE>timeout</CODE> 秒的逾時。如果鎖定被獲得成功，傳回 <CODE>1</CODE>，如果嘗試逾時，傳回 <CODE>0</CODE>，或者一個錯誤發生(比如記憶體溢出或線程被 <CODE>mysqladmin kill</CODE> 殺死)，傳回<CODE>NULL</CODE>。當你執行 <CODE>RELEASE_LOCK()</CODE>、執行一個新的 <CODE>GET_LOCK()</CODE>，或線程終止時，一個鎖定被釋放。這個函數可以被用於執行應用程式鎖定或模擬記錄鎖定。它會阻塞其它的客戶端用同樣的名字的鎖定請求﹔遵從一個給定鎖定字串名的客戶端可以使用這個字串來執行幾協作建議的鎖定：
+
+<PRE>
+mysql&#62; SELECT GET_LOCK("lock1",10);
+        -&#62; 1
+mysql&#62; SELECT IS_FREE_LOCK("lock2");
+        -&#62; 1
+mysql&#62; SELECT GET_LOCK("lock2",10);
+        -&#62; 1
+mysql&#62; SELECT RELEASE_LOCK("lock2");
+        -&#62; 1
+mysql&#62; SELECT RELEASE_LOCK("lock1");
+        -&#62; NULL
+</PRE>
+
+注意，第二個 <CODE>RELEASE_LOCK()</CODE> 調用傳回 <CODE>NULL</CODE> 是因為 <CODE>"lock1"</CODE> 鎖定被第二個 <CODE>GET_LOCK()</CODE> 調用自動地釋放了。
+
+<P></P>
+
+<A NAME="IDX1356"></A>
+<DT><CODE>RELEASE_LOCK(str)</CODE>
+<DD>
+釋放由字串 <CODE>str</CODE> 命名的通過 <CODE>GET_LOCK()</CODE> 獲得的鎖定。如果鎖定被釋放，傳回 <CODE>1</CODE>﹔如果鎖定並沒有被目前線程鎖定(在這種情況下，鎖定不會被釋放)，傳回 <CODE>0</CODE>﹔如果命名的鎖定不存在，傳回 <CODE>NULL</CODE>。如果鎖定從來就沒有通過調用一個 <CODE>GET_LOCK()</CODE> 獲得，或已被釋放了，那麼該鎖定將不存在。
+
+<CODE>DO</CODE> 語句通常與 <CODE>RELEASE_LOCK()</CODE> 一起使用。查看章節 <A HREF="06-4.html#DO">6.4.10  <CODE>DO</CODE> 句法</A>。
+
+<P></P>
+
+<A NAME="IDX1357"></A>
+<DT><CODE>IS_FREE_LOCK(str)</CODE>
+<DD>
+檢查以 <CODE>str</CODE> 命名的鎖定是否可以自由使用(也就是說，還未鎖定)。如果鎖定被釋放了(沒有一個人使用這個鎖定)，傳回 <CODE>1</CODE>﹔如果這個鎖定處於使用中，傳回 <CODE>0</CODE>﹔如果發生一個錯(例如錯誤的參數)，傳回 <CODE>NULL</CODE>。
+
+<P></P>
+
+<A NAME="IDX1358"></A>
+<DT><CODE>BENCHMARK(count,expr)</CODE>
+<DD>
+<CODE>BENCHMARK()</CODE> 函數用於將表達式 <CODE>expr</CODE> 重復運行 <CODE>count</CODE> 次。它可以被用於計時 MySQL 處理表達式有多快。結果通常為 <CODE>0</CODE>。在 <CODE>mysql</CODE> 客戶端有意使用它時，它將傳回查詢執行所需的時間：
+
+<PRE>
+mysql&#62; SELECT BENCHMARK(1000000,ENCODE("hello","goodbye"));
++----------------------------------------------+
+| BENCHMARK(1000000,ENCODE("hello","goodbye")) |
++----------------------------------------------+
+|                                            0 |
++----------------------------------------------+
+1 row in set (4.74 sec)
+</PRE>
+
+報告的時間是客戶端經過的時間，不是伺服器端的 CPU 時間。執行 <CODE>BENCHMARK()</CODE> 多次可能是明智的，並注意伺服器的負載來解釋結果。
+
+<P></P>
+
+<A NAME="IDX1359"></A>
+<DT><CODE>INET_NTOA(expr)</CODE>
+<DD>
+給定一個數位的網路位址 (4 或 8 字節)，以一個字串的形式傳回點組表示的位址：
+
+<PRE>
+mysql&#62; SELECT INET_NTOA(3520061480);
+       -&#62;  "209.207.224.40"
+</PRE>
+
+<A NAME="IDX1360"></A>
+<DT><CODE>INET_ATON(expr)</CODE>
+<DD>
+以字串的形式給定一個點組表示的網路位址，傳回一個位址的數位值表示的整數。位址可以是 4 或 8 個字節的位址：
+
+<PRE>
+mysql&#62; SELECT INET_ATON("209.207.224.40");
+       -&#62;  3520061480
+</PRE>
+
+產生的數位通常是以網路位址字節的順序﹔例如，上面的數位是以 <CODE>209*256^3 + 207*256^2 + 224*256 +40</CODE> 被計算出來的。
+
+<P></P>
+
+<A NAME="IDX1361"></A>
+<DT><CODE>MASTER_POS_WAIT(log_name, log_pos)</CODE>
+<DD>
+阻塞，只到從伺服器到達(也就是說，已讀取並應用了所有更新，一直到)主伺服器上的日誌中指定的位置。
+如果主伺服器上的資訊沒有初始化，或如果參數錯誤，傳回 <CODE>NULL</CODE>。如果從伺服器沒有運行，將阻塞並造作，只到它啟動並到達或超過指定的位置。如果從伺服器已超過指定的位置，立即傳回。
+
+如果 <CODE>timeout</CODE> (在 4.0.10 中新加入) 被指定，當等待 <CODE>timeout</CODE> 秒經過後，將放棄。<CODE>timeout</CODE> 必須大於 0﹔一個零或一個負值 <CODE>timeout</CODE> 意味著逾時。
+傳回值是到達日誌指定位置所必須等待的日誌事件的數量，或者在出錯的情況下為 <CODE>NULL</CODE>，或者超過逾時時間傳回 <CODE>-1</CODE>。
+
+這個命令有益於控制主從伺服器的同步，但是最初是為了復制測試的方便而寫的。
+
+<P></P>
+
+<A NAME="IDX1362"></A>
+<A NAME="IDX1363"></A>
+<DT><CODE>FOUND_ROWS()</CODE>
+<DD>
+傳回最後一個 <CODE>SELECT SQL_CALC_FOUND_ROWS ...</CODE> 命令如果沒有以 <CODE>LIMIT</CODE> 進行限制結果時將傳回記錄行數。
+
+<PRE>
+mysql&#62; SELECT SQL_CALC_FOUND_ROWS * FROM tbl_name
+       WHERE id &#62; 100 LIMIT 10;
+mysql&#62; SELECT FOUND_ROWS();
+</PRE>
+
+第二個 <CODE>SELECT</CODE> 將傳回一個數位，它指示前一個沒有被 <CODE>LIMIT</CODE> 幾句限制的 <CODE>SELECT</CODE> 將傳回多少行記錄。注意，如果你使用 <CODE>SELECT SQL_CALC_FOUND_ROWS ...</CODE>，MySQL 不得不計算所有的記錄行到結果集中。然而，這與你不使用 <CODE>LIMIT</CODE> 相比是更快一點的，因為結果集不需要發送到客戶端。
+
+<CODE>SQL_CALC_FOUND_ROWS</CODE> 從 MySQL 4.0.0 開始可以被使用。
+</DL>
+
+
+
+<H3><A NAME="Group_by_functions"></A>6.3.7  用於 <CODE>GROUP BY</CODE> 幾句的函數</H3>
+
+<P>
+<A NAME="IDX1364"></A>
+<A NAME="IDX1365"></A>
+
+</P>
+<P>
+如果在一個沒有包含 <CODE>GROUP BY</CODE> 幾句的一個語句中使用聚合函數，它將等價於將所有的記錄行分為一組。
+</P>
+
+<DL COMPACT>
+
+<DT><CODE>COUNT(expr)</CODE>
+<DD>
+<A NAME="IDX1366"></A>
+ 
+傳回由一個 <CODE>SELECT</CODE> 語句檢索出來的記錄行中非 <CODE>NULL</CODE> 值的記錄總數目：
+
+<PRE>
+mysql&#62; SELECT student.student_name,COUNT(*)
+    -&#62;        FROM student,course
+    -&#62;        WHERE student.student_id=course.student_id
+    -&#62;        GROUP BY student_name;
+
+</PRE>
+
+<CODE>COUNT(*)</CODE> 在它傳回檢索出的記錄行的數目上稍微有點不同，它不管記錄行中是否包括 <CODE>NULL</CODE> 值。
+
+如果 <CODE>SELECT</CODE> 語句從一個表中進行檢索，沒有檢索其它的列，並且沒有 <CODE>WHERE</CODE> 幾句，那麼 <CODE>COUNT(*)</CODE> 將被最佳化以便更快地傳回值。範例如下：
+
+<PRE>
+mysql&#62; SELECT COUNT(*) FROM student;
+</PRE>
+
+<A NAME="IDX1367"></A>
+<A NAME="IDX1368"></A>
+<DT><CODE>COUNT(DISTINCT expr,[expr...])</CODE>
+<DD>
+傳回一個互不相同的非 <CODE>NULL</CODE> 的值的總數目：
+
+<PRE>
+mysql&#62; SELECT COUNT(DISTINCT results) FROM student;
+</PRE>
+
+在 MySQL 中，通過給出一個表達式清單，可以得到不包含 NULL 的不同的表達式組合的數目。在 ANSI SQL 中，你可能不得不在 <CODE>COUNT(DISTINCT ...)</CODE> 中拼接所有的表達式。
+
+<P></P>
+
+<A NAME="IDX1369"></A>
+<DT><CODE>AVG(expr)</CODE>
+<DD>
+傳回 <CODE>expr</CODE> 的平均值：
+
+<PRE>
+mysql&#62; SELECT student_name, AVG(test_score)
+    -&#62;        FROM student
+    -&#62;        GROUP BY student_name;
+</PRE>
+
+<A NAME="IDX1370"></A>
+<A NAME="IDX1371"></A>
+<DT><CODE>MIN(expr)</CODE>
+<DD>
+<DT><CODE>MAX(expr)</CODE>
+<DD>
+傳回 <CODE>expr</CODE> 的最小或最大值。<CODE>MIN()</CODE> 和 <CODE>MAX()</CODE> 可以接受一個字串參數﹔在這種情況下，它們將傳回最小或最大的字串傳下。查看章節 <A HREF="manual1.html#MySQL_indexes">5.4.3  MySQL 如何使用索引</A>。
+
+<PRE>
+mysql&#62; SELECT student_name, MIN(test_score), MAX(test_score)
+    -&#62;        FROM student
+    -&#62;        GROUP BY student_name;
+</PRE>
+
+在 <CODE>MIN()</CODE>、<CODE>MAX()</CODE> 和其它的合計函數中，MySQL 通常列的字串值比較 <CODE>ENUM</CODE> 和 <CODE>SET</CODE> 列，而不是字串在集合中相對應的位置。這將會被修正。
+
+<A NAME="IDX1372"></A>
+<DT><CODE>SUM(expr)</CODE>
+<DD>
+傳回 <CODE>expr</CODE> 的總和。注意，如果傳回集中沒有從我任何記錄行，它將傳回 NULL ！
+
+<P></P>
+<A NAME="IDX1377"></A>
+<DT><code>GROUP_CONCAT(expr)</code>
+<DD>
+完整句法如下：
+
+<pre>
+GROUP_CONCAT([DISTINCT] expr [,expr ...]
+             [ORDER BY {unsigned_integer | col_name | formula} [ASC | DESC] [,col ...]]
+             [SEPARATOR str_val])
+</pre>
+
+這個函數在 MySQL 4.1 中被加入。函數傳回一個字串結果，該結果由分組中的值連線組合而成：
+
+<pre>
+mysql&#62; SELECT student_name,
+    -&#62;        GROUP_CONCAT(test_score)
+    -&#62;        FROM student 
+    -&#62;        GROUP BY student_name;
+or
+mysql&#62; SELECT student_name,
+    -&#62;        GROUP_CONCAT(DISTINCT test_score
+    -&#62;                     ORDER BY test_score DESC SEPARATOR " ")
+    -&#62;        FROM student
+    -&#62;        GROUP BY student_name;
+</pre>
+
+在 MySQL 中，你可以得到表達式結合體的連結值。通過使用 <code>DISTINCT</code> 可以排除重復值。如果希望對結果中的值進行排序，可以使用 <code>ORDER BY</code> 幾句。為了以倒序排序，可以在 <code>ORDER BY</code> 幾句中用於排序的列名後加入一個 <code>DESC</code> (遞減 descending) 關鍵詞。預設為升序﹔這也可以通過使用 <code>ASC</code> 關鍵詞明確指定。
+
+<code>SEPARATOR</code> 是一個字串值，它被用於插入到結果值中。預設為一個逗號 (<samp>","</samp>)。你可以通過指定 <code>SEPARATOR ""</code> 完全地移除這個分隔符。
+
+在你的配置中，通過變數 <code>group_concat_max_len</code> 要以設定一個最大的長度。在運行時執行的句法如下：
+
+<pre>
+SET [SESSION | GLOBAL] group_concat_max_len = unsigned_integer;
+</pre>
+
+如果最大長度被設定，結果值被剪下到這個最大長度。
+<code>GROUP_CONCAT()</code> 函數是一個增強的 Sybase SQL Anywhere 支援的基本 <code>LIST()</code> 函數。
+如果只有一個列，並且沒有其它選項被指定，<code>GROUP_CONCAT()</code> 是向後兼容有極大限制的 <code>LIST()</code> 函數。
+<code>LIST()</code> 有一個預設的排序次序。
+<P>
+<tt>範例(譯者注)：</tt>
+<PRE>
+mysql> CREATE TABLE `ta` (
+    ->   `id` smallint(5) unsigned NOT NULL default '0',
+    ->   `name` char(60) NOT NULL default '',
+    ->   KEY `id` (`id`)
+    -> ) TYPE=MyISAM;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO `ta` VALUES("1", "a"),("1", "b"),
+    ->     ("1", "c"),("1", "d"),("2", "a"),
+    ->     ("2", "b"),("2", "c"),("3", "d");
+Query OK, 8 rows affected (0.03 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM `ta`;
++----+------+
+| id | name |
++----+------+
+|  1 | a    |
+|  1 | b    |
+|  1 | c    |
+|  1 | d    |
+|  2 | a    |
+|  2 | b    |
+|  2 | c    |
+|  3 | d    |
++----+------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT `id`,
+    ->   GROUP_CONCAT(`name`)
+    ->   FROM `ta`
+    ->   GROUP BY `id`;
++----+----------------------+
+| id | GROUP_CONCAT(`name`) |
++----+----------------------+
+|  1 | a c b d              |
+|  2 | a c b                |
+|  3 | d                    |
++----+----------------------+
+3 rows in set (0.03 sec)
+
+# <code>SEPARATOR</code> 預設是一個空格而不是一個逗號
+
+mysql> SELECT `id`,
+    ->   GROUP_CONCAT(DISTINCT `name`
+    ->                ORDER BY `name` DESC SEPARATOR ",") AS Result
+    ->   FROM `ta`
+    ->   GROUP BY `id`;
++----+---------+
+| id | Result  |
++----+---------+
+|  1 | d,c,b,a |
+|  2 | c,b,a   |
+|  3 | d       |
++----+---------+
+3 rows in set (0.00 sec)
+
+* 以上結果在 MySQL 4.1 中測試
+</PRE>
+<tt>範例結束(譯者注)</tt>
+
+<p></P>
+
+<A NAME="IDX1373"></A>
+<DT><CODE>VARIANCE(expr)</CODE>
+<DD>
+傳回 <CODE>expr</CODE> 的標準方差(standard variance)。這是對 ANSI SQL 的擴展(只有在 4.1 或更新的版本中可用)。
+
+<P></P>
+
+<A NAME="IDX1374"></A>
+<A NAME="IDX1375"></A>
+<A NAME="IDX1376"></A>
+
+<DT><CODE>STD(expr)</CODE>
+<DD>
+<DT><CODE>STDDEV(expr)</CODE>
+<DD>
+傳回 <CODE>expr</CODE> 的標準偏差(standard deviation)。這是對 ANSI SQL 的擴展。這個函數的 <CODE>STDDEV()</CODE> 格式是為了 Oracle 兼容而提供的。
+
+<P></P>
+
+<A NAME="IDX1378"></A>
+<DT><CODE>BIT_OR(expr)</CODE>
+<DD>
+傳回 <CODE>expr</CODE> 中所有比特位的位 <CODE>OR</CODE>。計算以 64 位 (<CODE>BIGINT</CODE>) 精度執行。
+
+<P></P>
+
+<A NAME="IDX1379"></A>
+<DT><CODE>BIT_AND(expr)</CODE>
+<DD>
+傳回 <CODE>expr</CODE> 中所有比特位的位 <CODE>AND</CODE>。計算以 64 位 (<CODE>BIGINT</CODE>) 精度執行。
+</DL>
+
+<P>
+<tt>範例(譯者注)：</tt>
+<PRE>
+
+mysql> CREATE TABLE `ta` (
+    ->   `id` smallint(5) unsigned NOT NULL default '0',
+    ->   KEY `id` (`id`)
+    -> ) TYPE=MyISAM;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO `ta` VALUES("1"),("2"),("3"),("4");
+Query OK, 8 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> SELECT BIT_OR(id) from ta;
++------------+
+| BIT_OR(id) |
++------------+
+|          7 |
++------------+
+1 row in set (0.00 sec)
+
+#     ..0001
+#     ..0010
+#     ..0011
+#     ..0100
+#  OR ..0000
+#  ---------
+#     ..0111
+
+mysql> SELECT BIT_AND(id) from ta;
++-------------+
+| BIT_AND(id) |
++-------------+
+|           0 |
++-------------+
+1 row in set (0.00 sec)
+
+#      ..0001
+#      ..0010
+#      ..0011
+#      ..0100
+#  AND ..1111
+#  ----------
+#      ..0000
+
+* 以上結果在 MySQL 4.1 中測試
+</PRE>
+<tt>範例結束(譯者注)</tt>
+<p></P>
+<P>
+<A NAME="IDX1380"></A>
+MySQL 擴展了 <CODE>GROUP BY</CODE> 的用法。在 <CODE>SELECT</CODE> 表達式中，你可以使用或計算沒有出現在 <CODE>GROUP BY</CODE> 部分中的列。這代表 <EM>這個組的任何可能的值</EM>。
+你可以使用它避免在不必要的分類項目上進行排序和分組，這樣會得到更好的性能。
+舉例來說，在下面的範例中，你不必要以 <CODE>customer.name</CODE> 進行分組：
+</P>
+
+<PRE>
+mysql&#62; SELECT order.custid,customer.name,MAX(payments)
+    -&#62;        FROM order,customer
+    -&#62;        WHERE order.custid = customer.custid
+    -&#62;        GROUP BY order.custid;
+</PRE>
+
+<P>
+在 ANSI SQL 中，必須將<CODE>customer.name</CODE> 加入到 <CODE>GROUP BY</CODE> 幾句。而在 MySQL 中，如果沒有以 ANSI 樣式運行，該名是多餘的。
+</P>
+
+<P>
+如果你在 <CODE>GROUP BY</CODE> 部分省略的列在分組中不是唯一的，<STRONG>請不要使用這個特征！</STRONG>否則將得到不可預知的結果。
+</P>
+
+<P>
+在某些情況下，可以使用 <CODE>MIN()</CODE> 和 <CODE>MAX()</CODE> 獲得一個特定的列值，即使它不是唯一的。
+下面的範例取出包含了 <CODE>sort</CODE> 列中最小值的記錄行中的 <CODE>column</CODE> 的值：
+
+</P>
+
+<PRE>
+SUBSTR(MIN(CONCAT(RPAD(sort,6,' '),column)),7)
+</PRE>
+
+<P>
+查看章節 <A HREF="manual1.html#example-Maximum-column-group-row">3.5.4  擁有某個欄位的組間最大值的記錄行</A>。
+
+</P>
+<P>
+<A NAME="IDX1381"></A>
+<A NAME="IDX1382"></A>
+<A NAME="IDX1383"></A>
+<A NAME="IDX1384"></A>
+<A NAME="IDX1385"></A>
+<A NAME="IDX1386"></A>
+注意，如果你所使用的是 MySQL 3.22 (或更早的版本)，或者你正試圖遵從 ANSI SQL，你不能在 <CODE>GROUP BY</CODE> 或 <CODE>ORDER BY</CODE> 幾句中使用表達式。你可以使用表達式的別名來應付這個限制：
+
+</P>
+
+<PRE>
+mysql&#62; SELECT id,FLOOR(value/100) AS val FROM tbl_name
+    -&#62;        GROUP BY id,val ORDER BY val;
+</PRE>
+
+<P>
+在 MySQL 3.23 中，你可以這樣做：
+
+</P>
+
+<PRE>
+mysql&#62; SELECT id,FLOOR(value/100) FROM tbl_name ORDER BY RAND();
+</PRE>
+
+
+
+<H2>&nbsp;</H2>
+
+
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="../../flash/onlined41d.html?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+ 
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-3.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+</HTML>

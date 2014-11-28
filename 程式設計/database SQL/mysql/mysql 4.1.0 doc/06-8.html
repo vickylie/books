@@ -1,0 +1,376 @@
+<HTML>
+
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-8.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:43 GMT -->
+<HEAD>
+<TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+<style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+<META http-equiv="Content-Type" content="text/html; charset=big5">
+<META name="description" content="MySQL 4.1.0  中文參考手冊">
+<META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+<LINK rel="shortcut icon" href="shuixin13.ico" />
+<LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+</HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+<H1>MySQL Reference Manual for version 4.1.0-alpha.</H1>
+<P>
+<P><HR>
+<H2><A NAME="Fulltext_Search"></A>6.8 MySQL 全文搜尋</H2>
+
+<P>
+<A NAME="IDX1514"></A>
+<A NAME="IDX1515"></A>
+<A NAME="IDX1516"></A>
+</P>
+<P>
+
+到 3.23.23 時，MySQL 開始支援全文索引和搜尋。全文索引在 MySQL 中是一個 <CODE>FULLTEXT</CODE> 類型索引。<CODE>FULLTEXT</CODE> 索參照於 <CODE>MyISAM</CODE> 表，可以在 <CODE>CREATE TABLE</CODE> 時或之後使用 <CODE>ALTER TABLE</CODE> 或 <CODE>CREATE INDEX</CODE> 在 <CODE>CHAR</CODE>、<CODE>VARCHAR</CODE> 或 <CODE>TEXT</CODE> 列上建立。對於大的資料庫，將資料裝載到一個沒有 <CODE>FULLTEXT</CODE> 索引的表中，然後再使用 <CODE>ALTER TABLE</CODE> (或 <CODE>CREATE INDEX</CODE>) 建立索引，這將是非常快的。將資料裝載到一個已經有 <CODE>FULLTEXT</CODE> 索引的表中，將是非常慢的。
+</P>
+
+<P>
+全文搜尋通過 <CODE>MATCH()</CODE> 函數完成。
+</P>
+
+<PRE>
+mysql&#62; CREATE TABLE articles (
+    -&#62;   id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    -&#62;   title VARCHAR(200),
+    -&#62;   body TEXT,
+    -&#62;   FULLTEXT (title,body)
+    -&#62; );
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&#62; INSERT INTO articles VALUES
+    -&#62; (NULL,'MySQL Tutorial', 'DBMS stands for DataBase ...'),
+    -&#62; (NULL,'How To Use MySQL Efficiently', 'After you went through a ...'),
+    -&#62; (NULL,'Optimising MySQL','In this tutorial we will show ...'),
+    -&#62; (NULL,'1001 MySQL Tricks','1. Never run mysqld as root. 2. ...'),
+    -&#62; (NULL,'MySQL vs. YourSQL', 'In the following database comparison ...'),
+    -&#62; (NULL,'MySQL Security', 'When configured properly, MySQL ...');
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql&#62; SELECT * FROM articles
+    -&#62;          WHERE MATCH (title,body) AGAINST ('database');
++----+-------------------+------------------------------------------+
+| id | title             | body                                     |
++----+-------------------+------------------------------------------+
+|  5 | MySQL vs. YourSQL | In the following database comparison ... |
+|  1 | MySQL Tutorial    | DBMS stands for DataBase ...             |
++----+-------------------+------------------------------------------+
+2 rows in set (0.00 sec)
+</PRE>
+
+<P>
+函數 <CODE>MATCH()</CODE> 對照一個純文字集(包含在一個 <CODE>FULLTEXT</CODE> 索引中的一個或多個列的列集)執行一個自然語言搜尋一個字串。搜尋字串做為 <CODE>AGAINST()</CODE> 的參數被給定。搜尋以忽略字母大小寫的方式執行。對於表中的每個記錄行，<CODE>MATCH()</CODE> 傳回一個相關性值。即，在搜尋字串與記錄行在 <CODE>MATCH()</CODE> 清單中指定的列的純文字之間的相似性尺度。
+</P>
+
+<P>
+當 <CODE>MATCH()</CODE> 被使用在一個 <CODE>WHERE</CODE> 幾句中時 (參看上面的範例)，傳回的記錄行被自動地以相關性從高到底的次序排序。相關性值是非負的浮點數位。零相關性意味著不相似。相關性的計算是基於：詞在記錄行中的數目、在行中唯一詞的數目、在集中詞的全部數目和包含一個特殊詞的文件(記錄行)的數目。
+</P>
+
+<P>
+它也可以執行一個邏輯樣式的搜尋。這在下面的章節中被描述。
+</P>
+
+<P>
+前面的範例是函數 <CODE>MATCH()</CODE> 使用上的一些基本說明。記錄行以相似性遞減的順序傳回。
+</P>
+
+<P>
+下一個範例顯示如何檢索一個明確的相似性值。如果即沒有 <CODE>WHERE</CODE> 也沒有 <CODE>ORDER BY</CODE> 幾句，傳回行是不排序的。
+</P>
+
+<PRE>
+mysql&#62; SELECT id,MATCH (title,body) AGAINST ('Tutorial') FROM articles;
++----+-----------------------------------------+
+| id | MATCH (title,body) AGAINST ('Tutorial') |
++----+-----------------------------------------+
+|  1 |                        0.64840710366884 |
+|  2 |                                       0 |
+|  3 |                        0.66266459031789 |
+|  4 |                                       0 |
+|  5 |                                       0 |
+|  6 |                                       0 |
++----+-----------------------------------------+
+6 rows in set (0.00 sec)
+</PRE>
+
+<P>
+下面的範例更復雜一點。查詢傳回相似性並依然以相似度遞減的次序傳回記錄行。為了完成這個結果，你應該指定 <CODE>MATCH()</CODE> 兩次。這不會引起附加的開銷，因為 MySQL 最佳化器會注意到兩次同樣的 <CODE>MATCH()</CODE> 調用，並只調用一次全文搜尋代碼。
+</P>
+
+<PRE>
+mysql&#62; SELECT id, body, MATCH (title,body) AGAINST
+    -&#62; ('Security implications of running MySQL as root') AS score
+    -&#62; FROM articles WHERE MATCH (title,body) AGAINST
+    -&#62; ('Security implications of running MySQL as root');
++----+-------------------------------------+-----------------+
+| id | body                                | score           |
++----+-------------------------------------+-----------------+
+|  4 | 1. Never run mysqld as root. 2. ... | 1.5055546709332 |
+|  6 | When configured properly, MySQL ... |   1.31140957288 |
++----+-------------------------------------+-----------------+
+2 rows in set (0.00 sec)
+</PRE>
+
+<P>
+MySQL 使用一個非常簡單的剖析器來將純文字分隔成詞。一個“詞”是由文字、資料、<SAMP>“'”</SAMP> 和 <SAMP>“_”</SAMP> 組成的任何字元序列。任何在 stopword 清單上出現的，或太短的(3 個字元或更少的)的 “word” 將被忽略。
+</P>
+
+<P>
+在集和查詢中的每個合適的詞根據其在集與查詢中的重要性衡量。這樣，一個出現在多個文件中的詞將有較低的權重(可能甚至有一個零權重)，因為在這個特定的集中，它有較低的語義值。否則，如果詞是較少的，它將得到一個較高的權重。然後，詞的權重將被結合用於計算記錄行的相似性。
+</P>
+
+<P>
+這樣一個技術工作可很好地工作與大的集(實際上，它會小心地與之諧調)。 對於非常小的表，詞分類不足以充份地反應它們的語義值，有時這個樣式可能產生奇怪的結果。
+</P>
+
+<PRE>
+mysql&#62; SELECT * FROM articles WHERE MATCH (title,body) AGAINST ('MySQL');
+Empty set (0.00 sec)
+</PRE>
+
+<P>
+在上面的範例中，搜尋詞 <CODE>MySQL</CODE> 卻沒有得到任何結果，因為這個詞在超過一半的記錄行中出現。同樣的，它被有效地處理為一個 stopword (即，一個零語義值的詞)。這是最理想的行為 -- 一個自然語言的查詢不應該從一個 1GB 的表中傳回每個次行(second row)。
+</P>
+
+<P>
+相符表中一半記錄行的詞很少可能找到相關文件。實際上，它可能會發現許多不相關的文件。我們都知道，當我們在互聯網上通過搜尋引擎試圖搜尋某些東西時，這會經常發生。因為這個原因，在<STRONG>這個特殊的資料集</STRONG>中，這樣的行被設定一個低的語義值。
+</P>
+
+<P>
+到 4.0.1 時，MySQL 也可以使用 <CODE>IN BOOLEAN MODE</CODE> 修飾語來執行一個邏輯全文搜尋。
+</P>
+
+<PRE>
+mysql&#62; SELECT * FROM articles WHERE MATCH (title,body)
+    -&#62;     AGAINST ('+MySQL -YourSQL' IN BOOLEAN MODE);
++----+------------------------------+-------------------------------------+
+| id | title                        | body                                |
++----+------------------------------+-------------------------------------+
+|  1 | MySQL Tutorial               | DBMS stands for DataBase ...        |
+|  2 | How To Use MySQL Efficiently | After you went through a ...        |
+|  3 | Optimising MySQL             | In this tutorial we will show ...   |
+|  4 | 1001 MySQL Tricks            | 1. Never run mysqld as root. 2. ... |
+|  6 | MySQL Security               | When configured properly, MySQL ... |
++----+------------------------------+-------------------------------------+
+</PRE>
+
+<P>
+這個查詢傳回所有包含詞 <CODE>MySQL</CODE> 的記錄行(注意： 50% 的閾值沒有使用)，但是它<STRONG>沒有</STRONG>包含詞 <CODE>YourSQL</CODE>。注意，一個邏輯樣式的搜尋不會自動地以相似值的遞減排序記錄行。你可以從上面的結果出看得出來，最高的相似值(包含 <CODE>MySQL</CODE> 兩次的那個) 最列在最後，而不是第一位。一個邏輯全文搜尋即使在沒有一個 <CODE>FULLTEXT</CODE> 索引的情況下也可以工作，然而它 <STRONG>慢</STRONG> 些。
+</P>
+
+<P>
+邏輯全文搜尋支援下面的運算子：
+</P>
+<DL COMPACT>
+
+<DT><CODE>+</CODE>
+<DD>
+一個領頭的加號表示，該詞<STRONG>必須</STRONG>出現在每個傳回的記錄行中。
+<P></P>
+
+<DT><CODE>-</CODE>
+<DD>
+一個領頭的減號表示，該詞<STRONG>必須不</STRONG>出現在每個傳回的記錄行中。
+<P></P>
+
+<DT><CODE></CODE>
+<DD>
+預設的 (當既沒有加號也沒有負號被指定時)詞是隨意的，但是包含它的記錄行將被排列地更高一點。這個模仿沒有 <CODE>IN BOOLEAN MODE</CODE> 修飾詞的 <CODE>MATCH() ... AGAINST()</CODE> 的行為。
+<P></P>
+
+<DT><CODE>&#60; &#62;</CODE>
+<DD>
+這兩個運算子用於改變一個詞的相似性值的基值。<CODE>&#60;</CODE> 運算子減少基值，<CODE>&#62;</CODE> 運算子則增加它。參看下面的範例。
+<P></P>
+
+<DT><CODE>( )</CODE>
+<DD>
+圓括號用於對幾表達式中的詞分組。
+<P></P>
+
+<DT><CODE>~</CODE>
+<DD>
+一個領頭的否定號的作用象一個否定運算子，引起行相似性的詞的基值為負的。它對標記一個噪聲詞很有用。一個包含這樣的詞的記錄將被排列得低一點，但是不會被完全的排除，因為這樣可以使用 <CODE>-</CODE> 運算子。
+<P></P>
+
+<DT><CODE>*</CODE>
+<DD>
+一個星號是截斷運算子。不想其它的運算子，它應該被<STRONG>追加</STRONG>到一個詞後，不加在前面。
+<P></P>
+
+<DT><CODE>"</CODE>
+<DD>
+短語，被包圍在雙引號<CODE>"</CODE>中，只相符包含這個短語(字面上的，就好像被輸入的)的記錄行。
+</DL>
+
+<P>
+這裡是一些範例：
+
+</P>
+<DL COMPACT>
+
+<DT><CODE>apple banana</CODE>
+<DD>
+找至少包含上面詞中的一個的記錄行
+<DT><CODE>+apple +juice</CODE>
+<DD>
+... 兩個詞均在被包含
+<DT><CODE>+apple macintosh</CODE>
+<DD>
+... 包含詞 “apple”，但是如果同時包含 “macintosh”，它的排列將更高一些
+<DT><CODE>+apple -macintosh</CODE>
+<DD>
+... 包含 “apple” 但不包含 “macintosh”
+<DT><CODE>+apple +(&#62;pie &#60;strudel)</CODE>
+<DD>
+... 包含 “apple” 和 “pie”，或者包含的是 “apple” 和 “strudel” (以任何次序)，但是 “apple pie” 排列得比 “apple strudel”  要高一點
+<DT><CODE>apple*</CODE>
+<DD>
+... 包含 “apple”，“apples”，“applesauce” 和 “applet”
+<DT><CODE>"some words"</CODE>
+<DD>
+... 可以包含 “some words of wisdom”，但不是 “some noise words”
+</DL>
+
+
+
+<H3><A NAME="Fulltext_Restrictions"></A>6.8.1  全文的限制</H3>
+
+
+<UL>
+<LI>
+<CODE>MATCH()</CODE> 函數的所有參數必須是從來自於同一張表的列，同時必須是同一個<CODE>FULLTEXT</CODE> 索引中的一部分，除非 <CODE>MATCH()</CODE> 是 <CODE>IN BOOLEAN MODE</CODE> 的。
+
+<P></P>
+
+<LI>
+<CODE>MATCH()</CODE> 列清單必須確切地相符表的某一 <CODE>FULLTEXT</CODE> 索引中定義的列清單，除非 <CODE>MATCH()</CODE> 是 <CODE>IN BOOLEAN MODE</CODE> 的。
+
+<P></P>
+
+<LI>
+<CODE>AGAINST()</CODE> 的參數必須是一個常數位元串。
+</UL>
+
+
+
+<H3><A NAME="Fulltext_Fine-tuning" ></A>6.8.2  微調 MySQL 全文搜尋</H3>
+
+<P>
+不幸地，全文搜尋仍然只有很少的使用者可調參數，雖然增加一些在 TODO  上排列很高。如果你有一個 MySQL 源碼發行(查看章節 <A HREF="manual1.html#Installing_source">2.3  安裝一個 MySQL 源碼發行</A>)，你可以發揮對全文搜尋的更多控制。
+</P>
+
+<P>
+注意，全文搜尋為最佳的搜尋效果，被仔細地調整了。修改預設值的行為，在大多數情況下，只會使搜尋結果更糟。不要修改 MySQL 的來源碼，除非你知道你在做什麼！
+</P>
+
+<UL>
+
+<LI>
+被索引的詞的最小長度由 MySQL 變數 <CODE>ft_min_word_len</CODE> 指定。查看章節 <A HREF="manual11.html#SHOW_VARIABLES">4.5.6.4  <CODE>SHOW VARIABLES</CODE></A>。
+將它改為你所希望的值，並重建你的 <CODE>FULLTEXT</CODE> 索引。
+(這個變數只從 MySQL 4.0 開始被支援)
+
+<P></P>
+
+<LI>
+stopword 清單可以從 <CODE>ft_stopword_file</CODE> 變數指定的文件中讀取。查看章節 <A HREF="manual1.html#SHOW_VARIABLES">4.5.6.4  <CODE>SHOW VARIABLES</CODE></A>。
+在修改了 stopword 清單後，重建你的 <CODE>FULLTEXT</CODE> 索引。(這個變數只從 MySQL 4.0.10 開始被支援)
+
+<P></P>
+
+<LI>
+
+50% 閾值選擇由所選擇的特殊的衡量樣式確定。為了禁止它，修改 <TT>`myisam/ftdefs.h'</TT> 文件中下面的一行：
+
+<PRE>
+#define GWS_IN_USE GWS_PROB
+</PRE>
+
+改為：
+
+<PRE>
+#define GWS_IN_USE GWS_FREQ
+</PRE>
+
+然後重新編譯 MySQL。在這種情況下，不需要重建索引。
+<STRONG>注意：</STRONG>使用了這個，將<STRONG>嚴重地</STRONG>減少 MySQL 為 <CODE>MATCH()</CODE> 提供足夠的相似性值的能力。如果你確實需要搜尋這樣的公共詞，最好使用 <CODE>IN BOOLEAN MODE</CODE> 的搜尋代替，它不遵守 50% 的閾值。
+
+<P></P>
+
+<LI>
+有時，搜尋引擎維護員希望變更使用於邏輯全文搜尋的運算子。這些由變數 <CODE>ft_boolean_syntax</CODE> 定義。
+查看章節 <A HREF="manual1.html#SHOW_VARIABLES">4.5.6.4  <CODE>SHOW VARIABLES</CODE></A>。
+然而，這個變數是唯讀的，它的值在 <TT>`myisam/ft_static.c'</TT> 中被設定。
+</UL>
+
+<P>
+對於這些變更，要求你重建你的 <CODE>FULLTEXT</CODE> 索引，對於一個 MyISAM 表，最容易的重建索引文件的方式如下面的語句：
+</P>
+
+<PRE>
+mysql&#62; REPAIR TABLE tbl_name QUICK;
+</PRE>
+
+
+
+<H3><A NAME="Fulltext_TODO"></A>6.8.3  全文搜尋 TODO</H3>
+
+
+<UL>
+<LI>使所有對 <CODE>FULLTEXT</CODE> 索引的操作<STRONG>更快</STRONG>
+
+<LI>鄰近(Proximity)運算子
+
+<LI>對 "always-index words" 的支援。他們可以是使用者希望視為一個詞處理的任意字串，例如 "C++"、"AS/400"、"TCP/IP"，等等
+<LI>支援在 <CODE>MERGE</CODE> 表中的全文搜尋
+
+<LI>對多字節字元的支援
+
+<LI>依照資料的語言建立 stopword 清單
+
+<LI>Stemming (當然，依賴於資料的語言)
+
+<LI>Generic user-suppliable UDF preparser.
+
+<LI>使樣式更加靈活 (通過為 <CODE>CREATE/ALTER TABLE</CODE> 中的 <CODE>FULLTEXT</CODE> 增加某些可調整參數)
+</UL>
+
+
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="../../flash/onlined41d.html?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+ 
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-8.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:43 GMT -->
+</HTML>

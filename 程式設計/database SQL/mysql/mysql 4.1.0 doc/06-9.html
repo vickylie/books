@@ -1,0 +1,280 @@
+  <HTML>
+  
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-9.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:43 GMT -->
+<HEAD>
+  <TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+   <style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+   <META http-equiv="Content-Type" content="text/html; charset=big5">
+   <META name="description" content="MySQL 4.1.0  中文參考手冊">
+   <META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+   <LINK rel="shortcut icon" href="shuixin13.ico" />
+   <LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+
+  </HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+<H1>MySQL Reference Manual for version 4.1.0-alpha.</H1>
+<P>
+<P><HR>
+<H2><a name="Query_Cache"></a>6.9 MySQL 查詢快取</H2>
+<p> <a name="IDX1517"></a> <a name="IDX1518"></a> </p>
+<p> 從 MySQL 4.0.1 開始，<code>MySQL server</code> 有一個重要的特征：<code>Query Cache</code>。 
+  當在使用中，查詢快取會儲存一個 <code>SELECT</code> 查詢的純文字與被傳送到客戶端的相應結果。如果之後接收到一個同樣的查詢，伺服器將從查詢快取中檢索結果，而不是再次分析和執行這個同樣的查詢。 
+</p>
+<p> <strong>注意：</strong>查詢快取絕不傳回過期資料。當資料被修改後，在查詢快取中的任何相關詞條均被轉儲清除。 </p>
+<p> 在某些表並不經常變更，而你又對它執行大量的相同查詢時，查詢快取將是非常有用的。對於許多 WEB 伺服器使用大量的動態資訊，這是一個很典型的情況。 </p>
+<p> 下面是查詢快取的一個性能資料。(這些結果的產生，是通過在一個 a Linux Alpha 2 x 500 MHz、2GB RAM 和 64MB 查詢快取上執行 
+  MySQL 基準套件和到的)： </p>
+<ul>
+  <li> 如果你執行的所有查詢均是簡單的(比如從表中一行一行的選取)﹔但是仍然是不同的，所以該查詢不能被緩衝，查詢快取處於活動時，開銷為 13%。這可以被看作是最差的情況。然而，在實際情況下，查詢是比我們的簡單範例要復雜得多的，所以開銷通常顯著得低。 
+  <li> 在只有一行記錄表中搜尋一行後，搜尋將快 238% 。這可以被認為是接近於對一個被緩衝的查詢所期望的最小的加速。 
+  <li> 如果你希望停用查詢快取，設定 <code>query_cache_size=0</code>。停用了查詢快取，將沒有明顯的開銷。(在配置選項 
+    <code>--without-query-cache</code> 的幫助下，查詢快取可以被排除在外碼之外) 
+</ul>
+<h3>6.9.1 查詢快取如何運作</h3>
+<a name="Query_Cache_How"></a>
+<p> 查詢在分析之前先被比較，因而 </p>
+<pre>
+SELECT * FROM tbl_name
+</pre>
+<p> 和 </p>
+<pre>
+Select * from tbl_name
+</pre>
+<p> 對於查詢快取被當作是不同的查詢，因而查詢需要嚴格的一致(字節對字節的)，才會被認為是同樣的。 另外，如果一個客戶端使用一個新的連線協定格式或不同於其它客戶端的另一個字元集，一個查詢將被視為不同的。 
+</p>
+<p> 使用不同資料庫的，使用不同協定版本的，或使用不同的預設字串的查詢將被認為是不同的查詢，並將分別的緩衝。 </p>
+<p> 高速緩衝不對 <code>SELECT CALC_ROWS ...</code> 和 <code>SELECT FOUND_ROWS() ...</code> 
+  類型的查詢起作用，因為找到的行的數目也是被儲存在緩衝裡的。 </p>
+<p> 如果查詢結果被從查詢快取中傳回，那麼狀態變數 <code>Com_select</code> 將不會被增加，但是 <code>Qcache_hits</code> 
+  卻會增加。查看章節 <a href="06-9.html#Query_Cache_Status_and_Maintenance">6.9.4 查詢快取的狀態和維護</a>。 
+</p>
+<p> 如果一個表發生的改變 (<code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, 
+  <code>TRUNCATE</code>, <code>ALTER</code> 或 <code>DROP TABLE|DATABASE</code>)，那麼所有這張表使用的緩衝的查詢(可能通過一個 
+  <code>MRG_MyISAM</code> 表！)將被得失效，並從緩衝中移除。 </p>
+<p> <code>InnoDB</code> 表的事務所做的變更將在一個 <code>COMMIT</code> 被完成時，使資料失效。 </p>
+<p> 如果一個查詢包括下面的函數，它將不能被緩衝： 
+<table BORDER width="95%">
+  <tr>
+    <td><strong>函數 </strong> </td>
+    <td> <strong>函數 </strong> </td>
+    <td> <strong>函數 </strong> </td>
+  </tr>
+  <tr>
+    <td><code>User-Defined Functions</code> </td>
+    <td> <code>CONNECTION_ID</code> </td>
+    <td> <code>FOUND_ROWS</code> </td>
+  </tr>
+  <tr>
+    <td><code>GET_LOCK</code> </td>
+    <td> <code>RELEASE_LOCK</code> </td>
+    <td> <code>LOAD_FILE</code> </td>
+  </tr>
+  <tr>
+    <td><code>MASTER_POS_WAIT</code> </td>
+    <td> <code>NOW</code> </td>
+    <td> <code>SYSDATE</code> </td>
+  </tr>
+  <tr>
+    <td><code>CURRENT_TIMESTAMP</code> </td>
+    <td> <code>CURDATE</code> </td>
+    <td> <code>CURRENT_DATE</code> </td>
+  </tr>
+  <tr>
+    <td><code>CURTIME</code> </td>
+    <td> <code>CURRENT_TIME</code> </td>
+    <td> <code>DATABASE</code> </td>
+  </tr>
+  <tr>
+    <td><code>ENCRYPT</code> (只有一個參數調用) </td>
+    <td> <code>LAST_INSERT_ID</code> </td>
+    <td> <code>RAND</code> </td>
+  </tr>
+  <tr>
+    <td><code>UNIX_TIMESTAMP</code> (無參數調用) </td>
+    <td> <code>USER</code> </td>
+    <td> <code>BENCHMARK</code> </td>
+  </tr>
+</table>
+<p></p>
+<p> 如果一個查詢包含使用者變數，參照 MySQL 系統資料庫，或下列之一的格式，<code>SELECT ... IN SHARE MODE</code>, 
+  <code>SELECT ... INTO OUTFILE ...</code>, <code>SELECT ... INTO DUMPFILE ...</code> 
+  或 <code>SELECT * FROM AUTOINCREMENT_FIELD IS NULL</code> (檢索最後一個插入 ID - ODBC 
+  語句)，該查詢亦不可以被快取。 </p>
+<p> 然而，<code>FOUND ROWS()</code> 將傳回正確的值，即使先前的查詢是從快取中讀取的。 </p>
+<p> 萬一一個查詢不使用任何表，或使用臨時表，或使用者對任何相關表有一個列權限，那麼查詢將不會被快取。 </p>
+<p> 在一個查詢從查詢快取中讀取前，MySQL 將檢查使用者對所有相關的資料庫和表有 SELECT 權限。如果不是這種情況，快取的結果將不能被使用。 </p>
+<h3><a name="Query_Cache_Configuration"></a>6.9.2 查詢快取設定</h3>
+<p> 查詢快取為了 <code>mysqld</code> 加入了幾個 <code>MySQL</code> 系統變數，它可以在配置文件中被設定，或在啟動 
+  <code>mysqld</code> 時的命令行上設定。 </p>
+<ul>
+  <li><code>query_cache_limit</code> 不快取大於這個值的結果。(預設為 1M) 
+    <p></p>
+  <li><code>query_cache_min_res_unit</code> 這個變數從 4.1 被引進。 查詢的結果 (已被傳送到客戶端的資料) 
+    在結果檢索期間被儲存到查詢快取中。因而，資料不會以一個大塊地處理。查詢快取在需要時分配塊用於處理這個資料，所以當一個塊被填充後，一個新的塊被分配。甚為記憶體分配操作是昂貴的，查詢快取以最小的尺寸 
+    <code>query_cache_min_res_unit</code> 分配塊。當一個查詢執行完成，最後的結果塊被修整到實際資料的尺寸大小，以便未使用的記憶體被釋放。 
+    <ul>
+      <li> <code>query_cache_min_res_unit</code> 的預設值為 4 KB，在大多資料情況下已夠用了。 
+      <li> 如果你有許多查詢傳回一個較小的結果，預設的塊尺寸可能會引起記憶體碎片 (顯示為一個很大數量的閒置塊(<code>Qcache_free_blocks</code>)，這將引起查詢快取不得不因缺乏記憶體(<code>Qcache_lowmem_prunes</code>)而從快取中刪除查詢)。在這種情況下，你應該減少 
+        <code>query_cache_min_res_unit</code>。 
+      <li> 如果你的主要查詢傳回的是大的結果集(查看 <code>Qcache_total_blocks</code> 和 <code>Qcache_queries_in_cache</code>)，你可以通過增加 
+        <code>query_cache_min_res_unit</code> 來增加性能。然而，要小心不要將它設得太大。 
+    </ul>
+    <p></p>
+  <li><code>query_cache_size</code> 為了儲存老的查詢結果而分配的記憶體數量 (以字節指定) 。如果設定它為 0 ，查詢緩衝將被禁止(預設值為 
+    0 )。 
+  <li><code>query_cache_type</code> 這個可以被設定為 (只能是數位) 
+    <table BORDER width="90%">
+      <tr>
+        <td><strong>選項 </strong> </td>
+        <td> <strong>含義 </strong> </td>
+      </tr>
+      <tr>
+        <td>0 </td>
+        <td> (OFF, 不快取或重新得到結果) </td>
+      </tr>
+      <tr>
+        <td>1 </td>
+        <td> (ON, 快取所有的結果，除了 <code>SELECT SQL_NO_CACHE ...</code> 查詢) </td>
+      </tr>
+      <tr>
+        <td>2 </td>
+        <td> (DEMAND, 僅快取 <code>SELECT SQL_CACHE ...</code> 查詢) </td>
+      </tr>
+    </table>
+</ul>
+<p> 在一個線程(連線)內，查詢快取的行為可以被改變。句法如下所示： </p>
+<p> <code>QUERY_CACHE_TYPE = OFF | ON | DEMAND</code> <code>QUERY_CACHE_TYPE = 
+  0 | 1 | 2</code> </p>
+<table BORDER width="95%">
+  <tr>
+    <td><strong>選項 </strong> </td>
+    <td> <strong>含義 </strong> </td>
+  </tr>
+  <tr>
+    <td>0 or OFF </td>
+    <td> 不快取或重新得到結果 </td>
+  </tr>
+  <tr>
+    <td>1 or ON </td>
+    <td> 快取所有的結果，除了 <code>SELECT SQL_NO_CACHE ...</code> 查詢 </td>
+  </tr>
+  <tr>
+    <td>2 or DEMAND </td>
+    <td> 僅快取 <code>SELECT SQL_CACHE ...</code> 查詢 </td>
+  </tr>
+</table>
+<h3><a name="Query_Cache_in_SELECT"></a>6.9.3 在 <code>SELECT</code> 中的查詢快取選項</h3>
+<p> 有兩個可能的查詢快取相關的參數可以在一個 <code>SELECT</code> 查詢中被指定： </p>
+<p> <a name="IDX1519"></a> <a name="IDX1520"></a> </p>
+<table BORDER width="95%">
+  <tr>
+    <td><strong>選項 </strong> </td>
+    <td> <strong>含義 </strong> </td>
+  </tr>
+  <tr>
+    <td><code>SQL_CACHE</code> </td>
+    <td> 如果 <code>QUERY_CACHE_TYPE</code> 為 <code>DEMAND</code>，允許該查詢被快取。如果 <code>QUERY_CACHE_TYPE</code> 
+      為 <code>ON</code>，這是預設的。如果 <code>QUERY_CACHE_TYPE</code> 為 <code>OFF</code>，它不做任何事 
+    </td>
+  </tr>
+  <tr>
+    <td><code>SQL_NO_CACHE</code> </td>
+    <td> 使這個查詢不被快取，不允許這個查詢被儲存到高速快取中 </td>
+  </tr>
+</table>
+<h3><a name="Query_Cache_Status_and_Maintenance"></a>6.9.4 查詢快取的狀態和維護</h3>
+<p> 使用 <code>FLUSH QUERY CACHE</code> 命令，你可以整理查詢快取，以更好的利用它的記憶體。這個命令不會從快取中移除任何查詢。<code>FLUSH 
+  TABLES</code> 會轉儲清除查詢快取。 </p>
+<p> <code>RESET QUERY CACHE</code> 使命從查詢快取中移除所有的查詢結果。 </p>
+<p> 你可以檢查查詢快取在你的 MySQL 是否被引進： </p>
+<pre>
+mysql&#62; SHOW VARIABLES LIKE 'have_query_cache';
++------------------+-------+
+| Variable_name    | Value |
++------------------+-------+
+| have_query_cache | YES   |
++------------------+-------+
+1 row in set (0.00 sec)
+</pre>
+<p> 在 <code>SHOW STATUS</code> 中，你可以監視查詢快取的性能： </p>
+<table BORDER width="95%">
+  <tr>
+    <td><strong>變數 </strong> </td>
+    <td> <strong>含義 </strong> </td>
+  </tr>
+  <tr>
+    <td><code>Qcache_queries_in_cache</code> </td>
+    <td> 在快取中已注冊的查詢數目 </td>
+  </tr>
+  <tr>
+    <td><code>Qcache_inserts</code> </td>
+    <td> 被加入到快取中的查詢數目 </td>
+  </tr>
+  <tr>
+    <td><code>Qcache_hits</code> </td>
+    <td> 快取取樣數數目 </td>
+  </tr>
+  <tr>
+    <td><code>Qcache_lowmem_prunes</code> </td>
+    <td> 因為缺少記憶體而被從快取中刪除的查詢數目 </td>
+  </tr>
+  <tr>
+    <td><code>Qcache_not_cached</code> </td>
+    <td> 沒有被快取的查詢數目 (不能被快取的，或由於 <code>QUERY_CACHE_TYPE</code>) </td>
+  </tr>
+  <tr>
+    <td><code>Qcache_free_memory</code> </td>
+    <td> 查詢快取的閒置記憶體總數 </td>
+  </tr>
+  <tr>
+    <td><code>Qcache_free_blocks</code> </td>
+    <td> 查詢快取中的閒置記憶體塊的數目 </td>
+  </tr>
+  <tr>
+    <td><code>Qcache_total_blocks</code> </td>
+    <td> 查詢快取中的塊的總數目 </td>
+  </tr>
+</table>
+<p> Total number of queries = <code>Qcache_inserts</code> + <code>Qcache_hits</code> 
+  + <code>Qcache_not_cached</code>. </p>
+<p> 查詢快取使用變長的塊，因而 <code>Qcache_total_blocks</code> 和 <code>Qcache_free_blocks</code> 
+  可能顯示查詢快取的碎片。在 <code>FLUSH QUERY CACHE</code> 之後，只有剩餘一個單獨的(大的)閒置塊。 </p>
+<p> 注意：每個查詢最小需要兩個塊(一個用於儲存查詢純文字，另一個或多個用於儲存查詢結果)。同樣的，每個被一個查詢使用的表需要一個塊，但是，如果有兩個或更多的查詢使用同一張表，僅僅只需要分配一個塊就行了。 
+</p>
+<p> 你可以使用狀態變數 <code>Qcache_lowmem_prunes</code> 來諧調查詢快取尺寸。它計數被從快取中移除的查詢，該查詢的移除是為了釋放記憶體，以快取新增的查詢。查詢快取使用一個 
+  <code>least recently used</code> (<code>LRU</code>) 策略來判斷從快取中移除哪個查詢。 </p>
+<p>&nbsp;</p>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="../../flash/onlined41d.html?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+ 
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-9.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:43 GMT -->
+</HTML>

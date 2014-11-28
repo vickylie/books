@@ -1,0 +1,3914 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="zh-tw" xmlns="http://www.w3.org/1999/xhtml" lang="zh-tw"><head>
+
+  <!-- base href="http://inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html" -->
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="">
+  <meta name="title" content="NoSQL資料庫筆談">
+  <meta name="description" content="序 (#_3648342117667198_092538481578)              思想篇 (#_6151155580979304_025368058842)                        CAP (#CAP_7730791447684169_231516710)                          最終一致性 (#_8927957601845264_8">
+  <meta name="generator" content="Joomla! 1.5 - Open Source Content Management">
+  <title>NoSQL資料庫筆談 | InspireGate 派克空間</title>
+<script type="text/javascript" src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/js.php"></script>
+<link rel="stylesheet" type="text/css" href="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/css.css">
+  <link href="http://inspire.twgg.org/templates/ja_lead/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+  <link rel="stylesheet" href="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/style.css" type="text/css">
+
+  <script type="text/javascript" src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/recaptcha_ajax.js"></script>
+  <script type="text/javascript">
+window.addEvent('domready', function() {
+    				setTrRows('colorTable');
+					});
+		window.addEvent('domready', function() {
+
+			SqueezeBox.initialize({});
+
+			$$('a.modal').each(function(el) {
+				el.addEvent('click', function(e) {
+					new Event(e).stop();
+					SqueezeBox.fromElement(el);
+				});
+			});
+		});
+var K2RatingURL = 'http://inspire.twgg.org/';
+function showRecaptcha(){
+							    Recaptcha.create("	6LdzYLsSAAAAAJOPqeC05i-Zmlfv6VTVvhVyTVYi", "recaptcha", {
+							        theme: "clean"
+							    });
+							}
+							window.addEvent('load', function(){
+								showRecaptcha();
+							})
+  </script>
+  <!--[if IE 7]>
+				<link href="http://inspire.twgg.org/components/com_k2/css/ie7.css" rel="stylesheet" type="text/css" />
+				<![endif]-->
+				<!--[if lte IE 6]>
+				<link href="http://inspire.twgg.org/components/com_k2/css/ie6.css" rel="stylesheet" type="text/css" />
+				<![endif]-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script language="javascript" type="text/javascript">
+
+	var siteurl = 'http://inspire.twgg.org/';
+
+	var tmplurl = 'http://inspire.twgg.org/templates/ja_lead';
+
+</script>
+
+
+
+<script language="javascript" type="text/javascript" src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/ja.js"></script>
+
+
+
+
+<script language="javascript" type="text/javascript">
+
+var rightCollapseDefault='show';
+
+var excludeModules='38';
+
+</script>
+
+
+
+
+
+
+
+
+
+<!-- Menu head -->
+
+
+
+
+
+
+
+
+<!--[if lte IE 6]>
+
+<style type="text/css">
+
+img {border: none;}
+
+
+</style>
+
+<![endif]-->
+
+
+
+
+<script src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/get_custom_js" type="text/javascript"></script><script src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/challenge" type="text/javascript"></script><style type="text/css">.recaptchatable td img{display:block}.recaptchatable .recaptcha_image_cell center img{height:57px}.recaptchatable .recaptcha_image_cell center{height:57px}.recaptchatable .recaptcha_image_cell{background-color:white;height:57px;padding:7px!important}.recaptchatable,#recaptcha_area tr,#recaptcha_area td,#recaptcha_area th{margin:0!important;border:0!important;border-collapse:collapse!important;vertical-align:middle!important}.recaptchatable *{margin:0;padding:0;border:0;color:black;position:static;top:auto;left:auto;right:auto;bottom:auto;text-align:left!important}.recaptchatable #recaptcha_image{margin:auto;border:1px solid #dfdfdf!important}.recaptchatable a img{border:0}.recaptchatable a,.recaptchatable a:hover{-moz-outline:none;border:0!important;padding:0!important;text-decoration:none;color:blue;background:none!important;font-weight:normal}.recaptcha_input_area{position:relative!important;background:none!important}.recaptchatable label.recaptcha_input_area_text{border:1px solid #dfdfdf!important;margin:0!important;padding:0!important;position:static!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important}.recaptcha_theme_red label.recaptcha_input_area_text,.recaptcha_theme_white label.recaptcha_input_area_text{color:black!important}.recaptcha_theme_blackglass label.recaptcha_input_area_text{color:white!important}.recaptchatable #recaptcha_response_field{font-size:11pt}.recaptcha_theme_blackglass #recaptcha_response_field,.recaptcha_theme_white #recaptcha_response_field{border:1px solid gray}.recaptcha_theme_red #recaptcha_response_field{border:1px solid #cca940}.recaptcha_audio_cant_hear_link{font-size:7pt;color:black}.recaptchatable{line-height:1em;border:1px solid #dfdfdf!important}.recaptcha_error_text{color:red}
+
+.recaptcha_is_showing_audio .recaptcha_only_if_image,.recaptcha_isnot_showing_audio .recaptcha_only_if_audio,.recaptcha_had_incorrect_sol .recaptcha_only_if_no_incorrect_sol,.recaptcha_nothad_incorrect_sol .recaptcha_only_if_incorrect_sol{display:none !important}</style><script src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/show_widget" type="text/javascript"></script></head><body id="bd" class="  fs4">
+
+<div id="ja-wrapper">
+
+<a name="Top" id="Top"></a>
+
+
+
+<!-- HEADER -->
+
+<div id="ja-header" class="wrap">
+
+  <div class="main clearfix">
+
+
+
+
+	  	<h1 class="logo">
+
+	  		<a href="http://inspire.twgg.org/index.php" title="InspireGate 派克空間"><span>InspireGate 派克空間</span></a>
+
+	  	</h1>
+
+
+
+
+      <!-- Main Navigation -->
+
+      <div id="ja-mainnav">
+
+        	<ul class="no-display">
+
+        		<li><a href="http://inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html#ja-content" title="Skip to content">Skip to content</a></li>
+
+        	</ul>
+
+
+
+      		<ul id="ja-cssmenu" class="clearfix">
+<li><a href="http://inspire.twgg.org/" class="menu-item0 first-item" id="menu1" title="首頁"><span class="menu-title">首頁</span></a></li>
+<li class=""><a href="http://inspire.twgg.org/component/option,com_xmap/Itemid,2/sitemap,1/" class="menu-item1" id="menu2" title="sitemap"><span class="menu-title">sitemap</span></a></li>
+<li class=""><a href="http://inspire.twgg.org/c/" class="menu-item2 last-item" id="menu3" title="全部文章"><span class="menu-title">全部文章</span></a></li>
+</ul>
+
+      </div>
+
+      <!-- //Main Navigation -->
+
+
+
+  </div>
+
+</div>
+
+<!-- //HEADER -->
+
+
+
+
+
+
+<!-- PATHWAY -->
+
+<div id="ja-pathway" class="wrap">
+
+  <div class="main clearfix">
+
+      <div class="ja-pathway-text">
+
+	       <strong> </strong>
+<div id="k2ModuleBox26" class="k2BreadcrumbsBlock  pathway">
+	<span class="bcTitle">You are here:</span><a href="http://inspire.twgg.org/">首頁</a><span class="bcSeparator"> &gt;</span><a href="http://inspire.twgg.org/c/">文章</a><span class="bcSeparator"> &gt;</span><a href="http://inspire.twgg.org/c/internet/">網路科技</a><span class="bcSeparator"> &gt;</span><a href="http://inspire.twgg.org/c/internet/host-setting/">架站技術</a><span class="bcSeparator"> &gt;</span>NoSQL資料庫筆談</div>
+
+
+ 			</div>
+
+
+
+
+
+
+	</div>
+
+</div>
+
+<!-- //PATHWAY -->
+
+
+
+<div id="ja-container-fr" class="wrap">
+
+  <div class="main clearfix">
+
+
+
+  	<!-- CONTENT -->
+
+
+
+  	<div id="ja-mainbody">
+
+
+
+
+
+
+
+
+
+
+
+      <div id="ja-content">
+
+      <div class="ja-innerpad">
+
+      <div class="ja-content-inner">
+
+
+
+
+				<div id="ja-current-content" class="clearfix">
+
+
+<!-- Start K2 Item Layout -->
+<span id="startOfPageId302"></span>
+
+<div id="k2Container" class="itemView">
+
+	<!-- Plugins: BeforeDisplay -->
+
+	<!-- K2 Plugins: K2BeforeDisplay -->
+
+
+	<div class="itemHeader">
+
+				<!-- Date created -->
+		<span class="itemDateCreated">
+			週一, 22 十一月 2010 23:51		</span>
+
+	  	  <!-- Item title -->
+	  <h2 class="itemTitle">
+	  	NoSQL資料庫筆談
+
+	  </h2>
+
+
+  </div>
+
+  <!-- Plugins: AfterDisplayTitle -->
+
+  <!-- K2 Plugins: K2AfterDisplayTitle -->
+
+
+		<!-- Item Rating -->
+	<div class="itemRatingBlock">
+		<span>Rate this item</span>
+		<div class="itemRatingForm">
+			<ul class="itemRatingList">
+				<li class="itemCurrentRating" id="itemCurrentRating302" style="width: 60%;"></li>
+				<li><a href="#" rel="302" title="1 star out of 5" class="one-star">1</a></li>
+				<li><a href="#" rel="302" title="2 stars out of 5" class="two-stars">2</a></li>
+				<li><a href="#" rel="302" title="3 stars out of 5" class="three-stars">3</a></li>
+				<li><a href="#" rel="302" title="4 stars out of 5" class="four-stars">4</a></li>
+				<li><a href="#" rel="302" title="5 stars out of 5" class="five-stars">5</a></li>
+			</ul>
+			<div id="itemRatingLog302" class="itemRatingLog">(2 votes)</div>
+			<div class="clr"></div>
+		</div>
+		<div class="clr"></div>
+	</div>
+
+  <div class="itemBody">
+
+
+
+	<!-- google_ad_section_start -->
+
+
+	  <!-- Plugins: BeforeDisplayContent -->
+
+	  <!-- K2 Plugins: K2BeforeDisplayContent -->
+
+
+	  	  	  <!-- Item introtext -->
+	  <div class="itemIntroText">
+	  	<div>
+  <div style="text-align: right;">
+    <a name="d8xt" id="d8xt"></a>
+  </div>
+  <div style="text-align: right;">
+    <span style="font-size: 10pt;">顏開</span>
+  </div>
+  <div style="text-align: right;">
+    v0.2
+  </div>
+  <div style="text-align: right;">
+    <span style="font-size: 10pt;">2010.2</span>
+  </div>
+  <div style="text-align: right;">
+
+  </div>
+</div>	  </div>
+	  	  <div style="margin: 25px auto; width: 336px;">
+		</div>
+	  	  <!-- Item fulltext -->
+	  <div class="itemFullText">
+	  	<blockquote>
+  <ol class="writely-toc-decimal">
+    <li>
+      <a href="#_3648342117667198_092538481578" target="_self">序</a>
+    </li>
+    <li>
+      <a href="#_6151155580979304_025368058842" target="_self">思想篇</a>
+      <ol class="writely-toc-none writely-toc-subheading">
+        <li>
+          <a href="#CAP_7730791447684169_231516710" target="_self">CAP</a>
+        </li>
+        <li>
+          <a href="#_8927957601845264_891876230947" target="_self">最終一致性</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#_688371617347002_0840630698949" target="_self">變體</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#BASE_9958890723064542_78222997_869969945038222" target="_self">BASE</a>
+        </li>
+        <li>
+          <a href="#_40717189376329843_06651605852" target="_self">其他</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#I_O_9886723485627446_373115905_5228612841633498" target="_self">I/O的五分鐘法則</a>
+            </li>
+            <li>
+              <a href="#_8314717379700977_930601348298" target="_self">不要刪除資料</a>
+            </li>
+            <li>
+              <a href="#RAM_147097721381792_7902793153_006425076106569838" target="_self">RAM是硬盤,硬盤是磁帶</a>
+            </li>
+            <li>
+              <a href="#Amdahl_Gustafson_9052423372139" target="_self">Amdahl定律和Gustafson定律</a>
+            </li>
+            <li>
+              <a href="#_5841810574932209" target="_self">萬兆以太網</a>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li>
+      <a href="#_7991344137117267_675089238211_7007085816130685" target="_self">手段篇</a>
+      <ol class="writely-toc-none writely-toc-subheading">
+        <li>
+          <a href="#_777160631492734_5802160603925" target="_self">一致性哈希</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>&nbsp;
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#_735276508313792_2270315258144_9783657311654288" target="_self">亞馬遜的現狀</a>
+                </li>
+                <li>
+                  <a href="#_6454406003627595_776185765138" target="_self">算法的選擇</a>
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#NRW_012323816604251636_2127662_10272764961707637" target="_self">Quorum NRW</a>
+        </li>
+        <li>
+          <a href="#Vector_clock_41690548602491617_5257623065741377" target="_self">Vector clock</a>
+        </li>
+        <li>
+          <a href="#Virtual_node_6496471269056201_" target="_self">Virtual node</a>
+        </li>
+        <li>
+          <a href="#gossip_34187653195112944_16061_08507828080528557" target="_self">gossip</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#Gossip_State_Transfer_Model_14_5181318348909955" target="_self">Gossip (State Transfer Model)</a>
+            </li>
+            <li>
+              <a href="#Gossip_Operation_Transfer_Mode_688725990810297" target="_self">Gossip (Operation Transfer Model)</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#Merkle_tree_26526400726288557__5335256577035526" target="_self">Merkle tree</a>
+        </li>
+        <li>
+          <a href="#Paxos_9032379315516326_7248578" target="_self">Paxos</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#_08464202471077442_91161458194" target="_self">背景</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#_DHT_1358780225498577_43241378_3858325568533115" target="_self">DHT</a>
+        </li>
+        <li>
+          <a href="#Map_Reduce_Execution_846077151" target="_self">Map Reduce Execution</a>
+        </li>
+        <li>
+          <a href="#Handling_Deletes_5351970902357" target="_self">Handling Deletes</a>
+        </li>
+        <li>
+          <a href="#_9441494032710129_695390093706" target="_self">存儲實現</a>
+        </li>
+        <li>
+          <a href="#_6926584525683441_048149148503_6730095064772663" target="_self">節點變化</a>
+        </li>
+        <li>
+          <a href="#_6616530869432342_668499063771_40951742786596446" target="_self">列存</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#_9307460655327144_814779051211_16340782010495503" target="_self">描述</a>
+            </li>
+            <li>
+              <a href="#_0735241653420401_214353696530_10910972604729818" target="_self">特點</a>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li>
+      <a href="#_023765667772280286_6105495251" target="_self">軟件篇</a>
+      <ol class="writely-toc-none writely-toc-subheading">
+        <li>
+          <a href="#_22756486493872252_88319420976" target="_self">亞資料庫</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#MemCached_4727136253125943_099_19137860612924817" target="_self">MemCached</a>
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#_5715430571410516_795932562480_594496466269948" target="_self">特點</a>
+                </li>
+                <li>
+                  <a href="#_30675244504305366_58003565301_10183704247790026" target="_self">內存分配</a>
+                </li>
+                <li>
+                  <a href="#_25401546959033316_54044164260_21550351004030177" target="_self">緩存策略</a>
+                </li>
+                <li>
+                  <a href="#_9681760638005524_476574154195_29919331639865443" target="_self">緩存資料庫查詢</a>
+                </li>
+                <li>
+                  <a href="#_24413638147967254_17374089581" target="_self">資料冗餘與故障預防</a>
+                </li>
+                <li>
+                  <a href="#Memcached_mc_4754505836919398_" target="_self">Memcached客戶端（mc）</a>
+                </li>
+                <li>
+                  <a href="#_Web_06299667034235767_0770205" target="_self">緩存式的Web應用程序架構</a>
+                </li>
+                <li>
+                  <a href="#_2923975010491904_991216856614_6695281938071784" target="_self">性能測試</a>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a href="#dbcached_24141833575267735_558" target="_self">dbcached</a>
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#Memcached_dbcached_80228012544_7159779747569146" target="_self">Memcached 和 dbcached 在功能上一樣嗎?</a>
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#_12254020875723726_93237325335" target="_self">列存系列</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#Hadoop_Hbase_7008211932696602_" target="_self">Hadoop之Hbase</a>
+            </li>
+            <li>
+              <a href="#_HadoopDB_694108467096603_8508" target="_self">耶魯大學之HadoopDB</a>
+            </li>
+            <li>
+              <a href="#GreenPlum_9589918625911178_389_2571204937078031" target="_self">GreenPlum</a>
+            </li>
+            <li>
+              <a href="#FaceBook_Cassandra_67775802042_5854484279820851" target="_self">FaceBook之Cassandra</a>
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#Cassandra_7570848905089025_855" target="_self">Cassandra特點</a>
+                </li>
+                <li>
+                  <a href="#Keyspace_4281837751378973_7779" target="_self">Keyspace</a>
+                </li>
+                <li>
+                  <a href="#Column_family_CF_7300188887469" target="_self">Column family（CF）</a>
+                </li>
+                <li>
+                  <a href="#Key_8652924433729429_945524073" target="_self">Key</a>
+                </li>
+                <li>
+                  <a href="#Column_7210506089658316_137983" target="_self">Column</a>
+                </li>
+                <li>
+                  <a href="#Super_column_7509394918740693__5465405669459864" target="_self">Super column</a>
+                </li>
+                <li>
+                  <a href="#Sorting_02237180483759471_3623" target="_self">Sorting</a>
+                </li>
+                <li>
+                  <a href="#_9140782690107976_782512314168_5668600168551156" target="_self">存儲</a>
+                </li>
+                <li>
+                  <a href="#API_26318602548081826_11761206" target="_self">API</a>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a href="#Google_BigTable_89699097442012_4732490241509013" target="_self">Google之BigTable</a>
+            </li>
+            <li>
+              <a href="#Yahoo_PNUTS_8920611285743113_6" target="_self">Yahoo之PNUTS</a>
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#_277640536666413_1438417866912_5870416136781664" target="_self">特點</a>
+                </li>
+                <li>
+                  <a href="#PNUTS_5128583965993961_2354956" target="_self">PNUTS實現</a>
+                  <ol class="writely-toc-none writely-toc-subheading">
+                    <li>
+                      <a href="#Record_level_mastering_5517762_46835816908332717" target="_self">Record-level mastering 記錄級別主節點</a>
+                    </li>
+                    <li>
+                      <a href="#PNUTS_8107177845815062_9043074_09676675858475725" target="_self">PNUTS的結構</a>
+                    </li>
+                    <li>
+                      <a href="#Tablets_42011614117692475_6287_8740690747386985" target="_self">Tablets尋址與切分</a>
+                    </li>
+                    <li>
+                      <a href="#Write_09715737083689369_039670_4594814468066295" target="_self">Write調用示意圖</a>
+                    </li>
+                  </ol>
+                </li>
+                <li>
+                  <a href="#PNUTS_232566011293608_85456655" target="_self">PNUTS感悟</a>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a href="#_SQL_014314330249305951_274686" target="_self">微軟之SQL資料服務</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#_5549467765717498_055917970185" target="_self">非雲服務競爭者</a>
+        </li>
+        <li>
+          <a href="#Document_Store_448677452585955" target="_self">文檔存儲</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#CouchDB_1114163929904669_32220" target="_self">CouchDB</a>
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#id3_7125310846245526_994698240_046846452482873" target="_self">特性</a>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a href="#Riak_22101400413903483_0979197" target="_self">Riak</a>
+            </li>
+            <li>
+              <a href="#MongoDB_6119060613540953_36142" target="_self">MongoDB</a>
+            </li>
+            <li>
+              <a href="#Terrastore_9954661491866293_58" target="_self">Terrastore</a>
+            </li>
+            <li>
+              <a href="#ThruDB_380390167243812_4644251" target="_self">ThruDB</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#Key_Value_Tuple_Store_89361288" target="_self">Key Value / Tuple 存儲</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#Amazon_SimpleDB_52017362120027_8392263913000672" target="_self">Amazon之SimpleDB</a>
+            </li>
+            <li>
+              <a href="#Chordless_5471036441883179_507" target="_self">Chordless</a>
+            </li>
+            <li>
+              <a href="#Redis_5387336107639441_6223163" target="_self">Redis</a>
+            </li>
+            <li>
+              <a href="#Scalaris_7621760337337995_5287" target="_self">Scalaris</a>
+            </li>
+            <li>
+              <a href="#Tokyo_cabinet_Tyrant_545688958_7406684038893259" target="_self">Tokyo cabinet / Tyrant</a>
+            </li>
+            <li>
+              <a href="#CT_M_9097645017290603_52052040" target="_self">CT.M</a>
+            </li>
+            <li>
+              <a href="#Scalien_704454814757133_326936" target="_self">Scalien</a>
+            </li>
+            <li>
+              <a href="#Berkley_DB_9606079710191457_91" target="_self">Berkley DB</a>
+            </li>
+            <li>
+              <a href="#MemcacheDB_06512137876498592_4" target="_self">MemcacheDB</a>
+            </li>
+            <li>
+              <a href="#Mnesia_9154183157888259_898783" target="_self">Mnesia</a>
+            </li>
+            <li>
+              <a href="#LightCloud_823765875537818_453" target="_self">LightCloud</a>
+            </li>
+            <li>
+              <a href="#HamsterDB_05420895958151517_68" target="_self">HamsterDB</a>
+            </li>
+            <li>
+              <a href="#Flare_8050426165277293_5400566_5744763652908157" target="_self">Flare</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#Eventually_Consistent_Key_Valu" target="_self">最終一致性Key Value存儲</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#_Amazon_Dynamo_520203814357290" target="_self">Amazon之Dynamo</a>
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#_5504176676028282_249060984314_6205024527039867" target="_self">功能特色</a>
+                </li>
+                <li>
+                  <a href="#_3991007534787059_800100618042" target="_self">架構特色</a>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a href="#BeansDB_46725810039788485_1444_6422195057201686" target="_self">BeansDB</a>
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#_855878707383143_0006899688354_7439637158723382" target="_self">簡介</a>
+                </li>
+                <li>
+                  <a href="#_8856209489372642_306660973986_09293410042228067" target="_self">更新</a>
+                </li>
+                <li>
+                  <a href="#_5668651611345044_858602237877_6976689272639188" target="_self">特性</a>
+                </li>
+                <li>
+                  <a href="#_25480733904987574_39869615321" target="_self">性能</a>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a href="#Nuclear_5671010203671387_94607_5087654534821493" target="_self">Nuclear</a>
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#_Tips_7329128378643512_0444030_21084614206097596" target="_self">兩個設計上的Tips</a>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a href="#Voldemort_09926958376271466_23_3723235398029888" target="_self">Voldemort</a>
+            </li>
+            <li>
+              <a href="#Dynomite_9324181654488122_3155" target="_self">Dynomite</a>
+            </li>
+            <li>
+              <a href="#Kai_8461184647175368_911329902" target="_self">Kai</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#Object_Databases_8488295138588" target="_self">未分類</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#Skynet_9220649347100478_689227" target="_self">Skynet</a>
+            </li>
+            <li>
+              <a href="#Drizzle_9847466828815841_11171_39190645551632586" target="_self">Drizzle</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#_9596271403133869_245301471091_30492524683708877" target="_self">比較</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#_10969047341495752_68719353526" target="_self">可擴展性</a>
+            </li>
+            <li>
+              <a href="#_587794222868979_1359147783368_00199023178757618" target="_self">資料和查詢模型</a>
+            </li>
+            <li>
+              <a href="#_23622012604027987_99347529746_4971976801014726" target="_self">持久化設計</a>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li>
+      <a href="#_6041983840987086_405110552906" target="_self">應用篇</a>
+      <ol class="writely-toc-none writely-toc-subheading">
+        <li>
+          <a href="#eBay_7439944222569466_24644076_7816704294788374" target="_self">eBay 架構經驗</a>
+        </li>
+        <li>
+          <a href="#_7241636626422405_709893183782_6238797470731577" target="_self">淘寶架構經驗</a>
+        </li>
+        <li>
+          <a href="#_Flickr_11598328692846749_1352" target="_self">Flickr架構經驗</a>
+        </li>
+        <li>
+          <a href="#Twitter_9210753435831028_97021_8836312611977271" target="_self">Twitter運維經驗</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#_6155514829537361_554680225560" target="_self">運維經驗</a>
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#_Metrics_44020236287486847_696" target="_self">Metrics</a>
+                </li>
+                <li>
+                  <a href="#_6825445668030796_760233095682" target="_self">配置管理</a>
+                </li>
+                <li>
+                  <a href="#Darkmode_5259184612638798_9242_24315166669659272" target="_self">Darkmode</a>
+                </li>
+                <li>
+                  <a href="#_15026388981903727_49114302769" target="_self">進程管理</a>
+                </li>
+                <li>
+                  <a href="#_0638721247682108_828753285625" target="_self">硬件</a>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a href="#_20228313746363413_71546543696" target="_self">代碼協同經驗</a>
+              <ol class="writely-toc-none writely-toc-subheading">
+                <li>
+                  <a href="#_Review_2868290775437222_09924_496206508469592" target="_self">Review制度</a>
+                </li>
+                <li>
+                  <a href="#_9450378125913654_306697729191" target="_self">部署管理</a>
+                </li>
+                <li>
+                  <a href="#_9827601284285629_932863057418_1654637779888143" target="_self">團隊溝通</a>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a href="#Cache_7188110122840438_8250995" target="_self">Cache</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#_7156457947548296_394763811409" target="_self">雲計算架構</a>
+        </li>
+        <li>
+          <a href="#_6254229054692272_031210319731" target="_self">反模式</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#1_Single_Point_of_Failure_0747" target="_self">單點失敗（Single Point of Failure）</a>
+            </li>
+            <li>
+              <a href="#2_4706029240041971_38065281044" target="_self">同步調用</a>
+            </li>
+            <li>
+              <a href="#3_2901653153821826_08160938974" target="_self">不具備回滾能力</a>
+            </li>
+            <li>
+              <a href="#4_6656234869733453_99668187927" target="_self">不記錄日誌</a>
+            </li>
+            <li>
+              <a href="#6_27202645502984524_3263167534" target="_self">無切分的資料庫</a>
+            </li>
+            <li>
+              <a href="#7_1922687441110611_96343139093" target="_self">無切分的應用</a>
+            </li>
+            <li>
+              <a href="#8_03636558633297682_8496042666" target="_self">將伸縮性依賴於第三方廠商</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#OLAP_9558059629367476_3836398019139299" target="_self">OLAP</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#OLAP_4599690049262246" target="_self">OLAP報表產品最大的難點在哪裡？</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#NOSQL__09502721972778405" target="_self">NOSQL們背後的共有原則</a>
+          <ol class="writely-toc-none writely-toc-subheading">
+            <li>
+              <a href="#_8299268803807944" target="_self">假設失效是必然發生的</a>
+            </li>
+            <li>
+              <a href="#_3399782225793654" target="_self">對資料進行分區</a>
+            </li>
+            <li>
+              <a href="#_6817497787365963" target="_self">保存同一資料的多個副本</a>
+            </li>
+            <li>
+              <a href="#_41232823879475633" target="_self">動態伸縮</a>
+            </li>
+            <li>
+              <a href="#_4374214008737275" target="_self">查詢支持</a>
+            </li>
+            <li>
+              <a href="#_Map_Reduce__0618697512503632" target="_self">使用 Map/Reduce 處理匯聚</a>
+            </li>
+            <li>
+              <a href="#_7409241799750766" target="_self">基於磁盤的和內存中的實現</a>
+            </li>
+            <li>
+              <a href="#_147455643042405" target="_self">僅僅是炒作?</a>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li>
+      <a href="#_6712483493611217_093368983827" target="_self">附</a>
+      <ol class="writely-toc-none writely-toc-subheading">
+        <li>
+          <a href="#_2173698448339071_054548149739" target="_self">感謝</a>
+        </li>
+        <li>
+          <a href="#_6935117091385137_745914644052_9642310538889594" target="_self">版本志</a>
+        </li>
+        <li>
+          <a href="#_4067787453532219_249561086297_6469049028134853" target="_self">引用</a>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</blockquote>
+<h1>
+  <a name="_3648342117667198_092538481578"></a>序
+</h1>日前國內沒有一套比較完整的NoSQL資料庫資料，有很多先驅整理髮表了很多，但不是很系統。不材嘗試著將各家的資料整合一下，並書寫了一些自己的見解。<br>
+本書寫了一些目前的NoSql的一些主要技術，算法和思想。同時列舉了大量的現有的資料庫實例。讀完全篇，相信讀者會對NoSQL資料庫瞭解個大概。<br>
+另外我還準備開發一個開源內存資料庫galaxydb.本書也是為這個資料庫提供一些架構資料。<br>
+<h1>
+  <a name="_6151155580979304_025368058842"></a>思想篇
+</h1>
+<div>
+  CAP，BASE和最終一致性是NoSQL資料庫存在的三大基石。而五分鐘法則是內存資料存儲了理論依據。這個是一切的源頭。
+</div>
+<h2>
+  <a name="CAP_7730791447684169_231516710"></a><span style="font-size: 14pt;">CAP</span>
+</h2>
+<div id="ro_l">
+  <a href="http://docs.google.com/a/jerrymouse.org/File?id=dc23x53c_77fkmccfdv_b" target="_blank"><img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_77fkmccfdv_b.htm" alt=""></a>
+</div><span style="font-size: 14pt;"><br></span>
+<ul>
+  <li>
+    <span style="font-family: 'courier new';"><span style="color: rgb(51, 51, 51);">C:&nbsp;<strong>C</strong>onsistency 一致性</span></span>
+  </li>
+  <li>
+    <span style="font-family: 'courier new';"><span style="color: rgb(51, 51, 51);">A:&nbsp;<strong>A</strong>vailability 可用性(指的是快速獲取資料)</span></span>
+  </li>
+  <li>
+    <span style="font-family: 'courier new';"><span style="color: rgb(51, 51, 51);">P: Tolerance of network&nbsp;<strong>P</strong>artition 分區容忍性(分佈式)</span></span>
+  </li>
+</ul><br>
+<div>
+  <span style="color: rgb(51, 51, 51);"><span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;">10年前，Eric Brewer教授指出了著名的CAP理論，後來Seth Gilbert 和 Nancy lynch兩人證明了CAP理論的正確性。CAP理論告訴我們，一個分佈式系統不可能滿足一致性，可用性和分區容錯性這三個需求，最多只能同時滿足兩個。</span></span></span>
+</div>
+<div>
+  <span style="color: rgb(51, 51, 51);"><span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;">熊
+掌與魚不可兼得也。關注的是一致性，那麼您就需要處理因為系統不可用而導致的寫操作失敗的情況，而如果您關注的是可用性，那麼您應該知道系統的read操
+作可能不能精確的讀取到write操作寫入的最新值。因此系統的關注點不同，相應的採用的策略也是不一樣的，只有真正的理解了系統的需求，才有可能利用好
+CAP理論。</span></span></span>
+</div>
+<div>
+  <span style="font-size: 10pt;"><br></span>
+</div>
+<div>
+  <span style="color: rgb(51, 51, 51);"><span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;">作為架構師，一般有兩個方向來利用CAP理論</span></span></span>
+</div>
+<div>
+  <ol>
+    <li>
+      <span style="color: rgb(51, 51, 51);"><span style="font-family: Tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;">key-value存儲，如Amaze Dynamo等，可根據CAP三原則靈活選擇不同傾向的資料庫產品。</span></span></span>
+    </li>
+    <li>
+      <span style="color: rgb(51, 51, 51);"><span style="font-family: Tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;">領域模型 + 分佈式緩存 + 存儲 （Qi4j和NoSql運動），可根據CAP三原則結合自己項目定制靈活的分佈式方案，難度高。</span></span></span>
+    </li>
+  </ol><span style="color: rgb(51, 51, 51);"><span style="font-family: Tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;">我準備提供第三種方案：實現可以配置CAP的資料庫，動態調配CAP。</span></span></span>
+</div>
+<div>
+  <span style="font-size: 10pt;"><br></span>
+</div>
+<div>
+  <ul>
+    <li>
+      <span style="color: rgb(51, 51, 51);"><span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;">CA：傳統關係資料庫</span></span></span>
+    </li>
+    <li>
+      <span style="color: rgb(51, 51, 51);"><span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;">AP：key-value資料庫</span></span></span>
+    </li>
+  </ul>
+</div>
+<div>
+  <span style="color: rgb(51, 51, 51);"><span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;">而對大型網站，可用性與分區容忍性優先級要高於資料一致性，一般會儘量朝著 A、P 的方向設計，然後通過其它手段保證對於一致性的商務需求。架構設計師不要精力浪費在如何設計能滿足三者的完美分佈式系統，而是應該進行取捨。</span></span></span>
+</div>
+<div>
+  不同資料對於一致性的要求是不同的。舉例來講，用戶評論對不一致是不敏感的，可以容忍相對較長時間的不一致，這種不一致並不會影響交易和用戶體驗。而產品價格資料則是非常敏感的，通常不能容忍超過10秒的價格不一致。<span style="font-size: 10pt;"><br>
+  <br></span>
+  <div>
+    <span style="color: rgb(51, 51, 51);"><span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;">CAP理論的證明：<span style="font-family: Verdana; color: rgb(0, 0, 0);"><a id="ti00" title="Brewer's CAP Theorem" href="http://www.julianbrowne.com/article/viewer/brewers-cap-theorem">Brewer's CAP Theorem</a></span></span></span></span>
+  </div><span style="font-size: 10pt;"><br></span>
+</div>
+<h2>
+  <a name="_8927957601845264_891876230947"></a>最終一致性
+</h2>
+<div>
+  一言以蔽之：過程松，結果緊，最終結果必須保持一致性
+</div><br>
+<div>
+  為了更好的描述客戶端一致性，我們通過以下的場景來進行，這個場景中包括三個組成部分：
+</div>
+<ul>
+  <li>存儲系統
+  </li>
+</ul>
+<blockquote>
+  <div>
+    存儲系統可以理解為一個黑盒子，它為我們提供了可用性和持久性的保證。
+  </div>
+</blockquote>
+<ul>
+  <li>Process A
+  </li>
+</ul>
+<blockquote>
+  <div>
+    ProcessA主要實現從存儲系統write和read操作
+  </div>
+</blockquote>
+<ul>
+  <li>Process B 和ProcessC&nbsp;
+  </li>
+</ul>
+<blockquote>
+  <div>
+    ProcessB和C是獨立於A，並且B和C也相互獨立的，它們同時也實現對存儲系統的write和read操作。
+  </div>
+</blockquote><br>
+下面以上面的場景來描述下不同程度的一致性：<br>
+<br>
+<ul>
+  <li>強一致性
+  </li>
+</ul>
+<blockquote>
+  <div>
+    強一致性（即時一致性） 假如A先寫入了一個值到存儲系統，存儲系統保證後續A,B,C的讀取操作都將返回最新值
+  </div>
+</blockquote>
+<ul>
+  <li>弱一致性
+  </li>
+</ul>
+<blockquote>
+  <div>
+    假如A先寫入了一個值到存儲系統，存儲系統不能保證後續A,B,C的讀取操作能讀取到最新值。此種情況下有一個“不一致性窗口”的概念，它特指從A寫入值，到後續操作A,B,C讀取到最新值這一段時間。
+  </div>
+</blockquote>
+<ul>
+  <li>最終一致性
+  </li>
+</ul>
+<blockquote>
+  <div>
+
+最終一致性是弱一致性的一種特例。假如A首先write了一個值到存儲系統，存儲系統保證如果在A,B,C後續讀取之前沒有其它寫操作更新同樣的值的話，
+最終所有的讀取操作都會讀取到最A寫入的最新值。此種情況下，如果沒有失敗發生的話，“不一致性窗口”的大小依賴於以下的幾個因素：交互延遲，系統的負
+載，以及複製技術中replica的個數（這個可以理解為master/salve模式中，salve的個數），最終一致性方面最出名的系統可以說是
+DNS系統，當更新一個域名的IP以後，根據配置策略以及緩存控制策略的不同，最終所有的客戶都會看到最新的值。
+  </div>
+</blockquote>
+<h3>
+  <a name="_688371617347002_0840630698949"></a>變體
+</h3>
+<ul>
+  <li>Causal consistency（因果一致性）
+  </li>
+</ul>
+<blockquote>
+  <div>
+    如果Process A通知Process B它已經更新了資料，那麼Process B的後續讀取操作則讀取A寫入的最新值，而與A沒有因果關係的C則可以最終一致性。
+  </div>
+</blockquote>
+<ul>
+  <li>Read-your-writes consistency
+  </li>
+</ul>
+<blockquote>
+  <div>
+    如果Process A寫入了最新的值，那麼Process A的後續操作都會讀取到最新值。但是其它用戶可能要過一會才可以看到。
+  </div>
+</blockquote>
+<ul>
+  <li>Session consistency
+  </li>
+</ul>
+<blockquote>
+  <div>
+    此種一致性要求客戶端和存儲系統交互的整個會話階段保證Read-your-writes consistency.Hibernate的session提供的一致性保證就屬於此種一致性。
+  </div>
+</blockquote>
+<ul>
+  <li>Monotonic read consistency
+  </li>
+</ul>
+<blockquote>
+  <div>
+    此種一致性要求如果Process A已經讀取了對象的某個值，那麼後續操作將不會讀取到更早的值。
+  </div>
+</blockquote>
+<ul>
+  <li>Monotonic write consistency
+  </li>
+</ul>
+<blockquote>
+  <div>
+    此種一致性保證系統會序列化執行一個Process中的所有寫操作。
+  </div>
+</blockquote>
+<h2>
+  <a name="BASE_9958890723064542_78222997_869969945038222"></a><strong>BASE</strong>
+</h2>說起來很有趣，BASE的英文意義是鹼，而ACID是酸。真的是水火不容啊。<br>
+<br>
+<ul>
+  <li>Basically Availble --基本可用
+  </li>
+  <li>Soft-state --軟狀態/柔性事務
+  </li>
+</ul>
+<blockquote>
+  <span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="color: rgb(51, 51, 51);"><span style="font-size: 10pt;">"Soft state" 可以理解為"無連接"的, 而 "Hard state" 是"面向連接"的</span></span></span>
+</blockquote>
+<ul>
+  <li>&nbsp;
+  </li>
+  <li>Eventual Consistency --最終一致性
+  </li>
+</ul>
+<blockquote>
+  <span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="color: rgb(51, 51, 51);"><span style="font-size: 10pt;">最終一致性， 也是是 ACID 的最終目的。<br>
+  <br></span></span></span>
+</blockquote>
+<ul>
+  <li>&nbsp;
+  </li>
+</ul>
+<p>
+  BASE模型反ACID模型，完全不同ACID模型，犧牲高一致性，獲得可用性或可靠性： Basically
+Available基本可用。支持分區失敗(e.g. sharding碎片劃分資料庫) Soft state軟狀態
+狀態可以有一段時間不同步，異步。 Eventually consistent最終一致，最終資料是一致的就可以了，而不是時時一致。<br>
+  <br>
+  BASE思想的主要實現有<br>
+  1.按功能劃分資料庫<br>
+  2.sharding碎片&nbsp;<br>
+  <br>
+  BASE思想主要強調基本的可用性，如果你需要高可用性，也就是純粹的高性能，那麼就要以一致性或容錯性為犧牲，BASE思想的方案在性能上還是有潛力可挖的。
+</p>
+<h2>
+  <a name="_40717189376329843_06651605852"></a>其他
+</h2><br>
+<h3>
+  <a name="I_O_9886723485627446_373115905_5228612841633498"></a>I/O的五分鐘法則
+</h3>
+<div>
+  在 1987 年，<a href="http://en.wikipedia.org/wiki/Jim_Gray_%28computer_scientist%29">Jim Gray</a>&nbsp;
+與 Gianfranco Putzolu
+發表了這個"五分鐘法則"的觀點，簡而言之，如果一條記錄頻繁被訪問，就應該放到內存裡，否則的話就應該待在硬盤上按需要再訪問。這個臨界點就是五分鐘。
+ 看上去像一條經驗性的法則，實際上五分鐘的評估標準是根據投入成本判斷的，根據當時的硬件發展水準，在內存中保持 1KB 的資料成本相當於硬盤中存據
+ 400 秒的開銷(接近五分鐘)。這個法則在 1997
+年左右的時候進行過一次回顧，證實了五分鐘法則依然有效（硬盤、內存實際上沒有質的飛躍)，而這次的回顧則是針對 SSD
+這個"新的舊硬件"可能帶來的影響。<br>
+  <br>
+  <br>
+  <div id="tmip">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_103c5pxtr9r_b.htm" alt=""><br>
+    <br>
+    <span class="byline">隨著閃存時代的來臨，五分鐘法則一分為二：是把 SSD 當成較慢的內存（extended
+buffer pool ）使用還是當成較快的硬盤（extended
+disk）使用。小內存頁在內存和閃存之間的移動對比大內存頁在閃存和磁盤之間的移動。在這個法則首次提出的 20 年之後，在閃存時代，5
+分鐘法則依然有效，只不過適合更大的內存頁(適合 64KB 的頁，這個頁大小的變化恰恰體現了計算機硬件工藝的發展，以及帶寬、延時)。</span>
+  </div><br>
+  <br>
+  <br>
+  <h3>
+    <a name="_8314717379700977_930601348298"></a>不要刪除資料
+  </h3><span style="color: rgb(51, 51, 51);"><span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="font-size: 10pt;"><br>
+  Oren Eini（又名Ayende Rahien）建議開發者儘量避免資料庫的軟刪除操作，讀者可能因此認為硬刪除是合理的選擇。作為對Ayende文章的回應，Udi Dahan強烈建議完全避免資料刪除。<br>
+  <br>
+  所謂軟刪除主張在表中增加一個IsDeleted列以保持資料完整。如果某一行設置了IsDeleted標誌列，那麼這一行就被認為是已刪除的。Ayende覺得這種方法“簡單、容易理解、容易實現、容易溝通”，但“往往是錯的”。問題在於：<br>
+  <br>
+  刪除一行或一個實體幾乎總不是簡單的事件。它不僅影響模型中的資料，還會影響模型的外觀。所以我們才要有外鍵去確保不會出現“訂單行”沒有對應的父“訂單”的情況。而這個例子只能算是最簡單的情況。……<br>
+  <br>
+  當採用軟刪除的時候，不管我們是否情願，都很容易出現資料受損，比如誰都不在意的一個小調整，就可能使“客戶”的“最新訂單”指向一條已經軟刪除的訂單。<br>
+  <br>
+  如果開發者接到的要求就是從資料庫中刪除資料，要是不建議用軟刪除，那就只能硬刪除了。為了保證資料一致性，開發者除了刪除直接有關的資料行，還應該級聯地刪除相關資料。可Udi Dahan提醒讀者注意，真實的世界並不是級聯的：<br>
+  <br>
+  假設市場部決定從商品目錄中刪除一樣商品，那是不是說所有包含了該商品的舊訂單都要一併消失？再級聯下去，這些訂單對應的所有發票是不是也該刪除？這麼一步步刪下去，我們公司的損益報表是不是應該重做了？<br>
+  <br>
+  沒天理了。<br>
+  <br>
+  問題似乎出在對“刪除”這詞的解讀上。Dahan給出了這樣的例子：<br>
+  <br>
+  我說的“刪除”其實是指這產品“停售”了。我們以後不再賣這種產品，清掉庫存以後不再進貨。以後顧客搜索商品或者翻閱目錄的時候不會再看見這種商品，但管倉庫的人暫時還得繼續管理它們。“刪除”是個貪方便的說法。<br>
+  <br>
+  他接著舉了一些站在用戶角度的正確解讀：<br>
+  <br>
+  <br>
+  訂單不是被刪除的，是被“取消”的。訂單取消得太晚，還會產生花費。<br>
+  <br>
+  員工不是被刪除的，是被“解僱”的（也可能是退休了）。還有相應的補償金要處理。<br>
+  <br>
+  職位不是被刪除的，是被“填補”的（或者招聘申請被撤回）。<br>
+  <br>
+  在上面這些例子中，我們的著眼點應該放在用戶希望完成的任務上，而非發生在某個<br>
+  實體身上的技術動作。幾乎在所有的情況下，需要考慮的實體總不止一個。<br>
+  <br>
+  為了代替IsDeleted標誌，Dahan建議用一個代表相關資料狀態的字段：有效、停用、取消、棄置等等。用戶可以借助這樣一個狀態字段回顧過去的資料，作為決策的依據。<br>
+  <br>
+  刪除資料除了破壞資料一致性，還有其它負面的後果。Dahan建議把所有資料都留在資料庫裡：“別刪除。就是別<br>
+  刪除。”<br>
+  <br></span></span></span>
+  <h3>
+    <a name="RAM_147097721381792_7902793153_006425076106569838"></a>RAM是硬盤,硬盤是磁帶
+  </h3><br>
+  <a href="http://research.microsoft.com/%7EGray/JimGrayHomePageSummary.htm">Jim Gray</a>在過去40年中對技術發展有過巨大的貢獻，“內存是新的硬盤，硬盤是新的磁帶”是他的名言。“實時”Web應用不斷湧現，達到海量規模的系統越來越多，這種後浪推前浪的發展模式對軟硬件又有何影響？<br>
+  <br>
+  <a href="http://www.tbray.org/ongoing/"><span style="text-decoration: underline;">Tim Bray</span></a>早在網格計算成為熱門話題之前，就<a href="http://www.tbray.org/ongoing/When/200x/2006/05/24/On-Grids"><span style="text-decoration: underline;">討論過</span></a>以RAM和網絡為中心的硬件結構的優勢，可以用這種硬件建立比磁盤集群速度更快的RAM集群。
+  <blockquote>
+    對於資料的隨機訪問，內存的速度比硬盤高幾個數量級（即使是最高端的磁盤存儲系統也只是勉強達到1,000次尋道/秒）。其次，
+隨著資料中心的網絡速度提高，訪問內存的成本更進一步降低。通過網絡訪問另一台機器的內存比訪問磁盤成本更低。就在我寫下這段話的時候，Sun的
+Infiniband產品線中有一款具備9個全互聯非阻塞端口交換機，每個端口的速度可以達到30Gbit/sec！Voltaire產品的端口甚至更
+多；簡直不敢想像。（如果你想瞭解這類超高性能網絡的最新進展，請關注Andreas Bechtolsheim在Standford開設的課程。）
+  </blockquote>
+  <p>
+    <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">各種操作的時間，以2001年夏季，典型配置的 1GHz 個人計算機為標準：</span></span></span></span></span></span></span>
+  </p>
+  <table style="height: 107px;" border="1" bordercolor="#000080" cellspacing="0" width="266">
+    <tbody>
+      <tr>
+        <td>
+          <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">執行單一指令</span></span></span></span></span></span></span>
+        </td>
+        <td>
+          <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">1 納秒</span></span></span></span></span></span></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">從L1 高速緩存取一個字</span></span></span></span></span></span></span>
+        </td>
+        <td>
+          <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">2 納秒</span></span></span></span></span></span></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">從內存取一個字</span></span></span></span></span></span></span>
+        </td>
+        <td>
+          <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">10 納秒</span></span></span></span></span></span></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">從磁盤取連續存放的一個字</span></span></span></span></span></span></span>
+        </td>
+        <td>
+          <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">200 納秒</span></span></span></span></span></span></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">磁盤尋址並取字</span></span></span></span></span></span></span>
+        </td>
+        <td>
+          <span><span><span><span style="color: rgb(0, 0, 0);"><span><span style="font-family: verdana,sans-serif;"><span style="font-size: 12pt;">8 毫秒</span></span></span></span></span></span></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          以太網<br>
+        </td>
+        <td>
+          2GB/s<br>
+        </td>
+      </tr>
+    </tbody>
+  </table><br>
+  <br>
+  <br>
+  Tim還指出Jim Gray的<br>
+  名言中後半句所闡述的真理：“對於隨機訪問，硬盤慢得不可忍受；但如果你把硬盤當成磁帶來用，它吞吐連續資料的速率令人震驚；它天生適合用來給以RAM為主的應用做日誌（logging and journaling）。”&nbsp;<br>
+  <br>
+  時間閃到幾年之後的今天，我們發現硬件的發展趨勢在RAM和網絡領域勢頭不減，而在硬盤領域則止步不前。Bill McColl提到用於並行計算的<a href="http://www.computingatscale.com/?p=54"><span style="text-decoration: underline;">海量內存系統已經出現</span></a>：
+  <blockquote>
+
+內存是新的硬盤！硬盤速度提高緩慢，內存芯片容量指數上升，in-memory軟件架構有望給各類資料密集的應用帶來數量級的性能提升。小型機架服務器
+（1U、2U）很快就會具備T字節、甚至更大量的內存，這將會改變服務器架構中內存和硬盤之間的平衡。硬盤將成為新的磁帶，像磁帶一樣作為順序存儲介質使
+用（硬盤的順序訪問相當快速），而不再是隨機存儲介質（非常慢）。這裡面有著大量的機會，新產品的性能有望提高10倍、100倍。
+  </blockquote>Dare Obsanjo指出<a href="http://www.25hoursaday.com/weblog/2008/05/23/SomeThoughtsOnTwittersAvailabilityProblems.aspx"><span style="text-decoration: underline;">如果不把這句真言當回事，會帶來什麼樣的惡劣後果</span></a>——
+
+也就是Twitter正面臨的麻煩。論及Twitter的內容管理，Obsanjo說，“如果一個設計只是簡單地反映了問題描述，你去實現它就會落入磁盤
+ I/O的地獄。不管你用Ruby on Rails、Cobol on
+Cogs、C++還是手寫彙編都一樣，讀寫負載照樣會害死你。”換言之，應該把隨機操作推給RAM，只給硬盤留下順序操作。&nbsp;<br>
+  <br>
+  <a href="http://www.lexemetech.com/"><span style="text-decoration: underline;">Tom White</span></a>是<a href="http://hadoop.apache.org/core"><span style="text-decoration: underline;">Hadoop Core</span></a>項目的提交者，也是Hadoop項目管理委員會的成員。他對Gray的真言中“硬盤是新的磁帶”部分作了更深入地探討。White在討論MapReduce編程模型的時候指出，為何對於Hadloop這類工具來說，<a href="http://www.lexemetech.com/2008/03/disks-have-become-tapes.html"><span style="text-decoration: underline;">硬盤仍然是可行的</span></a>應用程序資料存儲介質：
+  <blockquote>
+    本質上，在MapReduce的工作方式中，資料流式地讀出和寫入硬盤，MapReduce是以硬盤的傳輸速率不斷地對這些資料進行排序和合併。
+
+與之相比，訪問關係資料庫中的資料，其速率則是硬盤的尋道速率（尋道指移動磁頭到盤面上的指定位置讀取或寫入資料的過程）。為什麼要強調這一點？請看看尋
+道時間和磁盤傳輸率的發展曲線。尋道時間每年大約提高5%，而資料傳輸率每年大約提高20%。尋道時間的進步比資料傳輸率慢——因此採用由資料傳輸率決定
+性能的模型是有利的。MapReduce正是如此。
+  </blockquote>雖然固態硬盤（SSD）能否改變尋道時間/傳輸率的對比還有待觀察，<a href="http://www.lexemetech.com/2008/03/disks-have-become-tapes.html?showComment=1205973660000#c2336624186434337035"><span style="text-decoration: underline;">White文章的跟貼</span></a>中，很多人都認為<a href="http://www.lexemetech.com/2008/03/disks-have-become-tapes.html?showComment=1205987880000#c135263265622703132"><span style="text-decoration: underline;">SSD會成為RAM/硬盤之爭中的平衡因素</span></a>。&nbsp;<br>
+  <br>
+  Nati Shalom對<a href="http://natishalom.typepad.com/nati_shaloms_blog/2008/03/scaling-out-mys.html"><span style="text-decoration: underline;">內存和硬盤在資料庫部署和使用中的角色作了一番有理有據的評述</span></a>。
+
+Shalom著重指出用資料庫集群和分區來解決性能和可伸縮性的侷限。他說，“資料庫複製和資料庫分區都存在相同的基本問題，它們都依賴於文件系統/硬盤
+ 的性能，建立資料庫集群也非常複雜”。他提議的方案是轉向In-Memory Data
+Grid（IMDG），用Hibernate二級緩存或者GigaSpaces Spring
+DAO之類的技術作支撐，將持久化作為服務（Persistence as a Service）提供給應用程序。Shalom解釋說，IMDG
+  <blockquote>
+    提供在內存中的基於對象的資料庫能力，支持核心的資料庫功能，諸如高級索引和查詢、事務語義和鎖。IMDG還從應用程序的代碼中抽象出了資料的拓撲。通過這樣的方式，資料庫不會完全消失，只是挪到了“正確的”位置。
+  </blockquote>IMDG相比直接RDBMS訪問的優勢列舉如下：
+  <ul>
+    <li>位於內存中，速度和並發能力都比文件系統優越得多
+    </li>
+    <li>資料可通過引用訪問
+    </li>
+    <li>直接對內存中的對象執行資料操作
+    </li>
+    <li>減少資料的爭用
+    </li>
+    <li>並行的聚合查詢
+    </li>
+    <li>進程內（In-process）的局部緩存
+    </li>
+    <li>免除了對象-關係映射（ORM）
+    </li>
+  </ul>
+  <p>
+    你是否需要改變對應用和硬件的思維方式，最終取決於你要用它們完成的工作。但似乎公論認為，開發者解決性能和可伸縮性的思路已經到了該變一變的時候。
+  </p><br>
+  <h3>
+    <a name="Amdahl_Gustafson_9052423372139"></a>Amdahl定律和Gustafson定律
+  </h3>這裡，我們都以S(n)表示n核系統對具體程序的加速比，K表示串行部分計算時間比例。<br>
+  <br>
+  <p>
+    Amdahl 定律的加速比：S(n) ＝ 使用1個處理器的串行計算時間 / 使用n個處理器的並行計算時間
+  </p>
+  <p>
+    S(n) = 1/(K+(1-K)/n) = n/(1+(n-1)K)
+  </p>
+  <p>
+    Gustafson定律的加速比：S(n) ＝ 使用n個處理器的並行計算量 / 使用1個處理器的串行計算量
+  </p>
+  <p>
+    S(n) = K+(1-K)n
+  </p><br>
+  有點冷是不是？<br>
+  <br>
+  通俗的講，Amdahl 定律將工作量看作1，有n核也只能分擔1-K的工作量；而Gustafson定律則將單核工作量看作1，有n核，就可以增加n(1-K)的工作量。<br>
+  <br>
+  這裡沒有考慮引進分佈式帶來的開銷，比如網絡和加鎖。成本還是要仔細核算的，不是越分佈越好。<br>
+  <br>
+  控制算法的複雜性在常數範圍之內。<br>
+  <br>
+  <h3>
+    <a name="_5841810574932209"></a>萬兆以太網
+  </h3>
+  <p>
+    &nbsp;
+  </p>
+</div>
+<h1>
+  <a name="_7991344137117267_675089238211_7007085816130685"></a>手段篇
+</h1>
+<h2>
+  <a name="_777160631492734_5802160603925"></a>一致性哈希
+</h2>
+<div>
+  要求分佈式架構的發展說起。
+</div><br>
+<div>
+  <span style="font-family: Verdana; color: rgb(0, 0, 0);"><strong>第一階段</strong></span>
+</div>
+<div>
+  <span style="font-family: Verdana; color: rgb(0, 0, 0);">考慮到單服務器不能承載，因此使用了分佈式架構，最初的算法為 hash() mod n, hash()通常取用戶ID，n為節點數。此方法容易實現且能夠滿足運營要求。缺點是當單點發生故障時，系統無法自動恢復。</span><br>
+  <p>
+    &nbsp;
+  </p>
+  <div>
+    <div id="f0v9">
+      <a href="http://docs.google.com/a/jerrymouse.org/File?id=dc23x53c_78ggwcxmgn_b" target="_blank"><img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_78ggwcxmgn_b.htm" alt=""></a>
+    </div>
+  </div>
+  <p>
+    &nbsp;
+  </p><span style="font-family: Verdana; color: rgb(0, 0, 0);"><br>
+  <br>
+  <strong>第二階段</strong><br>
+  為瞭解決單點故障，使用 hash() mod (n/2), 這樣任意一個用戶都有2個服務器備選，可由client隨機選取。由於不同服務器之間的用戶需要彼此交互，所以所有的服務器需要確切的知道用戶所在的位置。因此用戶位置被保存到memcached中。<br>
+  <br>
+  當一台發生故障，client可以自動切換到對應backup，由於切換前另外1台沒有用戶的session，因此需要client自行重新登錄。</span><br>
+  <p>
+    &nbsp;
+  </p>
+  <div>
+    <div id="xzqo">
+      <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_80gzzxqdgk_b.htm" alt="">
+    </div>
+  </div>
+  <p>
+    &nbsp;
+  </p><span style="font-family: Verdana; color: rgb(0, 0, 0);"><br>
+  <br>
+  這個階段的設計存在以下問題<br>
+  負載不均衡，尤其是單台發生故障後剩下一台會壓力過大。<br>
+  不能動態增刪節點<br>
+  節點發生故障時需要client重新登錄<br>
+  <br>
+  <strong>第三階段</strong><br>
+  打算去掉硬編碼的hash() mod n 算法，改用一致性哈希(consistent hashing)分佈<br>
+  假如採用Dynamo中的strategy 1<br>
+  我們把每台server分成v個虛擬節點，再把所有虛擬節點(n*v)隨機分配到一致性哈希的圓環上，這樣所有的用戶從自己圓環上的位置順時針往下取到第一個vnode就是自己所屬節點。當此節點存在故障時，再順時針取下一個作為替代節點。</span><br>
+  <p>
+    &nbsp;
+  </p>
+  <p>
+    &nbsp;
+  </p>
+  <p>
+    <strong><span style="font-size: 10pt;"><br></span></strong>
+  </p>
+  <div id="pmqy">
+    <div id="v_72">
+      <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_104d7fjkfck_b.htm" alt="">
+    </div>
+  </div><span style="font-family: helvetica,tahoma,arial,宋體,sans-serif;"><span style="color: rgb(17, 17, 17);"><strong><span style="font-size: 10pt;"><br>
+  優點：發生單點故障時負載會均衡分散到其他所有節點，程序實現也比較優雅。<br>
+  <br></span></strong></span></span>
+  <p>
+    &nbsp;
+  </p><br>
+  <h4>
+    <a name="_735276508313792_2270315258144_9783657311654288"></a>亞馬遜的現狀
+  </h4>
+  <p>
+    aw2.0公司的Alan Williamson撰寫了一篇報導，主要是關於他在Amazon EC2上的體驗的，他抱怨說，Amazon是公司唯一使用的雲提供商，看起來它在開始時能夠適應得很好，但是<a href="http://alan.blog-city.com/has_amazon_ec2_become_over_subscribed.htm">有一個臨界點</a>：
+  </p>
+  <blockquote>
+    在開始的日子裡Amazon的表現非常棒。實例在幾分鐘內啟動，幾乎沒有遇到任何問題，即便是他們的<a href="http://aws.amazon.com/ec2/instance-types/">小實例（SMALL INSTANCE）</a>也很健壯，足以支持適當使用的MySQL資料庫。在20個月內，Amazon雲系統一切運轉良好，不需要任何的關心和抱怨。
+    <p>
+      ……
+    </p>
+    <p>
+      然而，在最後的八個月左右，他們“盔甲”內的漏洞開始呈現出來了。第一個弱點前兆是，新加入的Amazon
+SMALL實例的性能出現了問題。根據我們的監控，在服務器場中新添加的機器，與原先的那些相比性能有所下降。開始我們認為這是自然出現的怪現象，只是碰
+ 巧發生在“吵鬧的鄰居”（Noisy
+Neighbors）旁邊。根據隨機法則，一次快速的停機和重新啟動經常就會讓我們回到“安靜的鄰居”旁邊，那樣我們可以達到目的。
+    </p>
+    <p>
+      ……
+    </p>然而，在最後的一兩個月中，我們發現，甚至是這些“使用高級CPU的中等實例”也遭受了與小實例相同的命運，其中，新的實例不管處於什麼位置，看起來似乎都表現得一樣。經過調查，我們還發現了一個新問題，它已經悄悄滲透到到Amazon的世界中，那就是內部網絡延遲。<br>
+    <br>
+  </blockquote><a name="Quorum_NRW_"></a>
+</div><br>
+<h4>
+  <a name="_6454406003627595_776185765138"></a>算法的選擇
+</h4>不同的哈希算法可以導致資料分佈的不同位置，如果十分均勻，那麼一次MapReduce就涉及節點較多，但熱點均勻，方便管理。反之，熱點不均，會大致機器效率發揮不完全。<br>
+<br>
+<br>
+<h2>
+  <a name="NRW_012323816604251636_2127662_10272764961707637"></a>Quorum NRW
+</h2><br>
+<div id="pz3r">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_112ff7mw3fq_b.htm" alt="">
+</div><br>
+<ul>
+  <li>N: 複製的節點數量
+  </li>
+  <li>R: 成功讀操作的最小節點數
+  </li>
+  <li>W: 成功寫操作的最小節點數
+  </li>
+</ul><br>
+只需W + R &gt; N，就可以保證強一致性。<br>
+<br>
+第一個關鍵參數是 N，這個 N 指的是資料對象將被覆制到 N 台主機上，N 在實例級別配置，協調器將負責把資料複製到 N-1 個節點上。N 的典型值設置為 3.<br>
+<br>
+復 制中的一致性，採用類似於 Quorum 系統的一致性協議實現。這個協議有兩個關鍵值：R 與 W。R
+代表一次成功的讀取操作中最小參與節點數量，W 代表一次成功的寫操作中最小參與節點數量。R + W&gt;N ，則會產生類似 quorum
+的效果。該模型中的讀(寫)延遲由最慢的 R(W)複製決定，為得到比較小的延遲，R 和 W 有的時候的和又設置比 N 小。<br>
+<br>
+如果N中的1台發生故障，Dynamo立即寫入到preference list中下一台，確保永遠可寫入<br>
+<br>
+如 果W+R&gt;N，那麼分佈式系統就會提供強一致性的保證，因為讀取資料的節點和被同步寫入的節點是有重疊的。在一個RDBMS的複製模型中
+（Master/salve)，假如N=2,那麼W=2,R=1此時是一種強一致性,但是這樣造成的問題就是可用性的減低，因為要想寫操作成功，必須要等
+ 2個節點都完成以後才可以。<br>
+<br>
+在分佈式系統中，一般都要有容錯性，因此一般N都是大於3的，此時根據CAP理論，一致性，可用性和分區容錯
+性最多只能滿足兩個，那麼我們就需要在一致性和分區容錯性之間做一平衡，如果要高的一致性，那麼就配置N=W，R=1,這個時候可用性就會大大降低。如果
+ 想要高的可用性，那麼此時就需要放鬆一致性的要求，此時可以配置W=1，這樣使得寫操作延遲最低，同時通過異步的機制更新剩餘的N-W個節點。<br>
+<br>
+當存儲系統保證最終一致性時，存儲系統的配置一般是W+R&lt;=N,此時讀取和寫入操作是不重疊的，不一致性的窗口就依賴於存儲系統的異步實現方式，不一致性的窗口大小也就等於從更新開始到所有的節點都異步更新完成之間的時間。<br>
+<br>
+(N,R,W) 的值典型設置為 (3, 2 ,2),兼顧性能與可用性。R 和 W 直接影響性能、擴展性、一致性，如果 W 設置 為
+1，則一個實例中只要有一個節點可用，也不會影響寫操作，如果 R 設置為 1 ，只要有一個節點可用，也不會影響讀請求，R 和 W
+值過小則影響一致性，過大也不好，這兩個值要平衡。對於這套系統的典型的 SLA 要求 99.9% 的讀寫操作在 300ms 內完成。<br>
+<br>
+無 論是Read-your-writes-consistency,Session consistency,Monotonic read
+consistency,它們都通過黏貼（stickiness)客戶端到執行分佈式請求的服務器端來實現的，這種方式簡單是簡單，但是它使得負載均衡以
+ 及分區容錯變的更加難於管理，有時候也可以通過客戶端來實現Read-your-writes-consistency和Monotonic read
+ consistency,此時需要對寫的操作的資料加版本號，這樣客戶端就可以遺棄版本號小於最近看到的版本號的資料。<br>
+<br>
+在系統開發過程
+中，根據CAP理論，可用性和一致性在一個大型分區容錯的系統中只能滿足一個，因此為了高可用性，我們必須放低一致性的要求，但是不同的系統保證的一致性
+
+還是有差別的，這就要求開發者要清楚自己用的系統提供什麼樣子的最終一致性的保證，一個非常流行的例子就是web應用系統，在大多數的web應用系統中都
+
+有“用戶可感知一致性”的概念，這也就是說最終一致性中的“一致性窗口"大小要小於用戶下一次的請求，在下次讀取操作來之前，資料可以在存儲的各個節點之
+ 間複製。還比如假如存儲系統提供了<br>
+<br>
+read-your-write-consistency一致性，那麼當一個用戶寫操作完成以後可以立馬看到自己的更 新，但是其它的用戶要過一會才可以看到更新。<br>
+<br>
+幾種特殊情況：<br>
+W = 1, R = N,對寫操作要求高性能高可用。<br>
+R = 1, W = N , 對讀操作要求高性能高可用，比如類似cache之類業務。<br>
+W = Q, R = Q where Q = N / 2 + 1 一般應用適用，讀寫性能之間取得平衡。如N=3,W=2,R=2<br>
+<br>
+<h2>
+  <a name="Vector_clock_41690548602491617_5257623065741377"></a><span style="font-size: 10pt;">Vector clock</span>
+</h2><span style="font-size: 10pt;"><br></span><br>
+<div id="x337">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_6638pgtkct_b.htm" alt="">
+</div><span style="font-size: 10pt;"><br>
+<br>
+vector clock算法。可以把這個vector
+clock想像成每個節點都記錄自己的版本信息，而一個資料，包含所有這些版本信息。來看一個例子：假設一個寫請求，第一次被節點A處理了。節點A會增加
+一個版本信息(A，1)。我們把這個時候的資料記做D1(A，1)。
+然後另外一個對同樣key(這一段討論都是針對同樣的key的)的請求還是被A處理了於是有D2(A，2)。<br>
+<br>
+這個時候，D2是可以覆蓋D1的，不會有衝突產生。現在我們假設D2傳播到了所有節點(B和C)，B和C收到的資料不是從客戶產生的，而是別人複製給他們
+的，所以他們不產生新的版本信息，所以現在B和C都持有資料D2(A，2)。好，繼續，又一個請求，被B處理了，生成資料D3(A，2;B，1)，因為這
+是一個新版本的資料，被B處理，所以要增加B的版本信息。<br>
+<br>
+假設D3沒有傳播到C的時候又一個請求被C處理記做D4(A，2;C，1)。假設在這些版本沒有傳播開來以前，有一個讀取操作，我們要記得，我們的W=1
+
+那麼R=N=3，所以R會從所有三個節點上讀，在這個例子中將讀到三個版本。A上的D2(A，2);B上的D3(A，2;B，1);C上的D4(A，2;
+C，1)這個時候可以判斷出，D2已經是舊版本，可以捨棄，但是D3和D4都是新版本，需要應用自己去合併。<br>
+<br>
+如果需要高可寫性，就要處理這種合併問題。好假設應用完成了衝入解決，這裡就是合併D3和D4版本，然後重新做了寫入，假設是B處理這個請求，於是有
+D5(A，2;B，2;C，1);這個版本將可以覆蓋掉D1-D4那四個版本。這個例子只舉了一個客戶的請求在被不同節點處理時候的情況，
+而且每次寫更新都是可接受的，大家可以自己更深入的演算一下幾個並發客戶的情況，以及用一個舊版本做更新的情況。<br>
+<br>
+上面問題看似好像可以通過在三個節點裡選擇一個主節點來解決，所有的讀取和寫入都從主節點來進行。但是這樣就違背了W=1這個約定，實際上還是退化到
+W=N的情況了。所以如果系統不需要很大的彈性，W=N為所有應用都接受，那麼系統的設計上可以得到很大的簡化。Dynamo
+為了給出充分的彈性而被設計成完全的對等集群(peer to peer)，網絡中的任何一個節點都不是特殊的。<br></span>
+<h2>
+  <a name="Virtual_node_6496471269056201_"></a><span style="font-size: 10pt;">Virtual node</span>
+</h2><br>
+<div id="zc4y">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_111dtk7hkdn_b.htm" alt=""><br>
+  虛擬節點，未完成
+</div>
+<h2>
+  <a name="gossip_34187653195112944_16061_08507828080528557"></a><span style="font-size: 10pt;">gossip</span>
+</h2><br>
+<p>
+  Gossip協議是一個Gossip思想的P2P實現。現代的分佈式系統經常使用這個協議，他往往是唯一的手段。因為底層的結構非常複雜，而且Gossip也很有效。
+</p>
+<p>
+  Gossip協議也被戲稱為病毒式傳播，因為他的行為生物界的病毒很相似。
+</p>
+<h3>
+  <a name="Gossip_State_Transfer_Model_14_5181318348909955"></a><span style="font-size: 10pt;">Gossip (State Transfer Model)</span>
+</h3><span style="font-size: 10pt;">在狀態轉移到模式下，每個重複節點都保持的一個Vector clock和一個state version tree。每個節點的狀態都是相同的(<span style="font-size: 10pt;">based on vector clock comparison</span>),換句話說，<span style="font-size: 10pt;">state version tre</span>e包含有全部的衝突updates.<br>
+<br>
+At query time, the client will attach its vector clock and the replica
+will send back a subset of the state tree which precedes the client's
+vector clock (this will provide monotonic read consistency). The client
+will then advance its vector clock by merging all the versions. This
+means the client is responsible to resolve the conflict of all these
+versions because when the client sends the update later, its vector
+clock will precede all these versions.<br></span>
+<div>
+  <div id="isph">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_93cjhqxb2q_b.htm" alt="" height="456" width="445">
+  </div><span style="font-size: 10pt;"><br></span>
+</div><span style="font-size: 10pt;">At update, the client will send its
+ vector clock and the replica will check whether the client state
+precedes any of its existing version, if so, it will throw away the
+client's update.<br></span>
+<div id="cshp">
+  <span style="font-size: 10pt;"><br></span>
+</div>
+<div id="joh:">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_94g3p4wtgk_b.htm" alt="">
+</div><span style="font-size: 10pt;"><br>
+Replicas also gossip among each other in the background and try to merge their version tree together.<br>
+<br>
+<br></span>
+<div id="lh5z">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_95gh7cjsgz_b.htm" alt="">
+</div><span style="font-size: 10pt;"><br></span>
+<h3>
+  <a name="Gossip_Operation_Transfer_Mode_688725990810297"></a><span style="font-size: 10pt;">Gossip (Operation Transfer Model)</span>
+</h3><span style="font-size: 10pt;"><br>
+In an operation transfer approach, the sequence of applying the
+operations is very important. At the minimum causal order need to be
+maintained. Because of the ordering issue, each replica has to defer
+executing the operation until all the preceding operations has been
+executed. Therefore replicas save the operation request to a log file
+and exchange the log among each other and consolidate these operation
+logs to figure out the right sequence to apply the operations to their
+local store in an appropriate order.<br>
+<br>
+"Causal order" means every replica will apply changes to the "causes"
+before apply changes to the "effect". "Total order" requires that every
+replica applies the operation in the same sequence.<br>
+<br>
+In this model, each replica keeps a list of vector clock, Vi is the
+vector clock the replica itself and Vj is the vector clock when replica i
+ receive replica j's gossip message. There is also a V-state that
+represent the vector clock of the last updated state.<br>
+<br>
+When a query is submitted by the client, it will also send along its
+vector clock which reflect the client's view of the world. The replica
+will check if it has a view of the state that is later than the client's
+ view.<br>
+<br></span>
+<div id="kly5">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_96fdjnq2hg_b.htm" alt="">
+</div><span style="font-size: 10pt;"><br>
+<br>
+When an update operation is received, the replica will buffer the update
+ operation until it can be applied to the local state. Every submitted
+operation will be tag with 2 timestamp, V-client indicates the client's
+view when he is making the update request. V-@receive is the replica's
+view when it receives the submission.<br>
+<br>
+This update operation request will be sitting in the queue until the
+replica has received all the other updates that this one depends on.
+This condition is reflected in the vector clock Vi when it is larger
+than V-client<br>
+<br></span>
+<div id="c4j7">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_97ffnxbmf6_b.htm" alt="">
+</div><span style="font-size: 10pt;"><br>
+<br>
+On the background, different replicas exchange their log for the queued
+updates and update each other's vector clock. After the log exchange,
+each replica will check whether certain operation can be applied (when
+all the dependent operation has been received) and apply them
+accordingly. Notice that it is possible that multiple operations are
+ready for applying at the same time, the replica will sort these
+operation in causal order (by using the Vector clock comparison) and
+apply them in the right order.<br>
+<br></span>
+<div id="w9jf">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_98htgqg5c3_b.htm" alt="">
+</div><span style="font-size: 10pt;"><br>
+<br>
+The concurrent update problem at different replica can also happen.
+Which means there can be multiple valid sequences of operation. In order
+ for different replica to apply concurrent update in the same order, we
+need a total ordering mechanism.<br>
+<br>
+One approach is whoever do the update first acquire a monotonic sequence
+ number and late comers follow the sequence. On the other hand, if the
+operation itself is commutative, then the order to apply the operations
+doesn't matter<br>
+<br>
+After applying the update, the update operation cannot be immediately
+removed from the queue because the update may not be fully exchange to
+every replica yet. We continuously check the Vector clock of each
+replicas after log exchange and after we confirm than everyone has
+receive this update, then we'll remove it from the queue.<br>
+<br></span>
+<h2>
+  <a name="Merkle_tree_26526400726288557__5335256577035526"></a>Merkle tree
+</h2>有資料存儲成樹狀結構，每個節點的Hash是其所有子節點的Hash的Hash，葉子節點的Hash是其內容的Hash。這樣一旦某個節點發生
+變化，其Hash的變化會迅速傳播到根節點。需要同步的系統只需要不斷查詢跟節點的hash，一旦有變化，順著樹狀結構就能夠在logN級別的時間找到發
+生變化的內容，馬上同步。<br>
+<h2>
+  <a name="Paxos_9032379315516326_7248578"></a>Paxos
+</h2><a id="bwja" title="paxos" href="http://en.wikipedia.org/wiki/Paxos_algorithm">paxos</a>是一種處理一致性的手段，可以理解為事務吧。<br>
+其他的手段不要Google GFS使用的Chubby的Lock service。我不大喜歡那種重型的設計就不費筆墨了。<br>
+<br>
+<div>
+  <h3>
+    <a name="_08464202471077442_91161458194"></a><span style="font-size: 10pt;"><strong>背景</strong></span>
+  </h3>
+  <div>
+    <span style="font-size: 10pt;">當規模越來越大的時候。</span>
+  </div><span style="font-size: 10pt;"><br>
+  一、Master/slave<br>
+  <br>
+  這個是多機房資料訪問最常用的方案，一般的需求用此方案即可。因此大家也經常提到“premature optimization is the root of all evil”。<br>
+  優點：利用mysql replication即可實現，成熟穩定。<br>
+  缺點：寫操作存在單點故障，master壞掉之後slave不能寫。另外slave的延遲也是個困擾人的小問題。<br>
+  <br>
+  二、Multi-master<br>
+  <br>
+  Multi-master指一個系統存在多個master,
+每個master都具有read-write能力，需根據時間戳或業務邏輯合併版本。比如分佈式版本管理系統git可以理解成multi-master模
+式。具備最終一致性。多版本資料修改可以借鑑Dynamo的vector clock等方法。<br>
+  <br>
+  優點：解決了單點故障。<br>
+  缺點：不易實現一致性，合併版本的邏輯複雜。</span>
+</div>
+<div>
+  <span style="font-size: 10pt;"><br>
+  三、Two-phase commit(2PC)<br>
+  <br>
+  Two-phase commit是一個比較簡單的一致性算法。由於一致性算法通常用神話(如Paxos的The Part-Time Parliament論文)來比喻容易理解，下面也舉個類似神話的例子。<br>
+  <br>
+  某班要組織一個同學聚會，前提條件是所有參與者同意則活動舉行，任意一人拒絕則活動取消。用2PC算法來執行過程如下<br>
+  <br>
+  Phase 1<br>
+  <br>
+  Prepare: 組織者(coordinator)打電話給所有參與者(participant) ，同時告知參與者列表。<br>
+  Proposal: 提出週六2pm-5pm舉辦活動。<br>
+  Vote: participant需vote結果給coordinator：accept or reject。<br>
+  Block: 如果accept, participant鎖住週六2pm-5pm的時間，不再接受其他請求。<br>
+  Phase 2<br>
+  <br>
+  Commit: 如果所有參與者都同意，組織者coodinator通知所有參與者commit, 否則通知abort，participant解除鎖定。<br>
+  Failure 典型失敗情況分析<br>
+  <br>
+  Participant failure:<br>
+  任一參與者無響應，coordinator直接執行abort<br>
+  Coordinator failure:<br>
+  Takeover: 如果participant一段時間沒收到cooridnator確認(commit/abort)，則認為coordinator不在了。這時候可自動成為Coordinator備份(watchdog)<br>
+  Query: watchdog根據phase 1接收的participant列表發起query<br>
+  Vote: 所有participant回覆vote結果給watchdog, accept or reject<br>
+  Commit: 如果所有都同意，則commit, 否則abort。<br>
+  <br>
+  優點：實現簡單。<br>
+  缺點：所有參與者需要阻塞(block)，throughput低；無容錯機制，一節點失敗則整個事務失敗。<br>
+  <br>
+  四、Three-phase commit (3PC)<br>
+  <br>
+  Three-phase
+commit是一個2PC的改進版。2PC有一些很明顯的缺點，比如在coordinator做出commit決策並開始發送commit之後，某個
+participant突然crash，這時候沒法abort transaction,
+這時候集群內實際上就存在不一致的情況，crash恢復後的節點跟其他節點資料是不同的。因此3PC將2PC的commit的過程1分為2,分成
+preCommit及commit, 如圖。<br></span>
+  <p>
+    &nbsp;
+  </p>
+  <div id="mszo">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_76dxddz8dw_b.htm" alt="">
+  </div><span style="font-size: 12pt;"><br>
+  <span style="font-size: 10pt;"><br>
+  <br>
+  (圖片來源：http://en.wikipedia.org/wiki/File:Three-phase_commit_diagram.png)<br>
+  <br>
+  從圖來看，cohorts(participant)收到preCommit之後，如果沒收到commit, 默認也執行commit, 即圖上的timeout cause commit。<br>
+  <br>
+  如果coodinator發送了一半preCommit crash, watchdog接管之後通過query, 如果有任一節點收到commit, 或者全部節點收到preCommit, 則可繼續commit, 否則abort。<br>
+  <br>
+  優點：允許發生單點故障後繼續達成一致。<br>
+  缺點：網絡分離問題，比如preCommit消息發送後突然兩個機房斷開，這時候coodinator所在機房會abort, 另外剩餘replicas機房會commit。</span></span>
+</div><br>
+<br>
+Google Chubby的作者Mike Burrows說過， “there is only one consensus protocol,
+and that’s Paxos” – all other approaches are just broken versions of
+Paxos. 意即“世上只有一種一致性算法，那就是Paxos”，所有其他一致性算法都是Paxos算法的不完整版。相比2PC/3PC,
+Paxos算法的改進<br>
+P1a. 每次Paxos實例執行都分配一個編號，編號需要遞增，每個replica不接受比當前最大編號小的提案<br>
+P2. 一旦一個 value v 被replica通過，那麼之後任何再批准的 value 必須是
+v，即沒有拜占庭將軍(Byzantine)問題。拿上面請客的比喻來說，就是一個參與者一旦accept週六2pm-5pm的proposal,
+就不能改變主意。以後不管誰來問都是accept這個value。<br>
+一個proposal只需要多數派同意即可通過。因此比2PC/3PC更靈活，在一個2f+1個節點的集群中，允許有f個節點不可用。<br>
+<br>
+另外Paxos還有很多約束的細節，特別是Google的chubby從工程實現的角度將Paxos的細節補充得非常完整。比如如何避免Byzantine問題，由於節點的持久存儲可能會發生故障，Byzantine問題會導致Paxos算法P2約束失效。<br>
+<br>
+以上幾種方式原理比較如下<br>
+<br>
+<a href="http://timyang.net/blog/wp-content/uploads/2010/02/idc-transaction.png"></a>
+<div id="a4md">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_105gpqm25hj_b.htm" alt="">
+</div><br>
+<h2>
+  <a name="_DHT_1358780225498577_43241378_3858325568533115"></a>DHT
+</h2><br>
+<a id="xr29" title="Distributed hash table" href="http://en.wikipedia.org/wiki/Distributed_hash_table">Distributed hash table</a><br>
+<div id="oe5z">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_115dwv72ngt_b.htm" alt="">
+</div><br>
+<br>
+<h2>
+  <a name="Map_Reduce_Execution_846077151"></a>Map Reduce Execution
+</h2><span style="font-size: 10pt;">Map Reduce已經爛大街了，不過還是要提一下。<br>
+參見：http://zh.wikipedia.org/wiki/MapReduce<br>
+<br>
+<br></span>
+<div id="m_t4">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_99d5m2gsfq_b.htm" alt="">
+</div><br>
+<h2>
+  <a name="Handling_Deletes_5351970902357"></a>Handling Deletes
+</h2>但我們執行刪除操作的時候必須非常謹慎，以防丟失掉相應的版本信息。<br>
+<br>
+通常我們給一個Object標註上"已刪除"的標籤。在足夠的時間之後，我們在確保版本一致的情況下可以將它徹底刪除。回收他的空間。<br>
+<br>
+<br>
+<h2>
+  <a name="_9441494032710129_695390093706"></a>存儲實現
+</h2>One strategy is to use make the storage implementation pluggable.
+e.g. A local MySQL DB, Berkeley DB, Filesystem or even a in memory
+Hashtable can be used as a storage mechanism.<br>
+<span style="font-size: 10pt;"><br>
+Another strategy is to implement the storage in a highly scalable way. Here are some techniques that I learn from&nbsp;<a href="http://horicky.blogspot.com/2008/10/couchdb-implementation.html">CouchDB</a>&nbsp;and Google BigTable.<br>
+<br>
+CouchDB has a MVCC model that uses a copy-on-modified approach. Any
+update will cause a private copy being made which in turn cause the
+index also need to be modified and causing the a private copy of the
+index as well, all the way up to the root pointer.<br></span>
+<div id="lcz6">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_100c7bszndf_b.htm" alt="">
+</div><span style="font-size: 10pt;"><br>
+Notice that the update happens in an append-only mode where the modified
+ data is appended to the file and the old data becomes garbage. Periodic
+ garbage collection is done to compact the data. Here is how the model
+is implemented in memory and disks</span>
+<div id="xia.">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_101d6ncwfc4_b.htm" alt="">
+</div><span style="font-size: 10pt;"><br>
+<br>
+In Google BigTable model, the data is broken down into multiple
+generations and the memory is use to hold the newest generation. Any
+query will search the mem data as well as all the data sets on disks and
+ merge all the return results. Fast detection of whether a generation
+contains a key can be done by checking a bloom filter.<br>
+<br></span>
+<div id="oop5">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_102hcphxkdh_b.htm" alt="">
+</div><span style="font-size: 10pt;"><br>
+<br>
+When update happens, both the mem data and the commit log will be written so that if the<br></span><br>
+<h2>
+  <a name="_6926584525683441_048149148503_6730095064772663"></a>節點變化
+</h2><br>
+Notice that virtual nodes can join and leave the network at any time without impacting the operation of the ring.<br>
+<br>
+<em><strong>When a new node joins the network</strong></em><br>
+<ol>
+  <li>新加入的節點宣告自己的存在(廣播或者其他手段)
+  </li>
+  <li>他的鄰居節點要調整Key的分配和複製關係。這個操作通常是同步的
+  </li>
+  <li>這個新加入的節點異步的拷貝資料
+  </li>
+  <li>這個節點變化的操作被發布到其他節點
+  </li>
+</ol><br>
+<div id="j3y0">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_113cw38kwg3_b.htm" alt="">
+</div><br>
+Notice that other nodes may not have their membership view updated yet
+so they may still forward the request to the old nodes. But since these
+old nodes (which is the neighbor of the new joined node) has been
+updated (in step 2), so they will forward the request to the new joined
+node.<br>
+<br>
+On the other hand, the new joined node may still in the process of
+downloading the data and not ready to serve yet. We use the vector clock
+ (described below) to determine whether the new joined node is ready to
+serve the request and if not, the client can contact another replica.<br>
+<br>
+<em><strong>When an existing node leaves the network</strong></em>&nbsp;(e.g. crash)<br>
+<ol>
+  <li>The crashed node no longer respond to gossip message so its neighbors knows about it.崩潰的節點不再發送Gossip Message的回應，所以他的鄰居都知道他是了
+  </li>
+  <li>The neighbor will update the membership changes and copy data asynchronously，他的鄰居處理後事，將他的活分給別人幹，同時調整節點關係。
+  </li>
+</ol><br>
+<div id="i:sc">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_114gjbfqhcp_b.htm" alt="">
+</div><br>
+We haven't talked about how the virtual nodes is mapped into the
+physical nodes. Many schemes are possible with the main goal that
+Virtual Node replicas should not be sitting on the same physical node.
+One simple scheme is to assigned Virtual node to Physical node in a
+random manner but check to make sure that a physical node doesn't
+contain replicas of the same key ranges.<br>
+<br>
+Notice that since machine crashes happen at the physical node level,
+which has many virtual nodes runs on it. So when a single Physical node
+crashes, the workload (of its multiple virtual node) is scattered across
+ many physical machines. Therefore the increased workload due to
+physical node crashes is evenly balanced.<br>
+<h2>
+  <a name="_6616530869432342_668499063771_40951742786596446"></a>列存
+</h2>
+<h3>
+  <a name="_9307460655327144_814779051211_16340782010495503"></a>描述
+</h3>
+<p>
+  資料庫以行、列的二維表的形式存儲資料，但是卻以一維字符串的方式存儲，例如以下的一個表：
+</p>
+<p>
+  &nbsp;
+</p>
+<table class="wikitable zeroBorder" border="0">
+  <tbody>
+    <tr>
+      <th>
+        EmpId
+      </th>
+      <th>
+        Lastname
+      </th>
+      <th>
+        Firstname
+      </th>
+      <th>
+        Salary
+      </th>
+    </tr>
+    <tr>
+      <td>
+        1
+      </td>
+      <td>
+        Smith
+      </td>
+      <td>
+        Joe
+      </td>
+      <td>
+        40000
+      </td>
+    </tr>
+    <tr>
+      <td>
+        2
+      </td>
+      <td>
+        Jones
+      </td>
+      <td>
+        Mary
+      </td>
+      <td>
+        50000
+      </td>
+    </tr>
+    <tr>
+      <td>
+        3
+      </td>
+      <td>
+        Johnson
+      </td>
+      <td>
+        Cathy
+      </td>
+      <td>
+        44000<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  <br>
+  這個簡單的表包括員工代碼(EmpId), 姓名字段(Lastname and Firstname)及工資(Salary).
+</p>
+<p>
+  這個表存儲在電腦的內存(RAM)和存儲(硬盤)中。雖然內存和硬盤在機制上不同，電腦的操作系統是以同樣的方式存儲的。資料庫必須把這個二維表存儲在一系列一維的“字節”中，又操作系統寫到內存或硬盤中。
+</p>
+<p>
+  行式資料庫把一行中的資料值串在一起存儲起來，然後再存儲下一行的資料，以此類推。
+</p><span style="font-family: 'Courier New';">1,Smith,Joe,40000;2,Jones,Mary,50000;3,Johnson,Cathy,44000;<br></span>
+<p>
+  列式資料庫把一列中的資料值串在一起存儲起來，然後再存儲下一列的資料，以此類推。
+</p><span style="font-family: 'Courier New';">1,2,3;Smith,Jones,Johnson;Joe,Mary,Cathy;40000,50000,44000;<br></span>
+<div id="xefz">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc2sjkhq_1d2t9rdfk_b.htm" alt="">
+</div><br>
+<h3>
+  <a name="_0735241653420401_214353696530_10910972604729818"></a><span style="font-family: 'Courier New';">特點</span>
+</h3>
+<ul>
+  <li>良好的壓縮比。由於大多數資料庫設計都有冗餘，如此一來，壓縮比非常高，把40多M的資料導入infobright，沒想到資料文件只有1M多
+  </li>
+  <li>列上的計算非常的快。
+  </li>
+  <li>方便MapReduce和Key-value模型的融合
+  </li>
+  <li>讀取整行的資料較慢，但部分資料較快
+  </li>
+</ul><br>
+<a id="ab:5" title="簡單分析含源碼" href="http://www.penglixun.com/work/database/column-oriented_dbms_analyse.html">簡單分析含源碼</a>
+<p>
+  &nbsp;
+</p>
+<h1>
+  <a name="_023765667772280286_6105495251"></a>軟件篇
+</h1>
+<h2>
+  <a name="_22756486493872252_88319420976"></a>亞資料庫
+</h2>我發明的新概念，就是稱不上資料庫但有一些資料庫的特徵。可以指緩存。<br>
+<h3>
+  <a name="MemCached_4727136253125943_099_19137860612924817"></a>MemCached
+</h3>Memcached是danga.com（運營LiveJournal的技術團隊）開發的一套分佈式內存對象緩存系統，用於在動態系統中減少資料庫 負載，提升性能。<br>
+<h4>
+  <a name="_5715430571410516_795932562480_594496466269948"></a>特點
+</h4>
+<ul>
+  <li>協議簡單
+  </li>
+  <li>基於libevent的事件處理
+  </li>
+  <li>內置內存存儲方式
+  </li>
+  <li>memcached不互相通信的分佈式
+  </li>
+</ul><br>
+<div id="aniu">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_124d7q729fh_b.htm" alt="">
+</div><br>
+<br>
+<p>
+  Memcached處理的原子是每一個（key，value）對（以下簡稱kv對），key會通過一個hash算法轉化成hash-key，便於查找、對比以及做到儘可能的散列。同時，memcached用的是一個二級散列，通過一張大hash表來維護。
+</p>
+<p>
+  &nbsp;
+</p>
+<div>
+  <p>
+
+Memcached有兩個核心組件組成：服務端（ms）和客戶端（mc），在一個memcached的查詢中，mc先通過計算key的hash值來
+確定kv對所處在的ms位置。當ms確定後，客戶端就會發送一個查詢請求給對應的ms，讓它來查找確切的數據。因為這之間沒有交互以及多播協議，所以
+memcached交互帶給網絡的影響是最小化的。
+  </p>
+  <div id="b3wo">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_125dfz3gt3c_b.htm" alt="">
+  </div><br>
+  <h4>
+    <a name="_30675244504305366_58003565301_10183704247790026"></a>內存分配
+  </h4>
+  <p>
+
+默認情況下，ms是用一個內置的叫“塊分配器”的組件來分配內存的。捨棄c++標準的malloc/free的內存分配，而採用塊分配器的主要目的
+是為了避免內存碎片，否則操作系統要花費更多時間來查找這些邏輯上連續的內存塊（實際上是斷開的）。用了塊分配器，ms會輪流的對內存進行大塊的分配，並
+ 不斷重用。當然由於塊的大小各不相同，當數據大小和塊大小不太相符的情況下，還是有可能導致內存的浪費。
+  </p>
+  <p>
+    同時，ms對key和data都有相應的限制，key的長度不能超過250字節，data也不能超過塊大小的限制 --- 1MB。<br>
+
+因為mc所使用的hash算法，並不會考慮到每個ms的內存大小。理論上mc會分配概率上等量的kv對給每個ms，這樣如果每個ms的內存都不太一樣，那
+ 可能會導致內存使用率的降低。所以一種替代的解決方案是，根據每個ms的內存大小，找出他們的最大公約數，然後在每個ms上開n個容量=最大公約數的
+instance，這樣就等於擁有了多個容量大小一樣的子ms，從而提供整體的內存使用率。
+  </p>
+  <h4>
+    <a name="_25401546959033316_54044164260_21550351004030177"></a>緩存策略
+  </h4>
+  <p>
+    當ms的hash表滿了之後，新的插入數據會替代老的數據，更新的策略是LRU（最近最少使用），以及每個kv對的有效時限。Kv對存儲有效時限是在mc端由app設置並作為參數傳給ms的。
+  </p>
+  <p>
+    同時ms採用是偷懶替代法，ms不會開額外的進程來實時監測過時的kv對並刪除，而是當且僅當，新來一個插入的數據，而此時又沒有多餘的空間放了，才會進行清除動作。
+  </p>
+  <h4>
+    <a name="_9681760638005524_476574154195_29919331639865443"></a>緩存數據庫查詢
+  </h4>
+  <p>
+    現在memcached最流行的一種使用方式是緩存數據庫查詢，下面舉一個簡單例子說明：
+  </p>
+  <p>
+    App需要得到userid=xxx的用戶信息，對應的查詢語句類似：
+  </p>
+  <p>
+    “SELECT * FROM users WHERE userid = xxx”
+  </p>
+  <p>
+    App先去問cache，有沒有“user:userid”（key定義可預先定義約束好）的數據，如果有，返回數據；如果沒有，App會從數據庫中讀取數據，並調用cache的add函數，把數據加入cache中。
+  </p>
+  <p>
+    當取的數據需要更新，app會調用cache的update函數，來保持數據庫與cache的數據同步。
+  </p>
+  <p>
+
+從上面的例子我們也可以發現，一旦數據庫的數據發現變化，我們一定要及時更新cache中的數據，來保證app讀到的是同步的正確數據。當然我們可
+以通過定時器方式記錄下cache中數據的失效時間，時間一過就會激發事件對cache進行更新，但這之間總會有時間上的延遲，導致app可能從
+cache讀到髒數據，這也被稱為狗洞問題。（以後我會專門描述研究這個問題）
+  </p>
+  <h4>
+    <a name="_24413638147967254_17374089581"></a><strong>數據冗餘與故障預防</strong>
+  </h4>
+  <p>
+    從設計角度上，memcached是沒有數據冗餘環節的，它本身就是一個大規模的高性能cache層，加入數據冗餘所能帶來的只有設計的複雜性和提高系統的開支。
+  </p>
+  <p>
+    當一個ms上丟失了數據之後，app還是可以從數據庫中取得數據。不過更謹慎的做法是在某些ms不能正常工作時，提供額外的ms來支持cache，這樣就不會因為app從cache中取不到數據而一下子給數據庫帶來過大的負載。
+  </p>
+  <p>
+    同時為了減少某台ms故障所帶來的影響，可以使用“熱備份”方案，就是用一台新的ms來取代有問題的ms，當然新的ms還是要用原來ms的IP地址，大不了數據重新裝載一遍。
+  </p>
+  <p>
+
+另外一種方式，就是提高你ms的節點數，然後mc會實時偵查每個節點的狀態，如果發現某個節點長時間沒有響應，就會從mc的可用server列表裡
+刪除，並對server節點進行重新hash定位。當然這樣也會造成的問題是，原本key存儲在B上，變成存儲在C上了。所以此方案本身也有其弱點，最好
+ 能和“熱備份”方案結合使用，就可以使故障造成的影響最小化。
+  </p>
+  <h4>
+    <a name="Memcached_mc_4754505836919398_"></a>Memcached客戶端（mc）
+  </h4>
+  <p>
+    &nbsp;
+  </p>
+  <p>
+    Memcached客戶端有各種語言的版本供大家使用，包括java，c，php，.net等等，具體可參見<a href="http://danga.com/memcached/apis.bml" target="_blank">memcached api page</a>&nbsp;[2]。<br>
+    大家可以根據自己項目的需要，選擇合適的客戶端來集成。
+  </p>
+  <h4>
+    <a name="_Web_06299667034235767_0770205"></a>緩存式的Web應用程序架構
+  </h4>
+  <p>
+
+有了緩存的支持，我們可以在傳統的app層和db層之間加入cache層，每個app服務器都可以綁定一個mc，每次數據的讀取都可以從ms中取得，如果
+ 沒有，再從db層讀取。而當數據要進行更新時，除了要發送update的sql給db層，同時也要將更新的數據發給mc，讓mc去更新ms中的數據。
+  </p><br>
+  <h4>
+    <a name="_2923975010491904_991216856614_6695281938071784"></a>性能測試
+  </h4>Memcached 寫速度<br>
+  平均速度: 16222 次/秒<br>
+  最大速度 18799 次/秒<br>
+  <br>
+  Memcached 讀速度<br>
+  平均速度: 20971 次/秒<br>
+  最大速度 22497 次/秒<br>
+  <br>
+  Memcachedb 寫速度<br>
+  平均速度: 8958 次/秒<br>
+  最大速度 10480 次/秒<br>
+  <br>
+  Memcachedb 讀速度<br>
+  平均速度: 6871 次/秒<br>
+  最大速度 12542 次/秒<br>
+  <p>
+    &nbsp;
+  </p>
+  <p>
+    &nbsp;
+  </p>
+</div><br>
+<div>
+  <a id="de6l" title="源代碼級別的分析" href="http://blog.developers.api.sina.com.cn/?p=124">源代碼級別的分析</a><br>
+  <a id="e4ls" title="非常好的剖析文章" href="http://tech.idv2.com/2008/08/17/memcached-pdf/">非常好的剖析文章</a><br>
+  <br>
+  <h3>
+    <a name="dbcached_24141833575267735_558"></a><span style="font-size: 14pt;">dbcached</span>
+  </h3><br>
+  <br>
+  ● dbcached 是一款基於 Memcached 和 NMDB 的分佈式 key-value 數據庫內存緩存系統。<br>
+  ● dbcached = Memcached + 持久化存儲管理器 + NMDB 客戶端接口<br>
+  ● Memcached 是一款高性能的，分佈式的內存對象緩存系統，用於在動態應用中減少數據庫負載，提升訪問速度。<br>
+  ● NMDB 是一款多協議網絡數據庫(dbm類)管理器，它由內存緩存和磁盤存儲兩部分構成，使用 QDBM 或 Berkeley DB 作為後端數據庫。<br>
+  ● QDBM 是一個管理數據庫的例程庫，它參照 GDBM 為了下述三點而被開發：更高的處理速度，更小的數據庫文件大小，和更簡單的API。QDBM 讀寫速度比 Berkeley DB 要快，詳細速度比較見《<a href="http://qdbm.sourceforge.net/benchmark.pdf">Report of Benchmark Test</a>》。<br>
+  <br>
+  <div id="iu90">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_127vqxjp7z7_b.htm" alt="">
+  </div><br>
+  <h4>
+    <a name="Memcached_dbcached_80228012544_7159779747569146"></a>Memcached 和 dbcached 在功能上一樣嗎?
+  </h4>● 兼容：Memcached 能做的，dbcached 都能做。除此之外，dbcached
+還將“Memcached、持久化存儲管理器、NMDB 客戶端接口”在一個程序中結合起來，對任何原有 Memcached
+客戶端來講，dbcached 仍舊是個 Memcached 內存對象緩存系統，但是，它的數據可以持久存儲到本機或其它服務器上的 QDBM 或
+Berkeley DB 數據庫中。<br>
+  ● 性能：前端 dbcached 的並發處理能力跟 Memcached 相同；後端 NMDB 跟 Memcached 一樣，採用了libevent 進行網絡IO處理，擁有自己的內存緩存機制，性能不相上下。<br>
+  ● 寫入：當“dbcached 的 Memcached 部分”接收到一個 set(add/replace/...) 請求並儲存
+key-value 數據到內存中後，“dbcached 持久化存儲管理器”能夠將 key-value 數據通過“NMDB 客戶端接口”保存到
+QDBM 或 Berkeley DB 數據庫中。<br>
+  ● 速度：如果加上“-z”參數，採用 UDP 協議“只發送不接收”模式將 set(add/replace/...) 命令寫入的數據傳遞給
+NMDB 服務器端，對 Memcache 客戶端寫速度的影響幾乎可以忽略不計。在千兆網卡、同一交換機下服務器之間的 UDP
+傳輸丟包率微乎其微。在命中的情況下，讀取數據的速度跟普通的 Memcached 無差別，速度一樣快。<br>
+  ● 讀取：當“dbcached 的 Memcached 部分”接收到一個 get(incr/decr/...)
+請求後，如果“dbcached 的 Memcached 部分”查詢自身的內存緩存未命中，則“dbcached 持久化存儲管理器”會通過“NMDB
+ 客戶端接口”從 QDBM 或 Berkeley DB 數據庫中取出數據，返回給用戶，然後儲存到 Memcached
+內存中。如果有用戶再次請求這個 key，則會直接從 Memcached 內存中返回 Value 值。<br>
+  ● 持久：使用 dbcached，不用擔心 Memcached 服務器死機、重啟而導致數據丟失。<br>
+  ● 變更：使用 dbcached，即使因為故障轉移，添加、減少 Memcached 服務器節點而破壞了“key 信息”與對應“Memcached 服務器”的映射關係也不怕。<br>
+  ● 分佈：dbcached 和 NMDB 既可以安裝在同一台服務器上，也可以安裝在不同的服務器上，多台 dbcached 服務器可以對應一台 NMDB 服務器。<br>
+  ● 特長：dbcached 對於“讀”大於“寫”的應用尤其適用。<br>
+  ● 其他：《<a href="http://code.google.com/p/dbcached/wiki/Failover">dbcached 的故障轉移支持、設計方向以及與 Memcachedb 的不同之處</a>》<br>
+  <h2>
+    <a name="_12254020875723726_93237325335"></a>列存系列
+  </h2>
+  <h3>
+    <a name="Hadoop_Hbase_7008211932696602_"></a>Hadoop之Hbase
+  </h3><a name="__20136102195829153"></a><span style="font-family: helvetica,arial,sans-serif;"><a href="http://hadoop.apache.org/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Hadoop / HBase</strong></span></a>: API:&nbsp;<strong>Java / any writer</strong>, Protocol:&nbsp;<strong>any write call</strong>, Query Method:&nbsp;<strong>MapReduce Java / any exec</strong>, Replication:&nbsp;<strong>HDFS Replication</strong>, Written in:&nbsp;<strong>Java</strong>, Concurrency: ?, Misc:&nbsp;<strong>Links</strong>: 3 Books [</span><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;"><a href="http://www.amazon.com/Hadoop-Action-Chuck-Lam/dp/1935182196/ref=sr_1_3?ie=UTF8&amp;s=books&amp;qid=1256498379&amp;sr=1-3" target="_blank">1</a>,&nbsp;<a href="http://www.amazon.com/Pro-Hadoop-Jason-Venner/dp/1430219424/ref=sr_1_2?ie=UTF8&amp;s=books&amp;qid=1256498379&amp;sr=1-2" target="_blank">2</a>,&nbsp;<a href="http://www.amazon.com/Hadoop-Definitive-Guide-Tom-White/dp/0596521979/ref=sr_1_1?ie=UTF8&amp;s=books&amp;qid=1256498379&amp;sr=1-1" target="_blank">3</a>]</span></span></span></span></span><span style="font-size: 12pt;"><br></span>
+  <h3>
+    <a name="_HadoopDB_694108467096603_8508"></a><span style="font-size: 12pt;">耶魯大學之HadoopDB</span>
+  </h3>
+  <div id="a::l">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_118gqxr8cgq_b.htm" alt="">
+  </div><br>
+  <h3>
+    <a name="GreenPlum_9589918625911178_389_2571204937078031"></a>GreenPlum
+  </h3>
+  <div id="tfa7">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_119ds5xg9gp_b.htm" alt="">
+  </div><br>
+  <span style="font-size: 12pt;"><br></span>
+  <h3>
+    <a name="FaceBook_Cassandra_67775802042_5854484279820851"></a><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">FaceBook之Cassandra</span></span></span></span></span>
+  </h3><br>
+  <span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;"><a href="http://incubator.apache.org/cassandra/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Cassandra</strong></span></a>: API:&nbsp;<strong>many</strong>&nbsp;<strong>Thrift</strong>&nbsp;<a href="http://incubator.apache.org/thrift/" target="_blank">»</a>&nbsp;<strong>languages</strong>, Protocol: ?, Query Method:&nbsp;<strong>MapReduce</strong>, Replicaton: , Written in:&nbsp;<strong>Java</strong>, Concurrency:&nbsp;<strong>eventually consistent</strong>&nbsp;, Misc: like "Big-Table on Amazon Dynamo alike",&nbsp; initiated by Facebook, Slides&nbsp;<a href="http://www.slideshare.net/jericevans/an-introduction-to-cassandra" target="_blank">»</a>&nbsp;, Clients&nbsp;<a href="http://wiki.apache.org/cassandra/ClientExamples" target="_blank">»</a><br>
+  <br></span></span></span></span></span> Cassandra是facebook開源出來的一個版本，可以認為是BigTable的一個開源版本，目前twitter和digg.com在使用。<span style="font-size: 12pt;"><br></span><br>
+  <h4>
+    <a name="Cassandra_7570848905089025_855"></a>Cassandra特點
+  </h4><br>
+  <ul>
+    <li>靈活的schema，不需要像數據庫一樣預先設計schema，增加或者刪除字段非常方便（on the fly）。
+    </li>
+    <li>支持range查詢：可以對Key進行範圍查詢。
+    </li>
+    <li>高可用，可擴展：單點故障不影響集群服務，可線性擴展。
+    </li>
+  </ul><br>
+  Cassandra的主要特點就是它不是一個數據庫，而是由一堆數據庫節點共同構成的一個分佈式網絡服務，對Cassandra的一個寫操作，會
+被覆制到其他節點上去，對Cassandra的讀操作，也會被路由到某個節點上面去讀取。對於一個Cassandra群集來說，擴展性能是比較簡單的事
+情，只管在群集裡面添加節點就可以了。我看到有文章說Facebook的Cassandra群集有超過100台服務器構成的數據庫群集。<br>
+  <br>
+  Cassandra也支持比較豐富的數據結構和功能強大的查詢語言，和MongoDB比較類似，查詢功能比MongoDB稍弱一些，twitter的平台架構部門領導Evan Weaver寫了一篇文章介紹Cassandra：<a href="http://blog.evanweaver.com/articles/2009/07/06/up-and-running-with-cassandra/" target="_blank">http://blog.evanweaver.com/articles/2009/07/06/up-and-running-with-cassandra/</a>，有非常詳細的介紹。<br>
+  <br>
+  Cassandra以單個節點來衡量，其節點的並發讀寫性能不是特別好，有文章說評測下來Cassandra每秒大約不到1萬次讀寫請求，我也看
+到一些對這個問題進行質疑的評論，但是評價Cassandra單個節點的性能是沒有意義的，真實的分佈式數據庫訪問系統必然是n多個節點構成的系統，其並
+ 發性能取決於整個系統的節點數量，路由效率，而不僅僅是單節點的並發負載能力。<br>
+  <h4>
+    <a name="Keyspace_4281837751378973_7779"></a>Keyspace
+  </h4>Cassandra中的最大組織單元，裡面包含了一系列Column family，Keyspace一般是應用程序的名稱。你可以把它理解為Oracle裡面的一個schema，包含了一系列的對象。<br>
+  <h4>
+    <a name="Column_family_CF_7300188887469"></a>Column family（CF）
+  </h4>CF是某個特定Key的數據集合，每個CF物理上被存放在單獨的文件中。從概念上看，CF有點象數據庫中的Table.<br>
+  <h4>
+    <a name="Key_8652924433729429_945524073"></a>Key
+  </h4>數據必須通過Key來訪問，Cassandra允許範圍查詢，例如：start =&gt; '10050', :finish =&gt; '10070'<br>
+  <h4>
+    <a name="Column_7210506089658316_137983"></a>Column
+  </h4>在Cassandra中字段是最小的數據單元，column和value構成一個對，比如：name:“jacky”，column是name，value是jacky，每個column:value後都有一個時間戳：timestamp。<br>
+  <br>
+  和數據庫不同的是，Cassandra的一行中可以有任意多個column，而且每行的column可以是不同的。從數據庫設計的角度，你可以理解
+為表上有兩個字段，第一個是Key，第二個是長文本類型，用來存放很多的column。這也是為什麼說Cassandra具備非常靈活schema的原
+因。<br>
+  <h4>
+    <a name="Super_column_7509394918740693__5465405669459864"></a>Super column
+  </h4>Super
+column是一種特殊的column，裡面可以存放任意多個普通的column。而且一個CF中同樣可以有任意多個Super
+column，一個CF只能定義使用Column或者Super column，不能混用。下面是Super
+column的一個例子，homeAddress這個Super column有三個字段：分別是street，city和zip：
+homeAddress: {street: "binjiang road",city: "hangzhou",zip: "310052",}<br>
+  <br>
+  <h4>
+    <a name="Sorting_02237180483759471_3623"></a>Sorting
+  </h4>不同於數據庫可以通過Order
+by定義排序規則，Cassandra取出的數據順序是總是一定的，數據保存時已經按照定義的規則存放，所以取出來的順序已經確定了，這是一個巨大的性能
+優勢。有意思的是，Cassandra按照column name而不是column value來進行排序，它
+定義了以下幾種選項：BytesType, UTF8Type, LexicalUUIDType, TimeUUIDType, AsciiType,
+ 和LongType，用來定義如何按照column name來排序。實際上，就是把column
+name識別成為不同的類型，以此來達到靈活排序的目的。UTF8Type是把column
+name轉換為UTF8編碼來進行排序，LongType轉換成為64位long型，TimeUUIDType是按照基於時間的UUID來排序。例如：<br>
+  <br>
+  Column name按照LongType排序：<br>
+  {name: 3, value: "jacky"},<br>
+  {name: 123, value: "hellodba"},<br>
+  {name: 976, value: "Cassandra"},<br>
+  {name: 832416, value: "bigtable"}<br>
+  <br>
+  Column name按照UTF8Type排序：<br>
+  {name: 123, value: "hellodba"},<br>
+  {name: 3, value: "jacky"},<br>
+  {name: 832416, value: "bigtable"}<br>
+  {name: 976, value: "Cassandra"}<br>
+  <br>
+  下面我們看twitter的Schema：<br>
+  &lt;Keyspace Name="Twitter"&gt;<br>
+  &lt;ColumnFamily CompareWith="UTF8Type" Name="Statuses" /&gt;<br>
+  &lt;ColumnFamily CompareWith="UTF8Type" Name="StatusAudits" /&gt;<br>
+  &lt;ColumnFamily CompareWith="UTF8Type" Name="StatusRelationships"<br>
+  CompareSubcolumnsWith="TimeUUIDType" ColumnType="Super" /&gt;<br>
+  &lt;ColumnFamily CompareWith="UTF8Type" Name="Users" /&gt;<br>
+  &lt;ColumnFamily CompareWith="UTF8Type" Name="UserRelationships"<br>
+  CompareSubcolumnsWith="TimeUUIDType" ColumnType="Super" /&gt;<br>
+  &lt;/Keyspace&gt;<br>
+  <br>
+  我們看到一個叫Twitter的keyspace，包含若干個CF，其中StatusRelationships和
+UserRelationships被定義為包含Super
+column的CF，CompareWith定義了column的排序規則，CompareSubcolumnsWith定義了subcolumn的排序
+
+規則，這裡使用了兩種：TimeUUIDType和UTF8Type。我們沒有看到任何有關column的定義，這意味著column是可以靈活變更的。<br>
+  <br>
+  為了方便大家理解，我會嘗試著用關係型數據庫的建模方法去描述Twitter的Schema，但千萬不要誤認為這就是Cassandra的數據模型，對於Cassandra來說，每一行的colunn都可以是任意的，而不是象數據庫一樣需要在建表時就創建好。<br>
+  <div id="ekmz">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_122cqsw5xdj_b.htm" alt="">
+  </div><br>
+  <br>
+  Users CF記錄用戶的信息，Statuses CF記錄tweets的內容，StatusRelationships
+CF記錄用戶看到的tweets，UserRelationships
+CF記錄用戶看到的followers。我們注意到排序方式是TimeUUIDType，這個類型是按照時間進行排序的UUID字段，column
+name是用UUID函數產生（這個函數返回了一個UUID，這個UUID反映了當前的時間，可以根據這個UUID來排序，有點類似於timestamp
+ 一樣），所以得到結果是按照時間來排序的。使用過twitter的人都知道，你總是可以看到自己最新的tweets或者最新的friends.<br>
+  <br>
+  <h4>
+    <a name="_9140782690107976_782512314168_5668600168551156"></a>存儲
+  </h4>Cassandra是基於列存儲的(Bigtable也是一樣)，這個和基於列的數據庫是一個道理。<br>
+  <br>
+  <div id="xyg0">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_123gb8mg9gk_b.htm" alt="">
+  </div><br>
+  <h4>
+    <a name="API_26318602548081826_11761206"></a>API
+  </h4>下面是數據庫，Bigtable和Cassandra API的對比： Relational SELECT `column` FROM `database`.`table` WHERE `id` = key;<br>
+  BigTable table.get(key, "column_family:column")<br>
+  Cassandra: standard model keyspace.get("column_family", key, "column")<br>
+  Cassandra: super column model keyspace.get("column_family", key, "super_column", "column")<br>
+  <br>
+  <a id="z2g7" title="我" href="http://www.hellodba.net/">我</a>對Cassandra數據模型的理解：<br>
+  <br>
+  1.column name存放真正的值，而value是空。因為Cassandra是按照column
+name排序，而且是按列存儲的，所以往往利用column
+name存放真正的值，而value部分則是空。例如：“jacky”:“null”，“fenng”:”null”<br>
+  <br>
+  2.Super column可以看作是一個索引，有點象關係型數據庫中的外鍵，利用super column可以實現快速定位，因為它可以返回一堆column，而且是排好序的。<br>
+  <br>
+  3.排序在定義時就確定了，取出的數據肯定是按照確定的順序排列的，這是一個巨大的性能優勢。<br>
+  <br>
+  4. 非常靈活的schema，column可以靈活定義。實際上，colume name在很多情況下，就是value（是不是有點繞）。<br>
+  <br>
+  5.每個column後面的timestamp，我並沒有找到明確的說明，我猜測可能是數據多版本，或者是底層清理數據時需要的信息。<br>
+  <br>
+  最後說說架構，我認為架構的核心就是有所取捨，不管是CAP還是BASE，講的都是這個原則。架構之美在於沒有任何一種架構可以完美的解決各種問題，數據庫和NoSQL都有其應用場景，我們要做的就是為自己找到合適的架構。<span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><br>
+  <br>
+  <span><span style="font-family: helvetica,arial,sans-serif;"><strong>Hypertable<br>
+  <br></strong></span></span></span></span></span> <span style="font-family: helvetica,arial,sans-serif;"><a href="http://couchdb.apache.org/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Hypertable</strong></span></a></span><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">:&nbsp;</span></span></span></span></span><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">(can you help?) Open-Source Google BigTable alike.<br>
+  <br></span></span></span></span></span> 它是搜索引擎公司Zvents根據Google的9位研究人員在2006年發表的一篇論文《<a href="http://labs.google.com/papers/bigtable.html">Bigtable：結構化數據的分佈存儲系統</a>》
+ 開發的一款開源分佈式數據儲存系統。Hypertable是按照1000節點比例設計，以 C++撰寫，可架在 HDFS 和 KFS
+上。儘管還在初期階段，但已有不錯的效能：寫入 28M 列的資料，各節點寫入速率可達7MB/s，讀取速率可達 1M
+cells/s。Hypertable目前一直沒有太多高負載和大存儲的應用實例，但是最近，Hypertable項目得到了<a href="http://www.baidu.com/">百度</a>的贊助支持，相信其會有更好的發展。<span style="font-size: 12pt;"><br>
+  <br></span>
+  <h3>
+    <a name="Google_BigTable_89699097442012_4732490241509013"></a><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">Google之BigTable</span></span></span></span></span>
+  </h3>研究Google的產品總是感激Google給了自己那麼多方便，真心喜歡之。<br>
+  <br>
+  <a href="http://code.google.com/appengine/docs/python/datastore/"></a>
+  <div id="ogmp">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_133fmsdjkfj_b.htm" alt="">
+  </div><a href="http://code.google.com/appengine/docs/python/datastore/">Google AppEngine Datastore</a>&nbsp;是在BigTable之上建造出來的，是Google的內部存儲系統，用於處理結構化數據。AppEngine Datastore其自身及其內部都不是直接訪問BigTable的實現機制，可被視為BigTable之上的一個簡單接口。<br>
+  <br>
+  AppEngine Datastore所支持的項目的數據類型要比SimpleDB豐富得多，也包括了包含在一個項目內的數據集合的列表型。<br>
+  <br>
+  如果你打算在Google AppEngine之內建造應用的話，幾乎可以肯定要用到這個數據存儲。然而，不像SimpleDB，使用谷歌網絡服務平台之外的應用，你並不能並發地與AppEngine Datastore進行接口 (或通過BigTable)。<br>
+  <h3 class="posttitle">
+    <a name="Yahoo_PNUTS_8920611285743113_6"></a>Yahoo之PNUTS
+  </h3>
+  <p>
+
+Yahoo!的PNUTS是一個分佈式的數據存儲平台，它是Yahoo!雲計算平台重要的一部分。它的上層產品通常也稱為Sherpa。按照官方的
+描述，”PNUTS, a massively parallel and geographically distributed database
+system for Yahoo!’s web applications.”
+PNUTS顯然就深諳CAP之道，考慮到大部分web應用對一致性並不要求非常嚴格，在設計上放棄了對強一致性的追求。代替的是追求更高的
+availability，容錯，更快速的響應調用請求等。
+  </p>
+  <h4>
+    <a name="_277640536666413_1438417866912_5870416136781664"></a>特點
+  </h4>
+  <ul>
+    <li>地理分佈式，分佈在全球多個數據中心。由於大部分Web應用都對響應時間要求高，因此最好服務器部署在離用戶最近的本地機房。
+    </li>
+    <li>可擴展，記錄數可支持從幾萬條到幾億條。數據容量增加不會影響性能。
+    </li>
+    <li>schema-free，即非固定表結構。實際使用key/value存儲的，一條記錄的多個字段實際是用json方式合併存在value中。因此delete和update必須指定primary key。但也支持批量查詢。
+    </li>
+    <li>高可用性及容錯。從單個存儲節點到整個數據中心不可用都不會影響前端Web訪問。
+    </li>
+    <li>適合存相對小型的記錄，不適合存儲大文件，流媒體等。
+    </li>
+    <li>弱一致性保證。
+    </li>
+  </ul>
+  <h4>
+    <a name="PNUTS_5128583965993961_2354956"></a>PNUTS實現
+  </h4>
+  <h5>
+    <a name="Record_level_mastering_5517762_46835816908332717"></a>Record-level mastering 記錄級別主節點
+  </h5><br>
+  每一條記錄都有一個主記錄。比如一個印度的用戶保存的記錄master在印度機房，通常修改都會調用印度。其他地方如美國用戶看這個用戶的資料調用
+的是美國數據中心的資料，有可能取到的是舊版的數據。非master機房也可對記錄進行修改，但需要master來統一管理。每行數據都有自己的版本控
+制，如下圖所示。<br>
+  <br>
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/EXTERN_0000.htm" alt=""><br>
+  <h5>
+    <a name="PNUTS_8107177845815062_9043074_09676675858475725"></a>PNUTS的結構
+  </h5><img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/EXTERN_0001.htm" alt=""><br>
+  每個數據中心的PNUTS結構由四部分構成<br>
+  Storage Units (SU) 存儲單元<br>
+  物理的存儲服務器，每個存儲服務器上面含有多個tablets，tablets是PNUTS上的基本存儲單元。一
+個tablets是一個yahoo內部格式的hash table的文件(hash table)或是一個MySQL innodb表(ordered
+table)。一個Tablet通常為幾百M。一個SU上通常會存在幾百個tablets。<br>
+  <strong>Routers&nbsp;</strong><br>
+  每個tablets在哪個SU上是通過查詢router獲得。一個數據中心內router通常可由兩台雙機備份的單元提供。<br>
+  <br>
+  <strong>Tablet Controller&nbsp;</strong><br>
+  router的位置只是個內存快照，實際的位置由Tablet Controller單元決定。<br>
+  <strong>Message Broker</strong><br>
+  <br>
+  與遠程數據的同步是由YMB提供，它是一個pub/sub的異步消息訂閱系統。<br>
+  <h5>
+    <a name="Tablets_42011614117692475_6287_8740690747386985"></a>Tablets尋址與切分
+  </h5>存儲分hash和ordered data store。<br>
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/EXTERN_0002.htm" alt=""><br>
+  以hash為例介紹，先對所有的tablets按hash值分片，比如1-10,000屬於tablets 1,
+10,000到20,000屬於tablets 2，依此類推分配完所有的hash範圍。一個大型的IDC通常會存在100萬以下的tablets,
+1,000台左右的SU。tablets屬於哪個SU由routers全部加載到內存裡面，因此router訪問速度極快，通常不會成為瓶頸。按照官方的
+ 說法，系統的瓶頸只存在磁盤文件hash file訪問上。<br>
+  當某個SU訪問量過大，則可將SU中部分tablets移到相對空閒的SU，並修改tablet controller的偏移記錄。router定位tablet失效之後會自動通過tablet controller重新加載到內存。所以切分也相對容易實現。<br>
+  Tim也曾經用MySQL實現過類似大規模存儲的系統，當時的做法是把每條記錄的key屬於哪個SU的信息保存到
+一個字典裡面，好處是切分可以獲得更大的靈活性，可以動態增加新的tablets,而不需要切分舊的tablets。但缺點就是字典沒法像router這
+ 樣，可以高效的全部加載到內存中。所以比較而言，在實際的應用中，按段分片會更簡單，且已經足夠使用。
+</div>
+<h5>
+  <a name="Write_09715737083689369_039670_4594814468066295"></a><strong>Write調用示意圖</strong>
+</h5><br>
+<div id="qrnl">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_131c6c5wjzd_b.htm" alt="">
+</div><br>
+<h4>
+  <a name="PNUTS_232566011293608_85456655"></a>PNUTS感悟
+</h4><br>
+2006年Greg Linden就說<a href="http://glinden.blogspot.com/2006/03/i-want-big-virtual-database.html">I want a big, virtual database</a><br>
+<br>
+What I want is a robust, high performance virtual relational database
+that runs transparently over a cluster, nodes dropping in an out of
+service at will, read-write replication and data migration all done
+automatically.<br>
+<br>
+I want to be able to install a database on a server cloud and use it like it was all running on one machine.<br>
+<br>
+詳細資料：<br>
+http://timyang.net/architecture/yahoo-pnuts/<br>
+<br>
+<h3>
+  <a name="_SQL_014314330249305951_274686"></a><strong>微軟之SQL數據服務</strong>
+</h3><a href="http://www.microsoft.com/azure/data.mspx">SQL數據服務</a>&nbsp;是微軟&nbsp;<a href="http://www.microsoft.com/azure/default.mspx">Azure</a>&nbsp;
+網 絡服務平台的一部分。該SDS服務也是處於測試階段，因此也是免費的，但對數據庫大小有限制。
+SQL數據服務其自身實際上是一項處在許多SQL服務器之上的應用，這些SQL服務器組成了SDS平台底層的數據存儲。你不需要訪問到它們，雖然底層的數
+ 據庫可能是關係式的；SDS是一個鍵/值型倉儲，正如我們迄今所討論過的其它平台一樣。<br>
+<br>
+微軟看起來不同於前三個供應商，因為雖然鍵/值存儲對於可擴性���言非常棒，相對於RDBMS，在數據管理上卻很困難。微軟的方案似乎是入木三分，在實現可擴性和分佈機制的同時，隨著時間的推移，不斷增加特性，在鍵/值存儲和關係數據庫平台的鴻溝之間搭起一座橋樑。
+<h2>
+  <a name="_5549467765717498_055917970185"></a>非雲服務競爭者
+</h2>
+<p>
+  在雲之外，也有一些可以獨立安裝的鍵/值數據庫軟件產品。大部分都還很年輕，不是alpha版就是beta版，但大都是開源的；通過看看它的代碼，比起在非開源供應商那裡，你也許更能意識到潛在的問題和限制。
+</p><br>
+<h2>
+  <a name="Document_Store_448677452585955"></a>文檔存儲
+</h2>
+<h3>
+  <a name="CouchDB_1114163929904669_32220"></a>CouchDB
+</h3><a href="http://couchdb.apache.org/" target="_blank"><span style="font-family: helvetica,arial,sans-serif;"><span style="color: rgb(0, 0, 153);"><strong>C</strong></span></span></a><span style="font-family: helvetica,arial,sans-serif;"><a href="http://couchdb.apache.org/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>ouchDB</strong></span></a></span><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">: &nbsp;API:&nbsp;<strong>JSON</strong>, Protocol:&nbsp;<strong>REST</strong>, Query Method:&nbsp;<strong>MapReduceR of JavaScript Funcs</strong>, Replication:&nbsp;<strong>Master Master</strong>, Written in:&nbsp;<strong>Erlang</strong>, Concurrency:&nbsp;<strong>MVCC</strong>, &nbsp;<strong>Misc</strong>:&nbsp;<br>
+<strong>Links</strong>: 3 CouchDB books&nbsp;<a href="http://couchdb.apache.org/docs/books.html" target="_blank">»</a>, Couch Lounge&nbsp;<a href="http://code.google.com/p/couchdb-lounge/" target="_blank">»</a>&nbsp;(partitioning / clusering),&nbsp; ...<br>
+<br></span></span></span></span></span> 它是Apache社區基於 Erlang/OTP
+構建的高性能、分佈式容錯非關係型數據庫系統（NRDBMS）。它充分利用 Erlang 本身所提供的高並發、分佈式容錯基礎平台，並且參考
+Lotus Notes 數據庫實現，採用簡單的文檔數據類型（document-oriented）。在其內部，文檔數據均以 JSON
+格式存儲。對外，則通過基於 HTTP 的 REST 協議實現接口，可以用十幾種語言進行自由操作。<span style="font-size: 12pt;"><br>
+<br></span>
+<div id="fdrz">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_129dtswt4g8_b.htm" alt="">
+</div><span style="font-size: 12pt;"><br></span><br>
+CouchDB一種半結構化面向文檔的���布式，高容錯的數據庫系統，其提供RESTFul HTTP/JSON接口。其擁有MVCC特性，用戶可以通過自定義Map/Reduce函數生成對應的View。<br>
+<br>
+在CouchDB中，數據是以JSON字符的方式存儲在文件中。<span style="font-size: 12pt;"><br></span>
+<h4>
+  <a name="id3_7125310846245526_994698240_046846452482873"></a>特性
+</h4><br>
+<ul class="simple">
+  <li>RESTFul API：HTTP GET/PUT/POST/DELETE + JSON
+  </li>
+  <li>基於文檔存儲，數據之間沒有關係範式要求
+  </li>
+  <li>每個數據庫對應單個個文件(以JSON保存),Hot backup
+  </li>
+  <li>MVCC（Multi-Version-Concurrency-Control），讀寫均不鎖定數據庫
+  </li>
+  <li>用戶自定義View
+  </li>
+  <li>內建備份機制
+  </li>
+  <li>支持附件
+  </li>
+  <li>使用Erlang開發（更多的特性）
+  </li>
+</ul><br>
+<p>
+  應用場景 在我們的生活中，有很多document，比如信件，賬單，筆記等，他們只是簡單的信息，沒有關係的需求，我們可能僅僅需要存儲這些數據。 這樣的情況下，CouchDB應該是很好的選擇。當然其他使用關係型數據庫的環境，也可以使用CouchDB來解決。
+</p>
+<p>
+  &nbsp;
+</p>
+<p>
+  根據CouchDB的特性，在某些偶 爾連接網絡的應用中，我們可以用CouchDB暫存數據，隨後進行同步。也可以在Cloud環境中，作為分佈式的數據存儲。CouchDB提供給予 HTTP的API，這樣所有的常見語言都可以使用CouchDB。
+</p>
+<p>
+  &nbsp;
+</p>
+<p>
+  使用CouchDB，意味著我們不需要在像使用RMDBS一樣，在設計應用前首先設計負責數據Table。我們的開發更加快速，靈活。
+</p><br>
+詳細參見：<br>
+http://www.javaeye.com/topic/319839<br>
+<br>
+<h3>
+  <a name="Riak_22101400413903483_0979197"></a>Riak
+</h3><span style="font-family: helvetica,arial,sans-serif;"><a href="http://riak.basho.com/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Riak</strong></span></a></span><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">: API:&nbsp;<strong>JSON</strong>, Protocol:&nbsp;<strong>REST</strong>, Query Method:&nbsp;<strong>MapReduce term matching</strong>&nbsp;, Scaling:<strong>Multiple Masters</strong>; Written in:&nbsp;<strong>Erlang</strong>, Concurrency:&nbsp;<strong>eventually consistent</strong>&nbsp;(stronger then MVCC via Vector Clocks),&nbsp;<strong>Misc:</strong>&nbsp;...&nbsp;<strong>Links</strong>: talk&nbsp;<a href="http://riak.basho.com/nyc-nosql/" target="_blank">»</a>,</span></span></span></span></span><br>
+<h3>
+  <a name="MongoDB_6119060613540953_36142"></a>MongoDB
+</h3><a href="http://www.mongodb.org/" target="_blank"><span style="font-family: helvetica,arial,sans-serif;"><span style="color: rgb(0, 0, 153);"><strong>MongoDB</strong></span></span></a><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">:&nbsp; API:&nbsp;<strong>BSON</strong>, Protocol:&nbsp;<strong>lots of langs</strong>, Query Method:&nbsp;<strong>dynamic object-based language</strong>, Replication:&nbsp;<strong>Master Slave</strong>, Written in:&nbsp;<strong>C++</strong>,Concurrency:&nbsp;<strong>Update in Place</strong>.&nbsp;<strong>Misc:</strong>...<strong>&nbsp;Links</strong>: Talk&nbsp;<a href="http://www.leadit.us/hands-on-tech/MongoDB-High-Performance-SQL-Free-Database" target="_blank">»</a>,</span></span></span></span></span><span style="font-size: 12pt;"><br>
+<br></span>
+MongoDB是一個介於關係數據庫和非關係數據庫之間的產品，是非關係數據庫當中功能最豐富，最像關係數據庫的。他支持的數據結構非常鬆散，是
+類似json的bjson格式，因此可以存儲比較複雜的數據類型。Mongo最大的特點是他支持的查詢語言非常強大，其語法有點類似於面向對象的查詢語
+言，幾乎可以實現類似關係數據庫單表查詢的絕大部分功能，而且還支持對數據建立索引。<br>
+<br>
+Mongo主要解決的是海量數據的訪問效率問題，根據官方的文檔，當數據量達到50GB以上的時候，Mongo的數據庫訪問速度是MySQL的
+10倍以上。Mongo的並發讀寫效率不是特別出色，根據官方提供的性能測試表明，大約每秒可以處理0.5萬－1.5次讀寫請求。對於Mongo的並發讀
+ 寫性能，我（robbin）也打算有空的時候好好測試一下。<br>
+<br>
+因為Mongo主要是支持海量數據存儲的，所以Mongo還自帶了一個出色的分佈式文件系統GridFS，可以支持海量的數據存儲，但我也看到有些評論認為GridFS性能不佳，這一點還是有待親自做點測試來驗證了。<br>
+<br>
+最後由於Mongo可以支持複雜的數據結構，而且帶有強大的數據查詢功能，因此非常受到歡迎，很多項目都考慮用MongoDB來替代MySQL來實現不是特別複雜的Web應用，比方說<a href="http://blog.boxedice.com/2009/07/25/choosing-a-non-relational-database-why-we-migrated-from-mysql-to-mongodb/">why we migrated from MySQL to MongoDB</a>就是一個真實的從MySQL遷移到MongoDB的案例，由於數據量實在太大，所以遷移到了Mongo上面，數據查詢的速度得到了非常顯著的提升。<br>
+<br>
+MongoDB也有一個ruby的項目<a href="http://github.com/jnunemaker/mongomapper">MongoMapper</a>，是模仿Merb的DataMapper編寫的MongoDB的接口，使用起來非常簡單，幾乎和DataMapper一模一樣，功能非常強大易用。&nbsp;<span style="font-size: 12pt;"><br></span>
+<h3>
+  <a name="Terrastore_9954661491866293_58"></a><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">Terrastore</span></span></span></span></span>
+</h3><br>
+<span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;"><a href="http://code.google.com/p/terrastore/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Terrastore</strong></span></a>: API:&nbsp;<strong>Java &amp; http</strong>, Protocol:&nbsp;<strong>http</strong>, Language:&nbsp;<strong>Java</strong>, Querying:&nbsp;<strong>Range queries, Predicates</strong>, Replication:&nbsp;<strong>Partitioned with consistent hashing</strong>, Consistency:&nbsp;<strong>Per-record strict consistency</strong>, Misc: Based on Terracotta<br></span></span></span></span></span>
+<h3>
+  <a name="ThruDB_380390167243812_4644251"></a>ThruDB
+</h3><span style="font-family: helvetica,arial,sans-serif;"><a href="http://code.google.com/p/thrudb/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>ThruDB</strong></span></a></span><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">: (please help provide more facts!) Uses Apache&nbsp;<a href="http://incubator.apache.org/thrift/" target="_blank">Thrift</a>&nbsp;to integrate multiple backend databases as BerkeleyDB, Disk, MySQL, S3.</span></span></span></span></span><br>
+<h2>
+  <a name="Key_Value_Tuple_Store_89361288"></a>Key Value / Tuple 存儲
+</h2>
+<h3>
+  <a name="Amazon_SimpleDB_52017362120027_8392263913000672"></a>Amazon之SimpleDB
+</h3><a href="http://aws.amazon.com/simpledb/" target="_blank"><span style="font-family: helvetica,arial,sans-serif;"><span style="color: rgb(0, 0, 153);"><strong>Amazon SimpleDB</strong></span></span></a><span style="font-family: helvetica,arial,sans-serif;">:&nbsp;<strong>Misc</strong>: not open source, Book&nbsp;<a href="http://www.apress.com/book/view/1430225335" target="_blank">»</a></span><strong><br></strong><a href="http://aws.amazon.com/simpledb/">SimpleDB</a>&nbsp;是一個亞馬遜網絡服務平台的一個面向屬性的鍵/值數據庫。SimpleDB仍處於公眾測試階段；當前，用戶能在線註冊其“免費”版 --免費的意思是說直到超出使用限制為止。<br>
+<br>
+SimpleDB有幾方面的限制。首先，一次查詢最多只能執行5秒鐘。其次，除了字符串類型，別無其它數據類型。一切都以字符串形式被存儲、獲取和
+比較，因此除非你把所有日期都轉為ISO8601，否則日期比較將不起作用。第三，任何字符串長度都不能超過1024字節，這限制了你在一個屬性中能存儲
+ 的文本的大小（比如說產品描述等）。不過，由於該模式動態靈活，你可以通過追加“產品描述1”、“產品描述2”等來繞過這類限制。一個項目最多可以有
+256個屬性。由於處在測試階段，SimpleDB的域不能大於10GB，整個庫容量則不能超過1TB。<br>
+<br>
+SimpleDB的一項關鍵特性是它使用一種<a href="http://www.allthingsdistributed.com/2008/12/eventually_consistent.html">最終一致性模型</a>。
+
+這個一致性模型對並發性很有好處，但意味著在你改變了項目屬性之後，那些改變有可能不能立即反映到隨後的讀操作上。儘管這種情況實際發生的幾率很低，你也
+ 得有所考慮。比如說，在你的演出訂票系統裡，你不會想把最後一張音樂會門票賣給5個人，因為在售出時你的數據是不一致的。<strong><br></strong>
+<h3>
+  <a name="Chordless_5471036441883179_507"></a><strong>Chordless</strong>
+</h3><strong><br></strong><a href="http://sourceforge.net/projects/chordless/" target="_blank"><span style="font-family: helvetica,arial,sans-serif;"><span style="color: rgb(0, 0, 153);"><strong>Chordless</strong></span></span></a><span style="font-family: helvetica,arial,sans-serif;">:</span>&nbsp;API:&nbsp;<strong>Java &amp; simple RPC to vals</strong>, Protocol:&nbsp;<strong>internal</strong>, Query Method:&nbsp;<strong>M/R inside value objects</strong>, Scaling:&nbsp;<strong>every node is master for its slice of namespace</strong>, Written in:&nbsp;<strong>Java</strong>, Concurrency:&nbsp;<strong>serializable transaction isolation</strong>,&nbsp;<strong>Links</strong>:<br>
+<h3>
+  <a name="Redis_5387336107639441_6223163"></a>Redis
+</h3><a href="http://code.google.com/p/redis/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Redis</strong></span></a>&nbsp;:&nbsp;<span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">(please help provide more facts!) &nbsp;API:&nbsp;<strong>Tons of languages</strong>, Written in:&nbsp;<strong>C</strong>, Concurrency:&nbsp;<strong>in memory</strong>&nbsp;and
+ saves asynchronous disk after a defined time. Append only mode
+available. Different kinds of fsync policies. Replication:&nbsp;<strong>Master / Slave</strong>,<br>
+<br></span></span></span></span></span>
+Redis是一個很新的項目，剛剛發佈了1.0版本。Redis本質上是一個Key-Value類型的內存數據庫，很像memcached，整個數據庫統
+ 統加載在內存當中進行操作，定期通過異步操作把數據庫數據flush到硬盤上進行保存。因為是純內存操作，Redis的性能非常出色，每秒可以處理超過
+ 10萬次讀寫操作，是我知道的性能最快的Key-Value DB。<br>
+<br>
+Redis的出色之處不僅僅是性能，Redis最大的魅力是支持保存List鏈表和Set集合的數據結構，而且還支持對List進行各種操作，例
+如從List兩端push和pop數據，取List區間，排序等等，對Set支持各種集合的並集交集操作，此外單個value的最大限制是1GB，不像
+memcached只能保存1MB的數據，因此Redis可以用來實現很多有用的功能，比方說用他的List來做FIFO雙向鏈表，實現一個輕量級的高性
+
+能消息隊列服務，用他的Set可以做高性能的tag系統等等。另外Redis也可以對存入的Key-Value設置expire時間，因此也可以被當作一
+ 個功能加強版的memcached來用。<br>
+<br>
+Redis的主要缺點是數據庫容量受到物理內存的限制，不能用作海量數據的高性能讀寫，並且它沒有原生的可擴展機制，不具有scale（可擴展）
+能力，要依賴客戶端來實現分佈式讀寫，因此Redis適合的場景主要侷限在較小數據量的高性能操作和運算上。目前使用Redis的網站有
+github，Engine Yard。&nbsp;<span style="font-size: 12pt;"><br></span>
+<h3>
+  <a name="Scalaris_7621760337337995_5287"></a>Scalaris
+</h3><a href="http://code.google.com/p/scalaris/" target="_blank"><span style="font-family: helvetica,arial,sans-serif;"><span style="color: rgb(0, 0, 153);"><strong>Scalaris</strong></span></span></a><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">:&nbsp;</span></span></span></span></span><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">(please help provide more facts!) Written in:&nbsp;<strong>Erlang</strong>, Replication:&nbsp;<strong>Strong consistency over replicas</strong>, Concurrency:&nbsp;<strong>non blocking Paxos</strong>.<br></span></span></span></span></span>
+<h3>
+  <a name="Tokyo_cabinet_Tyrant_545688958_7406684038893259"></a><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">Tokyo cabinet / Tyrant</span></span></span></span></span>
+</h3><br>
+<a href="http://1978th.net/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Tokyo Cabinet / Tyrant</strong></span></a>:&nbsp;<strong>Links</strong>: nice talk&nbsp;<a href="http://www.infoq.com/presentations/grigorik-tokyo-cabinet-recipes" target="_blank">»</a>, slides&nbsp;<a href="http://www.scribd.com/doc/12016121/Tokyo-Cabinet-and-Tokyo-Tyrant-Presentation" target="_blank">»</a>, Misc:&nbsp;<strong>Kyoto</strong>&nbsp;<span style="color: rgb(0, 0, 0);">Cabinet&nbsp;<a href="http://1978th.net/kyotocabinet/" target="_blank">»</a></span><br>
+<br>
+它是日本最大的SNS社交網站<a href="http://mixi.jp/">mixi.jp</a>開發的 Tokyo Cabinet
+key-value數據庫網絡接口。它擁有Memcached兼容協議，也可以通過HTTP協議進行數據交換。對任何原有Memcached客戶端來講，
+ 可以將Tokyo Tyrant看成是一個Memcached，但是，它的數據是可以持久存儲的。Tokyo Tyrant
+具有故障轉移、日誌文件體積小、大數據量下表現出色等優勢，詳見：<a href="http://blog.s135.com/post/362.htm">http://blog.s135.com/post/362.htm</a><br>
+<br>
+Tokyo Cabinet 2009年1月18日發佈的新版本（Version 1.4.0）已經實現 Table
+Database，將key-value數據庫又擴展了一步，有了MySQL等關係型數據庫的表和字段的概念，相信不久的將來，Tokyo Tyrant
+ 也將支持這一功能。值得期待。<br>
+<br>
+<div id="jc2c">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_12868wdpmgc_b.htm" alt=""><br>
+  <br>
+  <br>
+  TC除了支持Key-Value存儲之外，還支持保存Hashtable數據類型，因此很像一個簡單的數據庫表，並且還支持基於column的條
+件查詢，分頁查詢和排序功能，基本上相當於支持單表的基礎查詢功能了，所以可以簡單的替代關係數據庫的很多操作，這也是TC受到大家歡迎的主要原因之一，
+ 有一個Ruby的項目<a href="http://github.com/tsukasaoishi/miyazakiresistance" target="_blank">miyazakiresistance</a>將TT的hashtable的操作封裝成和ActiveRecord一樣的操作，用起來非常爽。<br>
+  <br>
+  TC/TT在mixi的實際應用當中，存儲了2000萬條以上的數據，同時支撐了上萬個並發連接，是一個久經考驗的項目。TC在保證了極高的並發
+讀寫性能的同時，具有可靠的數據持久化機制，同時還支持類似關係數據庫表結構的hashtable以及簡單的條件，分頁和排序操作，是一個很棒的
+NoSQL數據庫。<br>
+  <br>
+  TC的主要缺點是在數據量達到上億級別以後，並發寫數據性能會大幅度下降，<a href="http://bjclark.me/2009/08/04/nosql-if-only-it-was-that-easy/" target="_blank">NoSQL: If Only It Was That Easy</a>提到，他們發現在TC裡面插入1.6億條2-20KB數據的時候，寫入性能開始急劇下降。看來是當數據量上億條的時候，TC性能開始大幅度下降，從TC作者自己提供的mixi數據來看，至少上千萬條數據量的時候還沒有遇到這麼明顯的寫入性能瓶頸。<br>
+  <br>
+  這個是Tim Yang做的一個<a href="http://timyang.net/data/mcdb-tt-redis/" target="_blank">Memcached，Redis和Tokyo Tyrant的簡單的性能評測，僅供參考</a>
+</div><br>
+<h3>
+  <a name="CT_M_9097645017290603_52052040"></a>CT.M
+</h3><a href="http://fis-gtm.com/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>GT.M</strong></span></a>: API:&nbsp;<strong>M, C, Python, Perl</strong>, Protocol:&nbsp;<strong>native, inprocess C</strong>, Misc: Wrappers:&nbsp;<strong>M/DB for SimpleDB compatible HTTP</strong>&nbsp;<a href="http://www.mgateway.com/mdb.html" target="_blank">»</a>,&nbsp;<strong>MDB:X</strong>&nbsp;for XML&nbsp;<a href="http://mgateway.com/" target="_blank">»</a>,&nbsp;<strong>PIP</strong>&nbsp;for mapping to tables for SQL&nbsp;<a href="http://fis-pip.com/" target="_blank">»</a>,
+ Features: Small footprint (17MB), Terabyte Scalability, Unicode
+support, Database encryption, Secure, ACID transactions (single node),
+eventual consistency (replication), License: AGPL v3 on x86
+GNU/Linux,&nbsp;<span style="color: rgb(0, 0, 0);"><strong>Links</strong>: Slides&nbsp;<a href="http://www.slideshare.net/robtweed/gtm-a-tried-and-tested-schemaless-database" target="_blank">»</a>,<br></span>
+<h3>
+  <a name="Scalien_704454814757133_326936"></a><span style="color: rgb(0, 0, 0);">Scalien</span>
+</h3><span style="color: rgb(0, 0, 0);"><a href="http://scalien.com/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Scalien</strong></span></a>: &nbsp;API / Protocol:&nbsp;<strong>http</strong>&nbsp;(text, html, JSON)<strong>, C, C++, Python</strong>, Concurrency:&nbsp;<strong>Paxos</strong>.<br></span>
+<h3>
+  <a name="Berkley_DB_9606079710191457_91"></a><span style="color: rgb(0, 0, 0);">Berkley DB</span>
+</h3><span style="color: rgb(0, 0, 0);"><a href="http://www.oracle.com/database/berkeley-db/db/index.html" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Berkley DB</strong></span></a>: API:&nbsp;<strong>Many languages</strong>, Written in:&nbsp;<strong>C</strong>, Replication:&nbsp;<strong>Master / Slave</strong>, Concurrency:<strong>MVCC</strong>, License:&nbsp;<strong>Sleepycat</strong>,&nbsp;<span style="color: rgb(0, 0, 153);"><strong>BerkleyDB Java Edition</strong></span>: API:&nbsp;<strong>Java</strong>, Written in:&nbsp;<strong>Java</strong>, Replication:<strong>Master / Slave</strong>, Concurrency:&nbsp;<strong>serializable transaction isolation</strong>, License:&nbsp;<strong>Sleepycat</strong><br></span>
+<h3>
+  <a name="MemcacheDB_06512137876498592_4"></a>MemcacheDB
+</h3><a href="http://memcachedb.org/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>MemcacheDB</strong></span></a>: API: Memcache protocol (get, set, add, replace, etc.), Written in:&nbsp;<strong>C</strong>, Data Model:&nbsp;<strong>Blob</strong>, Misc: Is Memcached writing to BerkleyDB.<br>
+<br>
+它是新浪互動社區事業部為在Memcached基礎上，增加Berkeley DB存儲層而開發一款支持高並發的分佈式持久存儲系統，對任何原有Memcached客戶端來講，它仍舊是個Memcached，但是，它的數據是可以持久存儲的。<br>
+<div id="alk5">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_130t76cs4dj_b.htm" alt="">
+</div><br>
+<h3>
+  <a name="Mnesia_9154183157888259_898783"></a>Mnesia
+</h3><a href="http://www.erlang.org/doc/apps/mnesia/index.html" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Mnesia</strong></span></a>:&nbsp;<span style="font-family: helvetica,arial,sans-serif;">(ErlangDB&nbsp;</span><span style="font-family: helvetica,arial,sans-serif;"><a href="http://www.infoq.com/news/2007/08/mnesia" target="_blank">»</a>)</span><br>
+<h3>
+  <a name="LightCloud_823765875537818_453"></a>LightCloud
+</h3><a href="http://opensource.plurk.com/LightCloud/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>LightCloud</strong></span></a>: &nbsp;(based on Tokyo Tyrant)<br>
+<h3>
+  <a name="HamsterDB_05420895958151517_68"></a>HamsterDB
+</h3><a href="http://hamsterdb.com/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>HamsterDB</strong></span></a>:
+ &nbsp;(embedded solution) ACID Compliance, Lock Free Architecture
+(transactions fail on conflict rather than block), Transaction logging
+&amp; fail recovery (redo logs), In Memory support – can be used as a
+non-persisted cache, B+ Trees – supported [Source: Tony Bain&nbsp;<a href="http://blog.tonybain.com/" target="_blank">»</a>]<br>
+<br>
+<h3>
+  <a name="Flare_8050426165277293_5400566_5744763652908157"></a>Flare
+</h3>TC是日本第一大SNS網站mixi開發的，而Flare是日本第二大SNS網站green.jp開發的，有意思吧。Flare簡單的說就是給
+
+TC添加了scale功能。他替換掉了TT部分，自己另外給TC寫了網絡服務器，Flare的主要特點就是支持scale能力，他在網絡服務端之前添加了
+ 一個node
+server，來管理後端的多個服務器節點，因此可以動態添加數據庫服務節點，刪除服務器節點，也支持failover。如果你的使用場景必須要讓TC可
+ 以scale，那麼可以考慮flare。<br>
+<br>
+flare唯一的缺點就是他只支持memcached協議，因此當你使用flare的時候，就不能使用TC的table數據結構了，只能使用TC的key-value數據結構存儲。<br>
+<h2>
+  <a name="Eventually_Consistent_Key_Valu"></a>最終一致性Key Value存儲
+</h2>
+<h3>
+  <a name="_Amazon_Dynamo_520203814357290"></a>Amazon之Dynamo
+</h3><a rel="tag" href="http://www.allthingsdistributed.com/2007/10/amazons_dynamo.html"><span style="color: rgb(0, 0, 153);"><strong>Amazon Dynamo</strong></span></a>:&nbsp;<span style="font-family: helvetica,arial,sans-serif;"><strong>Misc</strong>: not open source (see KAI below)</span><br>
+<h4>
+  <a name="_5504176676028282_249060984314_6205024527039867"></a>功能特色
+</h4>
+<ul>
+  <li>
+    <span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="color: rgb(51, 51, 51);"><span style="font-size: 10pt;">高可用</span></span></span>
+  </li>
+  <li>
+    <span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="color: rgb(51, 51, 51);"><span style="font-size: 10pt;">可擴展</span></span></span>
+  </li>
+  <li>
+    <span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="color: rgb(51, 51, 51);"><span style="font-size: 10pt;">總是可寫</span></span></span>
+  </li>
+  <li>
+    <p>
+      可以根據應用類型優化(可用性，容錯性，高效性配置)
+    </p>
+  </li>
+</ul>
+<h4>
+  <a name="_3991007534787059_800100618042"></a>架構特色
+</h4>
+<div>
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_6557k5tvhc_b.htm" alt="">
+</div><span style="font-size: 12pt;"><br></span>
+<ul>
+  <li>
+    <span style="font-size: 10pt;">完全的分佈式</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">去中心化(<span style="font-size: 10pt;">人工管理工作很小</span>)</span>
+  </li>
+  <li>
+    <span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="color: rgb(51, 51, 51);"><span style="font-size: 10pt;">Key 唯一代表一個數據對象，對該數據對象的讀寫操通過 Key 來完成.</span></span></span>
+  </li>
+  <li>
+    <span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="color: rgb(51, 51, 51);"><span style="font-size: 10pt;">通常是一台自帶硬盤的主機。每個節點有三個 Java 寫的組件：請求協調器(request coordination)、成員與失敗檢測、本地持久引擎(local persistence engine)</span></span></span>
+  </li>
+  <li>
+    <span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="color: rgb(51, 51, 51);"><span style="font-size: 10pt;">數據分區並用改進的一致性哈希(consistent hashing)方式進行複製，利用數據對象的版本化實現一致性。複製時因為更新產生的一致性問題的維護採取類似 quorum 的機制以及去中心化的複製同步協議。&nbsp;</span></span></span>
+  </li>
+  <li>
+    <span style="font-family: tahoma,verdana,arial,helvetica,sans-serif;"><span style="color: rgb(51, 51, 51);"><span style="font-size: 10pt;">每個</span><span style="font-size: 10pt;">實例由一組節點組成，從應用的角度看，實例提供 IO 能力。一個實例上的節點可能位於不同的數據中心內, 這樣一個數據中心出問題也不會導致數據丟失。</span></span></span>
+  </li>
+</ul><br>
+<h3>
+  <a name="BeansDB_46725810039788485_1444_6422195057201686"></a>BeansDB
+</h3>
+<h4>
+  <a name="_855878707383143_0006899688354_7439637158723382"></a>簡介
+</h4>
+<p>
+  <a name="簡介"></a>BeansDB 是一個主要針對大數據量、高可用性的分佈式KeyValue存儲系統，採用HashTree和簡化的版本號來快速同步保證最終一致性（弱），一個簡化版的Dynamo。
+</p>
+<p>
+  <a name="簡介"></a>它採用類似memcached的去中心化結構，在客戶端實現數據路由。目前只提供了Python版本的客戶端，其它語言的客戶端可以由memcached的客戶端稍加改造得到。
+</p>
+<p>
+  <a name="簡介"></a>Google Group:&nbsp;<a rel="nofollow" href="http://groups.google.com/group/beandb/">http://groups.google.com/group/beandb/</a>
+</p>
+<h4>
+  <a name="_8856209489372642_306660973986_09293410042228067"></a>更新
+</h4>
+<p>
+  <a name="更新"></a>2009.12.29 第一個公開版本 0.3
+</p>
+<h4>
+  <a name="_5668651611345044_858602237877_6976689272639188"></a>特性
+</h4>
+<ul>
+  <li>高可用：通過多個可讀寫的用於備份實現高可用
+  </li>
+  <li>最終一致性：通過哈希樹實現快速完整數據同步（短時間內數據可能不一致）
+  </li>
+  <li>容易擴展：可以在不中斷服務的情況下進行容量擴展。
+  </li>
+  <li>高性能：異步IO和高性能的KeyValue數據TokyoCabinet 可配置的
+  </li>
+  <li>可用性和一致性：通過N,W,R進行配置 簡單協議：Memcache兼容協議，大量可用客戶端
+  </li>
+</ul>
+<p>
+  <a name="特性"></a>
+</p>
+<h4>
+  <a name="_25480733904987574_39869615321"></a>性能
+</h4><br>
+<p>
+  &nbsp;
+</p>
+<p>
+  <strong><a name="性能"></a>在小數據集上，它跟memcached一樣快：</strong>
+</p><strong><span style="font-family: 'Courier New';"><a name="性能"></a><span class="com"># memstorm -s localhost:7900 -n 1000</span><br>
+<span class="typ">Num</span><span class="pln">&nbsp;of&nbsp;</span><span class="typ">Records</span><span class="pln">&nbsp;&nbsp; &nbsp; &nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">10000</span><br>
+<span class="typ">Non</span><span class="pun">-</span><span class="typ">Blocking</span><span class="pln">&nbsp;IO &nbsp; &nbsp;&nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">0</span><span class="pln"><br>
+TCP&nbsp;</span><span class="typ">No</span><span class="pun">-</span><span class="typ">Delay</span><span class="pln">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">0</span><br>
+<br>
+<span class="typ">Successful</span><span class="pln">&nbsp;&nbsp;&nbsp;</span><span class="pun">[</span><span class="pln">SET</span><span class="pun">]</span><span class="pln">&nbsp;&nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">10000</span><br>
+<span class="typ">Failed</span><span class="pln">&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;</span><span class="pun">[</span><span class="pln">SET</span><span class="pun">]</span><span class="pln">&nbsp;&nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">0</span><br>
+<span class="typ">Total</span>&nbsp;<span class="typ">Time</span><span class="pln">&nbsp;&nbsp;&nbsp;</span><span class="pun">[</span><span class="pln">SET</span><span class="pun">]</span><span class="pln">&nbsp;&nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">0.45493s</span><br>
+<span class="typ">Average</span>&nbsp;<span class="typ">Time</span>&nbsp;<span class="pun">[</span><span class="pln">SET</span><span class="pun">]</span><span class="pln">&nbsp;&nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">0.00005s</span><br>
+<br>
+<span class="typ">Successful</span><span class="pln">&nbsp;&nbsp;&nbsp;</span><span class="pun">[</span><span class="pln">GET</span><span class="pun">]</span><span class="pln">&nbsp;&nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">10000</span><br>
+<span class="typ">Failed</span><span class="pln">&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;</span><span class="pun">[</span><span class="pln">GET</span><span class="pun">]</span><span class="pln">&nbsp;&nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">0</span><br>
+<span class="typ">Total</span>&nbsp;<span class="typ">Time</span><span class="pln">&nbsp;&nbsp;&nbsp;</span><span class="pun">[</span><span class="pln">GET</span><span class="pun">]</span><span class="pln">&nbsp;&nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">0.28609s</span><br>
+<span class="typ">Average</span>&nbsp;<span class="typ">Time</span>&nbsp;<span class="pun">[</span><span class="pln">GET</span><span class="pun">]</span><span class="pln">&nbsp;&nbsp;</span><span class="pun">:</span>&nbsp;<span class="lit">0.00003s</span></span></strong>
+<p>
+  <strong><a name="性能"></a>實際部署情況下的性能（客戶端測量）：</strong>
+</p><strong><span style="font-family: 'Courier New';"><a name="性能"></a><span class="pun">&amp;#x100084;</span>&nbsp;<span class="pun">服務器</span>&nbsp;<span class="pun">請求數</span>&nbsp;<span class="pun">評價時間(</span><span class="pln">ms</span><span class="pun">)</span>&nbsp;<span class="pun">中位數(</span><span class="pln">ms</span><span class="pun">)</span>&nbsp;<span class="lit">99</span><span class="pun">%</span>&nbsp;<span class="pun">(</span><span class="pln">ms</span><span class="pun">)</span>&nbsp;<span class="lit">99.9</span><span class="pun">%(</span><span class="pln">ms</span><span class="pun">)</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">get</span><span class="pln">&nbsp;A</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">151398</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">8.89</span><span class="pun">,</span><span class="pln">&nbsp;med</span><span class="pun">=</span><span class="lit">5.94</span><span class="pun">,</span>&nbsp;<span class="lit">99</span><span class="pun">%=</span><span class="lit">115.5</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">310.2</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">get</span><span class="pln">&nbsp;B</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">100054</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">6.84</span><span class="pun">,</span><span class="pln">&nbsp;med</span><span class="pun">=</span><span class="lit">0.40</span><span class="pun">,</span>&nbsp;<span class="lit">99</span><span class="pun">%=</span><span class="lit">138.5</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">483.0</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">get</span><span class="pln">&nbsp;C</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">151250</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">7.42</span><span class="pun">,</span><span class="pln">&nbsp;med</span><span class="pun">=</span><span class="lit">5.34</span><span class="pun">,</span>&nbsp;<span class="lit">99</span><span class="pun">%=</span><span class="lit">55.2</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">156.7</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">get</span><span class="pln">&nbsp;D</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">150677</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">7.63</span><span class="pun">,</span><span class="pln">&nbsp;med</span><span class="pun">=</span><span class="lit">5.09</span><span class="pun">,</span>&nbsp;<span class="lit">99</span><span class="pun">%=</span><span class="lit">97.7</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">284.7</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">get</span><span class="pln">&nbsp;E</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">3822</span><span class="pun">,</span><span class="pln">&nbsp;&nbsp; avg</span><span class="pun">=</span><span class="lit">3.07</span><span class="pun">,</span><span class="pln">&nbsp;med</span><span class="pun">=</span><span class="lit">0.18</span><span class="pun">,</span>&nbsp;<span class="lit">99</span><span class="pun">%=</span><span class="lit">44.3</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">170.0</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">get</span><span class="pln">&nbsp;F</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">249973</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">8.29</span><span class="pun">,</span><span class="pln">&nbsp;med</span><span class="pun">=</span><span class="lit">6.36</span><span class="pun">,</span>&nbsp;<span class="lit">99</span><span class="pun">%=</span><span class="lit">46.8</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">241.5</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">set</span><span class="pln">&nbsp;A</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">10177</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">18.53</span><span class="pun">,</span><span class="pln">&nbsp;med</span><span class="pun">=</span><span class="lit">12.78</span><span class="pun">,</span><span class="lit">99</span><span class="pun">%=</span><span class="lit">189.3</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">513.6</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">set</span><span class="pln">&nbsp;B</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">10431</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">12.85</span><span class="pun">,</span><span class="pln">&nbsp;med</span><span class="pun">=</span><span class="lit">1.19</span><span class="pun">,</span>&nbsp;<span class="lit">99</span><span class="pun">%=</span><span class="lit">206.1</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">796.8</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">set</span><span class="pln">&nbsp;C</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">10556</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">17.29</span><span class="pun">,</span><span class="pln">&nbsp;med</span><span class="pun">=</span><span class="lit">12.97</span><span class="pun">,</span><span class="lit">99</span><span class="pun">%=</span><span class="lit">132.2</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">322.9</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">set</span><span class="pln">&nbsp;D</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">10164</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">7.34</span><span class="pun">,</span><span class="pln">&nbsp;&nbsp;med</span><span class="pun">=</span><span class="lit">0.64</span><span class="pun">,</span>&nbsp;<span class="lit">99</span><span class="pun">%=</span><span class="lit">98.8</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">344.4</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">set</span><span class="pln">&nbsp;E</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">10552</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">7.18</span><span class="pun">,</span><span class="pln">&nbsp;&nbsp;med</span><span class="pun">=</span><span class="lit">2.33</span><span class="pun">,</span>&nbsp;<span class="lit">99</span><span class="pun">%=</span><span class="lit">73.6</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">204.8</span><br>
+<span class="pun">&amp;#x100084;</span>&nbsp;<span class="kwd">set</span><span class="pln">&nbsp;F</span><span class="pun">:</span><span class="lit">7900</span><span class="pln">&nbsp;n</span><span class="pun">=</span><span class="lit">10337</span><span class="pun">,</span><span class="pln">&nbsp;avg</span><span class="pun">=</span><span class="lit">17.79</span><span class="pun">,</span><span class="pln">&nbsp;med</span><span class="pun">=</span><span class="lit">15.31</span><span class="pun">,</span>&nbsp;<span class="lit">99</span><span class="pun">%=</span><span class="lit">109.0</span><span class="pun">,</span>&nbsp;<span class="lit">99.9</span><span class="pun">%=</span><span class="lit">369.5</span></span>&nbsp;<a name="性能"></a><a name="性能"></a><br>
+<br>
+<a id="axkn" title="BeansDB設計實現（非常難得的中文資料）" href="http://beansdb.googlecode.com/files/Inside%20BeansDB.pdf">BeansDB設計實現（非常難得的中文資料）</a><br>
+<a id="h5v." title="PPT" href="http://www.slideshare.net/hongqn/qcon-beijing-2009">PPT</a><br></strong>
+<p>
+  &nbsp;
+</p><br>
+<h3>
+  <a name="Nuclear_5671010203671387_94607_5087654534821493"></a>Nuclear
+</h3>人人網研發中的數據庫<br>
+詳見：<br>
+http://ugc.renren.com/2010/01/21/ugc-nuclear-guide-use/<br>
+http://ugc.renren.com/2010/01/28/ugc-nuclear-guide-theory/<br>
+<br>
+<div id="wxow">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_126fnqs7fg8_b.htm" alt="">
+</div><br>
+<br>
+<br>
+<h4>
+  <a name="_Tips_7329128378643512_0444030_21084614206097596"></a>兩個設計上的Tips
+</h4>1. 萬事皆異步<br>
+我們在編碼的過程中走了一些彎路，同步的操作在高並發的情況下帶來的性能下降是非常恐怖的，於是乎，Nuclear系統中任何的高並發操作都消除了Block。no waiting, no delay。<br>
+<br>
+2. 根據系統負載控制後台線程的資源佔用<br>
+Nuclear系統中有不少的後台線程默默無聞的做著各種辛苦的工作，但是它們同樣會佔用系統資源，我們的解決方案是根據系統負載動態調整線程的運行和停止，並達到平衡。
+<p>
+  <span style="font-size: 12pt;"><br></span>
+</p>
+<h3>
+  <a name="Voldemort_09926958376271466_23_3723235398029888"></a>Voldemort
+</h3><a href="http://project-voldemort.com/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Voldemort</strong></span></a>:<span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">&nbsp;(can you help)<br>
+<br></span></span></span></span></span>
+Voldemort是個和Cassandra類似的面向解決scale問題的分佈式數據庫系統，Cassandra來自於Facebook這個
+SNS網站，而Voldemort則來自於Linkedin這個SNS網站。說起來SNS網站為我們貢獻了n多的NoSQL數據庫，例如
+Cassandar，Voldemort，Tokyo
+Cabinet，Flare等等。Voldemort的資料不是很多，因此我沒有特別仔細去鑽研，Voldemort官方給出Voldemort的並發讀
+ 寫性能也很不錯，每秒超過了1.5萬次讀寫。&nbsp;<span style="font-size: 12pt;"><br>
+<br></span>
+<div id="yf:.">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_132hfj875hn_b.htm" alt="">
+</div><span style="font-size: 12pt;"><br></span><br>
+<br>
+其實現在很多公司可能都面臨著這個抽象架構圖中的類似問題。以 Hadoop
+作為後端的計算集群，計算得出來的數據如果要反向推到前面去，用什麼方式存儲更為恰當? 再放到 DB 裡面的話，構建索引是麻煩事；放到
+Memcached 之類的 Key-Value 分佈式系統中，畢竟只是在內存裡，數據又容易丟。<a href="http://project-voldemort.com/">Voldemort</a>&nbsp;算是一個不錯的改良方案。<br>
+<br>
+值得借鑑的幾點:<br>
+<ul>
+  <li>鍵(Key)結構的設計，有點技巧；
+  </li>
+  <li>架構師熟知硬件結構是有用的。越大的系統越是如此。
+  </li>
+  <li>用好並行。<a href="http://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl 定律</a>以後出現的場合會更多。
+  </li>
+</ul><br>
+<br>
+<br>
+詳細：<br>
+http://www.dbanotes.net/arch/voldemort_key-value.html<br>
+http://project-voldemort.com/blog/2009/06/building-a-1-tb-data-cycle-at-linkedin-with-hadoop-and-project-voldemort/<span style="font-size: 12pt;"><br>
+<br></span>
+<h3>
+  <a name="Dynomite_9324181654488122_3155"></a><span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">Dynomite</span></span></span></span></span>
+</h3><br>
+<br>
+<a href="http://wiki.github.com/cliffmoon/dynomite/dynomite-framework" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>Dynomite</strong></span></a>:<span><span style="color: rgb(0, 0, 0);"><span style="font-size: 12pt;"><span><span style="font-family: helvetica,arial,sans-serif;">&nbsp;(can you help)<br>
+<br></span></span></span></span></span>
+<h3>
+  <a name="Kai_8461184647175368_911329902"></a>Kai
+</h3><a href="http://sourceforge.net/projects/kai/" target="_blank"><span style="color: rgb(0, 0, 153);"><strong>KAI</strong></span></a>: Open Source Amazon Dnamo implementation, Misc:&nbsp;<a href="http://www.slideshare.net/takemaru/kai-an-open-source-implementation-of-amazons-dynamo-472179" target="_blank">slides</a>&nbsp;,<br>
+<br>
+<h2>
+  <a name="Object_Databases_8488295138588"></a>未分類
+</h2>
+<h3>
+  <a name="Skynet_9220649347100478_689227"></a>Skynet
+</h3>全新的Ruby MapReduce實現<br>
+<br>
+2004年，Google提出用於分佈式數據處理的MapReduce設計模式，同時還提供了第一個C++的實現。現在，一個名為Skynet的Ruby實現已經由Adam Pisoni發佈。<br>
+Skynet是可適配、可容錯的、可自我更新的，而且完全<br>
+是分佈式的系統，不存在單一的失敗節點。<br>
+<br>
+Skynet和Google在設計上有兩點重要的區別：<br>
+Skynet無法向工作者（Worker）發送原生代碼（Raw code），<br>
+Skynet利用結對恢復系統，不同的工作者會互相監控以防失敗：<br>
+如果有一個工作者由於某種原因離開或者放棄了，就會有另一個工作者發現並接管它的任務。Skynet 也沒有所謂的“主”管理進程，只有工作者，它們在任何時間都可以充當任何任務的主管理進程。<br>
+<br>
+Skynet的使用和設置都很容易，這也正是MapReduce這個概念的真正優勢。Skynet還擴展了ActiveRecord，加入了MapReduce的特性，比如distributed_find。<br>
+<br>
+<br>
+你要為Starfish編寫一些小程序，它們的代碼是你將要構建其中的。如果我沒有弄錯的話，你無法在同一台機器上運行多種類型的MapReduce作業。Skynet是一個更全面的MR系統，可以運行多種類型的多個作業，比如，各種不同的代碼。<br>
+<br>
+Skynet也允許失敗。工作者會互相關照。如果一個工作者失敗了，無法及時完成任務，另一個工作者將會接起這個任務並嘗試完成它。Skynet也支持map_data流，也就是說，即使某個數據集非常龐大，甚至無法放在一個數據結構中，Skynet也可以處理。<br>
+<br>
+<br>
+什
+麼是map_data流？大多數時候，在你準備啟動一個map_reduce作業時，必須提供一個數據的隊列，這些數據已經被分離並將被併行處理。如果隊
+ 列過大，以至於無法適應於內存怎麼辦？在這種情況下，你就要不能再用隊列，而應該使用枚舉（Enumerable）。Skynet知道去對象的調
+用:next或者:each方法，然後開始為“每一個（each）”分離出map_task來。通過這樣的方式，不會有人再試圖同時創建大量的數據結構。<br>
+<br>
+還 有很多特性值得一提，不過最想提醒大家的是，Skynet能夠與你現有的應用非常完美地集成到一起，其中自然包括Rails應用。Skynet甚
+至還提供了一個ActiveRecord的擴展，你可以在模型中以分佈式的形式執行一些任務。在Geni中，我們使用這項功能來運行特別複雜的移植，它通
+ 常涉及到在數百萬的模型上執行Ruby代碼。<br>
+&gt; Model.distributed_find(:all, :conditions =&gt; "id &gt;
+20").each(:somemethod)在你運行Skynet的時候，它將在每個模型上執行:somemethod，不過是以分佈式的方式（這和你
+ 擁有多少個工作者相關）。它在向模型分發任務前不必進行初始化，甚至不必提前獲取所有的id。因此它可以操作無限大的數據集。 用戶的反饋如何？<br>
+<h3>
+  <a name="Drizzle_9847466828815841_11171_39190645551632586"></a><strong>Drizzle</strong>
+</h3>
+<p>
+  <a href="https://launchpad.net/drizzle">Drizzle</a>可
+被認為是鍵/值存儲要解決的問題的反向方案。Drizzle誕生於MySQL（6.0）關係數據庫的拆分。在過去幾個月裡，它的開發者已經移走了大量非核
+
+心的功能（包括視圖、觸發器、已編譯語句、存儲過程、查詢緩衝、ACL以及一些數據類型），其目標是要建立一個更精簡、更快的數據庫系統。Drizzle
+ 仍能存放關係數據；正如MySQL/Sun的Brian
+Aker所說那樣：“沒理由潑洗澡水時連孩子也倒掉”。它的目標就是，針對運行於16核（或以上）系統上的以網絡和雲為基礎的應用，建立一個半關係型數據
+ 庫平台。
+</p><br>
+<br>
+<h2>
+  <a name="_9596271403133869_245301471091_30492524683708877"></a>比較
+</h2>
+<h3>
+  <a name="_10969047341495752_68719353526"></a>可擴展性
+</h3>
+<div id="rhx4">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_71r3tb76cp_b.htm" alt="">
+</div><br>
+<br>
+<h3>
+  <a name="_587794222868979_1359147783368_00199023178757618"></a>數據和查詢模型
+</h3>
+<div id="w9gd">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_72hcws3vck_b.htm" alt="">
+</div><br>
+當你需要查詢或更新一個值的一部分時，Key/value模型是最簡單有效實現。<br>
+<br>
+面向文本數據庫是Key/value的下一步, 允許內嵌和Key關聯的值. 支持查詢這些值數據，這比簡單的每次返回整個blob類型數據要有效得多。<br>
+<br>
+Neo4J是唯一的存儲對象和關係作為數學圖論中的節點和邊. 對於這些類型數據的查詢，他們能夠比其他競爭者快1000s<br>
+<br>
+Scalaris是唯一提供跨越多個key的分佈式事務。<br>
+<br>
+<h3>
+  <a name="_23622012604027987_99347529746_4971976801014726"></a>持久化設計
+</h3>
+<div id="r.hd">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_74crgvcdg2_b.htm" alt="">
+</div><br>
+內存數據庫是非常快的，(Redis在單個機器上可以完成每秒100,000以上操作）但是數據集超過內存RAM大小就不行. 而且 Durability (服務器當機恢復數據)也是一個問題<br>
+<br>
+Memtables和SSTables緩衝 buffer是在內存中寫(“memtable”)， 寫之前先追加一個用於durability的日誌中.&nbsp;<br>
+但有足夠多寫入以後，這個memtable將被排序然後一次性作為“sstable.”寫入磁盤中，這就提供了近似內存性能，因為沒有磁盤的查詢
+seeks開銷, 同時又避免了純內存操作的durability問題.(個人點評 其實Java中的Terracotta早就實現這兩者結合)<br>
+B-Trees提供健壯的索引，但是性能很差，一般和其他緩存結合起來。<br>
+<br>
+<h1>
+  <a name="_6041983840987086_405110552906"></a>應用篇
+</h1>
+<h2>
+  <a name="eBay_7439944222569466_24644076_7816704294788374"></a>eBay 架構經驗
+</h2>
+<ul>
+  <li>
+    <span style="font-size: 10pt;">1、 Partition Everything 切分萬物</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">2、 Asynchrony Everywhere 處處異步</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">3、 Automate Everything 全部自動</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">4、 Remember Everything Fails 記錄失敗</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">5、 Embrace Inconsistency 親不同是謂大同</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">6、 Expect (R)evolution 預言演變</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">7、 Dependencies Matter 重視依賴</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">8、 Be Authoritative 獨斷專行</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">9、 Never Enough Data</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">10、Custom Infrastructure&nbsp;<span style="font-family: arial,sans-serif;">自定義基礎設施</span></span>
+  </li>
+</ul>
+<h2>
+  <a name="_7241636626422405_709893183782_6238797470731577"></a>&nbsp;淘寶架構經驗
+</h2>
+<ul>
+  <li>
+    <span style="font-size: 10pt;">1、適當放棄一致性</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">2、備份和隔離解決穩定性問題</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">3、分割和異步解決性能問題(類似 eBay 的 Asynchrony Everywhere)</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">4、自動化降低人力成本(類似 eBay 的 Automate Everything)</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">5、產品化管理</span>
+  </li>
+</ul><br>
+<h2>
+  <a name="_Flickr_11598328692846749_1352"></a>Flickr架構經驗
+</h2>
+<ul>
+  <li>
+    <span style="font-size: 10pt;">使得機器自動構建 (Teach machines to build themselves)</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">使得機器自監控(Teach machines to watch themselves)</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">使得機器自修復(Teach machines to fix themselves)</span>
+  </li>
+  <li>
+    <span style="font-size: 10pt;">通過流程減少 MTTR (Reduce MTTR by streamlining)</span>
+  </li>
+</ul><br>
+<br>
+<h2>
+  <a name="Twitter_9210753435831028_97021_8836312611977271"></a>Twitter運維經驗
+</h2>
+<div class="entry">
+  <p>
+    最近看到的另外一個介紹Twitter技術的視頻[<a href="http://assets.en.oreilly.com/1/event/29/Fixing%20Twitter_%20Improving%20the%20Performance%20and%20Scalability%20of%20the%20World%27s%20Most%20Popular%20Micro-blogging%20Site%20Presentation.pdf">Slides</a>] [<a href="http://blip.tv/file/2300327">Video</a>&nbsp;(GFWed)]，這是Twitter的John Adams在<a href="http://en.oreilly.com/velocity2009">Velocity 2009</a>的一個演講，主要介紹了Twitter在系統運維方面一些經驗。 本文大部分整理的觀點都在Twitter(@<a href="http://twitter.com/xmpp">xmpp</a>)上發過，這裡全部整理出來並補充完整。
+  </p>
+  <p>
+    Twitter沒有自己的硬件，都是由NTTA來提供，同時NTTA負責硬件相關的網絡、帶寬、負載均衡等業務，Twitter operations team<strong>只關注核心的業務，包括Performance，Availability，Capacity Planning容量規劃，配置管理</strong>等，這個可能跟國內一般的互聯網公司有所區別。
+  </p><br>
+  <h3>
+    <a name="_6155514829537361_554680225560"></a>運維經驗
+  </h3>
+  <h4>
+    <a name="_Metrics_44020236287486847_696"></a>Metrics
+  </h4>
+  <p>
+    Twitter的監控後台幾乎都是圖表(critical
+metrics)，類似駕駛室的轉速表，時速表，讓操作者可以迅速的瞭解系統當前的運作狀態。聯想到我們做的類似監控後台，數據很多，但往往還需要瀏覽者
+ 做二次分析判斷，像這樣滿屏都是圖表的方法做得還不夠，可以學習下這方面經驗。 據John介紹可以從圖表上看到系統的瓶頸-系統最弱的環節(web,
+ mq, cache, db?)<br>
+    根據圖表可以科學的制定系統容量規劃，而不是事後救火。
+  </p>
+  <p>
+    &nbsp;
+  </p>
+  <div id="k_ah">
+    <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_117k2wkqk4s_b.htm" alt="">
+  </div><br>
+  <p>
+    &nbsp;
+  </p>
+  <p>
+    &nbsp;
+  </p>
+  <h4>
+    <a name="_6825445668030796_760233095682"></a>配置管理
+  </h4>
+  <p>
+    每個系統都需要一個自動配置管理系統，越早越好，這條一整理髮到Twitter上去之後引起很多回應。
+  </p>
+  <h4>
+    <a name="Darkmode_5259184612638798_9242_24315166669659272"></a>Darkmode
+  </h4>
+  <p>
+    配置界面可以enable/disable 高計算消耗或高I/O的功能，也相當於優雅降級，系統壓力過大時取消一些非核心但消耗資源大的功能。
+  </p>
+  <h4>
+    <a name="_15026388981903727_49114302769"></a>進程管理
+  </h4>
+  <p>
+    Twitter做了一個”Seppaku” patch, 就是將Daemon在完成了n個requests之後主動kill掉，以保持健康的low memory狀態，這種做法據瞭解國內也有不少公司是這樣做。
+  </p>
+  <h4>
+    <a name="_0638721247682108_828753285625"></a>硬件
+  </h4>
+  <p>
+    Twitter將CPU由AMD換成Xeon之後，獲得30%性能提升，將CPU由雙核/4核換成8核之後，減少了40%的CPU, 不過John也說，這種升級不適合自己購買硬件的公司。
+  </p><br>
+  <h3>
+    <a name="_20228313746363413_71546543696"></a>代碼協同經驗
+  </h3>
+  <h4>
+    <a name="_Review_2868290775437222_09924_496206508469592"></a>Review制度
+  </h4>
+  <p>
+    Twitter有上百個模塊，如果沒有一個好的制度，容易引起代碼修改衝突，並把問題帶給最終用戶。所以Twitter有一強制的source
+code review制度, 如果提交的代碼的svn comment沒有”reviewed by xxx”,
+則pre-commit腳本會讓提交失敗, review過的代碼提交後會通過自動配置管理系統應用到上百台服務器上。
+有@xiaomics同學在Twitter上馬上就問，時間成本能否接受？如果有緊急功能怎麼辦？個人認為緊急修改時有兩人在場，一人修改一人
+review也不是什麼難事。
+  </p>
+  <h4>
+    <a name="_9450378125913654_306697729191"></a>部署管理
+  </h4>
+  <p>
+    從部署圖表可以看到每個發佈版本的CPU及latency變化，如果某個新版本latency圖表有明顯的向上跳躍，則說明該發佈版本存在問題。另外在監控首頁列出各個模塊最後deploy版本的時間，可以清楚的看到代碼庫的現狀。
+  </p>
+  <h4>
+    <a name="_9827601284285629_932863057418_1654637779888143"></a>團隊溝通
+  </h4>
+  <p>
+    Campfire來協同工作，campfire有點像群，但是更適合協同工作。對於Campfire就不做更多介紹，可參考<a href="http://campfirenow.com/">Campfire</a>官方說明。
+  </p>
+  <h3>
+    <a name="Cache_7188110122840438_8250995"></a>Cache
+  </h3>
+  <ul>
+    <li>Memcache key hash, 使用FNV hash 代替 MD5 hash，因為FNV更快。
+    </li>
+    <li>開發了Cache Money plugin(Ruby), 給應用程序提供<strong>read-through, write-through cache</strong>, 就像一個db訪問的鉤子，當讀寫數據庫的時候會自動更新cache, 避免了繁瑣的cache更新代碼。
+    </li>
+    <li>“Evictions make the cache unreliable for important configuration data”，Twitter使用memcache的一條經驗是，不同類型的數據需放在不同的mc,避免eviction，跟作者前文<a href="http://timyang.net/data/memcached-lru-evictions/">Memcached數據被踢(evictions&gt;0)現象分析</a>中的一些經驗一致。
+    </li>
+    <li>Memcached SEGVs, Memcached崩潰(cold cache problem)據稱會給這種高度依賴Cache的Web 2.0系統帶來災難，不知道Twitter具體怎麼解決。
+    </li>
+    <li>在Web層Twitter使用了Varnish作為反向代理，並對其評價較高。
+    </li>
+  </ul>
+</div>
+<h2>
+  <a name="_7156457947548296_394763811409"></a>雲計算架構
+</h2><br>
+<div id="mcip">
+  <img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/dc23x53c_116cz33kbj7_b.htm" alt="">
+</div><br>
+<br>
+<span id="sug1" class="tpc_content">作者認為，金字塔概念最能說明每一層的大小，它也表達了每
+個層是依賴前層的消息傳遞。在概念上，硬件是基礎和廣泛層。SaaS層是頂峰，也是最輕層。這種觀點是來自於將購買SaaS的的最終用戶角度。對於一個非
+
+常大的企業內部，PaaS平台層將是頂峰。使用內部開發的軟件的內部各部門將實現他們的頂峰SaaS。還要注意：大小和層位置並不一定等同於重要性。硬件
+ 層可能是最重要的，因為它是所有超過一定點的商品。<br>
+<br>
+<strong>硬件層The Hardware Layer</strong><br>
+必須考慮容錯和冗餘，大部分人認為沒有容錯硬件廉價商品。冗餘和容錯處理在軟件層內，硬件預計要失敗的，當然故障多電源容錯服務器，RAID磁盤陣列也是必要的。<br>
+<br>
+<strong>虛擬層The Virtualization Layer</strong><br>
+基於操作系統OS的虛擬化層，虛擬資源能夠在線即時增加拓展，允許供應商提供基礎設施作為服務(SaaS)，VMware，Citrix公司，Sun都提供虛擬化產品。<br>
+<br>
+<strong>The IaaS Layer</strong><br>
+提
+供和控制的基於虛擬層的計算方式，終端用戶能夠精確控制每個虛擬機沒分鐘每小時耗費多少錢。比如提供一個共同的接口，如門戶網站暴露的API，允許最終用
+ 戶創建和配置虛擬機模板的需求。最終用戶還可以控制何時打開或破壞虛擬機，以及如何在虛擬機互相聯網。在這個領域的主要競爭者例子是亞馬遜網絡服務的
+EC2，S3和數據庫服務。<br>
+<br>
+<strong>The PaaS Layer</strong><br>
+這一層的目的是儘量減少部署雲的複雜性和麻煩，最終用戶 利用和開發的這層的API和編程語言。兩個很好的例子是谷歌的App Engine
+和Force.com平台，在App
+Engine中，谷歌公開雲存儲，平台和數據庫，以及使用Python和Java編程語言的API。開發人員能夠編寫應用程序並部署到這一層中，後端可<a id="epyk" class="ajax_query=伸縮性 hotkeys" href="http://www.jdon.com/jivejdon/tags/2513"><strong>伸縮性</strong></a>架構設計完全交給谷歌負責，最終用戶完全不必擔心管理基礎設施。Force.com平台類似，但採用了自定義的編程語言名為Apex。如果你是一個大型企業尋求內部開發應用的部署，這層是你的頂峰。<br>
+<br>
+<strong>The SaaS Layer</strong><br>
+如
+果您是中小型企業（SME）和大企業不希望開發自己的應用程序時，SaaS的層是你的頂峰（是你將直接面對的）。您只是進行有興趣地採購如電子郵件或客戶
+
+關係管理服務，這些功能服務已經被供應商開發成功，並部署到雲環境中了，您只需驗證的應用是否符合你的使用需要，帳單可以基於包月租費等各種形式，，作為
+ 最終用戶的您不會產生開發和維護拓展應用程序軟件的任何成本。越來越多的企業訂閱Salesforce.com和Sugar CRM的SaaS產品。<br></span>
+<h2>
+  <a name="_6254229054692272_031210319731"></a>反模式
+</h2>
+<h3>
+  <a name="1_Single_Point_of_Failure_0747"></a>單點失敗（Single Point of Failure）
+</h3><br>
+大部分的人都堅持在單一的設備上部署我們的應用，因為這樣部署的費用會比較低，但是我們要清楚任何的硬件設備都會有失敗的風險的，這種單點失敗會嚴重的影
+響用戶體驗甚至是拖垮你的應用，因此除非你的應用能容忍失敗帶來的損失，否則得話應該儘量的避免單點風險，比如做冗餘，熱備等。<br>
+<br>
+<h3>
+  <a name="2_4706029240041971_38065281044"></a>同步調用
+</h3><br>
+同步調用在任何軟件系統中都是不可避免的，但是我們軟件工程師必須明白同步調用給軟件系統帶來的問題。如果我們將應用程序串接起來，那麼系統的可用性就會
+低於任何一個單一組件的可用性。比如組件A同步調用了組件B，組件A的可用性為99.9%，組件B的可用性為99.9%,那麼組件A同步調用組件B的可用
+性就是99.9% *
+99.9%=99.8%。同步調用使得系統的可用性受到了所有串接組件可用性的影響，因此我們在系統設計的時候應該清楚哪些地方應該同步調用，在不需要同
+步調用的時候儘量的進行異步的調用（而我這裡所說的異步是一種基於應用的異步，是一種設計上的異步，因為J2EE目前的底層系統出了JMS是異步API以
+外，其它的API都是同步調用的，所以我們也就不能依賴於底層J2EE平台給我們提供異步性，我們必須從應用和設計的角度引入異步性）<br>
+<br>
+<h3>
+  <a name="3_2901653153821826_08160938974"></a>不具備回滾能力
+</h3><br>
+雖然對應用的每個版本進行回滾能力測試是非常耗時和昂貴的，但是我們應該清楚任何的業務操作都有可能失敗，那麼我們必須為這種失敗作好準備，需要對系統的
+用戶負責，這就要求系統一定要具有回滾的能力，當失敗的時候能進行及時的回滾。（說到回滾大家可能第一時間想到的是事務的回滾，其實這裡的回滾應該是一種
+更寬泛意義的回滾，比如我們記錄每一次的失敗的業務操作，這樣在出現錯誤的時候就不是依靠於事務這種技術的手段，而是通過系統本身的回滾能力來進行回滾失
+敗業務操作）。<br>
+<br>
+<h3>
+  <a name="4_6656234869733453_99668187927"></a>不記錄日誌
+</h3><br>
+日誌記錄對於一個成熟穩定的系統是非常重要的，如果我們不進行日誌記錄，那麼我就很難統計系統的行為。<br>
+<br>
+<h3>
+  <a name="6_27202645502984524_3263167534"></a>無切分的數據庫
+</h3><br>
+隨著系統規模的慢慢變大，我們就需要打破單一數據的限制，需要對其進行切分。<br>
+<br>
+<h3>
+  <a name="7_1922687441110611_96343139093"></a>無切分的應用
+</h3><br>
+系統在規模小的時候，也許感覺不出無切分的應用帶來的問題，但是在目前互聯網高速發展的時代，誰能保證一個小應用在一夜或者是幾夜以後還是小應用呢？說不
+定哪天，我們就發現應用在突如其來的訪問量打擊的支離破碎。因此我們就需要讓我們的系統和我們一樣具有生命力，要想讓系統具有應付大負載的能力，這就要求
+我們的應用具有很好的伸縮性，這也就要求應用需要被良好的切分，只有進行了切分，我們才能對單一的部門進行伸縮，如果應用是一塊死板的話，我們是沒有辦法
+進行伸縮的。就好比火車一樣，如果火車設計之初就把他們設計為一體的，那麼我們還怎麼對火車的車廂進行裁剪？因此一個沒有切分的應用是一個沒有伸縮性和沒
+有可用性的應用。<br>
+<br>
+<h3>
+  <a name="8_03636558633297682_8496042666"></a>將伸縮性依賴於第三方廠商
+</h3><br>
+如果我們的應用系統的伸縮性依賴於第三方的廠商，比如依賴於數據庫集群，那麼我們就為系統的伸縮性埋下了一個定時炸彈。因為只有我們自己最清楚我們自己的應用，我們應該從應用和設計的角度出發去伸縮我們的應用，而不是依賴於第三方廠商的特性。<br>
+<br>
+<h2>
+  <a name="OLAP_9558059629367476_3836398019139299"></a><span style="font-family: Arial;">OLAP</span>
+</h2><br>
+聯機分析處理 (OLAP) 的概念最早是由關係數據庫之父E.F.Codd於1993年提出的，他同時提出了關於OLAP的12條準則。OLAP的提出引起了很大的反響，OLAP作為一類產品同聯機事務處理 (OLTP) 明顯區分開來。<br>
+<h3>
+  <a name="OLAP_4599690049262246"></a><span style="font-family: Arial;">OLAP報表產品最大的難點在哪裡？</span>
+</h3>目前報表工具最大的難點不在於報表的樣式（如斜線等），樣式雖較繁瑣但並非本質困難。最根本的難點在於業務
+部門知道報表代表的真正含義，卻不知道報表的數據統計模型模型；而IT部門通過理解業務部門的描述，在數據庫端進行設置數據統計模型，卻對報表本身所代表
+ 的價值很難理解。<br>
+<br>
+說起來有點深奧，其實並不複雜，OLAP最基本的概念只有三個：多維觀察、數據鑽取、CUBE運算。<br>
+<br>
+關於CUBE運算：OLAP分析所需的原始數據量是非常龐大的。一個分析模型，往往會涉及數百萬、數千萬條數據，甚至更多；而分析模型中包含多個維數據，這些維又可以由瀏覽者作任意的提取組合。這樣的結果就是大量的實時運算導致時間的延滯。<br>
+<br>
+我們可以設想，一個1000萬條記錄的分析模型，如果一次提取4個維度進行組合分析，那麼實際的運算次數將
+達到4的1000次方的數量。這樣的運算量將導致數十分鐘乃至更長的等待時間。如果用戶對維組合次序進行調整，或增加、或減少某些維度的話，又將是一個重
+ 新的計算過程。<br>
+<br>
+從上面的分析中，我們可以得出結論，如果不能解決OLAP運算效率問題的話，OLAP將是一個毫無實用價值的概念。那麼，一個成熟產品是如何解決這個問題的呢？這涉及到OLAP中一個非常重要的技術——數據CUBE預運算。<br>
+<br>
+一個OLAP模型中，度量數據和維數據我們應該事先確定，一旦兩者確定下來，我們可以對數據進行預先的處理。在正式發佈之前，將數據根據維進行最大<br>
+<br>
+限度的聚類運算，運算中會考慮到各種維組合情況，運算結果將生成一個數據CUBE，並保存在<a href="http://www.ciw.com.cn/Search.asp?Field=Title&amp;keyword=%E6%9C%8D%E5%8A%A1%E5%99%A8">服務器</a>上。<br>
+<br>
+這樣，當最終用戶在調閱這個分析模型的時候，就可以直接使用這個CUBE，在此基礎上根據用戶的維選擇和維組合進行復運算，從而達到實時響應的效果。<br>
+<br>
+<h2>
+  <a name="NOSQL__09502721972778405"></a>NOSQL們背後的共有原則
+</h2>
+<p>
+  幾個星期之前，我寫了一篇文章描述了常被稱作 NOSQL
+的一類新型數據庫的背後驅動。幾個星期之前，我在Qcon上發表了一個演講，其中，我介紹了一個可伸縮（scalable）的 twitter
+應用的構建模式，在我們的討論中，一個顯而易見的問題就是數據庫的可擴展性問題。要解答這個問題，我試圖尋找隱藏在各種 NOSQL
+之後的共有模式，並展示他們是如何解決數據庫可擴展性問題的。在本文中，我將盡力勾勒出這些共有的原則。
+</p>
+<h3>
+  <a name="_8299268803807944"></a>假設失效是必然發生的
+</h3>
+<p>
+  與我們先前通過昂貴硬件之類的手段盡力去避免失效的手段不同，NOSQL實現都建立在硬盤、機器和網絡都會失效這些假設之上。我們需要認定，我們不
+能徹底阻止這些時效，相反，我們需要讓我們的系統能夠在即使非常極端的條件下也能應付這些失效。Amazon S3
+就是這種設計的一個好例子。你可以在我最近的文章&nbsp;<a href="http://natishalom.typepad.com/nati_shaloms_blog/2009/11/why-existing-databases-rac-are-so-breakable.html">Why Existing Databases (RAC) are So Breakable!</a>&nbsp;中找到進一步描述。哪裡，我介紹了一些來自&nbsp;<a href="http://qconsf.com/sf2009/speaker/Jason+McHugh">Jason McHugh</a>&nbsp;的講演的面向失效的架構設計的內容（Jason 是在 Amazon 做 S3 相關工作的高級工程師）。
+</p>
+<h3>
+  <a name="_3399782225793654"></a>對數據進行分區
+</h3>
+<p>
+  通過對數據進行分區，我們最小化了失效帶來的影響，也將讀寫操作的負載分佈到了不同的機器上。如果一個節點失效了，只有該節點上存儲的數據受到影響，而不是全部數據。
+</p>
+<h3>
+  <a name="_6817497787365963"></a>保存同一數據的多個副本
+</h3>
+<p>
+  大部分 NOSQL 實現都基於數據副本的熱備份來保證連續的高可用性。一些實現提供了
+API，可以控制副本的複製，也就是說，當你存儲一個對象的時候，你可以在對象級指定你希望保存的副本數。在
+GigaSpaces，我們還可以立即複製一個新的副本到其他節點，甚至在必要時啟動一台新機器。這讓我們不比在每個節點上保存太多的數據副本，從而降低
+ 總存儲量以節約成本。
+</p>
+<p>
+  你還可以控制副本複製是同步還是異步的，或者兩者兼有。這決定了你的集群的一致性、可用性與性能三者。對於同步複製，可以犧牲性能保障一致性和可用
+性（寫操作之後的任意讀操作都可以保證得到相同版本的數據，即使是發生失效也會如此）。而最為常見的 GigaSpaces
+的配置是同步副本到被分界點，異步存儲到後端存儲。
+</p>
+<h3>
+  <a name="_41232823879475633"></a><strong>動態伸縮</strong>
+</h3>
+<p>
+  要掌控不斷增長的數據，大部分 NOSQL 實現提供了不停機或完全重新分區的擴展集群的方法。一個已知的處理這個問題的算法稱為一致哈希。有很多種不同算法可以實現一致哈希。
+</p>
+<p>
+  一個算法會在節點加入或失效時通知某一分區的鄰居。僅有這些節點受到這一變化的影響，而不是整個集群。有一個協議用於掌控需要在原有集群和新節點之間重新分佈的數據的變換區間。
+</p>
+<p>
+  另一個（簡單很多）的算法使用邏輯分區。在邏輯分區中，分區的數量是固定的，但分區在機器上的分佈式動態的。於是，例如有兩台機器和1000個邏輯
+分區，那麼每500個邏輯分區會放在一台機器上。當我們加入了第三台機器的時候，就成了每 333
+個分區放在一台機器上了。因為邏輯分區是輕量級的（基於內存中的哈希表），分佈這些邏輯分區非常容易。
+</p>
+<p>
+  第二種方法的優勢在於它是可預測並且一致的，而使用一致哈希方法，分區之間的重新分佈可能並不平穩，當一個新節點加入網絡時可能會消耗更長時間。一個用戶在這時尋找正在轉移的數據會得到一個異常。邏輯分區方法的缺點是可伸縮性受限於邏輯分區的數量。
+</p>
+<p>
+  更進一步的關於這一問題的討論，建議閱讀&nbsp;<a href="http://www.blogger.com/profile/03793674536997651667">Ricky Ho</a>&nbsp;的文章&nbsp;<a href="http://horicky.blogspot.com/2009/11/nosql-patterns.html%20">NOSQL Patterns</a>&nbsp;。
+</p>
+<h3>
+  <a name="_4374214008737275"></a>查詢支持
+</h3>
+<p>
+  在這個方面，不同的實現有相當本質的區別。不同實現的一個共性在於哈希表中的 key/value
+匹配。一些市縣提供了更高級的查詢支持，比如面向文檔的方法，其中數據以 blob
+的方式存儲，關聯一個鍵值對屬性列表。這種模型是一種無預定義結構的（schema-less）存儲，給一個文檔增加或刪除屬性非常容易，無需考慮文檔結
+ 構的演進。而 GigaSpaces 支持很多 SQL 操作。如果 SQL查詢沒有指出特定的簡直，那麼這個查詢就會被併行地 map
+到所有的節點去，由客戶端完成結果的匯聚。所有這些都是發生在幕後的，用戶代碼無需關注這些。
+</p>
+<h3>
+  <a name="_Map_Reduce__0618697512503632"></a>使用 Map/Reduce 處理匯聚
+</h3>
+<p>
+  Map/Reduce 是一個經常被用來進行複雜分析的模型，經常會和 Hadoop 聯繫在一起。 map/reduce
+常常被看作是並行匯聚查詢的一個模式。大部分 NOSQL 實現並不提供 map/reduce 的內建支持，需要一個外部的框架來處理這些查詢。對於
+GigaSpaces 來說，我們在 SQL 查詢中隱含了對 map/reduce 的支持，同時也顯式地提供了一個稱為 executors 的
+API 來支持 map/reduce。在質疑模型中，你可以將代碼發送到數據所在地地方，並在該節點上直接運行複雜的查詢。
+</p>
+<p>
+  這方面的更多細節，建議閱讀&nbsp;<a href="http://www.blogger.com/profile/03793674536997651667">Ricky Ho</a>&nbsp;的文章&nbsp;<a href="http://horicky.blogspot.com/2009/11/query-processing-for-nosql-db.html">Query Processing for NOSQL DB</a>&nbsp;。
+</p>
+<h3>
+  <a name="_7409241799750766"></a>基於磁盤的和內存中的實現
+</h3>
+<p>
+  NOSQL 實現分為基於文件的方法和內存中的方法。有些實現提供了混合模型，將內存和磁盤結合使用。兩類方法的最主要區別在於每 GB 成本和讀寫性能。
+</p>
+<p>
+  最近，斯坦福的一項稱為“The Case for
+RAMCloud”的調查，對磁盤和內存兩種方法給出了一些性能和成本方面的有趣的比較。總體上說，成本也是性能的一個函數。對於較低性能的實現，磁盤方
+ 案的成本遠低於基於內存的方法，而對於高性能需求的場合，內存方案則更加廉價。
+</p>
+<blockquote>
+  <p>
+    內存雲的顯而易見的缺點就是單位容量的高成本和高能耗。對於這些指標，內存雲會比純粹的磁盤系統差50到100
+倍，比使用閃存的系統差5-10倍（典型配置情況和指標參見參考文獻[1]）。內存雲同時還比基於磁盤和閃存的系統需要更多的機房面積。這樣，如果一個應
+ 用需要存儲大量的廉價數據，不需要高速訪問，那麼，內存雲將不是最佳選擇。<em><br></em>然而，對於高吞吐量需求的應用，內存雲將更有競爭力。<strong>當
+ 使用每次操作的成本和能量作為衡量因素的時候，內存雲的效率是傳統硬盤系統的 100 到 1000 倍，是閃存系統的 5-10
+倍。因此，對於高吞吐量需求的系統來說，內存雲不僅提供了高性能，也提供了高能源效率。同時，如果使用 DRAM
+芯片提供的低功耗模式，也可以降低內存雲的功耗，特別是在系統空閒的時候。</strong>此外，內存雲還有一些缺點，一些內存雲無法支持需要將數據在
+
+多個數據中心之間進行數據複製。對於這些環境，更新的時延將主要取決於數據中心間數據傳輸的時間消耗，這就喪失了內存雲的時延方面的優勢。此外，跨數據中
+ 心的數據複製會讓內存雲數據一致性更能難保證。不過，內存雲仍然可以在誇數據中心的情況下提供低時延的讀訪問。
+  </p>
+</blockquote>
+<h3>
+  <a name="_147455643042405"></a>僅僅是炒作?
+</h3>
+<p>
+  近來我見到的最多的問題就是 “NOSQL 是不是就是炒作？” 或 “NOSQL 會不會取代現在的數據庫？”
+</p>
+<p>
+  我的回答是——NOSQL 並非始於今日。很多 NOSQL
+實現都已經存在了十多年了，有很多成功案例。我相信有很多原因讓它們在如今比以往更受歡迎了。首先是由於社會化網絡和雲計算的發展，一些原先只有很高端的
+
+組織才會面臨的問題，如今已經成為普遍問題了。其次，已有的方法已經被發現無法跟隨需求一起擴展了。並且，成本的壓力讓很多組織需要去尋找更高性價比的方
+ 案，並且研究證實基於普通廉價硬件的分佈式存儲解決方案甚至比現在的高端數據庫更加可靠。（<a href="http://natishalom.typepad.com/nati_shaloms_blog/2009/11/why-existing-databases-rac-are-so-breakable.html" target="_blank">進一步閱讀</a>）所有這些導致了對這類“可伸縮性優先數據庫”的需求。這裡，我引用 AWS團隊的接觸工程師、VP，&nbsp;<a href="http://mvdirona.com/jrh/work/">James Hamilton</a>&nbsp;在他的文章&nbsp;<a href="http://perspectives.mvdirona.com/2009/11/03/OneSizeDoesNotFitAll.aspx">One Size Does Not Fit Al</a>l 中的一段話：
+</p>
+<blockquote>
+  <p>
+    “伸縮性優先應用是那些必須具備無限可伸縮性的應用，能夠不受限制的擴展比更豐富的功能更加重要。這些應用包括很多需要高 可伸縮性的網站，如
+Facebook, MySpace, Gmail, Yahoo 以及
+Amazon.com。有些站點實際上使用了關係型數據庫，而大部分實際上並未使用。這些服務的共性在於可擴展性比功能公眾要，他們無法泡在一個單一的
+RDBMS 上。”
+  </p>
+</blockquote>
+<p>
+  總結一下——我認為，現有的 SQL 數據庫可能不會很快淡出歷史舞台，但同時它們也不能解決世上的所有問題。NOSQL 這個名詞現在也變成了 Not Only SQL，這個變化表達了我的觀點。
+</p><br>
+<br>
+<p>
+  &nbsp;
+</p><a name="__886314807459712"></a>
+<h1>
+  <a name="_6712483493611217_093368983827"></a><span><strong><span style="font-size: 18pt;">附</span></strong></span>
+</h1>本書不求利，只圖學術之便。感謝諸位大牛寫了那麼多的資料，如果您不願意被引用，學生會重寫相應的章節。<br>
+<p>
+  引用網誌多篇，由於涵蓋太廣難以一一校隊，特此致歉。
+</p>
+<p>
+  &nbsp;
+</p>
+<h2>
+  <a name="_2173698448339071_054548149739"></a>感謝
+</h2>感謝Jdon,dbanotes,infoq和Timyang.您們分享和撰寫了那麼多有用的資料。<br>
+<br>
+<h2>
+  <a name="_6935117091385137_745914644052_9642310538889594"></a>版本志
+</h2>V0.1版本在2010.2.21發佈，提供了本書的主題框架<br>
+v0.2版本在2010.2.24發佈，因為一些外界原因，提前發佈。完善各個示例，勘誤，翻譯部分內容。<br>
+v0.3版本將在3月份或之後發佈<br>
+<br>
+<p>
+  &nbsp;
+</p>
+<h2>
+  <a name="_4067787453532219_249561086297_6469049028134853"></a>引用
+</h2>
+<blockquote>
+  <ul>
+    <li>http://www.jdon.com/jivejdon/thread/37999
+    </li>
+    <li>http://queue.acm.org/detail.cfm?id=1413264
+    </li>
+    <li>http://www.dbanotes.net/arch/five-minute_rule.html
+    </li>
+    <li>http://www.infoq.com/cn/news/2009/09/Do-Not-Delete-Data
+    </li>
+    <li>http://www.infoq.com/cn/news/2010/02/ec2-oversubscribed
+    </li>
+    <li>http://timyang.net/architecture/consistent-hashing-practice
+    </li>
+    <li>http://en.wikipedia.org/wiki/Gossip_protocol
+    </li>
+    <li>http://horicky.blogspot.com/2009/11/nosql-patterns.html
+    </li>
+    <li>http://snarfed.org/space/transactions_across_datacenters_io.html
+    </li>
+    <li>http://research.microsoft.com/en-us/um/people/lamport/pubs/lamport-paxos.pdf
+    </li>
+    <li>http://en.wikipedia.org/wiki/Distributed_hash_table
+    </li>
+    <li>http://hi.baidu.com/knuthocean/blog/item/cca1e711221dcfcca6ef3f1d.html
+    </li>
+    <li>http://zh.wikipedia.org/wiki/MapReduce
+    </li>
+    <li>http://labs.google.com/papers/mapreduce.html
+    </li>
+    <li>http://nosql-database.org/
+    </li>
+    <li>http://www.rackspacecloud.com/blog/2009/11/09/nosql-ecosystem/
+    </li>
+    <li>http://www.infoq.com/cn/news/2008/02/ruby-mapreduce-skynet
+    </li>
+    <li>http://s3.amazonaws.com/AllThingsDistributed/sosp/amazon-dynamo-sosp2007.pdf
+    </li>
+    <li>http://labs.google.com/papers/bigtable.html
+    </li>
+    <li>http://www.allthingsdistributed.com/2008/12/eventually_consistent.html
+    </li>
+    <li>http://www.rackspacecloud.com/blog/2009/11/09/nosql-ecosystem/
+    </li>
+    <li>http://timyang.net/tech/twitter-operations/
+    </li>
+    <li>http://blog.s135.com/read.php?394
+    </li>
+    <li>http://www.programmer.com.cn/1760/
+    </li>
+  </ul>
+</blockquote>
+<p>
+  &nbsp;
+</p>
+<p>
+  &nbsp;
+</p>	  </div>
+
+		<div style="margin: 25px auto; width: 336px;">
+		</div>
+
+		<div class="clr"></div>
+
+	  	  <!-- Item extra fields -->
+	  <div class="itemExtraFields">
+	  	<h3>Additional Info</h3>
+	  	<ul>
+						<li class="even typeLink group1">
+				<span class="itemExtraFieldsLabel">原文出處:</span>
+				<span class="itemExtraFieldsValue"><a href="http://www.yankay.com/wp-content/uploads/2010/02/NoSql%20Database%20Note/" target="_blank">http://www.yankay.com/wp-content/uploads/2010/02/NoSql%20Database%20Note/</a></span>
+				<br class="clr">
+			</li>
+						<li class="odd typeLink group1">
+				<span class="itemExtraFieldsLabel">作者:</span>
+				<span class="itemExtraFieldsValue"><a href="http:///" target="_blank"> </a></span>
+				<br class="clr">
+			</li>
+						</ul>
+	    <div class="clr"></div>
+	  </div>
+
+				<!-- google_ad_section_end -->
+	  <!-- Plugins: AfterDisplayContent -->
+
+	  <!-- K2 Plugins: K2AfterDisplayContent -->
+
+	<!-- linkwithin -->
+		<div class="linkwithin_div"><div id="lws_0"><div class="linkwithin_outer" style="margin: 0pt; border: 0pt none; padding: 0pt; clear: both;">
+<div class="linkwithin_inner" style="margin: 0pt; border: 0pt none; padding: 0pt; width: 596px;">
+    <div class="linkwithin_text" id="linkwithin_text_0" style="margin: 0pt; border: 0pt none; padding: 20px 0pt 5px; text-align: left; font-weight: bold;">
+        您或許對這些文章有興趣:
+    </div>
+
+    <div class="linkwithin_posts" style="margin: 0pt; border: 0pt none; padding: 0pt;">
+
+
+
+<a name="linkwithin_link_0" href="http://inspire.twgg.org/c/programming/other/relational-database-vs-key-value-database.html" onmousedown="this.href='http://widget.linkwithin.com/redirect?url=http%3A//inspire.twgg.org/c/programming/other/relational-database-vs-key-value-database.html&amp;vars=%5B%22http%3A//inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html%22%2C%20119246%2C%200%2C%20%22http%3A//inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html%22%2C%2054734439%2C%200%2C%2060189409%5D&amp;ts=' + (new Date()).getTime(); return true;" style="display: block; float: left; border-right: 1px solid rgb(221, 221, 221); border-bottom: medium none; margin: 0pt; padding: 6px; text-decoration: none; text-align: left; cursor: pointer;" onmouseover="this.style.backgroundColor='#dde'" onmouseout="this.style.backgroundColor=''">
+<div style="width: 106px; height: 165px; margin: 0pt; border: 0pt none; padding: 0pt;">
+
+<div class="linkwithin_img_0" style="margin: 0pt; border: 1px solid rgb(221, 221, 221); padding: 2px; width: auto; height: auto;">
+
+    <div style="background: url(&quot;http://images.linkwithin.com/images/60189409.jpg&quot;) no-repeat scroll 0% 0% transparent; width: 100px; height: 100px; margin: 0pt; border: 0pt none; padding: 0pt;"></div>
+
+
+</div>
+
+<div class="linkwithin_title linkwithin_title_0" style="margin: 3px 0pt 0pt; border: 0pt none; padding: 0pt; font: 12px arial; color: rgb(69, 69, 69);">
+    關聯式資料庫 vs. Key-Value 資料庫
+</div>
+
+</div>
+</a>
+
+<a name="linkwithin_link_0" href="http://inspire.twgg.org/c/internet/host-setting/mega-site-distributed-architecture-design-based-on-cloud-computing.html" onmousedown="this.href='http://widget.linkwithin.com/redirect?url=http%3A//inspire.twgg.org/c/internet/host-setting/mega-site-distributed-architecture-design-based-on-cloud-computing.html&amp;vars=%5B%22http%3A//inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html%22%2C%20119246%2C%200%2C%20%22http%3A//inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html%22%2C%2054734439%2C%201%2C%2054734462%5D&amp;ts=' + (new Date()).getTime(); return true;" style="display: block; float: left; border-right: 1px solid rgb(221, 221, 221); border-bottom: medium none; margin: 0pt; padding: 6px; text-decoration: none; text-align: left; cursor: pointer;" onmouseover="this.style.backgroundColor='#dde'" onmouseout="this.style.backgroundColor=''">
+<div style="width: 106px; height: 165px; margin: 0pt; border: 0pt none; padding: 0pt;">
+
+<div class="linkwithin_img_0" style="margin: 0pt; border: 1px solid rgb(221, 221, 221); padding: 2px; width: auto; height: auto;">
+
+    <div style="background: url(&quot;http://images.linkwithin.com/images/54734462.jpg&quot;) no-repeat scroll 0% 0% transparent; width: 100px; height: 100px; margin: 0pt; border: 0pt none; padding: 0pt;"></div>
+
+
+</div>
+
+<div class="linkwithin_title linkwithin_title_0" style="margin: 3px 0pt 0pt; border: 0pt none; padding: 0pt; font: 12px arial; color: rgb(69, 69, 69);">
+    巨型網站的分散式架構設計 （雲端運算的基礎）
+</div>
+
+</div>
+</a>
+
+<a name="linkwithin_link_0" href="http://inspire.twgg.org/c/internet/host-setting/apache-htaccess-rules-introduced-in-rewritecond.html" onmousedown="this.href='http://widget.linkwithin.com/redirect?url=http%3A//inspire.twgg.org/c/internet/host-setting/apache-htaccess-rules-introduced-in-rewritecond.html&amp;vars=%5B%22http%3A//inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html%22%2C%20119246%2C%200%2C%20%22http%3A//inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html%22%2C%2054734439%2C%202%2C%2042537130%5D&amp;ts=' + (new Date()).getTime(); return true;" style="display: block; float: left; border-right: 1px solid rgb(221, 221, 221); border-bottom: medium none; margin: 0pt; padding: 6px; text-decoration: none; text-align: left; cursor: pointer;" onmouseover="this.style.backgroundColor='#dde'" onmouseout="this.style.backgroundColor=''">
+<div style="width: 106px; height: 165px; margin: 0pt; border: 0pt none; padding: 0pt;">
+
+<div class="linkwithin_img_0" style="margin: 0pt; border: 1px solid rgb(221, 221, 221); padding: 2px; width: auto; height: auto;">
+
+    <div style="background: url(&quot;http://images.linkwithin.com/images/42537130.jpg&quot;) no-repeat scroll 0% 0% transparent; width: 100px; height: 100px; margin: 0pt; border: 0pt none; padding: 0pt;"></div>
+
+
+</div>
+
+<div class="linkwithin_title linkwithin_title_0" style="margin: 3px 0pt 0pt; border: 0pt none; padding: 0pt; font: 12px arial; color: rgb(69, 69, 69);">
+    Apache htaccess 中的 RewriteCond 規則介紹
+</div>
+
+</div>
+</a>
+
+<a name="linkwithin_link_0" href="http://inspire.twgg.org/c/internet/host-setting/in-the-winxp-on-the-svn-server-set-up-their-own.html" onmousedown="this.href='http://widget.linkwithin.com/redirect?url=http%3A//inspire.twgg.org/c/internet/host-setting/in-the-winxp-on-the-svn-server-set-up-their-own.html&amp;vars=%5B%22http%3A//inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html%22%2C%20119246%2C%200%2C%20%22http%3A//inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html%22%2C%2054734439%2C%203%2C%2018042819%5D&amp;ts=' + (new Date()).getTime(); return true;" style="display: block; float: left; border-right: 1px solid rgb(221, 221, 221); border-bottom: medium none; margin: 0pt; padding: 6px; text-decoration: none; text-align: left; cursor: pointer;" onmouseover="this.style.backgroundColor='#dde'" onmouseout="this.style.backgroundColor=''">
+<div style="width: 106px; height: 165px; margin: 0pt; border: 0pt none; padding: 0pt;">
+
+<div class="linkwithin_img_0" style="margin: 0pt; border: 1px solid rgb(221, 221, 221); padding: 2px; width: auto; height: auto;">
+
+    <div class="linkwithin_filler_0" style="background: url(&quot;http://www.linkwithin.com/default.jpg&quot;) no-repeat scroll 0% 0% transparent; opacity: 0.6; width: 100px; height: 100px; margin: 0pt; border: 0pt none; padding: 0pt;"></div>
+
+
+</div>
+
+<div class="linkwithin_title linkwithin_title_0" style="margin: 3px 0pt 0pt; border: 0pt none; padding: 0pt; font: 12px arial; color: rgb(69, 69, 69);">
+    在Windows XP上架設自己的SVN伺服器
+</div>
+
+</div>
+</a>
+
+<a name="linkwithin_link_0" href="http://inspire.twgg.org/c/internet/host-setting/web-hosting-tutorial-to-install-dropbox-backup-site.html" onmousedown="this.href='http://widget.linkwithin.com/redirect?url=http%3A//inspire.twgg.org/c/internet/host-setting/web-hosting-tutorial-to-install-dropbox-backup-site.html&amp;vars=%5B%22http%3A//inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html%22%2C%20119246%2C%200%2C%20%22http%3A//inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html%22%2C%2054734439%2C%204%2C%2036206322%5D&amp;ts=' + (new Date()).getTime(); return true;" style="display: block; float: left; border-bottom: medium none; margin: 0pt; padding: 6px; text-decoration: none; text-align: left; cursor: pointer;" onmouseover="this.style.backgroundColor='#dde'" onmouseout="this.style.backgroundColor=''">
+<div style="width: 106px; height: 165px; margin: 0pt; border: 0pt none; padding: 0pt;">
+
+<div class="linkwithin_img_0" style="margin: 0pt; border: 1px solid rgb(221, 221, 221); padding: 2px; width: auto; height: auto;">
+
+    <div style="background: url(&quot;http://images.linkwithin.com/images/36206322.jpg&quot;) no-repeat scroll 0% 0% transparent; width: 100px; height: 100px; margin: 0pt; border: 0pt none; padding: 0pt;"></div>
+
+
+</div>
+
+<div class="linkwithin_title linkwithin_title_0" style="margin: 3px 0pt 0pt; border: 0pt none; padding: 0pt; font: 12px arial; color: rgb(69, 69, 69);">
+    虛擬主機安裝Dropbox備份網站的教程
+</div>
+
+</div>
+</a>
+
+
+
+    </div>
+
+    <div id="linkwithin_logo_0" style="clear: both; margin: 0pt 0pt 20px; border: 0pt none; padding: 5px 6px 0pt 0pt; text-align: right;">
+        <a id="linkwithin_logolink_0" href="http://www.linkwithin.com/learn?ref=widget" style="font: 11px arial; color: rgb(187, 187, 187); text-decoration: none; border-bottom: medium none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'" target="_blank"><b>LinkWithin</b></a>
+    </div>
+</div>
+</div></div></div>
+
+		<script>
+		var linkwithin_site_id = 119246;
+		</script>
+		<script src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/widget.js"></script>
+		<a href="http://www.linkwithin.com/"><img src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/pixel.png" alt="Related Posts with Thumbnails" style="border: 0pt none;"></a>
+	<!-- linkwithin -->
+
+	  <div class="clr"></div>
+  </div>
+
+    <div class="itemLinks">
+
+				<div class="itemHitsTwitter">
+						<!-- Item Hits -->
+			<span class="itemHits">
+				Read <b>2546</b> times			</span>
+
+
+			<div class="clr"></div>
+		</div>
+
+				<!-- Item category name -->
+		<div class="itemCategory">
+			<span>Published in</span>
+			<a href="http://inspire.twgg.org/c/internet/host-setting/">架站技術</a>
+		</div>
+
+
+
+
+		<div class="clr"></div>
+  </div>
+
+
+
+    <!-- Latest items from author -->
+	<div class="itemAuthorLatest">
+		<h3>Latest from </h3>
+		<ul>
+						<li class="even">
+				<a href="http://inspire.twgg.org/c/inspire/design-concept/2011-web-design-trend-analysis-and-prediction.html">2011年網頁設計趨勢分析與預測</a>
+			</li>
+						<li class="odd">
+				<a href="http://inspire.twgg.org/c/audio-a-video/behind-the-scenes/experts-say-that-jargon-terms-analysis-professional-hollywood-animation.html">行家說行話 - 好萊塢動畫專業用語解析</a>
+			</li>
+						<li class="even">
+				<a href="http://inspire.twgg.org/c/knowledge/psychology/i-was-rejected-how-do.html">我被拒絕了，怎麼辦？</a>
+			</li>
+						<li class="odd">
+				<a href="http://inspire.twgg.org/c/inspire/design-concept/10-common-web-interface-application-technology.html">10種 web 界面應用的常見技術</a>
+			</li>
+						<li class="even">
+				<a href="http://inspire.twgg.org/c/programming/php/php-regular-expression-with-a-string-of-extra-white-space-removed.html">用 PHP 正規表示式清除字串中的多餘空白</a>
+			</li>
+					</ul>
+		<div class="clr"></div>
+	</div>
+
+
+	<div class="clr"></div>
+
+
+
+    <!-- Item navigation -->
+  <div class="itemNavigation">
+  	<span class="itemNavigationTitle">More in this category:</span>
+
+				<a class="itemPrevious" href="http://inspire.twgg.org/c/internet/host-setting/mega-site-distributed-architecture-design-based-on-cloud-computing.html">
+			« 巨型網站的分散式架構設計 （雲端運算的基礎）		</a>
+
+
+  </div>
+
+  <!-- Plugins: AfterDisplay -->
+
+  <!-- K2 Plugins: K2AfterDisplay -->
+
+   <!-- Item comments -->
+  <a name="itemCommentsAnchor" id="itemCommentsAnchor"></a>
+
+  <div class="itemComments">
+
+
+
+			  <!-- Item comments form -->
+	  <div class="itemCommentsForm">
+
+	  </div>
+
+  </div>
+
+	<div class="itemBackToTop">
+		<a href="http://inspire.twgg.org/c/internet/host-setting/written-discussion-nosql-database.html#startOfPageId302">back to top</a>
+	</div>
+
+	<div class="clr"></div>
+</div>
+<!-- End K2 Item Layout -->
+
+<!-- JoomlaWorks "K2" (v2.1) | Learn more about K2 at http://k2.joomlaworks.gr -->
+
+
+
+  			</div>
+
+
+
+
+
+
+
+			</div></div></div>
+
+
+
+
+  	<!-- LEFT COLUMN -->
+
+  	<div id="ja-col1">
+
+
+
+
+
+
+  						<div class="jamod show moduletable" id="Mod27">
+			  				<h3 class="show">搜尋</h3>
+								<div style="overflow: hidden;" class="jamod-content clearfix"><div class="ja-inner">
+<div id="k2ModuleBox27" class="k2SearchBlock ">
+  <form action="/" method="get">
+        <input name="option" value="com_k2" type="hidden">
+    <input name="view" value="itemlist" type="hidden">
+    <input name="task" value="search" type="hidden">
+
+    <input name="searchword" maxlength="25" alt="Search" class="inputbox" size="25" value="搜尋" onblur="if(this.value=='') this.value='搜尋';" onfocus="if(this.value=='搜尋') this.value='';" type="text">
+
+            <input value="Search" class="button" onclick="this.form.searchword.focus();" type="submit">
+          </form>
+</div>
+</div></div>
+		</div>
+					<div class="jamod show moduletable" id="Mod19">
+			  				<h3 class="show">日期分類</h3>
+								<div style="overflow: hidden;" class="jamod-content clearfix"><div class="ja-inner"><div id="k2ModuleBox19" class="k2ArchivesBlock ">
+  <ul>
+        <li>
+            <a href="http://inspire.twgg.org/2011/1.html">
+        一月 2011        (7)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2010/12.html">
+        十二月 2010        (22)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2010/11.html">
+        十一月 2010        (23)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2010/10.html">
+        十月 2010        (2)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2010/9.html">
+        九月 2010        (18)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2010/8.html">
+        八月 2010        (54)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2010/7.html">
+        七月 2010        (6)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2010/6.html">
+        六月 2010        (22)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2010/5.html">
+        五月 2010        (17)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2010/2.html">
+        二月 2010        (5)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2010/1.html">
+        一月 2010        (50)      </a>
+          </li>
+        <li>
+            <a href="http://inspire.twgg.org/2009/12.html">
+        十二月 2009        (78)      </a>
+          </li>
+      </ul>
+</div>
+</div></div>
+		</div>
+					<div class="jamod show moduletable" id="Mod23">
+			  				<div class="jamod-content clearfix"><div class="ja-inner"><div align="center">
+</div></div></div>
+		</div>
+					<div class="jamod show moduletable" id="Mod20">
+			  				<h3 class="show">分類</h3>
+								<div style="overflow: hidden;" class="jamod-content clearfix"><div class="ja-inner">
+<div id="k2ModuleBox20" class="k2CategoriesListBlock ">
+	<ul class="level0"><li><a href="http://inspire.twgg.org/c/internet/"><span>網路科技 (0)</span></a><ul class="level1"><li><a href="http://inspire.twgg.org/c/internet/google/"><span>Google (16)</span></a></li><li><a href="http://inspire.twgg.org/c/internet/apple/"><span>Apple (2)</span></a></li><li><a href="http://inspire.twgg.org/c/internet/cms/"><span>CMS 內容管理系統 (12)</span></a></li><li><a href="http://inspire.twgg.org/c/internet/trends/"><span>趨勢 (6)</span></a></li><li><a href="http://inspire.twgg.org/c/internet/firefox/"><span>FireFox (9)</span></a></li><li><a href="http://inspire.twgg.org/c/internet/seo/"><span>SEO與行銷 (23)</span></a></li><li><a href="http://inspire.twgg.org/c/internet/host-setting/"><span>架站技術 (8)</span></a></li><li><a href="http://inspire.twgg.org/c/internet/tools/"><span>工具軟體 (0)</span></a></li><li><a href="http://inspire.twgg.org/c/internet/other/"><span>其他 (17)</span></a></li></ul></li><li><a href="http://inspire.twgg.org/c/programming/"><span>程式語言 (1)</span></a><ul class="level1"><li><a href="http://inspire.twgg.org/c/programming/php/"><span>PHP (24)</span></a></li><li><a href="http://inspire.twgg.org/c/programming/javascript/"><span>JavaScript (14)</span></a></li><li><a href="http://inspire.twgg.org/c/programming/jquery/"><span>jQuery (14)</span></a></li><li><a href="http://inspire.twgg.org/c/programming/html-css/"><span>HTML &amp; CSS (34)</span></a></li><li><a href="http://inspire.twgg.org/c/programming/mysql/"><span>MySQL (3)</span></a></li><li><a href="http://inspire.twgg.org/c/programming/dev-tools/"><span>開發工具 (0)</span></a></li><li><a href="http://inspire.twgg.org/c/programming/other/"><span>其他 (41)</span></a></li></ul></li><li><a href="http://inspire.twgg.org/c/audio-a-video/"><span>影音相關 (0)</span></a><ul class="level1"><li><a href="http://inspire.twgg.org/c/audio-a-video/behind-the-scenes/"><span>電影特效與幕後 (17)</span></a></li><li><a href="http://inspire.twgg.org/c/audio-a-video/video/"><span>影像技術 (15)</span></a></li><li><a href="http://inspire.twgg.org/c/audio-a-video/music-a-audio/"><span>音效與配樂 (10)</span></a></li><li><a href="http://inspire.twgg.org/c/audio-a-video/screen-play/"><span>劇本寫作 (2)</span></a></li><li><a href="http://inspire.twgg.org/c/audio-a-video/tools/"><span>工具軟體 (2)</span></a></li><li><a href="http://inspire.twgg.org/c/audio-a-video/equipment/"><span>設備器材 (1)</span></a></li><li><a href="http://inspire.twgg.org/c/audio-a-video/others/"><span>其他 (2)</span></a></li></ul></li><li><a href="http://inspire.twgg.org/c/inspire/"><span>設計靈感 (0)</span></a><ul class="level1"><li><a href="http://inspire.twgg.org/c/inspire/tut/"><span>教學文章 (10)</span></a></li><li><a href="http://inspire.twgg.org/c/inspire/appreciate/"><span>名家欣賞 (9)</span></a></li><li><a href="http://inspire.twgg.org/c/inspire/source/"><span>素材 (7)</span></a></li><li><a href="http://inspire.twgg.org/c/inspire/design-concept/"><span>設計概念 (20)</span></a></li><li><a href="http://inspire.twgg.org/c/inspire/resource/"><span>工具與資源 (1)</span></a></li></ul></li><li><a href="http://inspire.twgg.org/c/knowledge/"><span>知識寶庫 (0)</span></a><ul class="level1"><li><a href="http://inspire.twgg.org/c/knowledge/psychology/"><span>心理與人性 (6)</span></a></li><li><a href="http://inspire.twgg.org/c/knowledge/nlp/"><span>NLP 神經語言學 (6)</span></a></li><li><a href="http://inspire.twgg.org/c/knowledge/marketing/"><span>商業行銷 (2)</span></a></li><li><a href="http://inspire.twgg.org/c/knowledge/creative/"><span>創意激盪 (0)</span></a></li><li><a href="http://inspire.twgg.org/c/knowledge/self-management/"><span>工作效率與自我管理 (2)</span></a></li><li><a href="http://inspire.twgg.org/c/knowledge/others/"><span>其他 (0)</span></a></li></ul></li></ul></div>
+</div></div>
+		</div>
+					<div class="jamod show moduletable" id="Mod29">
+			  				<div class="jamod-content clearfix"><div class="ja-inner"><div style="text-align: center;"></div></div></div>
+		</div>
+					<div class="jamod show moduletable" id="Mod25">
+			  				<h3 class="show">推薦文章</h3>
+								<div style="overflow: hidden;" class="jamod-content clearfix"><div class="ja-inner"><ul class="mostread2">
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/audio-a-video/music-a-audio/twilight-eclipse-original-soundtrack-320k-filedeck-137mb.html" class="mostread2">暮光之城3：蝕 - 電影原聲帶 ( 320k @ FileDeck @ 137MB )</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/audio-a-video/others/the-rise-of-independent-production.html" class="mostread2">獨立製片的興起</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/inspire/design-concept/vertical-grid-spacing-and-the-gradual-part-two.html" class="mostread2">垂直柵格與漸進式行距(下)</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/internet/seo/how-much-do-a-web-site.html" class="mostread2">做一個網站要多少錢？</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/internet/other/baidezhimen-2-full-game-development-process-and-experience-sharing.html" class="mostread2">柏德之門2 遊戲開發全歷程與經驗分享 </a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/other/would-you-like-mvc-itself-is-multiple-choice-questions.html" class="mostread2">要不要 MVC ，本身就是選擇題</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/php/aspnet-and-php-running-speed-of-comparative.html" class="mostread2">ASP.NET 與 PHP 的運行速度大比較</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/html-css/incredibly-pure-css3-icon-design.html" class="mostread2">難以置信的純 CSS3 ICON 設計</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/jquery/a-very-nice-jquery-upload-plug-ins.html" class="mostread2">一款很漂亮的jquery上傳插件 </a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/other/30-day-teaching-institute-mootools-10-fxtween-gradient.html" class="mostread2">30天學會 MooTools 教學(10): Fx.Tween漸變</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/inspire/tut/35-excellent-articles-ui-design-teaching.html" class="mostread2">35 個優秀的 UI 設計教學文章</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/html-css/the-html5-drawing-program-from-deviantart.html" class="mostread2">來自 DeviantArt 的 HTML5 繪圖程式 - MURO</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/html-css/default-template-page-html5-web-development.html" class="mostread2">HTML5 網頁開發預設模版頁</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/audio-a-video/behind-the-scenes/there-is-only-one-tron.html" class="mostread2">世上只有一部TRON</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/jquery/jquery-tools-pure-web-content-showcase-ui.html" class="mostread2">jQuery Tools：純粹的網頁內容展示型 UI</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/knowledge/nlp/nlp-explanation-of-terms.html" class="mostread2">NLP 術語解釋</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/html-css/zen-coding-ultra-high-efficiency-of-the-preparation-of-html-css-code-new-methods.html" class="mostread2">Zen Coding - 超高效率編寫 HTML, CSS 代碼的新方法</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/internet/seo/hello-404-a-large-collection-of-interesting-404-page.html" class="mostread2">Hello! 404 - 有趣 404 頁面大蒐集</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/other/30-day-teaching-institute-mootools-13-regular-expression.html" class="mostread2">30天學會 MooTools 教學(13): 正規表示式</a>
+			</li>
+	<li class="mostread2">
+		<a href="http://inspire.twgg.org/c/programming/php/php-programming-specification.html" class="mostread2">PHP 程式編寫規範</a>
+			</li>
+</ul></div></div>
+		</div>
+					<div class="jamod show moduletable" id="Mod21">
+			  				<h3 class="show">RSS</h3>
+								<div style="overflow: hidden;" class="jamod-content clearfix"><div class="ja-inner"></div></div>
+		</div>
+
+
+  	</div>
+
+  	<!-- //LEFT COLUMN -->
+
+
+
+
+  	</div>
+
+  	<!-- //CONTENT -->
+
+
+
+
+
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<!-- FOOTER -->
+
+<div id="ja-footer" class="wrap">
+
+<div class="main clearfix">
+
+  <div class="ja-inner clearfix">
+
+		<ul class="menu-nav"><li class="item4"><a href="http://inspire.twgg.org/Log-in.html"><span>登入</span></a></li></ul>
+
+
+
+	</div>
+
+
+
+	<div class="logo-footer"></div>
+
+</div>
+
+</div>
+
+<!-- //FOOTER -->
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="NoSQL%E8%B3%87%E6%96%99%E5%BA%AB%E7%AD%86%E8%AB%87_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-11823913-1");
+pageTracker._trackPageview();
+} catch(err) {}</script><script>
+function getElementsByClassName(oElm, strTagName, strClassName){
+    var arrElements = (strTagName == "*" && oElm.all)? oElm.all :
+        oElm.getElementsByTagName(strTagName);
+    var arrReturnElements = new Array();
+    strClassName = strClassName.replace(/\-/g, "\\-");
+    var oRegExp = new RegExp("(^|\\s)" + strClassName + "(\\s|$)");
+    var oElement;
+    for(var i=0; i < arrElements.length; i++){
+        oElement = arrElements[i];
+        if(oRegExp.test(oElement.className)){
+            arrReturnElements.push(oElement);
+        }
+    }
+    return (arrReturnElements)
+}
+
+function setTrRows(cls_name){
+    var tables = getElementsByClassName(document,'table',cls_name);
+    for( var index = 0 ; index < tables.length ; index++)
+    {
+     var obj1 = tables[index].getElementsByTagName("tr"); //自動抓取tr
+     var obj2 = tables[index].getElementsByTagName("th"); //自動抓取th
+     var num1 = obj1.length;
+     var num2 = obj2.length
+
+     for(var i=0;i<num1;i++){
+       if(i%2==0){
+         obj1[i].className="row0"; //單數行
+       }else{
+         obj1[i].className="row1"; //雙數行
+       }
+     }
+     for(var k=0;k<num2;k++){
+       obj2[k].className="colorTh"; //表頭的樣式
+     }
+    }
+
+  }
+  setTrRows('colorTable'); //執行這段function，你也可以不寫成function直接執行
+</script><script type="text/javascript"><!--
+// JavaScript Document
+window.addEvent('domready',function () {
+
+	var l = $$('a');
+
+	for(i=0; i<=l.length; i=i+1){
+		l[i].setProperty('href', l[i].getProperty('href').replace('c/','/c/') );
+	}
+
+});
+
+// --></script>
+
+<script type="text/javascript">
+	jaAddFirstItemToBottommenu();
+
+</script>
+
+</div>
+
+<div style="display: none; z-index: 65555; position: fixed; top: 0px; left: 0px; visibility: hidden; opacity: 0;" id="sbox-overlay"></div><div style="display: none; z-index: 65557; position: fixed; top: 50%; left: 50%;" id="sbox-window"><a href="#" id="sbox-btn-close"></a><div style="visibility: hidden; opacity: 0;" id="sbox-content"></div></div></body></html>

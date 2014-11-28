@@ -1,0 +1,118 @@
+VBA Program
+
+□Data Type
+string integer long    single  double
+date   byte    boolean variant object currency (貨幣型態)
+
+Worksheets("Sheet1").Range("A1") = 100
+Worksheets("Sheet1").Range("A1").Font.Bold = True
+Worksheets("Sheet1").Range("A1").Font.ColorIndex = 3 (1~16)
+
+
+
+With Worksheets("Sheet1").range("A1")
+    .Font.Bold = False
+    .Font.Underline = False
+    .Font.Color = RGB( 0, 255, 0 )
+    .Font.Color = 3 (1~16)
+    .ColumnWidth = 20
+    .RowHeight = 20
+End With
+
+
+
+
+□01. 增加一篇新的試算表
+Set NewSheet = Sheets.Add(Type:=xlWorksheet)
+For I = 1 To Sheets.Count
+    NewSheet.Cells(I, 1).Value = Sheets(I).Name
+Next I
+
+□飯粒
+選擇工作表 m1 , 選擇欄位 E7 , 填入 "xx"
+Sheets("m1").Select
+Range("E7").Select
+ActiveCell.FormulaR1C1 = "xx"
+
+這個 Excel 的檔名 (例 money.xls)
+ActiveWorkbook.Name
+
+清除當時的儲存格
+Selection.ClearContents
+
+在名為 Sheet1 的第一列第五欄 (E1) 填入 "abc"
+Sheet1.Cells(1, 5).Value = "abc"
+
+Sheets.Count 為目前試算表總數
+Sheet1.Cells(1, 1).Value = Sheets.Count
+
+Sheets(2).Name 指的是由左邊算起，第二個試算表的名稱
+Sheet1.Cells(1, 1).Value = Sheets(2).Name
+
+將目前工作的試算表(工作表) 拷貝一份並放至 Sheet3 之後
+Worksheets("Sheet1").Copy after:=Worksheets("Sheet3")
+
+複製 Sheet1 中的已用範圍，開新檔案一個工作表，然后將複製範圍的值黏貼到新工作表中
+Worksheets("Sheet1").UsedRange.Copy
+Set newSheet = Worksheets.Add
+newSheet.Range("A1").PasteSpecial Paste:=xlValues
+
+可用 Range(arg) （其中 arg 為範圍名稱）傳回代表單個儲存格或儲存格範圍的 Range 物件。
+下例將儲存格 A1 中的值指派給儲存格 A5 。
+Worksheets("Sheet1").Range("A5").Value = Worksheets("Sheet1").Range("A1").Value
+
+往下移一格
+ActiveCell.Offset(1, 0).Select
+
+將 sheet1 工作表 A1 ~ A4 的資料 copy to sheet2 工作表的 B1 
+Set ws1 = Worksheets("sheet1")
+Set ws2 = Worksheets("sheet2")
+ws1.Range("A1:A4").Copy Destination:=ws2.Range("B1")
+
+自動執行、關閉巨集
+sub auto_open()
+end sub
+sub auto_close()
+end sub
+
+單純拷貝??
+ws1.Range("A1:A4").ws2.Range("B1")
+連格式一同考拷貝
+ws1.Range("A1:A4").Copy Destination:=ws2.Range("B1")
+拷貝 ws1 於 ws2 之後
+ws1.Copy after:=ws2
+拷貝 ws1 於 ws2 之前
+ws1.Copy before:=ws2
+工作表名稱
+ActiveSheet.Name = ""
+
+儲存格字串位置
+.Range("A1").HorizontalAlignment =
+xlHAlignCenter      置中
+xlHAlignLeft        靠左
+xlHAlignRight       靠右
+xlHAlignDistributed 分散對齊
+xlHAlignJustify     置於兩端
+
+線
+.Selection.Borders()
+xlTop    上
+xlBottom 下
+xlLeft   左
+xlRight  右
+
+新增一個活頁簿，存檔為 test.xls ，加入資料並存檔
+set NewBook = Workbooks.Add
+NewBook.SaveAs Filename:="test.xls"
+Worksheets("sheet1").Range("A1") = 1000
+NewBook.Save
+
+事件
+Activate         工作表成作用狀態時產生此事件
+BeforeRightClick 工作表被連按兩下時
+BeforeRightClick 工作表按下滑鼠右鍵時
+Calculate        重新計算工作表中存格的值時
+Change           工作表中儲存格的值有變更時
+Deacivate        工作表為非作用狀態時
+SelectionChange  工作表的儲存格被選取時
+

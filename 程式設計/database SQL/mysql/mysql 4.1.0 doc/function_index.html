@@ -1,0 +1,578 @@
+<HTML>
+  
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/function_index.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+<HEAD>
+  <TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+   <style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+   <META http-equiv="Content-Type" content="text/html; charset=big5">
+   <META name="description" content="MySQL 4.1.0  中文參考手冊">
+   <META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+   <LINK rel="shortcut icon" href="shuixin13.ico" />
+   <LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+
+  </HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+<h1>MySQL Reference Manual for version 4.1.0-alpha.</h1>
+<p>　</p>
+<hr size="1" />
+<p></p>
+<p>&nbsp;</p>
+<DIR>
+<LI><A HREF="06-3.html#IDX1145">! (logical NOT)</A>
+<LI><A HREF="06-3.html#IDX1120">!= (not equal)</A>
+<LI><A HREF="06-1.html#IDX990">"</A>
+<LI><A HREF="06-3.html#IDX1251">% (modulo)</A>
+<LI><A HREF="06-1.html#IDX968">% (wildcard character)</A>
+<LI><A HREF="06-3.html#IDX1321">&#38; (bitwise AND)</A>
+<LI><A HREF="06-3.html#IDX1148">&#38;& (logical AND)</A>
+<LI><A HREF="06-3.html#Parentheses">() (06-3)</A>
+<LI><A HREF="06-1.html#IDX960">(Control-Z) \z</A>
+<LI><A HREF="06-3.html#IDX1235">* (multiplication)</A>
+<LI><A HREF="06-3.html#IDX1231">+ (addition)</A>
+<LI><A HREF="06-3.html#IDX1233">- (subtraction)</A>
+<LI><A HREF="06-3.html#IDX1241">- (unary minus)</A>
+<LI><A HREF="06-3.html#IDX1236">/ (division)</A>
+<LI><A HREF="06-4.html#IDX1400">/etc/passwd</A>
+<LI><A HREF="06-3.html#IDX1123">&#60; (less than)</A>
+<LI><A HREF="06-3.html#IDX1325">&#60;&#60; (left shift)</A>
+<LI><A HREF="06-3.html#IDX1122">&#60;= (less than or equal)</A>
+<LI><A HREF="06-3.html#IDX1130">&#60;=&#62; (Equal to)</A>
+<LI><A HREF="06-3.html#IDX1120">&#60;&#62; (not equal)</A>
+<LI><A HREF="06-3.html#IDX1116">= (equal)</A>
+<LI><A HREF="06-3.html#IDX1128">&#62; (greater than)</A>
+<LI><A HREF="06-3.html#IDX1126">&#62;= (greater than or equal)</A>
+<LI><A HREF="06-3.html#IDX1326">&#62;&#62; (right shift)</A>
+<LI><A HREF="06-1.html#IDX950">\" (double quote)</A>
+<LI><A HREF="06-1.html#IDX949">\' (single quote)</A>
+<LI><A HREF="06-1.html#IDX947">\0 (ASCII 0)</A>
+<LI><A HREF="06-1.html#IDX964">\\ (escape)</A>
+<LI><A HREF="06-1.html#IDX952">\b (backspace)</A>
+<LI><A HREF="06-1.html#IDX955">\n (newline)</A>
+<LI><A HREF="06-1.html#IDX957">\r (carriage return)</A>
+<LI><A HREF="06-1.html#IDX960">\t (tab)</A>
+<LI><A HREF="06-1.html#IDX959">\z (Control-Z) ASCII(26)</A>
+<LI><A HREF="06-3.html#IDX1323">^ (bitwise XOR)</A>
+<LI><A HREF="06-1.html#IDX965">_ (wildcard character)</A>
+<LI><A HREF="06-1.html#IDX990">`</A>
+</DIR>
+<H2>A</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1243">ABS()</A>
+<LI><A HREF="06-3.html#IDX1264">ACOS()</A>
+<LI><A HREF="06-3.html#IDX1295">ADDDATE()</A>
+<LI><A HREF="06-3.html#IDX1230">addition (+)</A>
+<LI><A HREF="06-3.html#IDX1346">AES_DECRYPT()</A>
+<LI><A HREF="06-3.html#IDX1346">AES_ENCRYPT()</A>
+<LI><A HREF="06-5.html#IDX1465">ALTER COLUMN</A>
+<LI><A HREF="06-5.html#IDX1465">ALTER TABLE</A>
+<LI><A HREF="06-3.html#IDX1322">AND, bitwise</A>
+<LI><A HREF="06-3.html#IDX1148">AND, logical</A>
+<LI><A HREF="06-4.html#IDX1396">AS</A>
+<LI><A HREF="06-4.html#IDX1415">AS</A>
+<LI><A HREF="06-3.html#IDX1160">ASCII()</A>
+<LI><A HREF="06-3.html#IDX1265">ASIN()</A>
+<LI><A HREF="06-3.html#IDX1267">ATAN()</A>
+<LI><A HREF="06-3.html#IDX1267">ATAN2()</A>
+<LI><A HREF="06-3.html#IDX1369">AVG()</A>
+</DIR>
+<H2>B</H2>
+<DIR>
+<LI><A HREF="06-1.html#IDX944">backspace (\b)</A>
+<LI><A HREF="06-7.html#IDX1507">BEGIN</A>
+<LI><A HREF="06-3.html#IDX1358">BENCHMARK()</A>
+<LI><A HREF="06-3.html#IDX1136">BETWEEN ... AND</A>
+<LI><A HREF="06-2.html#IDX1024">BIGINT</A>
+<LI><A HREF="06-3.html#IDX1165">BIN()</A>
+<LI><A HREF="06-3.html#IDX1225">BINARY</A>
+<LI><A HREF="06-2.html#IDX1019">BIT</A>
+<LI><A HREF="06-3.html#IDX1379">BIT_AND()</A>
+<LI><A HREF="06-3.html#IDX1328">BIT_COUNT()</A>
+<LI><A HREF="06-3.html#IDX1175">BIT_LENGTH()</A>
+<LI><A HREF="06-3.html#IDX1378">BIT_OR()</A>
+<LI><A HREF="06-2.html#IDX1055">BLOB</A>
+<LI><A HREF="06-2.html#IDX1079">BLOB</A>
+<LI><A HREF="06-2.html#IDX1020">BOOL</A>
+</DIR>
+<H2>C</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1159">CASE</A>
+<LI><A HREF="06-3.html#IDX1314">CAST</A>
+<LI><A HREF="06-3.html#IDX1249">CEILING()</A>
+<LI><A HREF="06-2.html#IDX1051">CHAR</A>
+<LI><A HREF="06-2.html#IDX1078">CHAR</A>
+<LI><A HREF="06-2.html#IDX1051">CHAR VARYING</A>
+<LI><A HREF="06-3.html#IDX1168">CHAR()</A>
+<LI><A HREF="06-3.html#IDX1174">CHAR_LENGTH()</A>
+<LI><A HREF="06-2.html#IDX1051">CHARACTER</A>
+<LI><A HREF="06-2.html#IDX1051">CHARACTER VARYING</A>
+<LI><A HREF="06-3.html#IDX1174">CHARACTER_LENGTH()</A>
+<LI><A HREF="06-3.html#IDX1142">COALESCE()</A>
+<LI><A HREF="06-1.html#IDX1004">Comment syntax</A>
+<LI><A HREF="06-7.html#IDX1508">COMMIT</A>
+<LI><A HREF="06-3.html#IDX1169">CONCAT()</A>
+<LI><A HREF="06-3.html#IDX1170">CONCAT_WS()</A>
+<LI><A HREF="06-3.html#IDX1353">CONNECTION_ID()</A>
+<LI><A HREF="06-3.html#IDX1153">control flow functions</A>
+<LI><A HREF="06-3.html#IDX1164">CONV()</A>
+<LI><A HREF="06-3.html#IDX1314">CONVERT</A>
+<LI><A HREF="06-3.html#IDX1261">COS()</A>
+<LI><A HREF="06-3.html#IDX1268">COT()</A>
+<LI><A HREF="06-3.html#IDX1366">COUNT()</A>
+<LI><A HREF="06-3.html#IDX1367">COUNT(DISTINCT)</A>
+<LI><A HREF="06-5.html#IDX1446">CREATE DATABASE</A>
+<LI><A HREF="manual2.html#IDX1770">CREATE FUNCTION</A>
+<LI><A HREF="06-5.html#IDX1492">CREATE INDEX</A>
+<LI><A HREF="06-5.html#IDX1452">CREATE TABLE</A>
+<LI><A HREF="06-4.html#IDX1404">CROSS JOIN</A>
+<LI><A HREF="06-3.html#IDX1302">CURDATE()</A>
+<LI><A HREF="06-3.html#IDX1303">CURRENT_DATE</A>
+<LI><A HREF="06-3.html#IDX1305">CURRENT_TIME</A>
+<LI><A HREF="06-3.html#IDX1308">CURRENT_TIMESTAMP</A>
+<LI><A HREF="06-3.html#IDX1335">CURRENT_USER()</A>
+<LI><A HREF="06-3.html#IDX1304">CURTIME()</A>
+</DIR>
+<H2>D</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1331">DATABASE()</A>
+<LI><A HREF="06-2.html#IDX1040">DATE</A>
+<LI><A HREF="06-2.html#IDX1067">DATE</A>
+<LI><A HREF="06-3.html#IDX1293">DATE_ADD()</A>
+<LI><A HREF="06-3.html#IDX1300">DATE_FORMAT()</A>
+<LI><A HREF="06-3.html#IDX1294">DATE_SUB()</A>
+<LI><A HREF="06-2.html#IDX1041">DATETIME</A>
+<LI><A HREF="06-2.html#IDX1066">DATETIME</A>
+<LI><A HREF="06-3.html#IDX1283">DAYNAME()</A>
+<LI><A HREF="06-3.html#IDX1280">DAYOFMONTH()</A>
+<LI><A HREF="06-3.html#IDX1278">DAYOFWEEK()</A>
+<LI><A HREF="06-3.html#IDX1281">DAYOFYEAR()</A>
+<LI><A HREF="06-2.html#IDX1038">DEC</A>
+<LI><A HREF="06-2.html#IDX1037">DECIMAL</A>
+<LI><A HREF="06-3.html#IDX1341">DECODE()</A>
+<LI><A HREF="06-3.html#IDX1272">DEGREES()</A>
+<LI><A HREF="06-4.html#IDX1433">DELAYED</A>
+<LI><A HREF="06-4.html#IDX1439">DELETE</A>
+<LI><A HREF="06-3.html#IDX1348">DES_DECRYPT()</A>
+<LI><A HREF="06-3.html#IDX1347">DES_ENCRYPT()</A>
+<LI><A HREF="06-6.html#IDX1502">DESC</A>
+<LI><A HREF="06-6.html#IDX1503">DESCRIBE</A>
+<LI><A HREF="06-3.html#IDX1368">DISTINCT</A>
+<LI><A HREF="06-3.html#IDX1251">DIV</A>
+<LI><A HREF="06-3.html#IDX1237">division (/)</A>
+<LI><A HREF="06-4.html#IDX1445">DO</A>
+<LI><A HREF="06-2.html#IDX1033">DOUBLE</A>
+<LI><A HREF="06-2.html#IDX1035">DOUBLE PRECISION</A>
+<LI><A HREF="06-1.html#IDX949">double quote (\")</A>
+<LI><A HREF="06-5.html#IDX1448">DROP DATABASE</A>
+<LI><A HREF="manual2.html#IDX1771">DROP FUNCTION</A>
+<LI><A HREF="06-5.html#IDX1473">DROP INDEX</A>
+<LI><A HREF="06-5.html#IDX1496">DROP INDEX</A>
+<LI><A HREF="06-5.html#IDX1476">DROP PRIMARY KEY</A>
+<LI><A HREF="06-5.html#IDX1489">DROP TABLE</A>
+<LI><A HREF="06-4.html#IDX1401">DUMPFILE</A>
+</DIR>
+<H2>E</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1197">ELT()</A>
+<LI><A HREF="06-3.html#IDX1340">ENCODE()</A>
+<LI><A HREF="06-3.html#IDX1339">ENCRYPT()</A>
+<LI><A HREF="06-2.html#IDX1060">ENUM</A>
+<LI><A HREF="06-2.html#IDX1084">ENUM</A>
+<LI><A HREF="06-3.html#IDX1116">equal (=)</A>
+<LI><A HREF="06-1.html#IDX962">escape (\\)</A>
+<LI><A HREF="06-3.html#IDX1252">EXP()</A>
+<LI><A HREF="06-3.html#IDX1201">EXPORT_SET()</A>
+<LI><A HREF="06-3.html#IDX1297">EXTRACT()</A>
+</DIR>
+<H2>F</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1198">FIELD()</A>
+<LI><A HREF="06-3.html#IDX1206">FILE</A>
+<LI><A HREF="06-3.html#IDX1199">FIND_IN_SET()</A>
+
+<LI><A HREF="06-2.html#IDX1027">FLOAT</A>
+<LI><A HREF="06-2.html#IDX1031">FLOAT</A>
+<LI><A HREF="06-2.html#IDX1032">FLOAT(M,D)</A>
+<LI><A HREF="06-2.html#IDX1028">FLOAT(precision)</A>
+<LI><A HREF="06-2.html#IDX1034">FLOAT(precision)</A>
+<LI><A HREF="06-3.html#IDX1248">FLOOR()</A>
+<LI><A HREF="manual1.html#IDX591">FLUSH</A>
+<LI><A HREF="06-4.html#IDX1395">FORCE INDEX</A>
+<LI><A HREF="06-4.html#IDX1422">FORCE INDEX</A>
+<LI><A HREF="06-3.html#IDX1351">FORMAT()</A>
+<LI><A HREF="06-3.html#IDX1362">FOUND_ROWS()</A>
+<LI><A HREF="06-3.html#IDX1299">FROM_DAYS()</A>
+<LI><A HREF="06-3.html#IDX1310">FROM_UNIXTIME()</A>
+
+</DIR>
+<H2>G</H2>
+<DIR> 
+  <LI><A HREF="06-3.html#IDX1355">GET_LOCK()</A> 
+  <LI><A HREF="manual1.html#IDX513">GRANT</A> 
+  <LI><A HREF="manual1.html#IDX534">GRANT statement</A> 
+  <LI><A HREF="manual1.html#IDX554">GRANT statement</A> 
+  <LI><A HREF="manual1.html#IDX630">GRANTS</A> 
+  <LI><A HREF="06-3.html#IDX1128">greater than (&#62;)</A> 
+  <LI><A HREF="06-3.html#IDX1126">greater than or equal (&#62;=)</A> 
+  <LI><A HREF="06-3.html#IDX1271">GREATEST()</A> 
+  <LI><a href="06-3.html#IDX1377">GROUP_CONCAT()</a> 
+</DIR>
+<H2>H</H2>
+<DIR>
+<LI><A HREF="06-4.html#IDX1426">HANDLER</A>
+<LI><A HREF="06-3.html#IDX1167">HEX()</A>
+<LI><A HREF="06-1.html#IDX978">hexadecimal values</A>
+
+<LI><A HREF="06-3.html#IDX1288">HOUR()</A>
+</DIR>
+<H2>I</H2>
+<DIR>
+<LI><A HREF="06-1.html#IDX987">identifiers, quoting</A>
+<LI><A HREF="06-3.html#IDX1158">IF()</A>
+<LI><A HREF="06-3.html#IDX1156">IFNULL()</A>
+<LI><A HREF="06-4.html#IDX1392">IGNORE INDEX</A>
+<LI><A HREF="06-4.html#IDX1421">IGNORE INDEX</A>
+<LI><A HREF="06-4.html#IDX1394">IGNORE KEY</A>
+<LI><A HREF="06-4.html#IDX1424">IGNORE KEY</A>
+<LI><A HREF="06-3.html#IDX1138">IN</A>
+<LI><A HREF="06-3.html#IDX1360">INET_ATON()</A>
+<LI><A HREF="06-3.html#IDX1359">INET_NTOA()</A>
+<LI><A HREF="06-4.html#IDX1403">INNER JOIN</A>
+<LI><A HREF="06-4.html#IDX1427">INSERT</A>
+<LI><A HREF="06-4.html#IDX1431">INSERT ... SELECT</A>
+<LI><A HREF="06-4.html#IDX1432">INSERT DELAYED</A>
+<LI><A HREF="manual1.html#IDX539">INSERT statement, grant privileges</A>
+<LI><A HREF="06-3.html#IDX1196">INSERT()</A>
+
+<LI><A HREF="06-3.html#IDX1179">INSTR()</A>
+<LI><A HREF="06-2.html#IDX1022">INT</A>
+<LI><A HREF="06-2.html#IDX1023">INTEGER</A>
+<LI><A HREF="06-3.html#IDX1143">INTERVAL()</A>
+<LI><A HREF="06-3.html#IDX1133">IS NOT NULL</A>
+<LI><A HREF="06-3.html#IDX1132">IS NULL</A>
+
+
+<LI><A HREF="06-3.html#IDX1357">IS_FREE_LOCK()</A>
+
+
+<LI><A HREF="06-3.html#IDX1140">ISNULL()</A>
+<LI><A HREF="06-7.html#IDX1513">ISOLATION LEVEL</A>
+</DIR>
+<H2>J</H2>
+<DIR>
+<LI><A HREF="06-4.html#IDX1402">JOIN</A>
+</DIR>
+<H2>K</H2>
+<DIR>
+<LI><A HREF="manual1.html#IDX595">KILL</A>
+</DIR>
+<H2>L</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1349">LAST_INSERT_ID([expr])</A>
+<LI><A HREF="06-3.html#IDX1202">LCASE()</A>
+<LI><A HREF="06-3.html#IDX1270">LEAST()</A>
+<LI><A HREF="06-4.html#IDX1405">LEFT JOIN</A>
+<LI><A HREF="06-4.html#IDX1406">LEFT OUTER JOIN</A>
+<LI><A HREF="06-3.html#IDX1182">LEFT()</A>
+<LI><A HREF="06-3.html#IDX1171">LENGTH()</A>
+<LI><A HREF="06-3.html#IDX1124">less than (&#60;)</A>
+<LI><A HREF="06-3.html#IDX1122">less than or equal (&#60;=)</A>
+<LI><A HREF="06-3.html#IDX1213">LIKE</A>
+<LI><A HREF="06-3.html#IDX1363">LIMIT</A>
+<LI><A HREF="06-3.html#IDX1253">LN()</A>
+<LI><A HREF="06-4.html#IDX1442">LOAD DATA INFILE</A>
+<LI><A HREF="06-3.html#IDX1207">LOAD_FILE()</A>
+<LI><A HREF="06-3.html#IDX1176">LOCATE()</A>
+<LI><A HREF="06-3.html#IDX1178">LOCATE()</A>
+<LI><A HREF="06-7.html#IDX1510">LOCK TABLES</A>
+<LI><A HREF="06-3.html#IDX1254">LOG()</A>
+<LI><A HREF="06-3.html#IDX1256">LOG10()</A>
+<LI><A HREF="06-3.html#IDX1255">LOG2()</A>
+<LI><A HREF="06-2.html#IDX1058">LONGBLOB</A>
+<LI><A HREF="06-2.html#IDX1059">LONGTEXT</A>
+<LI><A HREF="06-3.html#IDX1203">LOWER()</A>
+<LI><A HREF="06-3.html#IDX1180">LPAD()</A>
+<LI><A HREF="06-3.html#IDX1188">LTRIM()</A>
+</DIR>
+<H2>M</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1200">MAKE_SET()</A>
+<LI><A HREF="06-3.html#IDX1361">MASTER_POS_WAIT()</A>
+<LI><A HREF="06-3.html#IDX1222">MATCH ... AGAINST()</A>
+<LI><A HREF="06-3.html#IDX1371">MAX()</A>
+<LI><A HREF="06-3.html#IDX1342">MD5()</A>
+<LI><A HREF="06-2.html#IDX1056">MEDIUMBLOB</A>
+<LI><A HREF="06-2.html#IDX1021">MEDIUMINT</A>
+<LI><A HREF="06-2.html#IDX1057">MEDIUMTEXT</A>
+<LI><A HREF="06-3.html#IDX1185">MID()</A>
+<LI><A HREF="06-3.html#IDX1370">MIN()</A>
+<LI><A HREF="06-3.html#IDX1241">minus, unary (-)</A>
+<LI><A HREF="06-3.html#IDX1289">MINUTE()</A>
+<LI><A HREF="06-3.html#IDX1245">MOD()</A>
+<LI><A HREF="06-3.html#IDX1247">modulo (%)</A>
+<LI><A HREF="06-3.html#IDX1282">MONTH()</A>
+<LI><A HREF="06-3.html#IDX1284">MONTHNAME()</A>
+<LI><A HREF="06-3.html#IDX1235">multiplication (*)</A>
+<LI><A HREF="06-4.html#IDX1429">mysql_info()</A>
+<LI><A HREF="06-4.html#IDX1438">mysql_info()</A>
+<LI><A HREF="06-4.html#IDX1444">mysql_info()</A>
+<LI><A HREF="06-5.html#IDX1485">mysql_info()</A>
+<LI><A HREF="06-1.html#IDX971">mysql_real_escape_string()</A>
+</DIR>
+<H2>N</H2>
+<DIR>
+<LI><A HREF="06-2.html#IDX1045">NATIONAL CHAR</A>
+<LI><A HREF="06-4.html#IDX1407">NATURAL LEFT JOIN</A>
+<LI><A HREF="06-4.html#IDX1408">NATURAL LEFT OUTER JOIN</A>
+<LI><A HREF="06-4.html#IDX1411">NATURAL RIGHT JOIN</A>
+<LI><A HREF="06-4.html#IDX1412">NATURAL RIGHT OUTER JOIN</A>
+<LI><A HREF="06-2.html#IDX1046">NCHAR</A>
+<LI><A HREF="06-1.html#IDX953">newline (\n)</A>
+<LI><A HREF="06-3.html#IDX1137">NOT BETWEEN</A>
+<LI><A HREF="06-3.html#IDX1120">not equal (!=)</A>
+<LI><A HREF="06-3.html#IDX1118">not equal (&#60;&#62;)</A>
+<LI><A HREF="06-3.html#IDX1139">NOT IN</A>
+<LI><A HREF="06-3.html#IDX1214">NOT LIKE</A>
+<LI><A HREF="06-3.html#IDX1220">NOT REGEXP</A>
+<LI><A HREF="06-3.html#IDX1146">NOT, logical</A>
+<LI><A HREF="06-3.html#IDX1306">NOW()</A>
+<LI><A HREF="06-1.html#IDX945">NUL</A>
+<LI><A HREF="06-1.html#IDX979">NULL value</A>
+<LI><A HREF="06-3.html#IDX1157">NULLIF()</A>
+<LI><A HREF="06-2.html#IDX1039">NUMERIC</A>
+</DIR>
+<H2>O</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1166">OCT()</A>
+<LI><A HREF="06-3.html#IDX1172">OCTET_LENGTH()</A>
+<LI><A HREF="06-3.html#IDX1337">OLD_PASSWORD()</A>
+<LI><A HREF="manual1.html#IDX587">OPTIMIZE TABLE</A>
+<LI><A HREF="06-3.html#IDX1320">OR, bitwise</A>
+<LI><A HREF="06-3.html#IDX1150">OR, logical</A>
+<LI><A HREF="06-3.html#IDX1163">ORD()</A>
+<LI><A HREF="06-5.html#IDX1481">ORDER BY</A>
+</DIR>
+<H2>P</H2>
+<DIR>
+<LI><A HREF="06-3.html#Parentheses">parentheses ( and )</A>
+<LI><A HREF="06-3.html#IDX1336">PASSWORD()</A>
+<LI><A HREF="06-3.html#IDX1291">PERIOD_ADD()</A>
+<LI><A HREF="06-3.html#IDX1292">PERIOD_DIFF()</A>
+<LI><A HREF="06-3.html#IDX1260">PI()</A>
+<LI><A HREF="06-3.html#IDX1177">POSITION()</A>
+<LI><A HREF="06-3.html#IDX1257">POW()</A>
+<LI><A HREF="06-3.html#IDX1258">POWER()</A>
+<LI><A HREF="06-5.html#IDX1456">PRIMARY KEY</A>
+<LI><A HREF="06-5.html#IDX1480">PRIMARY KEY</A>
+</DIR>
+<H2>Q</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1285">QUARTER()</A>
+<LI><A HREF="06-3.html#IDX1208">QUOTE()</A>
+
+<LI><A HREF="06-1.html#IDX988">quoting of identifiers</A>
+</DIR>
+<H2>R</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1273">RADIANS()</A>
+<LI><A HREF="06-3.html#IDX1269">RAND()</A>
+<LI><A HREF="06-2.html#IDX1036">REAL</A>
+<LI><A HREF="06-3.html#IDX1218">REGEXP</A>
+<LI><A HREF="06-3.html#IDX1356">RELEASE_LOCK()</A>
+<LI><A HREF="06-5.html#IDX1488">RENAME TABLE</A>
+<LI><A HREF="06-3.html#IDX1194">REPEAT()</A>
+<LI><A HREF="06-4.html#IDX1441">REPLACE</A>
+<LI><A HREF="06-4.html#REPLACE">REPLACE ... SELECT</A>
+<LI><A HREF="06-3.html#IDX1193">REPLACE()</A>
+<LI><A HREF="manual1.html#IDX553">REQUIRE GRANT option</A>
+<LI><A HREF="manual1.html#IDX561">RESTORE TABLE</A>
+<LI><A HREF="06-1.html#IDX955">return (\r)</A>
+<LI><A HREF="06-3.html#IDX1195">REVERSE()</A>
+<LI><A HREF="manual1.html#IDX514">REVOKE</A>
+<LI><A HREF="06-4.html#IDX1409">RIGHT JOIN</A>
+<LI><A HREF="06-4.html#IDX1410">RIGHT OUTER JOIN</A>
+<LI><A HREF="06-3.html#IDX1183">RIGHT()</A>
+<LI><A HREF="06-3.html#IDX1219">RLIKE</A>
+<LI><A HREF="06-7.html#IDX1509">ROLLBACK</A>
+<LI><A HREF="06-3.html#IDX1250">ROUND()</A>
+<LI><A HREF="06-3.html#IDX1181">RPAD()</A>
+<LI><A HREF="06-3.html#IDX1189">RTRIM()</A>
+</DIR>
+<H2>S</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1311">SEC_TO_TIME()</A>
+<LI><A HREF="06-3.html#IDX1290">SECOND()</A>
+<LI><A HREF="06-4.html#IDX1387">SELECT</A>
+<LI><A HREF="06-3.html#IDX1334">SESSION_USER()</A>
+<LI><A HREF="06-2.html#IDX1061">SET</A>
+<LI><A HREF="06-2.html#IDX1085">SET</A>
+<LI><A HREF="manual1.html#IDX928">SET OPTION</A>
+<LI><A HREF="manual1.html#IDX542">SET PASSWORD statement</A>
+<LI><A HREF="06-7.html#IDX1512">SET TRANSACTION</A>
+<LI><A HREF="06-3.html#IDX1344">SHA()</A>
+<LI><A HREF="06-3.html#IDX1343">SHA1()</A>
+<LI><A HREF="manual1.html#IDX600">SHOW COLUMNS</A>
+<LI><A HREF="manual1.html#IDX609">SHOW CREATE TABLE</A>, <A HREF="manual.html#IDX632">SHOW CREATE TABLE</A>
+<LI><A HREF="manual1.html#IDX597">SHOW DATABASE INFO</A>
+<LI><A HREF="manual1.html#IDX598">SHOW DATABASES</A>
+<LI><A HREF="manual1.html#IDX601">SHOW FIELDS</A>
+<LI><A HREF="manual1.html#IDX608">SHOW GRANTS</A>
+<LI><A HREF="manual1.html#IDX631">SHOW GRANTS</A>
+<LI><A HREF="manual1.html#IDX602">SHOW INDEX</A>
+<LI><A HREF="manual1.html#IDX603">SHOW KEYS</A>
+<LI><A HREF="manual1.html#IDX611">SHOW MASTER LOGS</A>
+<LI><A HREF="manual1.html#IDX610">SHOW MASTER STATUS</A>
+<LI><A HREF="manual1.html#IDX635">SHOW PRIVILEGES</A>
+<LI><A HREF="manual1.html#IDX606">SHOW PROCESSLIST</A>
+<LI><A HREF="manual1.html#IDX626">SHOW PROCESSLIST</A>
+<LI><A HREF="manual1.html#IDX612">SHOW SLAVE STATUS</A>
+<LI><A HREF="manual1.html#IDX604">SHOW STATUS</A>
+<LI><A HREF="manual1.html#IDX607">SHOW TABLE STATUS</A>
+<LI><A HREF="manual1.html#IDX614">SHOW TABLE TYPES</A>
+<LI><A HREF="manual1.html#IDX634">SHOW TABLE TYPES</A>
+<LI><A HREF="manual1.html#IDX599">SHOW TABLES</A>
+<LI><A HREF="manual1.html#IDX605">SHOW VARIABLES</A>
+<LI><A HREF="manual1.html#IDX613">SHOW WARNINGS</A>
+<LI><A HREF="manual1.html#IDX633">SHOW WARNINGS</A>
+<LI><A HREF="06-3.html#IDX1244">SIGN()</A>
+<LI><A HREF="06-3.html#IDX1262">SIN()</A>
+<LI><A HREF="06-1.html#IDX947">single quote (\')</A>
+<LI><A HREF="06-2.html#IDX1020">SMALLINT</A>
+<LI><A HREF="06-3.html#IDX1191">SOUNDEX()</A>
+<LI><A HREF="06-3.html#IDX1215">SOUNDS LIKE</A>
+<LI><A HREF="06-3.html#IDX1192">SPACE()</A>
+<LI><A HREF="06-9.html#IDX1519">SQL_CACHE</A>
+<LI><A HREF="06-9.html#IDX1520">SQL_NO_CACHE</A>
+<LI><A HREF="06-3.html#IDX1259">SQRT()</A>
+<LI><A HREF="06-7.html#IDX1506">START TRANSACTION</A>
+<LI><A HREF="manual1.html#IDX535">statements, GRANT</A>
+<LI><A HREF="manual1.html#IDX540">statements, INSERT</A>
+<LI><A HREF="06-3.html#IDX1374">STD()</A>
+<LI><A HREF="06-3.html#IDX1375">STDDEV()</A>
+<LI><A HREF="06-4.html#IDX1413">STRAIGHT_JOIN</A>
+<LI><A HREF="06-3.html#IDX1221">STRCMP()</A>
+<LI><A HREF="06-3.html#IDX1296">SUBDATE()</A>
+<LI><A HREF="06-3.html#IDX1184">SUBSTRING()</A>
+<LI><A HREF="06-3.html#IDX1186">SUBSTRING()</A>
+<LI><A HREF="06-3.html#IDX1187">SUBSTRING_INDEX()</A>
+<LI><A HREF="06-3.html#IDX1233">subtraction (-)</A>
+<LI><A HREF="06-3.html#IDX1372">SUM()</A>
+<LI><A HREF="06-3.html#IDX1307">SYSDATE()</A>
+<LI><A HREF="06-3.html#IDX1333">SYSTEM_USER()</A>
+</DIR>
+<H2>T</H2>
+<DIR>
+<LI><A HREF="06-1.html#IDX958">tab (\t)</A>
+<LI><A HREF="manual1.html#IDX904">table_cache</A>
+<LI><A HREF="06-3.html#IDX1263">TAN()</A>
+<LI><A HREF="06-2.html#IDX1055">TEXT</A>
+<LI><A HREF="06-2.html#IDX1080">TEXT</A>
+<LI><A HREF="manual1.html#IDX624">threads</A>
+<LI><A HREF="06-2.html#IDX1043">TIME</A>
+<LI><A HREF="06-2.html#IDX1073">TIME</A>
+<LI><A HREF="06-3.html#IDX1301">TIME_FORMAT()</A>
+<LI><A HREF="06-3.html#IDX1312">TIME_TO_SEC()</A>
+<LI><A HREF="06-2.html#IDX1042">TIMESTAMP</A>
+<LI><A HREF="06-2.html#IDX1068">TIMESTAMP</A>
+<LI><A HREF="06-2.html#IDX1052">TINYBLOB</A>
+<LI><A HREF="06-2.html#IDX1017">TINYINT</A>
+<LI><A HREF="06-2.html#IDX1053">TINYTEXT</A>
+<LI><A HREF="06-3.html#IDX1298">TO_DAYS()</A>
+<LI><A HREF="06-3.html#IDX1190">TRIM()</A>
+<LI><A HREF="06-4.html#IDX1440">TRUNCATE</A>
+<LI><A HREF="06-3.html#IDX1274">TRUNCATE()</A>
+<LI><A HREF="06-2.html#IDX1016">Types</A>
+</DIR>
+<H2>U</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1204">UCASE()</A>
+<LI><A HREF="manual2.html#IDX1774">UDF functions</A>
+<LI><A HREF="manual2.html#IDX1812">ulimit</A>
+<LI><A HREF="manual2.html#IDX1821">UMASK environment variable</A>
+<LI><A HREF="manual2.html#IDX1948">UMASK environment variable</A>
+<LI><A HREF="manual2.html#IDX1823">UMASK_DIR environment variable</A>
+<LI><A HREF="manual2.html#IDX1946">UMASK_DIR environment variable</A>
+<LI><A HREF="06-3.html#IDX1242">unary minus (-)</A>
+<LI><A HREF="manual1.html#IDX417">UNION</A>
+<LI><A HREF="06-4.html#IDX1425">UNION</A>
+<LI><A HREF="06-5.html#IDX1479">UNIQUE</A>
+<LI><A HREF="06-3.html#IDX1309">UNIX_TIMESTAMP()</A>
+<LI><A HREF="06-7.html#IDX1511">UNLOCK TABLES</A>
+<LI><A HREF="06-4.html#IDX1437">UPDATE</A>
+<LI><A HREF="06-3.html#IDX1205">UPPER()</A>
+<LI><A HREF="06-6.html#IDX1499">USE</A>
+<LI><A HREF="06-4.html#IDX1391">USE INDEX</A>
+<LI><A HREF="06-4.html#IDX1420">USE INDEX</A>
+<LI><A HREF="06-4.html#IDX1393">USE KEY</A>
+<LI><A HREF="06-4.html#IDX1423">USE KEY</A>
+<LI><A HREF="06-3.html#IDX1332">USER()</A>
+<LI><A HREF="manual2.html#IDX1775">User-defined functions</A>
+</DIR>
+<H2>V</H2>
+<DIR>
+<LI><A HREF="06-2.html#IDX1051">VARCHAR</A>
+<LI><A HREF="06-2.html#IDX1078">VARCHAR</A>
+<LI><A HREF="06-3.html#IDX1373">VARIANCE()</A>
+<LI><A HREF="06-3.html#IDX1352">VERSION()</A>
+</DIR>
+<H2>W</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1286">WEEK()</A>
+<LI><A HREF="06-3.html#IDX1279">WEEKDAY()</A>
+<LI><A HREF="manual1.html#IDX860">WHERE</A>
+<LI><A HREF="06-1.html#IDX964">Wildcard character (%)</A>
+<LI><A HREF="06-1.html#IDX966">Wildcard character (_)</A>
+</DIR>
+<H2>X</H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1324">XOR, bitwise</A>
+<LI><A HREF="06-3.html#IDX1152">XOR, logical</A>
+</DIR>
+<H2>Y</H2>
+<DIR>
+<LI><A HREF="06-2.html#IDX1044">YEAR</A>
+<LI><A HREF="06-2.html#IDX1074">YEAR</A>
+<LI><A HREF="06-3.html#IDX1287">YEAR()</A>
+</DIR>
+<H2> </H2>
+<DIR>
+<LI><A HREF="06-3.html#IDX1319">| (bitwise OR)</A>
+<LI><A HREF="06-3.html#IDX1151">|| (logical OR)</A>
+<LI><A HREF="06-3.html#IDX1327">~</A>
+</DIR>
+
+
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="http://www.php5.idv.tw/flash/online.php?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+ 
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/function_index.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+</HTML>

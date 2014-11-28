@@ -1,0 +1,1078 @@
+  <HTML>
+  
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-5.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+<HEAD>
+  <TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+   <style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+   <META http-equiv="Content-Type" content="text/html; charset=big5">
+   <META name="description" content="MySQL 4.1.0  中文參考手冊">
+   <META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+   <LINK rel="shortcut icon" href="shuixin13.ico" />
+   <LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+
+  </HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+<H1>MySQL Reference Manual for version 4.1.0-alpha.</H1>
+<P>
+<P><HR>
+<H2><A NAME="Data_Definition"></A>6.5 資料定義： <CODE>CREATE</CODE>、<CODE>DROP</CODE>、<CODE>ALTER</CODE></H2>
+
+<H3><A NAME="CREATE_DATABASE"></A>6.5.1  <CODE>CREATE DATABASE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1446"></A>
+
+</P>
+
+<PRE>
+CREATE DATABASE [IF NOT EXISTS] db_name
+</PRE>
+
+<P>
+<CODE>CREATE DATABASE</CODE> 以給定名字建立一個資料庫。允許的資料庫名規則在章節 <A HREF="06-1.html#Legal_names">6.1.2  資料庫、表、索引、列和別名</A> 中被給出。 如果資料庫已經存在，並且你沒有指定 <CODE>IF NOT EXISTS</CODE>，這時會產生一個錯誤。
+</P>
+
+<P>
+在 MySQL 中，資料庫以包含資料庫表對應文件的目錄實現的。因為資料庫在初始建立時沒有表，所以 <CODE>CREATE DATABASE</CODE> 語句只在 MySQL 資料目錄下建立一個目錄。
+</P>
+
+<P>
+<A NAME="IDX1447"></A>
+你也可以使用 <CODE>mysqladmin</CODE> 建立一個資料庫。查看章節 <A HREF="manual1.html#Client-Side_Scripts">4.8  MySQL 客戶端腳本和實用程式</A>。
+</P>
+
+
+
+<H3><A NAME="DROP_DATABASE"></A>6.5.2  <CODE>DROP DATABASE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1448"></A>
+<A NAME="IDX1449"></A>
+<A NAME="IDX1450"></A>
+
+</P>
+
+<PRE>
+DROP DATABASE [IF EXISTS] db_name
+</PRE>
+
+<P>
+<CODE>DROP DATABASE</CODE> 移除資料庫是的所有表並刪除資料庫。如果你在一個符號連結(symbolic link)資料庫上執行一個 <CODE>DROP DATABASE</CODE>，連結與原始資料庫均會被刪除。<STRONG>要非常小心地使用這個命令！</STRONG>
+</P>
+<P>
+
+<CODE>DROP DATABASE</CODE> 傳回從資料庫目錄下刪除的文件數目。通常，它是表的數目的三倍，因為第張表通常對應於一個 <TT>“.MYD”</TT> 文件、一個 <TT>“.MYI”</TT> 文件和一個 <TT>“.frm”</TT> 文件。
+
+</P>
+<P>
+<CODE>DROP DATABASE</CODE> 命令從給定的資料庫目錄下移除以下列為副檔名的所有文件：
+</P>
+<TABLE BORDER WIDTH="95%">
+<TR><TD><STRONG>副檔名 </STRONG> </TD><TD> <STRONG>副檔名 </STRONG> </TD><TD> <STRONG>副檔名 </STRONG> </TD><TD> <STRONG>Ext</STRONG>
+</TD></TR>
+<TR><TD>.BAK </TD><TD> .DAT </TD><TD> .HSH </TD><TD> .ISD
+</TD></TR>
+<TR><TD>.ISM </TD><TD> .ISM </TD><TD> .MRG </TD><TD> .MYD
+</TD></TR>
+<TR><TD>.MYI </TD><TD> .db </TD><TD> .frm </TD><TD>
+</TD></TR>
+</TABLE>
+
+<P>
+所有包含兩個數位的幾目錄(<CODE>RAID</CODE> 目錄)也同樣被刪除。
+</P>
+
+<P>
+在 MySQL 3.22 或以後的版本中，你可以使用關鍵詞 <CODE>IF EXISTS</CODE> 以防止如果資料庫不存在時發生錯誤。
+</P>
+
+<P>
+<A NAME="IDX1451"></A>
+你也可以使用 <CODE>mysqladmin</CODE> 移除資料庫。查看章節 <A HREF="manual1.html#Client-Side_Scripts">4.8  MySQL 客戶端腳本和實用程式</A>。
+</P>
+
+
+<H3><A NAME="CREATE_TABLE"></A>6.5.3  <CODE>CREATE TABLE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1452"></A>
+
+</P>
+
+
+<PRE>
+CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name [(create_definition,...)]
+[table_options] [select_statement]
+
+or
+
+CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name LIKE old_table_name;
+
+create_definition:
+  col_name type [NOT NULL | NULL] [DEFAULT default_value] [AUTO_INCREMENT]
+            [PRIMARY KEY] [reference_definition]
+  or    PRIMARY KEY (index_col_name,...)
+  or    KEY [index_name] (index_col_name,...)
+  or    INDEX [index_name] (index_col_name,...)
+  or    UNIQUE [INDEX] [index_name] (index_col_name,...)
+  or    FULLTEXT [INDEX] [index_name] (index_col_name,...)
+  or    [CONSTRAINT symbol] FOREIGN KEY [index_name] (index_col_name,...)
+            [reference_definition]
+  or    CHECK (expr)
+
+type:
+        TINYINT[(length)] [UNSIGNED] [ZEROFILL]
+  or    SMALLINT[(length)] [UNSIGNED] [ZEROFILL]
+  or    MEDIUMINT[(length)] [UNSIGNED] [ZEROFILL]
+  or    INT[(length)] [UNSIGNED] [ZEROFILL]
+  or    INTEGER[(length)] [UNSIGNED] [ZEROFILL]
+  or    BIGINT[(length)] [UNSIGNED] [ZEROFILL]
+  or    REAL[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  or    DOUBLE[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  or    FLOAT[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  or    DECIMAL(length,decimals) [UNSIGNED] [ZEROFILL]
+  or    NUMERIC(length,decimals) [UNSIGNED] [ZEROFILL]
+  or    CHAR(length) [BINARY]
+  or    VARCHAR(length) [BINARY]
+  or    DATE
+  or    TIME
+  or    TIMESTAMP
+  or    DATETIME
+  or    TINYBLOB
+  or    BLOB
+  or    MEDIUMBLOB
+  or    LONGBLOB
+  or    TINYTEXT
+  or    TEXT
+  or    MEDIUMTEXT
+  or    LONGTEXT
+  or    ENUM(value1,value2,value3,...)
+  or    SET(value1,value2,value3,...)
+
+index_col_name:
+        col_name [(length)]
+
+reference_definition:
+        REFERENCES tbl_name [(index_col_name,...)]
+                   [MATCH FULL | MATCH PARTIAL]
+                   [ON DELETE reference_option]
+                   [ON UPDATE reference_option]
+
+reference_option:
+        RESTRICT | CASCADE | SET NULL | NO ACTION | SET DEFAULT
+
+table_options:
+	TYPE = {BDB | HEAP | ISAM | InnoDB | MERGE | MRG_MYISAM | MYISAM }
+or	AUTO_INCREMENT = #
+or	AVG_ROW_LENGTH = #
+or	CHECKSUM = {0 | 1}
+or	COMMENT = "string"
+or	MAX_ROWS = #
+or	MIN_ROWS = #
+or	PACK_KEYS = {0 | 1 | DEFAULT}
+or	PASSWORD = "string"
+or	DELAY_KEY_WRITE = {0 | 1}
+or      ROW_FORMAT= { default | dynamic | fixed | compressed }
+or	RAID_TYPE= {1 | STRIPED | RAID0 } RAID_CHUNKS=#  RAID_CHUNKSIZE=#
+or	UNION = (table_name,[table_name...])
+or	INSERT_METHOD= {NO | FIRST | LAST }
+or      DATA DIRECTORY="absolute path to directory"
+or      INDEX DIRECTORY="absolute path to directory"
+
+select_statement:
+	[IGNORE | REPLACE] SELECT ...  (Some legal select statement)
+</PRE>
+
+<P>
+<CODE>CREATE TABLE</CODE> 以給定的名字在目前資料庫建立一個表。允許的表名規則在章節 <A HREF="06-1.html#Legal_names">6.1.2  資料庫、表、索引、列和別名</A> 中被給出。如果沒有目前資料庫或表已經存在，一個錯誤將會發生。
+</P>
+
+<P>
+在 MySQL 3.22 或以後的版本中，表名可以被指定為 <CODE>db_name.tbl_name</CODE>。不管有沒有目前資料庫，它也能正常工作。</P>
+
+<P>
+從 MySQL 3.23 開始，在建立一個表時，你可以使用關鍵詞 <CODE>TEMPORARY</CODE>。它的名字被限止在目前連線中，當連線關閉時，臨時表會自動地被刪除。這就意味著，兩個不同的連線可以使用同一個臨時表名而不會與另一個衝突，也不會與同名現有的表相衝突(現有表將被隱藏，只到臨時表被刪除)。從 MySQL 4.0.2 開始，為了能建立臨時表，你必須有 <CODE>CREATE TEMPORARY TABLES</CODE> 權限。
+</P>
+
+<P>
+在 MySQL 3.23 或以後的版本中，你可以使用關鍵詞 <CODE>IF NOT EXISTS</CODE>，因而如果表已存在，錯誤也不會發生。注意，它並不驗証表結構是否一致。
+</P>
+
+<P>
+在 MySQL 4.1 中你可以使用 <CODE>LIKE</CODE> 來基於一個表定義建立另一個表。to create a table based on
+ a table definition in another table.  In MySQL 4.1 中，你同樣也可以為一個被生成的列指定類型：
+</P>
+
+<PRE>
+CREATE TABLE foo (a tinyint not null) SELECT b+1 AS 'a' FROM bar;
+</PRE>
+
+<P>
+第張表 <CODE>tbl_name</CODE> 由資料庫目錄下的一些文件表示。對於 MyISAM 類型的表，你將得到：
+</P>
+
+<TABLE BORDER WIDTH="95%">
+<TR><TD><STRONG>文件 </STRONG> </TD><TD> <STRONG>用途 </STRONG>
+</TD></TR>
+<TR><TD><CODE>tbl_name.frm</CODE> </TD><TD> 表定義 (form) 文件
+</TD></TR>
+<TR><TD><CODE>tbl_name.MYD</CODE> </TD><TD> 資料文件
+</TD></TR>
+<TR><TD><CODE>tbl_name.MYI</CODE> </TD><TD> 索引文件
+</TD></TR>
+</TABLE>
+
+<P>
+對於各種列類型的性質的更多資訊，查看章節 <A HREF="06-2.html#Column_types">6.2  列類型</A>：
+</P>
+
+<UL>
+<LI>
+如果既沒有指定 <CODE>NULL</CODE> 也沒有指定 <CODE>NOT NULL</CODE>，列被視為指定了 <CODE>NULL</CODE> 。
+
+<P></P>
+
+<LI>
+一個整型列可以有附加屬性 <CODE>AUTO_INCREMENT</CODE>。當你插入一個 <CODE>NULL</CODE> 值(推荐)或 <CODE>0</CODE> 到一個 <CODE>AUTO_INCREMENT</CODE> 列，該列將被設定到 <CODE>value+1</CODE>，在這裡，<CODE>value</CODE> 是表中目前列的最大值。<CODE>AUTO_INCREMENT</CODE> 序列以 <CODE>1</CODE> 開始。查看章節 <A HREF="manual2.html#mysql_insert_id">8.1.3.130  <CODE>mysql_insert_id()</CODE></A>。
+
+如果你一個 <CODE>AUTO_INCREMENT</CODE> 列中包含最大值的行，對於 <CODE>ISAM</CODE> 或 <CODE>BDB</CODE> 表，該值會被重新使用，但是對於一個 <CODE>MyISAM</CODE> 或 <CODE>InnoDB</CODE> 表，卻不會被重用。如果你以 <CODE>AUTOCOMMIT</CODE> 樣式執行 <CODE>DELETE FROM table_name</CODE> (沒有一個 <CODE>WHERE</CODE> 幾句) 刪除表中的所有記錄行，對於所有的表序列均重新開始。
+
+<STRONG>注意：</STRONG>每個表只能有一個 <CODE>AUTO_INCREMENT</CODE> 列，並且必須被索引。MySQL 3.23 同樣也只工作於 <CODE>AUTO_INCREMENT</CODE> 列只支援正值。插入一個負值將被當作插入一個很大的正值。
+這是為了避免數位從正到負“包裝”的精度問題，也是為了確保不會意外地得到一個包含 0 的 <CODE>AUTO_INCREMENT</CODE> 列。
+
+在 MyISAM 和 BDB 表中，你可以指定 <CODE>AUTO_INCREMENT</CODE> 多列索引中的第二個列。查看章節 <A HREF="manual1.html#example-AUTO_INCREMENT">3.5.9  使用 <CODE>AUTO_INCREMENT</CODE></A>.
+
+<A NAME="IDX1453"></A>
+<A NAME="IDX1454"></A>
+為了使 MySQL 兼容某些 ODBC 應用程式，你可以用下列查詢找出最後被插入的記錄行：
+
+<PRE>
+SELECT * FROM tbl_name WHERE auto_col IS NULL
+</PRE>
+
+<LI>
+如果 MySQL 二進位日誌被使用，<CODE>CREATE TABLE</CODE> 將自動地提交目前 InnoDB 事務。
+
+<P></P>
+
+<LI>
+<CODE>NULL</CODE> 值對於 <CODE>TIMESTAMP</CODE> 列的處理不同於其它的列類型。你不能在一個 <CODE>TIMESTAMP</CODE> 列中 儲存一個文字 <CODE>NULL</CODE>﹔將列設定為 <CODE>NULL</CODE> 將設定它為目前的日期和時間。因為 <CODE>TIMESTAMP</CODE> 列的行為就是這樣，列的 <CODE>NULL</CODE> 和 <CODE>NOT NULL</CODE> 屬性不以常態方式影響它，如果你指定它們，將被忽略。
+
+另一方面，為了使 MySQL 客戶端更容易地使用 <CODE>TIMESTAMP</CODE> 列，伺服器報告這樣的列被賦值為 <CODE>NULL</CODE> 值(這是真的)，即使 <CODE>TIMESTAMP</CODE> 實際上決不會包含一個 <CODE>NULL</CODE> 值。當你使用 <CODE>DESCRIBE tbl_name</CODE> 得到有關你的表的描述時，你就會明白這點。
+
+注意，設定一個 <CODE>TIMESTAMP</CODE> 列為 <CODE>0</CODE> 不等同於設定它為 <CODE>NULL</CODE>，因為 <CODE>0</CODE> 是一個有效的 <CODE>TIMESTAMP</CODE> 值。
+
+<P></P>
+
+<LI>
+
+<A NAME="IDX1455"></A>
+<CODE>DEFAULT</CODE> 值必須是一個常數，不可以是一個函數或一個表達式。
+
+如果一個列沒有指定 <CODE>DEFAULT</CODE> 值，MySQL 將自動地賦於一個，規則如下：
+
+如果列可以接受 <CODE>NULL</CODE> 作為一個值，預設值為 <CODE>NULL</CODE>。
+
+如果列被定義為 <CODE>NOT NULL</CODE>，預設值取決於列的類型：
+
+<UL>
+<LI>
+對於沒有宣告 <CODE>AUTO_INCREMENT</CODE> 屬性的數位類型，預設值為 <CODE>0</CODE>。對於一個 <CODE>AUTO_INCREMENT</CODE> 列，預設值為序列中的下一個值。
+
+<P></P>
+
+<LI>
+對於非 <CODE>TIMESTAMP</CODE> 的日期和時間類型，預設值是該類型適當的零值。對於表中的第一個 <CODE>TIMESTAMP</CODE> 列，預設值為目前的日期和時間。查看章節 <A HREF="06-2.html#Date_and_time_types">6.2.2  Date 和 Time 類型</A>。
+
+<P></P>
+
+<LI>
+對於非 <CODE>ENUM</CODE> 的字串類型，預設值是空字串。對於 <CODE>ENUM</CODE>，預設值為第一個枚舉值。
+
+<P></P>
+
+</UL>
+預設值必須是常數。這意味著，例如，對於一個日期列，你不能將一個像 <CODE>NOW()</CODE> 或 <CODE>CURRENT_DATE</CODE> 的函數設定為預設值。
+
+<P></P>
+
+<LI>
+
+<CODE>KEY</CODE> 是 <CODE>INDEX</CODE> 的同義詞。
+
+<P></P>
+
+<LI>
+在 MySQL 中，一個 <CODE>UNIQUE</CODE> 鍵只能有不同的值。如果你試圖以相符一個現有行的鍵加入新行，將產生一個錯誤。
+
+<P></P>
+
+<LI>
+
+<A NAME="IDX1456"></A>
+<CODE>PRIMARY KEY</CODE> 是一個唯一 <CODE>KEY</CODE>，它還有一個額外的約束，所有鍵列必須被定義為 <CODE>NOT NULL</CODE>。在 MySQL 中，該被命名為 <CODE>PRIMARY</CODE>。一張表只能有一個 <CODE>PRIMARY KEY</CODE>。如果在你的表中沒有一個 <CODE>PRIMARY KEY</CODE>，而某些應用程式要求 <CODE>PRIMARY KEY</CODE>，MySQL 將傳回第一個沒有任何 <CODE>NULL</CODE> 列的 <CODE>UNIQUE</CODE> 鍵，做為 <CODE>PRIMARY KEY</CODE>。
+
+<P></P>
+
+<LI>
+一個 <CODE>PRIMARY KEY</CODE> 可以是一個多列索引。然而，你不能在一個列規格說明中使用 <CODE>PRIMARY KEY</CODE> 鍵屬性來建立一個多列索引。這樣做將僅僅標記單個列做為主鍵。你必須使用 <CODE>PRIMARY KEY(index_col_name, ...)</CODE> 句法。
+
+<P></P>
+
+<LI>
+如果 <CODE>PRIMARY</CODE> 或 <CODE>UNIQUE</CODE> 鍵只由一個列組成，並且列類型是整型，你可以用 <CODE>_rowid</CODE> 參照它。(在版本 3.23.11 中新加入)。
+
+<P></P>
+
+<LI>
+如果你不為一個索引指派一個名字，索引名將被指派為與第一個 <CODE>index_col_name</CODE> 相同的名字，以一個可選後綴 (<CODE>_2</CODE>,<CODE>_3</CODE>, <CODE>...</CODE>) 使它唯一。使用 <CODE>SHOW INDEX FROM tbl_name</CODE> 可以從一個表中查看索引名。查看章節 <A HREF="manual1.html#SHOW_DATABASE_INFO">4.5.6.1  檢索有關資料庫、表、列和索引的資訊</A>。
+
+<P></P>
+
+<LI>
+<A NAME="IDX1457"></A>
+<A NAME="IDX1458"></A>
+只有 <CODE>MyISAM</CODE>、<CODE>InnoDB</CODE> 和 <CODE>BDB</CODE> 表類型支援在可以有 <CODE>NULL</CODE> 值的列上索引。在其它情況下，你必須宣告這個列為 <CODE>NOT NULL</CODE> 或者得到一個錯誤結果。
+
+<P></P>
+
+<LI>
+使用 <CODE>col_name(length)</CODE> 句法，你可以一個索引只使用一個 <CODE>CHAR</CODE> 或 <CODE>VARCHAR</CODE> 列的一部分。這可以使索引文件更小一點。查看章節 <A HREF="manual1.html#Indexes">5.4.4  列索引</A>。
+
+<P></P>
+
+<LI>
+<A NAME="IDX1459"></A>
+<A NAME="IDX1460"></A>
+<A NAME="IDX1461"></A>
+<A NAME="IDX1462"></A>
+只有 <CODE>MyISAM</CODE> 表類型運動在 <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 列上索引。當在一個 <CODE>BLOB</CODE> 或 <CODE>TEXT</CODE> 列上放置一個索引時，你必須總是指定索引的長度：
+
+<PRE>
+CREATE TABLE test (blob_col BLOB, INDEX(blob_col(10)));
+</PRE>
+
+<LI>
+當你對一個 <CODE>TEXT</CODE> 或 <CODE>BLOB</CODE> 列使用 <CODE>ORDER BY</CODE> 或 <CODE>GROUP BY</CODE> 時，只有最前面 的 <CODE>max_sort_length</CODE> 字節被使用。查看章節 <A HREF="06-2.html#BLOB">6.2.3.2  <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 類型</A>。
+
+<P></P>
+
+<LI>
+在 MySQL 3.23.23 或更新的版本中，你也可以建立特殊的 <CODE>FULLTEXT</CODE> 索引。他們被用於全文搜尋。只有 <CODE>MyISAM</CODE> 表類型支援 <CODE>FULLTEXT</CODE> 索引。他只能從 <CODE>CHAR</CODE>、<CODE>VARCHAR</CODE> 和 <CODE>TEXT</CODE> 列建立。索引總是建立在整個列上﹔部分索引是不支援的。詳細操作請查看章節 <A HREF="06-8.html#Fulltext_Search">6.8  MySQL 全文搜尋</A>。
+
+<P></P>
+
+<LI>
+
+在 MySQL 3.23.44 或更新的版本中，<CODE>InnoDB</CODE> 表支援外鍵約束檢查。查看章節 <A HREF="manual2.html#InnoDB">7.5  <CODE>InnoDB</CODE> 表</A>。注意，InnoDB 中的 <CODE>FOREIGN KEY</CODE> 句法比上面介紹的句法有更多的限制。InnoDB 不允許 
+<CODE>index_name</CODE> 被指定，參考表的列總是必須明確命名。從 4.0.8 開始，InnoDB 在外鍵上支援 <CODE>ON DELETE</CODE> 和 <CODE>ON UPDATE</CODE> 動作。精確句法查看 InnoDB 手冊章節。查看章節 <A HREF="manual2.html#InnoDB">7.5  <CODE>InnoDB</CODE> 表</A>。
+對於其它的表類型，MySQL 伺服器對 <CODE>CREATE TABLE</CODE> 命令中的 <CODE>FOREIGN KEY</CODE>、<CODE>CHECK</CODE> 和 <CODE>REFERENCES</CODE> 句法作語法分析，但是沒有更進一步的行為。查看章節 <A HREF="manual1.html#ANSI_diff_Foreign_Keys">1.8.4.5  外鍵</A>。
+
+<P></P>
+
+<LI>
+
+每個 <CODE>NULL</CODE> 列占據額外的一個比特，取舍到最接近的字節。
+
+<P></P>
+
+<LI>
+最大記錄的字節長度可以按下面的計算得出：
+
+<PRE>
+row length = 1
+             + (sum of column lengths)
+             + (number of NULL columns + 7)/8
+             + (number of variable-length columns)
+</PRE>
+
+<LI>
+<CODE>table_options</CODE> 和 <CODE>SELECT</CODE> 選項只在 MySQL 3.23 和以後的版本中被實現。
+
+不同的表類型為：
+<P></P>
+
+<TABLE BORDER WIDTH="90%">
+<TR><TD><STRONG>表類型 </STRONG> </TD><TD> <STRONG>含義 </STRONG>
+</TD></TR>
+<TR><TD>BDB 或 BerkeleyDB  </TD><TD> 以頁鎖定的事務安全型表。查看章節 <A HREF="manual2.html#BDB">7.6  <CODE>BDB</CODE> 或 <CODE>BerkeleyDB</CODE> 表</A>
+</TD></TR>
+<TR><TD>HEAP </TD><TD> 這個表的資料只存放在記憶體中。查看章節 <A HREF="manual2.html#HEAP">7.4  <CODE>HEAP</CODE> 表</A>
+</TD></TR>
+<TR><TD>ISAM </TD><TD> 最初的儲存引擎。查看章節 <A HREF="manual2.html#ISAM">7.3  <CODE>ISAM</CODE> 表</A>
+</TD></TR>
+<TR><TD>InnoDB </TD><TD> 以行鎖定的事務安全型表。查看章節 <A HREF="manual2.html#InnoDB">7.5  <CODE>InnoDB</CODE> 表</A>
+</TD></TR>
+<TR><TD>MERGE </TD><TD> 做為一個表使用的 MyISAM 表的收集品。查看章節 <A HREF="manual2.html#MERGE">7.2  <CODE>MERGE</CODE> 表</A>
+</TD></TR>
+<TR><TD>MRG_MyISAM </TD><TD> MERGE 表的別名
+</TD></TR>
+<TR><TD>MyISAM </TD><TD> 用於代替 ISAM 的新的輕便型二進位儲存引擎。查看章節  <A HREF="manual2.html#MyISAM">7.1  <CODE>MyISAM</CODE> 表</A>
+</TD></TR>
+</TABLE>
+
+<P></P>
+
+查看章節 <A HREF="manual2.html#Table_types">7  MySQL 表類型</A>。
+
+如果一個表類型被指定，而那個特殊類型是不可用的，MySQL 將選擇最接近於你所指定類型的表類型。例如，如果 <CODE>TYPE=BDB</CODE> 被指定，而目前版本的 MySQL 不支援 <CODE>BDB</CODE> 表，該將會做為 <CODE>MyISAM</CODE> 表代替被建立。
+
+其它的表選項是用於最佳化表行為的。在大多數情況下，你不必指定他們中的任何一個。選項對所有表均適用，如果不適用則另外說明：
+
+<P></P>
+
+<TABLE BORDER WIDTH="90%">
+<TR><TD><STRONG>選項 </STRONG> </TD><TD> <STRONG>含義 </STRONG>
+</TD></TR>
+<TR><TD><CODE>AUTO_INCREMENT</CODE> </TD><TD> 你想要為你的表設定的下一個 <CODE>AUTO_INCREMENT</CODE> 值。(MyISAM)
+</TD></TR>
+<TR><TD><CODE>AVG_ROW_LENGTH</CODE> </TD><TD> 你的表的平均行長度的近似值。你只需為有變長記錄的大表設定它
+</TD></TR>
+<TR><TD><CODE>CHECKSUM</CODE> </TD><TD> 如果你希望 MySQL 對所有的記錄行維持一個檢驗和(這將使表在更新時變得更慢，但是使得更容易地發現損壞的表)，設定它為 1。(MyISAM)
+</TD></TR>
+<TR><TD><CODE>COMMENT</CODE> </TD><TD> 對於你的表的一個 60 個字元的註釋
+</TD></TR>
+<TR><TD><CODE>MAX_ROWS</CODE> </TD><TD> 你計劃在表中儲存的最大記錄行數目
+</TD></TR>
+<TR><TD><CODE>MIN_ROWS</CODE> </TD><TD> 你計劃在表中儲存的最小記錄行數目
+</TD></TR>
+<TR><TD><CODE>PACK_KEYS</CODE> </TD><TD> 如果你希望有更小的索引，設定它為 1。這通常使的更新更加得慢，面讀取列快 (MyISAM, ISAM)。設定它為 0，將停用所有鍵壓縮。設定它為 <CODE>DEFAULT</CODE> (MySQL 4.0)，將告訴儲存引擎僅僅壓縮長的 <CODE>CHAR</CODE>/<CODE>VARCHAR</CODE> 列
+</TD></TR>
+<TR><TD><CODE>PASSWORD</CODE> </TD><TD> 以一個密碼加密 <TT>`.frm'</TT> 文件。在 MySQL 標準版中，這個選項不做任何事
+</TD></TR>
+<TR><TD><CODE>DELAY_KEY_WRITE</CODE> </TD><TD> 如果希望延遲鍵表更新，直到該表被關閉，設定它為 1。(MyISAM).
+</TD></TR>
+<TR><TD><CODE>ROW_FORMAT</CODE> </TD><TD> 定義記錄行如何被儲存。目前，這個選項只能工作於 MyISAM 表，它支援 <CODE>DYNAMIC</CODE> 和 <CODE>FIXED</CODE> 行格式。查看章節 <A HREF="manual2.html#MyISAM_table_formats">7.1.2  <CODE>MyISAM</CODE> 表格式</A>
+</TD></TR>
+</TABLE>
+
+<P></P>
+當你使用一個 <CODE>MyISAM</CODE> 表時，MySQL 使用 <CODE>max_rows * avg_row_length</CODE> 的乘積來最終表將有多大。如果你不指定上面的任何選項，一個表的最大民族教育將是 4G (或 2G ，如果你的操作系統僅支援 2G 的最大文件)。原因是僅僅是為了控制指針範圍使索引更小和更快，如果您真的不需要大文件。
+
+如果你不使用 <CODE>PACK_KEYS</CODE>，預設僅僅壓縮字串，不壓縮數位。如果你使用 <CODE>PACK_KEYS=1</CODE>，數位也將被很好地壓縮。
+
+當壓縮二進位數位鍵時，MySQL 將使用 prefix 壓縮。這就意味著，如果有許多同樣的數位，你才能得到很大的益處。Prefix 壓縮意味著每個鍵都需要一個額外的字節來指示前一個鍵有多少字節與下一個鍵相同(注意，行指針被以高元組第一次序(high-byte-first-order)直接地儲存在鍵後，以改善壓縮)。這就意味著，如果在一個記錄行上有連續兩行的相等鍵，下面所有“相同”的鍵通常只占用 2 個字節(包括記錄行指針)。與通常情況下相比，下面的“相同”鍵將占用 storage_size_for_key + pointer_size (通常 4) 個字節。另一方面，如果所有的鍵都是不同的，你將在每個鍵上損失 1 字節，如果該鍵不是一個可以有 <CODE>NULL</CODE> 值的鍵。(在這種情況下，壓縮後鍵的長度將儲存在用於鍵是否為 <CODE>NULL</CODE> 的位元組中。)
+
+<P></P>
+
+<LI>
+如果你在一個  <CODE>CREATE</CODE> 語句中指定一個 <CODE>SELECT</CODE>，MySQL 為 <CODE>SELECT</CODE> 中的所有元素建立新的欄位。例如：
+
+<PRE>
+mysql&#62; CREATE TABLE test (a INT NOT NULL AUTO_INCREMENT,
+    -&#62;        PRIMARY KEY (a), KEY(b))
+    -&#62;        TYPE=MyISAM SELECT b,c FROM test2;
+</PRE>
+
+這將建立一個有三個列的 <CODE>MyISAM</CODE> 表，a、b 和 c 。請注意，<CODE>SELECT</CODE> 語句中的列被加入到表的右邊，而不是重疊在上面。看下面的範例：
+
+<PRE>
+mysql&#62; SELECT * FROM foo;
++---+
+| n |
++---+
+| 1 |
++---+
+
+mysql&#62; CREATE TABLE bar (m INT) SELECT n FROM foo;
+Query OK, 1 row affected (0.02 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql&#62; SELECT * FROM bar;
++------+---+
+| m    | n |
++------+---+
+| NULL | 1 |
++------+---+
+1 row in set (0.00 sec)
+</PRE>
+
+對於表 <CODE>foo</CODE> 中每個記錄行，一個以從表 <CODE>foo</CODE> 來的值和新列的預設值組成的記錄行被插入到表 <CODE>bar</CODE> 中。
+
+<CODE>CREATE TABLE ... SELECT</CODE> 不會為了自動地建立索引。這是故意這樣做的，是為了該命令盡可能地靈活。如果你希望在建立表時同時建立索引，你必須在 <CODE>SELECT</CODE> 語句之前指定它們：
+
+
+<PRE>
+mysql&#62; CREATE TABLE bar (UNIQUE (n)) SELECT n FROM foo;
+</PRE>
+
+如果在拷貝資料到表中時發生任何錯誤，資料將被自動地刪除。
+
+為了確保更新日誌/二進位日誌可用於重建最初的表，在 <CODE>CREATE TABLE ... SELECT</CODE> 過程中，MySQL 不允許並發的插入。
+
+<P></P>
+
+<LI>
+在不支援大文件的操作系統上，<CODE>RAID_TYPE</CODE> 選項可以幫助你打破 MyISAM 資料文件(非索引文件)的 2G/4G 限止。注意，這個選項在支援大文件的文件系統上不推荐使用！
+
+將 <CODE>RAID</CODE> 目錄放在不同的物理硬碟上，可以通過 I/O 瓶頸得到更高的速度。<CODE>RAID_TYPE</CODE> 可以在任何操作系統上工作，只要你配置 MySQL <CODE>--with-raid</CODE>。
+目前 <CODE>RAID_TYPE</CODE> 只允許 <CODE>STRIPED</CODE> (<CODE>1</CODE> 和 <CODE>RAID0</CODE> 是它的別名)。
+
+如果你對一個 <CODE>MyISAM</CODE> 表指定 <CODE>RAID_TYPE=STRIPED</CODE> ，<CODE>MyISAM</CODE> 將在資料庫目錄下建立 <CODE>RAID_CHUNKS</CODE> 幾目錄，並命名為 00, 01, 02 。在每個目錄中，<CODE>MyISAM</CODE> 將建立一個 <CODE>table_name.MYD</CODE>。當將資料寫入資料文件中時，<CODE>RAID</CODE> 處理器將映射第一個 <CODE>RAID_CHUNKSIZE</CODE> *1024 字節到第一個文件中，下一個 <CODE>RAID_CHUNKSIZE</CODE> *1024 字節到下一個文件中，等等。
+
+<P></P>
+
+<LI>
+<CODE>UNION</CODE> 被用於當你希望將多個同樣的表收集為一個時。它僅僅與 <CODE>MERGE</CODE> 表一起配合使用。查看章節 <A HREF="manual2.html#MERGE">7.2  <CODE>MERGE</CODE> 表</A>。
+
+目前，在你將幾個表映射為一個 <CODE>MERGE</CODE> 表時，你需要有對這些表的 <CODE>SELECT</CODE>、<CODE>UPDATE</CODE> 和
+<CODE>DELETE</CODE> 權限。所有被映射的表必須與 <CODE>MERGE</CODE> 表在同一個資料庫中。
+
+<P></P>
+
+<LI>
+如果你希望向一個 <CODE>MERGE</CODE> 表中插入資料，你不得不用 <CODE>INSERT_METHOD</CODE> 指定記錄行插入到哪一個表中。查看章節 <A HREF="manual2.html#MERGE">7.2  <CODE>MERGE</CODE> 表</A>。這個選項在 MySQL 4.0.0 中被引入。
+
+<P></P>
+
+<LI>
+在建立表時，<CODE>PRIMARY</CODE> 鍵必須放在第一位，然後是所有 <CODE>UNIQUE</CODE> 鍵，再後是普通鍵。這可以幫助 MySQL 最佳化程式區分哪個鍵優先使用，同時更快地檢測出重復的 <CODE>UNIQUE</CODE> 鍵。
+
+<P></P>
+
+<LI>
+通過使用 <CODE>DATA DIRECTORY="directory"</CODE> 或 <CODE>INDEX DIRECTORY="directory"</CODE>，你可以指定儲存引擎在什麼地方存放它的表和索引文件。注意，目錄必須以一個完整路徑指定(不是相對路徑)。
+
+這僅僅工作於 <CODE>MySQL</CODE> 4.0 中的 <CODE>MyISAM</CODE> 表，並且你沒有使用 <CODE>--skip-symlink</CODE> 選項。查看章節 <A HREF="manual1.html#Symbolic_links_to_tables">5.6.1.2  對表使用符號連結</A>。
+</UL>
+
+
+
+<H4><A NAME="Silent_column_changes"></A>6.5.3.1  隱式的列定義變化</H4>
+
+<P>
+<A NAME="IDX1463"></A>
+</P>
+
+<P>
+在某些情況下，MySQL 隱式地改變一個在 <CODE>CREATE TABLE</CODE> 給定的列的規約。(這在 <CODE>ALTER TABLE</CODE> 中也可能發生。)：
+</P>
+
+<UL>
+<LI>
+
+長度不超過四個字節的 <CODE>VARCHAR</CODE> 列被改變為 <CODE>CHAR</CODE>。
+
+<P></P>
+
+<LI>
+如果在一個表中有任何一個列是變長的，則結果是整個記錄行也是變長的。因此，如果一個表中包含任何變長的列(<CODE>VARCHAR</CODE>、<CODE>TEXT</CODE> 或 <CODE>BLOB</CODE>)，所有長於 3 個字元的 <CODE>CHAR</CODE> 列將被改變為 <CODE>VARCHAR</CODE> 列。這在任何方面都不影響你如何使用該列﹔在 MySQL 中，<CODE>VARCHAR</CODE> 只是儲存字元的另一個不同的方法。MySQL 執行這個轉換，是因為它節省空間，並且使表操作更快。查看章節 <A HREF="manual2.html#Table_types">7  MySQL 表類型</A>。
+
+<P></P>
+
+<LI>
+<CODE>TIMESTAMP</CODE> 的顯示尺寸必須是在 2 到 14 範圍之內的偶數。如果指定顯示尺寸為 0 或超過 14，尺寸被強制設為 14。從 1 到 13 範圍內的奇數值尺寸將被強制為下一個更大的偶數。
+
+<P></P>
+
+<LI>
+你不能在一個 <CODE>TIMESTAMP</CODE> 列中儲存一個文字 <CODE>NULL</CODE>﹔將一個 <CODE>NULL</CODE> 值賦給它將設定它為目前的日期和時間。因為 <CODE>TIMESTAMP</CODE> 列的行為就是這樣，列的 <CODE>NULL</CODE> 和 <CODE>NOT NULL</CODE> 屬性不以常態方式影響它，如果你指定它，將被忽略。<CODE>DESCRIBE tbl_name</CODE> 總是報告一個 <CODE>TIMESTAMP</CODE> 列被賦於了 <CODE>NULL</CODE> 值。
+
+<P></P>
+
+<LI>
+MySQL 將其它 SQL 資料庫供應商使用的列類型映射到 MySQL 類型。查看章節 <A HREF="06-2.html#Other-vendor_column_types">6.2.5  使用來自其它的資料庫引擎的列類型</A>。
+</UL>
+
+<P>
+如果你希望知道在你建立或改變了你的表後， MySQL 是否使用了不同於你所指定的列類型，你可以發出一個 <CODE>DESCRIBE tbl_name</CODE> 語句。
+</P>
+
+<P>
+<A NAME="IDX1464"></A>
+如果你使用 <CODE>myisampack</CODE> 壓縮一個表，其它的某些列類型可能會發生改變。查看章節 <A HREF="manual2.html#Compressed_format">7.1.2.3  壓縮表的特征</A>。
+</P>
+
+
+
+<H3><A NAME="ALTER_TABLE"></A>6.5.4  <CODE>ALTER TABLE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1465"></A>
+<A NAME="IDX1466"></A>
+<A NAME="IDX1467"></A>
+
+</P>
+
+<PRE>
+ALTER [IGNORE] TABLE tbl_name alter_spec [, alter_spec ...]
+
+alter_specification:
+        ADD [COLUMN] create_definition [FIRST | AFTER column_name ]
+  or    ADD [COLUMN] (create_definition, create_definition,...)
+  or    ADD INDEX [index_name] (index_col_name,...)
+  or    ADD PRIMARY KEY (index_col_name,...)
+  or    ADD UNIQUE [index_name] (index_col_name,...)
+  or    ADD FULLTEXT [index_name] (index_col_name,...)
+  or	ADD [CONSTRAINT symbol] FOREIGN KEY [index_name] (index_col_name,...)
+            [reference_definition]
+  or    ALTER [COLUMN] col_name {SET DEFAULT literal | DROP DEFAULT}
+  or    CHANGE [COLUMN] old_col_name create_definition
+               [FIRST | AFTER column_name]
+  or    MODIFY [COLUMN] create_definition [FIRST | AFTER column_name]
+  or    DROP [COLUMN] col_name
+  or    DROP PRIMARY KEY
+  or    DROP INDEX index_name
+  or    DISABLE KEYS
+  or    ENABLE KEYS
+  or    RENAME [TO] new_tbl_name
+  or    ORDER BY col
+  or    table_options
+</PRE>
+
+<P>
+<CODE>ALTER TABLE</CODE> 允許你改變一個現有表的結構。例如，你可以加入或刪除列，建立或撤銷索引，變更現有列的類型或將列或表自身更名。你也可以改變表的註釋和表的類型。查看章節 <A HREF="06-5.html#CREATE_TABLE">6.5.3  <CODE>CREATE TABLE</CODE> 句法</A>。
+</P>
+
+<P>
+如果你使用 <CODE>ALTER TABLE</CODE> 來改變一個列規約，但是 <CODE>DESCRIBE tbl_name</CODE> 顯示你的列並沒有被修改，這有可能是因為章節 <A HREF="06-5.html#Silent_column_changes">6.5.3.1  隱式的列定義變化</A> 描述的一個原因，使 MySQL 忽略了你的修改。例如，如果你嘗試將一個 <CODE>VARCHAR</CODE> 列變更為 <CODE>CHAR</CODE>，而如果在這個表中包含其它的變長列，MySQL 將仍然使用 <CODE>VARCHAR</CODE>。
+</P>
+
+<P>
+<CODE>ALTER TABLE</CODE> 通過建立原初表的一個臨時副本來工作。變更在副本上執行，然後原初表將被刪除，臨時表被換名。這樣做使所有的修改自動地轉向到沒有任何更新失敗的新表。當 <CODE>ALTER TABLE</CODE> 執行時，原初表可被其它客戶端讀取。更新與寫入被延遲到新的表準備好。
+</P>
+
+<P>
+注意，如果你以除 <CODE>RENAME</CODE> 之外的其它選項使用 <CODE>ALTER TABLE</CODE> ，MySQL 將總是建立一個臨時表，即使資料並不確實需要被復制(就像當你改變一個列名時)。我們計劃不久來修正它，但是通常人們是不經常執行 <CODE>ALTER TABLE</CODE>的，所以在我們的 TODO 上，這個修正並不是急於處理的。對於 MyISAM 表，你可以將變數 <CODE>myisam_sort_buffer_size</CODE> 設定和高一點，以加速索引的重建部分(這是重建程序中最慢的部分)。
+</P>
+
+<UL>
+<LI>
+為了使用 <CODE>ALTER TABLE</CODE>，你需要在這個表上有 <CODE>ALTER</CODE>、<CODE>INSERT</CODE> 和 <CODE>CREATE</CODE> 權限。
+
+<P></P>
+
+<LI>
+<CODE>IGNORE</CODE> 是 MySQL 對 ANSI SQL92 的擴展。它用於控制當在新表中的唯一鍵上出現重復值時，<CODE>ALTER TABLE</CODE> 如何工作。如果 <CODE>IGNORE</CODE> 沒有被指定，副本將被放棄並回退。如果 <CODE>IGNORE</CODE> 被指定，那麼在唯一鍵上重復的記錄行只有第一個記錄行被使用﹔其它的均被刪除。
+
+<P></P>
+
+<LI>
+你可以在單個的 <CODE>ALTER TABLE</CODE> 語句中發出多個 <CODE>ADD</CODE>、<CODE>ALTER</CODE>、<CODE>DROP</CODE> 和 <CODE>CHANGE</CODE> 幾句。這是 MySQL 對 ANSI SQL92 的擴展，ANSI SQL92 只允許在每個 <CODE>ALTER TABLE</CODE> 語句中一個幾句。
+
+<P></P>
+
+<LI>
+<CODE>CHANGE col_name</CODE>、<CODE>DROP col_name</CODE> 和 <CODE>DROP INDEX</CODE> 是 MySQL 對 ANSI SQL92 的擴展。
+
+<P></P>
+
+<LI>
+
+<CODE>MODIFY</CODE> is an Oracle extension to <CODE>ALTER TABLE</CODE>.
+
+<LI>
+
+可選詞 <CODE>COLUMN</CODE> 只是一個無用詞組，可被忽略。
+
+<P></P>
+
+<LI>
+如果你使用 <CODE>ALTER TABLE tbl_name RENAME TO new_name</CODE>，並沒有任何其它的選項，MySQL 將簡單地重命名與表 
+<CODE>tbl_name</CODE> 的文件。這不需要建立臨時表。查看章節 <A HREF="06-5.html#RENAME_TABLE">6.5.5  <CODE>RENAME TABLE</CODE> 句法</A>。
+
+<P></P>
+
+<LI>
+<CODE>create_definition</CODE> 幾句使用與 <CODE>CREATE TABLE</CODE> 相同的 <CODE>ADD</CODE> 和 <CODE>CHANGE</CODE> 句法。注意，這些句法不僅包含列類型，還要包含列名。查看章節 <A HREF="06-5.html#CREATE_TABLE">6.5.3  <CODE>CREATE TABLE</CODE> 句法</A>。
+
+<P></P>
+
+<LI>
+你可以使用一個 <CODE>CHANGE old_col_name create_definition</CODE> 幾句來重命名一個列。為了這樣做，你必須指定舊的和新的列名，以及列目前的類型。例如，為了將一個 <CODE>INTEGER</CODE> 列 <CODE>a</CODE> 重命名為 <CODE>b</CODE>，你必須這樣做：
+<PRE>
+mysql&#62; ALTER TABLE t1 CHANGE a b INTEGER;
+</PRE>
+
+如果你希望改變一個列的類型而不是列名，<CODE>CHANGE</CODE> 句法仍然需要有兩個列名，即使它們是一樣的。例如：
+
+<PRE>
+mysql&#62; ALTER TABLE t1 CHANGE b b BIGINT NOT NULL;
+</PRE>
+
+然後，到 MySQL 3.22.16a 時，你也可以使用 <CODE>MODIFY</CODE> 來改變一個列的類型而不需要重命名它：
+
+<PRE>
+mysql&#62; ALTER TABLE t1 MODIFY b BIGINT NOT NULL;
+</PRE>
+
+<LI>
+如果你使用 <CODE>CHANGE</CODE> 或 <CODE>MODIFY</CODE> 縮短一個列，而該列上存在一個取列部分值的索引(舉例來說，如果你有一個索引在一個 <CODE>VARCHAR</CODE> 列的前 10 個字元上)，那麼，你將不能使列短於索引的字元數目。
+
+<P></P>
+
+<LI>
+當你使用 <CODE>CHANGE</CODE> 或 <CODE>MODIFY</CODE> 改變一個列類型時，MySQL 將嘗試盡可能地將資料轉換到新的類型。
+
+<P></P>
+
+<LI>
+在 MySQL 3.22 或更新的版本中，你可以使用 <CODE>FIRST</CODE> 或 <CODE>ADD ... AFTER col_name</CODE> 在一個表中的某個特定位置加入一列。預設是增加到最後一列。從 MySQL 4.0.1 開始，你也可以在 <CODE>CHANGE</CODE> 或 <CODE>MODIFY</CODE> 中使用關鍵詞 <CODE>FIRST</CODE> 和 <CODE>AFTER</CODE> 。
+
+<P></P>
+
+<A NAME="IDX1468"></A>
+<A NAME="IDX1469"></A>
+<A NAME="IDX1470"></A>
+<A NAME="IDX1471"></A>
+<A NAME="IDX1472"></A>
+<LI>
+
+<CODE>ALTER COLUMN</CODE> 可以為一列指定一個新的預設值或刪除老的預設值。如果老的預設值被移除且列可以被設為 <CODE>NULL</CODE>，新的預設值將是 <CODE>NULL</CODE>。如果該列不允許有 <CODE>NULL</CODE>值，MySQL 以章節 <A HREF="06-5.html#CREATE_TABLE">6.5.3  <CODE>CREATE TABLE</CODE> 句法</A> 中的描述方式為該列賦於一個預設值。
+
+<P></P>
+
+<A NAME="IDX1473"></A>
+<A NAME="IDX1474"></A>
+<A NAME="IDX1475"></A>
+<LI>
+<CODE>DROP INDEX</CODE> 移除一個索引。這是 MySQL 對 ANSI SQL92 的一個擴展。查看章節 <A HREF="06-5.html#DROP_INDEX">6.5.8  <CODE>DROP INDEX</CODE> 句法</A>。
+
+<P></P>
+
+<LI>
+如果列被從一個表中移除，列也將從任何有它為組成部分的索引中被移除。如果組成一個索引的所有列均被移除了，那麼，該索引也將被移除。
+
+<P></P>
+
+<LI>
+如果一個表只包含一個列，那麼該列不能被移除。如果你本就打算移除該表，請使用 <CODE>DROP TABLE</CODE> 代替。
+
+<P></P>
+
+<A NAME="IDX1476"></A>
+<A NAME="IDX1477"></A>
+<A NAME="IDX1478"></A>
+<LI>
+<CODE>DROP PRIMARY KEY</CODE> 移除主索引。如果這樣的索引不存在，它將移除表中的第一個 <CODE>UNIQUE</CODE> 索引。(如果沒有 <CODE>PRIMARY KEY</CODE> 被明確指定，MySQL 將第一個 <CODE>UNIQUE</CODE> 鍵標記為 <CODE>PRIMARY KEY</CODE> )
+
+<A NAME="IDX1479"></A>
+<A NAME="IDX1480"></A>
+如果你加入一個 <CODE>UNIQUE INDEX</CODE> 或 <CODE>PRIMARY KEY</CODE> 到一個表中，它將被儲存在任何非 <CODE>UNIQUE</CODE> 索引之前，因而，MySQL 可以盡可能地檢測出重復鍵。
+
+<P></P>
+
+<A NAME="IDX1481"></A>
+<LI>
+<CODE>ORDER BY</CODE> 允許你以指定的記錄行順序建立一個新表。注意，在插入與刪除後，該表將不會保留這個順序。在某些情況下，如果表在你以後希望排序的列上是有序的，這將使得  MySQL 排序時更加得容易。當你知道你主要查詢的行以一個確定的次序時，這將是很有用的。在對表進行過大的改變後，通過使用這個選項，你可能會得到更高的性能。
+
+<P></P>
+
+<A NAME="IDX1482"></A>
+<A NAME="IDX1483"></A>
+<A NAME="IDX1484"></A>
+<LI>
+如果你在一個 <CODE>MyISAM</CODE> 表上使用 <CODE>ALTER TABLE</CODE> ，所有非唯一的索引將以一個分批方式建立(就像 <CODE>REPAIR</CODE> 一樣)。當你有很多索引時，這可能使 <CODE>ALTER TABLE</CODE> 更快一點。
+
+<P></P>
+
+<LI>
+從 <STRONG>MySQL 4.0</STRONG> 開始，上面的特性可明確地啟動。<CODE>ALTER TABLE ... DISABLE KEYS</CODE> 使 MySQL 停止更新 <CODE>MyISAM</CODE> 表的非唯一索引。然後 <CODE>ALTER TABLE ... ENABLE KEYS</CODE> 可以被用來重建丟失的索引。因為 MySQL 以特殊的算法執行它，這將比一個接一個地插入索引要快得多，停用鍵可以很大程式上的加速一個大批量的插入。
+
+<P></P>
+
+<LI>
+
+<A NAME="IDX1485"></A>
+使用 C API 函數 <CODE>mysql_info()</CODE>，你可以找出有多少記錄被拷貝，以及(當 <CODE>IGNORE</CODE> 被使用時)有多少記錄因唯一鍵值重復而被刪除。
+
+<P></P>
+
+<LI>
+
+<A NAME="IDX1486"></A>
+<A NAME="IDX1487"></A>
+<CODE>FOREIGN KEY</CODE>、<CODE>CHECK</CODE> 和 <CODE>REFERENCES</CODE> 幾句實際上不做任何事情，除了對於 InnoDB 類型的表，它支援 <CODE>ADD CONSTRAINT FOREIGN KEY (...) REFERENCES ... (...)</CODE>。
+注意，InnoDB 不允許一個 <CODE>index_name</CODE> 被指定。查看章節 <A HREF="manual2.html#InnoDB">7.5  <CODE>InnoDB</CODE> 表</A>。
+對於其它類型的表，這個句法僅僅為了兼容而提供，以更容易地從其它 SQL 伺服器移植代碼和更容易地運行以參照建立表的應用程式。查看章節 <A HREF="manual1.html#Differences_from_ANSI">1.8.4  MySQL 與 ANSI SQL92 相比不同的差別</A>。
+</UL>
+
+<P>
+這裡是一個範例，顯示了 <CODE>ALTER TABLE</CODE> 的一些用法。我們以一個按如下方式建立一個表 <CODE>t1</CODE> 開始：
+</P>
+
+<PRE>
+mysql&#62; CREATE TABLE t1 (a INTEGER,b CHAR(10));
+</PRE>
+
+<P>
+為了將表 <CODE>t1</CODE> 重命名為 <CODE>t2</CODE>：
+</P>
+
+<PRE>
+mysql&#62; ALTER TABLE t1 RENAME t2;
+</PRE>
+
+<P>
+為了將列 <CODE>a</CODE> 從 <CODE>INTEGER</CODE> 改變為 <CODE>TINYINT NOT NULL</CODE>(列名不變)，並將列 <CODE>b</CODE> 從 <CODE>CHAR(10)</CODE> 改變為 <CODE>CHAR(20)</CODE> ，同時也將 <CODE>b</CODE> 重命名為 <CODE>c</CODE>：
+</P>
+
+<PRE>
+mysql&#62; ALTER TABLE t2 MODIFY a TINYINT NOT NULL, CHANGE b c CHAR(20);
+</PRE>
+
+<P>
+加入一個名為 <CODE>d</CODE> 的 <CODE>TIMESTAMP</CODE> c列：
+</P>
+
+<PRE>
+mysql&#62; ALTER TABLE t2 ADD d TIMESTAMP;
+</PRE>
+
+<P>
+在列 <CODE>d</CODE> 上增加一個索引，將列 <CODE>a</CODE> 設為主鍵：
+</P>
+
+<PRE>
+mysql&#62; ALTER TABLE t2 ADD INDEX (d), ADD PRIMARY KEY (a);
+</PRE>
+
+<P>
+移除列 <CODE>c</CODE>:
+</P>
+
+<PRE>
+mysql&#62; ALTER TABLE t2 DROP COLUMN c;
+</PRE>
+
+<P>
+加入一個名為 <CODE>c</CODE> 的 <CODE>AUTO_INCREMENT</CODE> 整型列：
+</P>
+
+<PRE>
+mysql&#62; ALTER TABLE t2 ADD c INT UNSIGNED NOT NULL AUTO_INCREMENT,
+           ADD INDEX (c);
+</PRE>
+
+<P>
+注意，我們索引了 <CODE>c</CODE>，因為 <CODE>AUTO_INCREMENT</CODE> 列必須被索引，同樣我們宣告列 <CODE>c</CODE> 為 <CODE>NOT NULL</CODE>，因為被索引的列不能有 <CODE>NULL</CODE>。
+</P>
+
+<P>
+當你加入一個 <CODE>AUTO_INCREMENT</CODE> 列時，列值會自動地以序列值填充。通過在 <CODE>ALTER TABLE</CODE> 或使用 <CODE>AUTO_INCREMENT = #</CODE> 表選項之前執行 <CODE>SET INSERT_ID=#</CODE> ，你可以設定第一個序列數位。查看章節 <A HREF="manual1.html#SET_OPTION">5.5.6  <CODE>SET</CODE> 句法</A>。
+</P>
+
+<P>
+對於 MyISAM 表，如果你不改變 <CODE>AUTO_INCREMENT</CODE> 列，序列值將不會被影響。如果你移除一個<CODE>AUTO_INCREMENT</CODE> 列，並加入另一個 <CODE>AUTO_INCREMENT</CODE> 列，值將再次從 1 開始。
+</P>
+
+<P>
+查看章節 <A HREF="manual2.html#ALTER_TABLE_problems">A.6.1  <CODE>ALTER TABLE</CODE> 的問題</A>。
+</P>
+
+
+
+<H3><A NAME="RENAME_TABLE"></A>6.5.5  <CODE>RENAME TABLE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1488"></A>
+
+</P>
+
+<PRE>
+RENAME TABLE tbl_name TO new_tbl_name[, tbl_name2 TO new_tbl_name2,...]
+</PRE>
+
+<P>
+更名是以原幾方式(atomically)執行，這就意味著，當更名正在運行時，其它的任何線程均不能該表。這使得以一個空表取代一個表成為可能。
+</P>
+
+<PRE>
+CREATE TABLE new_table (...);
+RENAME TABLE old_table TO backup_table, new_table TO old_table;
+</PRE>
+
+<P>
+改名是從左到右執行的，這就意味著，如果你希望交換兩個表名，你不得不這樣做：
+</P>
+
+<PRE>
+RENAME TABLE old_table    TO backup_table,
+             new_table    TO old_table,
+             backup_table TO new_table;
+</PRE>
+
+<P>
+只要兩個資料庫在同一個硬碟上，你也可以從一個資料庫更名到另一個資料庫：
+</P>
+
+<PRE>
+RENAME TABLE current_db.tbl_name TO other_db.tbl_name;
+</PRE>
+
+<P>
+當你執行 <CODE>RENAME</CODE> 時，你不能有任何鎖定的表或活動的事務。你同樣也必須有對原初表的 <CODE>ALTER</CODE> 和 <CODE>DROP</CODE> 權限，以及對新表的 <CODE>CREATE</CODE> 和 <CODE>INSERT</CODE> 權限。
+</P>
+
+<P>
+如果在多表更名中，MySQL 遭遇到任何錯誤，它將對所有被更名的表進行倒退更名，將每件事物退回到最初狀態。
+</P>
+
+<P>
+<CODE>RENAME TABLE</CODE> 在 MySQL 3.23.23 中被加入。
+</P>
+
+
+<H3><A NAME="DROP_TABLE"></A>6.5.6  <CODE>DROP TABLE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1489"></A>
+<A NAME="IDX1490"></A>
+<A NAME="IDX1491"></A>
+
+</P>
+
+<PRE>
+DROP [TEMPORARY] TABLE [IF EXISTS] tbl_name [, tbl_name,...] [RESTRICT | CASCADE]
+</PRE>
+
+<P>
+<CODE>DROP TABLE</CODE> 移除一個或多個表。所有的資料和表定義均被 <EM>移除</EM>，所以，<STRONG>一定要小心地</STRONG>使用這個命令！
+</P>
+
+<P>
+在 MySQL 3.22 或更新的版本中，你可以使用關鍵詞 <CODE>IF EXISTS</CODE> 防止表不存在時發生錯誤。在 4.1 中，當使用 <CODE>IF EXISTS</CODE> 時，對於所有不存在的表，你將得到一個 <CODE>NOTE</CODE>。查看章節 <A HREF="manual1.html#SHOW_WARNINGS">4.5.6.9  <CODE>SHOW WARNINGS | ERRORS</CODE></A>。
+</P>
+
+<P>
+<CODE>RESTRICT</CODE> and <CODE>CASCADE</CODE> 被允許是為了更容易的移植。目前，他們不起任何作用。
+</P>
+
+<P>
+<STRONG>注意：</STRONG><CODE>DROP TABLE</CODE> 將自動地提交目前活動的事務(除非你使用的是MySQL 4.1 ，並且使用了 <CODE>TEMPORARY</CODE> 關鍵詞)。
+</P>
+
+<P>
+選項 <CODE>TEMPORARY</CODE> 在 4.0 中被忽略。在 4.1 中，這人選項按如下所示工作：
+</P>
+
+<UL>
+<LI>
+只移除臨時表。
+
+<LI>
+不結束一個運行著的事務。
+
+<LI>
+不會被檢查存取權限。
+
+</UL>
+
+<P>
+使用 <CODE>TEMPORARY</CODE> 是一個很好的安全方式，它可以防止你意外地移除一個真實的表。
+</P>
+
+
+<H3><A NAME="CREATE_INDEX"></A>6.5.7  <CODE>CREATE INDEX</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1492"></A>
+
+</P>
+<P>
+<A NAME="IDX1493"></A>
+<A NAME="IDX1494"></A>
+<A NAME="IDX1495"></A>
+
+</P>
+
+<PRE>
+CREATE [UNIQUE|FULLTEXT] INDEX index_name
+       ON tbl_name (col_name[(length)],... )
+</PRE>
+
+<P>
+<CODE>CREATE INDEX</CODE> 句法在 MySQL 3.22 以前的版本中不做任何事情。在 3.22 或以後的版本中，<CODE>CREATE INDEX</CODE> 被映射到一個 <CODE>ALTER TABLE</CODE> 語句來建立索引。查看章節 <A HREF="06-5.html#ALTER_TABLE">6.5.4  <CODE>ALTER TABLE</CODE> 句法</A>。
+</P>
+
+<P>
+通常，在用 <CODE>CREATE TABLE</CODE> 建立表本身時你就建立表的所有索引。查看章節 <A HREF="06-5.html#CREATE_TABLE">6.5.3  <CODE>CREATE TABLE</CODE> 句法</A>。<CODE>CREATE INDEX</CODE> 允許你在一個現有表上加入索引。
+</P>
+
+<P>
+<CODE>(col1,col2,...)</CODE> 格式的列清單建立一個多列索引。索引值由給定的列值連線而成。
+</P>
+
+<P>
+對於 <CODE>CHAR</CODE> 和 <CODE>VARCHAR</CODE> 列，使用 <CODE>col_name(length)</CODE> 句法，可以只用一個列的部分來建立索引。(對於 <CODE>BLOB</CODE> 和 <CODE>TEXT</CODE> 列，長度是必須的。)這裡的語句顯示使用 <CODE>name</CODE> 列的前 10 個字元建立一個索引：
+</P>
+
+<PRE>
+mysql&#62; CREATE INDEX part_of_name ON customer (name(10));
+</PRE>
+
+<P>
+因為，大多數名字通常在前 10 個字元是不一樣的，這個索引不應該比以整個 <CODE>name</CODE> 建立的索引慢。同樣，使用部分列值建立的索引文件會更小一點，這將節省很多硬碟空間，也可以加速 <CODE>INSERT</CODE> 操作！
+</P>
+
+<P>
+注意，如果你存在使用的是 MySQL 3.23.2 或更新的版本並且是 <CODE>MyISAM</CODE> 表類型，這時你才能在一個可以有 <CODE>NULL</CODE> 值的列上建立索引，以及在一個 <CODE>BLOB</CODE>/<CODE>TEXT</CODE>列上建立索引。
+</P>
+
+<P>
+關於 MySQL 如何使用索引的更多資訊，查看章節 <A HREF="manual1.html#MySQL_indexes">5.4.3  MySQL 如何使用索引</A>。
+</P>
+
+<P>
+<CODE>FULLTEXT</CODE> 索引只能索引 <CODE>VARCHAR</CODE> 和 <CODE>TEXT</CODE> 列，而且只能應用於 <CODE>MyISAM</CODE> 表。<CODE>FULLTEXT</CODE> 索引在 MySQL 3.23.23 和更新的版本中可以使用。查看章節 <A HREF="06-8.html#Fulltext_Search">6.8  MySQL 全文搜尋</A>。
+</P>
+
+
+
+<H3><A NAME="DROP_INDEX"></A>6.5.8  <CODE>DROP INDEX</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1496"></A>
+<A NAME="IDX1497"></A>
+<A NAME="IDX1498"></A>
+
+</P>
+
+<PRE>
+DROP INDEX index_name ON tbl_name
+</PRE>
+
+<P>
+<CODE>DROP INDEX</CODE> 從表 <CODE>tbl_name</CODE> 移除一個名為 <CODE>index_name</CODE> 的索引。在 MySQL 3.22 先前的版本中不做任何事情。在 3.22 或以後的版本中，<CODE>DROP INDEX</CODE> 被映射到一個 <CODE>ALTER TABLE</CODE> 語句來移除索引。查看章節 <A HREF="06-5.html#ALTER_TABLE">6.5.4  <CODE>ALTER TABLE</CODE> 句法</A>。
+</P>
+
+
+
+<H2>&nbsp;</H2>
+
+
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="../../flash/onlined41d.html?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+ 
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-5.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+</HTML>

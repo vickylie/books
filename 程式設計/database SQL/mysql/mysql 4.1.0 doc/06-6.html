@@ -1,0 +1,134 @@
+  <HTML>
+  
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-6.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+<HEAD>
+  <TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+   <style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+   <META http-equiv="Content-Type" content="text/html; charset=big5">
+   <META name="description" content="MySQL 4.1.0  中文參考手冊">
+   <META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+   <LINK rel="shortcut icon" href="shuixin13.ico" />
+   <LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+
+  </HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+<H1>MySQL Reference Manual for version 4.1.0-alpha.</H1>
+<P>
+<P><HR>
+<H2><A NAME="Basic_User_Commands"></A>6.6 基本的 MySQL 使用者實用命令</H2>
+
+<H3><A NAME="USE"></A>6.6.1  <CODE>USE</CODE> 句法</H3>
+
+<P>
+<A NAME="IDX1499"></A>
+
+</P>
+
+<PRE>
+USE db_name
+</PRE>
+
+<P>
+<CODE>USE db_name</CODE> 語句告訴 MySQL 使用 <CODE>db_name</CODE> 資料庫作為以後查詢的預設資料庫。資料庫保持為目前資料庫，只到該會話結束或另一個 <CODE>USE</CODE> 語句發出：
+</P>
+
+<PRE>
+mysql&#62; USE db1;
+mysql&#62; SELECT COUNT(*) FROM mytable;      # 從 db1.mytable 中選擇
+mysql&#62; USE db2;
+mysql&#62; SELECT COUNT(*) FROM mytable;      # 從 db2.mytable 中選擇
+</PRE>
+
+<P>
+依靠 <CODE>USE</CODE> 語句將一個特定資料庫設為目前資料庫，它並不阻止你存取另一個資料中的表。下面的範例存取 <CODE>db1</CODE> 資料庫中的 <CODE>author</CODE> 表和 <CODE>db2</CODE> 資料庫中的 <CODE>editor</CODE> 表：
+
+</P>
+
+<PRE>
+mysql&#62; USE db1;
+mysql&#62; SELECT author_name,editor_name FROM author,db2.editor
+    -&#62;        WHERE author.editor_id = db2.editor.editor_id;
+</PRE>
+
+<P>
+<A NAME="IDX1500"></A>
+<A NAME="IDX1501"></A>
+<CODE>USE</CODE> 語句提供了對 Sybase 的兼容。
+</P>
+
+
+
+<H3><A NAME="DESCRIBE"></A>6.6.2  <CODE>DESCRIBE</CODE> 句法 (獲得列的資訊)</H3>
+
+<P>
+<A NAME="IDX1502"></A>
+<A NAME="IDX1503"></A>
+
+</P>
+
+<PRE>
+{DESCRIBE | DESC} tbl_name [col_name | wild]
+</PRE>
+
+<P>
+<CODE>DESCRIBE</CODE> 是 <CODE>SHOW COLUMNS FROM</CODE> 的縮寫。查看章節 <A HREF="manual1.html#SHOW_DATABASE_INFO">4.5.6.1  檢索有關資料庫、表、列和索引的資訊</A>。
+</P>
+
+<P>
+<CODE>DESCRIBE</CODE> 提供有關一個表的列資訊。<CODE>col_name</CODE> 可以是一個列名或是一個包含 SQL 通配符字元 <SAMP>“%”</SAMP> 和 <SAMP>“_”</SAMP> 的字串。沒有必要用引號包圍字串。
+</P>
+
+<P>
+如果列類型不同於你所期望的基於一個 <CODE>CREATE TABLE</CODE> 語句建立的列，注意 MySQL 有時會變更列類型。查看章節 <A HREF="06-5.html#Silent_column_changes">6.5.3.1  隱式的列定義變化</A>.
+
+</P>
+<P>
+<A NAME="IDX1504"></A>
+<A NAME="IDX1505"></A>
+這個語句是提供給與 Oracle 兼容的。
+</P>
+
+<P>
+<CODE>SHOW</CODE> 語句提供相似的資訊。查看章節 <A HREF="manual1.html#SHOW">4.5.6  <CODE>SHOW</CODE> 句法</A>。
+</P>
+
+
+
+<H2>&nbsp;</H2>
+
+
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="../../flash/onlined41d.html?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+ 
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-6.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+</HTML>

@@ -1,0 +1,987 @@
+<HTML>
+  
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-1.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+<HEAD>
+  <TITLE>MySQL 4.1.0 中文參考手冊 --- 犬犬(心帆)翻譯</TITLE>
+   <style> code {color:purple} tt {color:green} samp {color:navy} pre {color:maroon} </style>
+   <META http-equiv="Content-Type" content="text/html; charset=big5">
+   <META name="description" content="MySQL 4.1.0  中文參考手冊">
+   <META name="keywords" content="MySQL,4.1.0,Shuixin13,MySQL 4.1.0,中文,中文參考手冊,犬犬(心帆)">
+   <LINK rel="shortcut icon" href="shuixin13.ico" />
+   <LINK href="images/index.css" type=text/css rel=STYLESHEET>
+<SCRIPT language=javascript src="images/index.js"></SCRIPT>
+<SCRIPT language=javascript><!--
+x = new Date()  
+function cal() {
+	y = new Date()   
+	diff = y.getTime() - x.getTime()
+	document.write("載入時間 " + diff/1000 + " 秒")
+}
+//--></SCRIPT>
+<SCRIPT language=JavaScript>
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10); 
+} 
+function sc() 
+{ 
+clearInterval(timer); 
+} 
+
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc(); 
+} 
+document.onmousedown=sc 
+document.ondblclick=initialize 
+</SCRIPT>
+
+  </HEAD>
+  <BODY BGCOLOR=#efefff TEXT=#000000 LINK=#101090 VLINK=#7030B0>
+<H1>MySQL Reference Manual for version 4.1.0-alpha.</H1>
+<P>
+<P><HR>
+<P> 
+<h1><a name="Reference"></a>6 MySQL 語言參考</h1>
+<p> MySQL 擁有一個復雜的但直觀易學的 SQL 接口。這個章節描述了各種不同的命令、類型和函數，為了高效地使用 MySQL 需要了解它們。這個章節也可以視為 
+  MySQL 中包含的所有功能的參考。 </p>
+<h2><a name="Language_Structure"></a>6.1 語言結構</h2>
+<h3><a name="Literals"></a>6.1.1 文字：怎麼寫字串與數位</h3>
+<p> <a name="IDX939"></a> <a name="IDX940"></a> <a name="IDX941"></a> <a name="IDX942"></a> 
+  <a name="IDX943"></a> </p>
+<p> 這個章節描述了在 MySQL 中書寫字串與數位的各種不同方式。也包含有對各種不同差別和“gotchas”，當你在處理 MySQL 的基本類型時可能陷入的疑惑。 
+</p>
+<h4><a name="String_syntax"></a>6.1.1.1 字串</h4>
+<p> 字串是多個字元組成的一個字元序列，由單引號(<samp>“'”</samp>) 或雙引號 (<samp>“"”</samp>) 字元包圍。(但在 
+  ANSI 樣式中運行時只能用單引號)。 </p>
+<p>例如：</p>
+<pre>
+'a string'
+"another string"
+</pre>
+<p> 在一個字串中，如果某個序列具有特殊的含義，每個序列以反斜線符號 (<samp>“\”</samp>)開頭，稱為<em>轉義字元</em>。 MySQL 
+  辨識下列轉義字元： </p>
+<dl COMPACT> 
+  <dt><code>\0</code> 
+  <dd> <a name="IDX944"></a> <a name="IDX945"></a> 一個 ASCII 0 (<code>NUL</code>) 
+    字元。 <a name="IDX946"></a> <a name="IDX947"></a> 
+  <dt><code>\'</code> 
+  <dd> 一個 ASCII 39 單引號 (<samp>“'”</samp>) 字元。 <a name="IDX948"></a> <a name="IDX949"></a> 
+  <dt><code>\"</code> 
+  <dd> 一個 ASCII 34 雙引號 (<samp>“"”</samp>) 字元。 <a name="IDX950"></a> <a name="IDX951"></a> 
+  <dt><code>\b</code> 
+  <dd> 一個 ASCII 8 退格符。 <a name="IDX952"></a> <a name="IDX953"></a> 
+  <dt><code>\n</code> 
+  <dd> 一個 ASCII 10 換行符。 <a name="IDX954"></a> <a name="IDX955"></a> <a name="IDX956"></a> 
+  <dt><code>\r</code> 
+  <dd> 一個 ASCII 13 回車符。 <a name="IDX957"></a> <a name="IDX958"></a> 
+  <dt><code>\t</code> 
+  <dd> 一個 ASCII 9 制表符(<code>TAB</code>)。 <a name="IDX959"></a> <a name="IDX960"></a> 
+  <dt><code>\z</code> 
+  <dd> ASCII(26) (Control-Z)。這個字元可以處理在 Windows 系統中 ASCII(26) 代表一個文件的結束的問題。(當使用 
+    <code>mysql database &#60; filename</code> 時 ASCII(26) 可能會引起問題產生。) <a name="IDX961"></a> 
+    <a name="IDX962"></a> 
+  <dt><code>\\</code> 
+  <dd> 一個 ASCII 92 反斜線 (<samp>“\”</samp>) 字元。 <a name="IDX963"></a> <a name="IDX964"></a> 
+  <dt><code>\%</code> 
+  <dd> 一個 ASCII 37 <samp>“%”</samp> 字元。它用於在正文中搜尋<samp>“%”</samp>的文字案例，否則這裡<samp>“%”</samp>將解釋為一個通配符。查看章節 
+    <a href="06-3.html#String_comparison_functions">6.3.2.1 字串比較函數</a>。 <a name="IDX965"></a> 
+    <a name="IDX966"></a> 
+  <dt><code>\_</code> 
+  <dd> 一個 ASCII 95 <samp>“_”</samp> 字元。它用於在正文中搜尋<samp>“_”</samp>的文字案例，否則這裡<samp>“_”</samp>將解釋為一個通配符。查看章節 
+    <a href="06-3.html#String_comparison_functions">6.3.2.1 字串比較函數</a>. 
+</dl>
+<p> 注意如果在某些正文環境內使用 <samp>“\%”</samp> 或 <samp>“\_”</samp>，將傳回字串 <samp>“\%”</samp> 
+  和 <samp>“\_”</samp> 而不是 <samp>“%”</samp> 和 <samp>“_”</samp>。</p>
+<p><a name="IDX967"></a>字串中包含引號的可以有下列幾種寫法：</p>
+<ul>
+  <li> 一個字串用單引號<samp>“'”</samp>來參照的，該字串中的單引號<samp>“'”</samp>字元可以用<samp>“''”</samp>方式轉義。 
+  <li> 一個字串用雙引號<samp>“"”</samp>來參照的，該字串中的<samp>“"”</samp>字元可以用<samp>“""”</samp>方式轉義。 
+  <li> 你也可以繼續使用在引號前加一個轉義字元<samp>“\”</samp>來轉義的方式。 
+  <li> 一個字串用雙引號<samp>“"”</samp>來參照的，該字串中的單引號<samp>“'”</samp>不需要特殊對待而且不必被重復或轉義。同理，一個字串用單引號<samp>“'”</samp>來參照的，該字串中的雙引號<samp>“"”</samp>不需要特殊對待而且不必被重復或轉義。 
+</ul>
+<p> 下面顯示的 <code>SELECT</code> 演示引號和轉義是如何工作： </p>
+<pre>
+mysql&#62; SELECT 'hello', '"hello"', '""hello""', 'hel''lo', '\'hello';
++-------+---------+-----------+--------+--------+
+| hello | "hello" | ""hello"" | hel'lo | 'hello |
++-------+---------+-----------+--------+--------+
+
+mysql&#62; SELECT "hello", "'hello'", "''hello''", "hel""lo", "\"hello";
++-------+---------+-----------+--------+--------+
+| hello | 'hello' | ''hello'' | hel"lo | "hello |
++-------+---------+-----------+--------+--------+
+
+mysql&#62; SELECT "This\nIs\nFour\nlines";
++--------------------+
+| This
+Is
+Four
+lines |
++--------------------+
+</pre>
+<p> <a name="IDX968"></a> </p>
+<p>如果你想要把二進位資料插入到一個字元類型的欄位中(例如<code>BLOB</code>)，下列字元必須由轉義序清單示： 
+<dl COMPACT> 
+  <dt><code>NUL</code> 
+  <dd> ASCII 0，你應該用 <samp>“\0”</samp>（一個反斜線和一個ASCII <samp>“0”</samp>字元）表示它。 
+  <dt><code>\</code> 
+  <dd> ASCII 92，反斜線。需要用 <samp>“\\”</samp> 表示。 
+  <dt><code>'</code> 
+  <dd> ASCII 39，單引號。需要用 <samp>“\'”</samp> 表示。 
+  <dt><code>"</code> 
+  <dd> ASCII 34，雙引號。需要用 <samp>“\"”</samp> 表示。 
+</dl>
+<p> <a name="IDX969"></a> <a name="IDX970"></a> <a name="IDX971"></a> <a name="IDX972"></a> 
+  如果你寫 C 代碼，你可以使用 C API 函數<code>mysql_real_escape_string()</code> 來為 <code>INSERT</code> 
+  語句轉義字元。查看章節 <a href="manual2.html#C_API_function_overview">8.1.2 C API 函數概述</a>。在 
+  Perl 中，你可以使用 <code>DBI</code> 包中的 <code>quote</code> 方法來將這些特殊字元轉換成適當的轉義序列。查看章節 
+  <a href="manual2.html#Perl_DBI_Class">8.5.2 <code>DBI</code> 接口</a>。 </p>
+<p> 你應該在任何可能包含上述特殊字元的字串中使用轉義函數！ </p>
+<p> 另外，很多 MySQL API 提供了一些占位符處理能力,這允許你在查詢語句中插入特殊標記，然後在執行查詢時對它們綁定資料值。這樣，API 會自動為你從數值中轉換它們。 
+</p>
+<h4><a name="Number_syntax"></a>6.1.1.2 數位</h4>
+<p> <a name="IDX973"></a> <a name="IDX974"></a> <a name="IDX975"></a> <a name="IDX976"></a> 
+  <a name="IDX977"></a> </p>
+<p> 整數被表示為一個數位序列。浮點數使用 <samp>“.”</samp> 作為一個十進制的分隔符。這兩種類型的數位可以前置 <samp>`-'</samp> 
+  以表示一個負值。 </p>
+<p> 有效整數的範例： </p>
+<pre>
+1221
+0
+-32
+</pre>
+<p> 有效浮點數的範例： </p>
+<pre>
+294.42
+-32032.6809e+10
+148.00
+</pre>
+<p> 一個整數可以在浮點語境中使用﹔它被解釋為等值的浮點數。 </p>
+<h4><a name="Hexadecimal_values"></a>6.1.1.3 十六進制值</h4>
+<p> <a name="IDX978"></a> </p>
+<p> MySQL 支援十六進制數值。在數位的語境中，它們表現類似於一個整數(64位精度)。在字串的語境中，它們表現類似於一個二進位的字串，每一對十六進制數位被轉換為一個字元： 
+</p>
+<pre>
+mysql&#62; SELECT x'4D7953514C';
+         -&#62; MySQL
+mysql&#62; SELECT 0xa+0;
+         -&#62; 10
+mysql&#62; SELECT 0x5061756c;
+         -&#62; Paul
+</pre>
+<p> 表達式 <code>x'hexstring'</code> (4.0 中新加入) 是基於 ANSI SQL 的，表達式 <code>0x</code> 
+  是基於 ODBC 的。十六進制的字串通常被 ODBC 用於為 <code>BLOB</code> 類型欄位賦值。你可以通過 <code>HEX()</code> 
+  將一個字串或一個數值轉化為十六進制格式。 </p>
+<h4><a name="NULL_values"></a>6.1.1.4 <code>NULL</code> 值</h4>
+<p> <a name="IDX979"></a> </p>
+<p> <code>NULL</code> 值並不意味著“無資料”，並且是不同於例如數位類型的 <code>0</code> 或字串類型的空串。查看章節 
+  <a href="manual2.html#Problems_with_NULL">A.5.3 <code>NULL</code> 值問題</a>。 </p>
+<p> 當使用純文字文件匯入與匯出格式時 (<code>LOAD DATA INFILE</code>，<code>SELECT ... INTO OUTFILE</code>)，<code>NULL</code> 
+  可以用 <code>\N</code> 來描述。查看章節 <a href="06-4.html#LOAD_DATA">6.4.9 <code>LOAD 
+  DATA INFILE</code> 句法</a>. </p>
+<h3></h3>
+
+<H3><A NAME="Legal_names"></A>6.1.2  資料庫、表、索引、列和別名</H3>
+
+<P>
+<A NAME="IDX980"></A>
+<A NAME="IDX981"></A>
+<A NAME="IDX982"></A>
+<A NAME="IDX983"></A>
+<A NAME="IDX984"></A>
+<A NAME="IDX985"></A>
+<A NAME="IDX986"></A>
+
+</P>
+<P>
+資料庫、表、索引、列和別名都需遵守 MySQL 同樣的規則。
+</P>
+<P>
+<A NAME="IDX987"></A>
+<A NAME="IDX988"></A>
+<A NAME="IDX989"></A>
+<A NAME="IDX990"></A>
+注意，從 MySQL 3.23.6 開始，規則發生改變了，此時引進了用<SAMP>“`”</SAMP>參照標識符(資料庫、表和欄位名)。如果你以 ANSI 樣式運行，<SAMP>“"”</SAMP> 也可以用於參照標識符。查看章節 <A HREF="manual1.html#ANSI_mode">1.8.2  以 ANSI 樣式運行 MySQL</A>。
+
+</P>
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>標識符</STRONG> </TD><TD> <STRONG>最大長度</STRONG> </TD><TD> <STRONG>允許的字元</STRONG>
+</TD></TR>
+<TR><TD>資料庫 </TD><TD> 64 </TD><TD> 一個目錄名中允許的任何字元，除了<SAMP>“/”</SAMP>、<SAMP>“\”</SAMP> 或 <SAMP>“.”</SAMP>。</TD></TR>
+<TR><TD>表 </TD><TD> 64 </TD><TD> 一個文件名中允許的任何字元，除了 <SAMP>“/”</SAMP> 或 <SAMP>“.”</SAMP>。</TD></TR>
+<TR><TD>列 </TD><TD> 64 </TD><TD> 所有的字元。</TD></TR>
+<TR><TD>別名 </TD><TD> 255 </TD><TD> 所胡的字元。</TD></TR>
+</TABLE>
+
+<P>
+注意，除了上面的，在一個標識符中還不能有 ASCII(0) 或 ASCII(255) 或參照字元。</P>
+<P>
+注意，如果標識符是一個受限掉的詞或包含特殊的字元，當使用它時，必須以一個 <CODE>`</CODE> (backtick) 來參照它。</P>
+
+<PRE>
+mysql&#62; SELECT * FROM `select` WHERE `select`.id &#62; 100;
+</PRE>
+<P>查看章節 <A HREF="06-1.html#Reserved_words">6.1.7  MySQL 對保留字挑剔嗎？</A>。</P>
+<P>
+在 MySQL 3.23.6 以前的版本中，命名規則如下：</P>
+<UL>
+<LI>
+一個名字可以由目前字元集中包含的文字與數位字元以及 <SAMP>“_”</SAMP> 和 <SAMP>“$”</SAMP> 組成。預設字元集為 ISO-8859-1
+Latin1﹔這可以通過改變 <CODE>mysqld</CODE> 的 <CODE>--default-character-set</CODE> 的選項來改變。查看章節 <A HREF="manual1.html#Character_sets">4.6.1  用於資料和排序的字元集</A>。
+<LI>
+
+一個名字可以以在名字中合法的任何字元開始。特別地，一個名字可以以一個數位開始(這不同於許多其它的資料庫系統！)。但一個名字不能 <EM>僅僅</EM> 以數位組成。
+<LI>
+不能在名字中使用 <SAMP>“.”</SAMP> 字元，因為它是用於擴充格式的，你可以用它參照列(見下面)。
+</UL>
+
+<P>建議不要使用象 <CODE>1e</CODE> 這樣的名字，因為一個表達式 <CODE>1e+1</CODE> 是存在二義性的。它可以被解釋為表達式 <CODE>1e + 1</CODE> 或數位 <CODE>1e+1</CODE>。
+</P>
+<P>在 MySQL 中，你可以使用下清單格中的任一種方式參照一個列：</P>
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>列參照 </STRONG> </TD><TD> <STRONG>含義 </STRONG>
+</TD></TR>
+<TR><TD><CODE>col_name</CODE> </TD><TD> 列 <CODE>col_name</CODE>
+ 來自查詢所用的任何一個表中對應欄位
+</TD></TR>
+<TR><TD><CODE>tbl_name.col_name</CODE> </TD><TD> 列 <CODE>col_name</CODE> 來自目前資料庫中的表
+<CODE>tbl_name</CODE>
+</TD></TR>
+<TR><TD><CODE>db_name.tbl_name.col_name</CODE> </TD><TD> 列 <CODE>col_name</CODE> 來自資料庫 <CODE>db_name</CODE> 中的表
+<CODE>tbl_name</CODE>。這個形式從 MySQL 3.22 或以後版本開始可用。</TD></TR>
+<TR><TD>
+<CODE>`column_name`</CODE> </TD><TD> 該欄位是一個關鍵詞或包含特殊字元。
+</TD></TR>
+</TABLE>
+
+<P>
+在一條語句中的列參照中，不需要明確指定一個 <CODE>tbl_name</CODE> 或 <CODE>db_name.tbl_name</CODE> 前綴，除非這個參照存在二義性。例如，假設表 <CODE>t1</CODE> 和 <CODE>t2</CODE> 均包含一個欄位
+<CODE>c</CODE>，當用一個使用了 <CODE>t1</CODE> 和 <CODE>t2</CODE> 的 <CODE>SELECT</CODE> 檢索 <CODE>c</CODE> 時。在這種情況下，<CODE>c</CODE> 存在二義性，因為它在這個語句所使用的表中不是唯一的，因而必須通過寫出 <CODE>t1.c</CODE> 或 <CODE>t2.c</CODE> 來指明你所需的是哪個表。同樣的，如果從資料庫 <CODE>db1</CODE> 的表 <CODE>t</CODE> 和資料庫 <CODE>db2</CODE> 的表 <CODE>t</CODE> 中檢索，你必須用<CODE>db1.t.col_name</CODE> 和 <CODE>db2.t.col_name</CODE> 來指定參照哪個庫表的列。</P>
+<P>
+<A NAME="IDX991"></A>
+<A NAME="IDX992"></A>
+句法 <CODE>.tbl_name</CODE> 意味著表 <CODE>tbl_name</CODE> 在目前資料庫中。這個句法是為了與 ODBC 兼容，因為一些 ODBC
+程式以一個 <SAMP>“.”</SAMP> 字元作為表名的前綴。</P>
+
+
+<H3><A NAME="Name_case_sensitivity"></A>6.1.3  名字的大小寫敏感性</H3>
+
+<P>
+<A NAME="IDX993"></A>
+<A NAME="IDX994"></A>
+<A NAME="IDX995"></A>
+<A NAME="IDX996"></A>
+<A NAME="IDX997"></A>
+<A NAME="IDX998"></A>
+
+</P>
+<P>
+在 MySQL 中，資料庫和表對就於那些目錄下的目錄和文件。因而，操作系統的敏感性決定資料庫和表命名的大小寫敏感。這就意味著資料庫和表名在 Windows 中是大小寫不敏感的，而在大多數類型的 Unix 系統中是大小寫敏感的。一個特例是 Mac OS X，當預設的 HFS+ 文件系統使用時。然而 Mac OS X 還支援 UFS 卷，那些在 Mac OS X 是大小寫敏感的就如他們在任一 Unix 上一樣。查看章節 <A HREF="manual1.html#Extensions_to_ANSI">1.8.3  MySQL 對 ANSI SQL92 的擴展</A>。</P>
+<P>
+<STRONG>注意：</STRONG>盡管在 Windows 中資料庫與表名是忽略大小寫的，你不應該在同一個查詢中使用不同的大小寫來參照一個給定的資料庫和表。下面的查詢將不能工作，因為它以 <CODE>my_table</CODE> 和 <CODE>MY_TABLE</CODE> 參照一個表：</P>
+
+<PRE>
+mysql&#62; SELECT * FROM my_table WHERE MY_TABLE.col=1;
+</PRE>
+
+<P>
+列名與列的別名在所有的情況下均是忽略大小寫的。
+</P>
+<P>
+表的別名是區分大小寫的。下面的查詢將不能工作，因為它用  <CODE>a</CODE> 和 <CODE>A</CODE> 參照別名：
+</P>
+
+<PRE>
+mysql&#62; SELECT col_name FROM tbl_name AS a
+    -&#62;                 WHERE a.col_name = 1 OR A.col_name = 2;
+</PRE>
+
+<P>
+如果記憶資料庫和表名的字母大小寫有困難，建議採用一個一致一約定，例如總是以小寫字母建立資料庫和表。
+</P>
+<P>
+避免這個問題的另一個辦法就是以 <CODE>-O lower_case_table_names=1</CODE> 參數啟動 <CODE>mysqld</CODE>。預設地在 Windows 中這個選項為 1 ，在 
+Unix 中為 0。
+</P>
+<P>
+如果 <CODE>lower_case_table_names</CODE> 為 1 ，MySQL 將在儲存與尋找時將所有的表名轉換為小寫字線。(從 MySQL 4.0.2 開始，這個選項同樣適用於資料庫名。) 注意，當你變更這個選項時，你必須在啟動 <CODE>mysqld</CODE> 前首先將老的表名轉換為小寫字母。
+</P>
+<P>
+如果將 <CODE>MyISAM</CODE> 從 Windows 移動到一個 Unix 硬碟中，在某些情況下你可能需要使用 <TT>“mysql_fix_extensions”</TT> 工具來修正指定資料庫目錄下的文件副檔名(小寫字母 <TT>“.frm”</TT>，大寫字母 <TT>“.MYI”</TT> 和 <TT>“.MYD”</TT>)。<TT>“mysql_fix_extensions”</TT> 存放在 <TT>“scripts”</TT> 幾目錄下。
+</P>
+
+
+
+<H3><A NAME="Variables"></A>6.1.4  使用者變數</H3>
+
+<P>
+<A NAME="IDX999"></A>
+<A NAME="IDX1000"></A>
+<A NAME="IDX1001"></A>
+
+</P>
+<P>
+MySQL 支援連線特定(connection-specific)的使用者變數，用 <CODE>@variablename</CODE> 句法表示。一個變數名可以由目前字元集中包含的文字與數位字元以及 <SAMP>“_”</SAMP>、<SAMP>“$”</SAMP> 和 <SAMP>“.”</SAMP> 組成。缺少的字元集為 ISO-8859-1 Latin1﹔這可以通過改變 <CODE>mysqld</CODE> 的<CODE>--default-character-set</CODE> 的選項來改變。查看章節 <A HREF="manual1.html#Character_sets">4.6.1  用於資料和排序的字元集</A>。
+</P>
+<P>
+變數不必被初始化。預設地，他們的值為 NULL 並可以儲存一個整數、實數或字串值。當連線線程退出時，這個線程的所有變數將會自動地被釋放。
+</P>
+<P>
+你可以通過 <CODE>SET</CODE> 句法來設定一個變數：
+</P>
+
+<PRE>
+SET @variable= { integer expression | real expression | string expression }
+[,@variable= ...].
+</PRE>
+
+<P>
+在語句中除了 <CODE>SET</CODE> 之外還可以直接為一個變數賦值。然而在這各情況下，賦值運算子為 <CODE>:=</CODE> 而不是 <CODE>=</CODE>，因為 <CODE>=</CODE> 在非 <CODE>SET</CODE> 語句中是用於比較的：
+</P>
+
+<PRE>
+mysql&#62; SELECT @t1:=(@t2:=1)+@t3:=4,@t1,@t2,@t3;
++----------------------+------+------+------+
+| @t1:=(@t2:=1)+@t3:=4 | @t1  | @t2  | @t3  |
++----------------------+------+------+------+
+|                    5 |    5 |    1 |    4 |
++----------------------+------+------+------+
+</PRE>
+
+<P>
+使用者變數可以用於表達式所允許的任何地方。注意，這在數位必須明確指定的語境中並不適用，例如，在 <CODE>SELECT</CODE> 的 <CODE>LIMIT</CODE> 幾句中或一個 <CODE>LOAD DATA</CODE> 語句的 <CODE>IGNORE number LINES</CODE> 的幾句中。</P>
+<P>
+<STRONG>注意：</STRONG>在一個 <CODE>SELECT</CODE> 語句中，各個表達式只有在它被送到客戶端時才能被求值。這就意味著，在 <CODE>HAVING</CODE>、<CODE>GROUP BY</CODE> 或 <CODE>ORDER BY</CODE> 幾句中，你不能使用一個包含在 <CODE>SELECT</CODE> 部份所設定變數的表達式。例如：下面的語句將不會按預期的運作：
+</P>
+
+<PRE>
+mysql&#62; SELECT (@aa:=id) AS a, (@aa+3) AS b FROM table_name HAVING b=5;
+</PRE>
+
+<P>
+原因是因為 <CODE>@aa</CODE> 不會是目前行的值，而是前一個符合條件的行的 <CODE>id</CODE> 值。
+</P>
+<P>
+規則就是在同一語句中決不賦值 <STRONG>和</STRONG> 使用同一個變數。
+</P>
+
+
+<H3><A NAME="System_Variables"></A>6.1.5  系統變數</H3>
+
+<P>
+<A NAME="IDX1002"></A>
+<A NAME="IDX1003"></A>
+
+</P>
+<P>
+從 MySQL 4.0.3 開始，我們提供了對大量的系統變數和連線變數的更好的存取方式。你可以不需要關閉伺服器就可以變更其中的大部變數值。
+</P>
+<P>
+系統變數可分為兩種類型：線程特定(Thread-specific)或稱為連線特定(connection-specific)變數，它們是目前連線唯一的﹔全局變數，它們用於設定全局事件。全局變數也同樣被用於設定一個新連線的相應線程特定變數的初始值。
+</P>
+<P>
+當 <CODE>mysqld</CODE> 啟動時，所有的全局變數以命令行參數和選項文件內容初始化。可以通過 <CODE>SET GLOBAL</CODE> 命令變更這些值。當一個新的連線線程被建立時，將以全局變數值初始化線程特定變數，直到你執行一個新的 <CODE>SET GLOBAL</CODE> 命令時，線程特定變數才會改變。
+</P>
+<P>
+為了設定一個 <CODE>全局(GLOBAL)</CODE> 變數值，可以使用下面的任一句法：(在這裡，我們以 <CODE>sort_buffer_size</CODE> 變數作為一個範例)
+</P>
+
+<PRE>
+SET GLOBAL sort_buffer_size=value;
+SET @@global.sort_buffer_size=value;
+</PRE>
+
+<P>
+為了設定一個 <CODE>會話(SESSION)</CODE> 變數的值，可以使用下面任一句法：</P>
+
+<PRE>
+SET SESSION sort_buffer_size=value;
+SET @@session.sort_buffer_size=value;
+SET sort_buffer_size=value;
+</PRE>
+
+<P>
+如果你沒有明確指定 <CODE>GLOBAL</CODE> 或 <CODE>SESSION</CODE>，那麼預設地將是設定 <CODE>SESSION</CODE>。查看章節 <A HREF="manual1.html#SET_OPTION">5.5.6  <CODE>SET</CODE> 句法</A>。
+</P>
+<P>
+<CODE>LOCAL</CODE> 是 <CODE>SESSION</CODE> 的同義詞。
+</P>
+<P>
+通過下面的任一命令可以檢索到一個 <CODE>全局(GLOBAL)</CODE> 變數值：
+</P>
+
+<PRE>
+SELECT @@global.sort_buffer_size;
+SHOW GLOBAL VARIABLES like 'sort_buffer_size';
+</PRE>
+
+<P>
+通過下面的任一命令可以檢索到一個 <CODE>會話(SESSION)</CODE> 變數值：
+</P>
+
+<PRE>
+SELECT @@session.sort_buffer_size;
+SHOW SESSION VARIABLES like 'sort_buffer_size';
+</PRE>
+
+<P>
+當 <STRONG>檢索</STRONG> 一個變數值時使用 <CODE>@@variable_name</CODE> 句法，或沒有指定 <CODE>GLOBAL</CODE> 或 <CODE>SESSION</CODE> 時，如果線程特定(thread-specific)的 (<CODE>SESSION</CODE>) 值存在，MySQL 將傳回它。如果不存在，那麼 MySQL 將傳回全局變數值。
+</P>
+<P>
+在設定 <CODE>全局(GLOBAL)</CODE> 變數而不是在檢索他們的時候需要使用 <CODE>GLOBAL</CODE> ，是為了在之後參照一個同名的線程特定(thread-specific)變數或刪除同名的一個線程特定(thread-specific)變數時不至發生問題。在這種情況下，你可能無意間改變整個伺服器的狀態而不是你自己的連線。
+</P>
+<P>
+下面的清單是你可以使用 <CODE>GLOBAL</CODE> 或 <CODE>SESSION</CODE> 對它們進行變更和檢索的所有變數。
+</P>
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>變數名 </STRONG> </TD><TD> <STRONG>變數值類型</STRONG> </TD><TD> <STRONG>變數類型</STRONG>
+</TD></TR>
+<TR><TD>autocommit </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>big_tables </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>binlog_cache_size </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>bulk_insert_buffer_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>concurrent_insert </TD><TD> bool </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>connect_timeout </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>convert_character_set </TD><TD> string </TD><TD> SESSION
+</TD></TR>
+<TR><TD>delay_key_write </TD><TD> OFF | ON | ALL </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>delayed_insert_limit </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>delayed_insert_timeout </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>delayed_queue_size </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>error_count </TD><TD> num </TD><TD> LOCAL
+</TD></TR>
+<TR><TD>flush </TD><TD> bool </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>flush_time </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>foreign_key_checks </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>identity </TD><TD> num </TD><TD> SESSION
+</TD></TR>
+<TR><TD>insert_id </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>interactive_timeout </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>join_buffer_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>key_buffer_size </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>last_insert_id </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>local_infile </TD><TD> bool </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>log_warnings </TD><TD> bool </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>long_query_time </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>low_priority_updates </TD><TD> bool </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>max_allowed_packet </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>max_binlog_cache_size </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>max_binlog_size </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>max_connect_errors </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>max_connections </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>max_error_count </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>max_delayed_threads </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>max_heap_table_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>max_join_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>max_sort_length </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>max_tmp_tables </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>max_user_connections </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>max_write_lock_count </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>myisam_max_extra_sort_file_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>myisam_max_sort_file_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>myisam_sort_buffer_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>net_buffer_length </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>net_read_timeout </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>net_retry_count </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>net_write_timeout </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>query_cache_limit </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>query_cache_size </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>query_cache_type </TD><TD> enum </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>read_buffer_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>read_rnd_buffer_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>rpl_recovery_rank </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>safe_show_database </TD><TD> bool </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>server_id </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>slave_compressed_protocol </TD><TD> bool </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>slave_net_timeout </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>slow_launch_time </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>sort_buffer_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>sql_auto_is_null </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>sql_big_selects </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>sql_big_tables </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>sql_buffer_result </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>sql_log_binlog </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>sql_log_off </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>sql_log_update </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>sql_low_priority_updates </TD><TD> bool </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>sql_max_join_size </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>sql_quote_show_create </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>sql_safe_updates </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>sql_select_limit </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>sql_slave_skip_counter </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>sql_warnings </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>table_cache </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>table_type </TD><TD> enum </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>thread_cache_size </TD><TD> num </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>timestamp </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+<TR><TD>tmp_table_size </TD><TD> enum </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>tx_isolation </TD><TD> enum </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>version </TD><TD> string </TD><TD> GLOBAL
+</TD></TR>
+<TR><TD>wait_timeout </TD><TD> num </TD><TD> GLOBAL | SESSION
+</TD></TR>
+<TR><TD>warning_count </TD><TD> num </TD><TD> LOCAL
+</TD></TR>
+<TR><TD>unique_checks </TD><TD> bool </TD><TD> SESSION
+</TD></TR>
+</TABLE>
+
+<P>
+以 <CODE>num</CODE> 標記的變數可以設定一個數位值。以 <CODE>bool</CODE> 標記的變數可以設定 0、1、<CODE>ON</CODE> 或 <CODE>OFF</CODE>。<CODE>enum</CODE> 類型的變數通常是設定為該變數的某一個可用值，但也可以設定為相對應的數位。(enum 的第一個值為 0)。
+</P>
+<P>
+下面是某些變數的描述：
+</P>
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>變數 </STRONG> </TD><TD> <STRONG>描述 </STRONG>
+</TD></TR>
+<TR><TD>identity </TD><TD> last_insert_id 的別名 (Sybase 兼容)
+</TD></TR>
+<TR><TD>sql_low_priority_updates </TD><TD> low_priority_updates 的別名
+</TD></TR>
+<TR><TD>sql_max_join_size </TD><TD> max_join_size 的別名
+</TD></TR>
+<TR><TD>delay_key_write_for_all_tables </TD><TD> 如它與 delay_key_write 一起被設定，那麼所有新打開的 MyISAM 表將使用 delayed key writes.
+</TD></TR>
+<TR><TD>version </TD><TD> VERSION() 的別名 (Sybase (?) 兼容)
+</TD></TR>
+</TABLE>
+
+<P>
+在啟動選項章節中可以找到其它的變數的描述，<CODE>SHOW VARIABLES</CODE> 的描述在 <CODE>SET</CODE> 部分。查看章節 <A HREF="manual-2.html#Command-line_options">4.1.1  <CODE>mysqld</CODE> 命令行選項</A>。查看章節 <A HREF="manual-2.html#SHOW_VARIABLES">4.5.6.4  <CODE>SHOW VARIABLES</CODE></A>。查看章節 <A HREF="manual-2.html#SET_OPTION">5.5.6  <CODE>SET</CODE> 句法</A>。
+</P>
+
+
+
+<H3><A NAME="Comments"></A>6.1.6  註釋句法</H3>
+<P>
+<A NAME="IDX1004"></A>
+
+</P>
+<P>
+<A NAME="IDX1005"></A>
+
+</P>
+<P>
+MySQL 伺服器支援 <CODE># 到該行結束</CODE>、<CODE>-- 到該行結束</CODE> 以及 <CODE>/* 行中間或多個行 */</CODE> 的註釋方格：
+</P>
+
+<PRE>
+mysql&#62; SELECT 1+1;     # 這個註釋直到該行結束
+mysql&#62; SELECT 1+1;     -- 這個註釋直到該行結束
+mysql&#62; SELECT 1 /* 這是一個在行中間的註釋 */ + 1;
+mysql&#62; SELECT 1+
+/*
+這是一個
+多行註釋的形式
+*/
+1;
+</PRE>
+
+<P>
+注意 <CODE>-- (雙長劃)</CODE> 註釋風格要求在兩個長劃後至少有一個空格！
+</P>
+<P>
+盡管伺服器理解剛才描述的註釋句法，但 MySQL 客戶端的語法分析在 <CODE>/* ... */</CODE> 註釋方式上還有所限止：
+</P>
+
+<UL>
+<LI>
+
+單引號和雙引號被用來標志一個被參照字串的開始，即使是在一個註釋中。如果註釋中的引號沒有另一個引號與之配對，那和語法分析程式就不會認為註釋結束。如果你以交談式運行 <CODE>mysql</CODE>，你會產生困惑，因為提示符從 <CODE>mysql&#62;</CODE> 變為 <CODE>'&#62;</CODE> 或 <CODE>"&#62;</CODE>。
+
+<LI>
+
+一個分號被用於指出目前 SQL 語句的結束並且跟隨它的任何東西表示下一行的開始。
+</UL>
+
+<P>
+不論你是以交談式運行 <CODE>mysql</CODE> 還是將命令放在一個文件中，然後以 <CODE>mysql &#60; some-file</CODE> 告訴 <CODE>mysql</CODE> 讀取它的輸入，這個限制均存在。
+</P>
+<P>
+MySQL 支援 <SAMP>`--'</SAMP> ANSI SQL 註釋風格，但在兩個長劃後必須跟有一個空格。查看章節 <A HREF="manual1.html#ANSI_diff_comments">1.8.4.7  <SAMP>`--'</SAMP> 作為一個註釋的開始</A>。
+</P>
+
+
+
+<H3><A NAME="Reserved_words"></A>6.1.7  MySQL 對保留字挑剔嗎？</H3>
+
+<P>
+<A NAME="IDX1006"></A>
+<A NAME="IDX1007"></A>
+
+</P>
+<P>
+一個常見的問題來於試圖使用 MySQL 內建的資料類型或函數名作為表的欄位名來建立資料表，例如 <CODE>TIMESTAMP</CODE> 或 <CODE>GROUP</CODE>。但是，允許你這樣做(例如，<CODE>ABS</CODE> 是一個允許的列名)，當使用函數名也是列名的函數時，函數名與後面跟著的 <SAMP>“(”</SAMP> 之間不允許存在空格。
+</P>
+<P>
+下面的詞在 MySQL 中是被明確保留的。它們大多數被 ANSI SQL92 禁止作為列或表名(例如， <CODE>GROUP</CODE>)。一些被保留是因為 MySQL 需要它們並且它使用的是一個 <CODE>yacc</CODE> 語法分析器：
+</P>
+
+<TABLE BORDER WIDTH="100%">
+<TR><TD><STRONG>單詞 </STRONG>
+ </TD><TD> <STRONG>單詞 </STRONG>
+ </TD><TD> <STRONG>單詞 </STRONG>
+</TD></TR>
+<TR><TD><CODE>ADD</CODE>
+ </TD><TD> <CODE>ALL</CODE>
+ </TD><TD> <CODE>ALTER</CODE>
+</TD></TR>
+<TR><TD><CODE>ANALYZE</CODE>
+ </TD><TD> <CODE>AND</CODE>
+ </TD><TD> <CODE>AS</CODE>
+</TD></TR>
+<TR><TD><CODE>ASC</CODE>
+ </TD><TD> <CODE>AUTO_INCREMENT</CODE>
+ </TD><TD> <CODE>BDB</CODE>
+</TD></TR>
+<TR><TD><CODE>BEFORE</CODE>
+ </TD><TD> <CODE>BERKELEYDB</CODE>
+ </TD><TD> <CODE>BETWEEN</CODE>
+</TD></TR>
+<TR><TD><CODE>BIGINT</CODE>
+ </TD><TD> <CODE>BINARY</CODE>
+ </TD><TD> <CODE>BLOB</CODE>
+</TD></TR>
+<TR><TD><CODE>BOTH</CODE>
+ </TD><TD> <CODE>BTREE</CODE>
+ </TD><TD> <CODE>BY</CODE>
+</TD></TR>
+<TR><TD><CODE>CASCADE</CODE>
+ </TD><TD> <CODE>CASE</CODE>
+ </TD><TD> <CODE>CHANGE</CODE>
+</TD></TR>
+<TR><TD><CODE>CHAR</CODE>
+ </TD><TD> <CODE>CHARACTER</CODE>
+ </TD><TD> <CODE>CHECK</CODE>
+</TD></TR>
+<TR><TD><CODE>COLLATE</CODE>
+ </TD><TD> <CODE>COLUMN</CODE>
+ </TD><TD> <CODE>COLUMNS</CODE>
+</TD></TR>
+<TR><TD><CODE>CONSTRAINT</CODE>
+ </TD><TD> <CODE>CREATE</CODE>
+ </TD><TD> <CODE>CROSS</CODE>
+</TD></TR>
+<TR><TD><CODE>CURRENT_DATE</CODE>
+ </TD><TD> <CODE>CURRENT_TIME</CODE>
+ </TD><TD> <CODE>CURRENT_TIMESTAMP</CODE>
+</TD></TR>
+<TR><TD><CODE>DATABASE</CODE>
+ </TD><TD> <CODE>DATABASES</CODE>
+ </TD><TD> <CODE>DAY_HOUR</CODE>
+</TD></TR>
+<TR><TD><CODE>DAY_MINUTE</CODE>
+ </TD><TD> <CODE>DAY_SECOND</CODE>
+ </TD><TD> <CODE>DEC</CODE>
+</TD></TR>
+<TR><TD><CODE>DECIMAL</CODE>
+ </TD><TD> <CODE>DEFAULT</CODE>
+ </TD><TD> <CODE>DELAYED</CODE>
+</TD></TR>
+<TR><TD><CODE>DELETE</CODE>
+ </TD><TD> <CODE>DESC</CODE>
+ </TD><TD> <CODE>DESCRIBE</CODE>
+</TD></TR>
+<TR><TD><CODE>DISTINCT</CODE>
+ </TD><TD> <CODE>DISTINCTROW</CODE>
+ </TD><TD> <CODE>DIV</CODE>
+</TD></TR>
+<TR><TD><CODE>DOUBLE</CODE>
+ </TD><TD> <CODE>DROP</CODE>
+ </TD><TD> <CODE>ELSE</CODE>
+</TD></TR>
+<TR><TD><CODE>ENCLOSED</CODE>
+ </TD><TD> <CODE>ERRORS</CODE>
+ </TD><TD> <CODE>ESCAPED</CODE>
+</TD></TR>
+<TR><TD><CODE>EXISTS</CODE>
+ </TD><TD> <CODE>EXPLAIN</CODE>
+ </TD><TD> <CODE>FALSE</CODE>
+</TD></TR>
+<TR><TD><CODE>FIELDS</CODE>
+ </TD><TD> <CODE>FLOAT</CODE>
+ </TD><TD> <CODE>FOR</CODE>
+</TD></TR>
+<TR><TD><CODE>FORCE</CODE>
+ </TD><TD> <CODE>FOREIGN</CODE>
+ </TD><TD> <CODE>FROM</CODE>
+</TD></TR>
+<TR><TD><CODE>FULLTEXT</CODE>
+ </TD><TD> <CODE>FUNCTION</CODE>
+ </TD><TD> <CODE>GRANT</CODE>
+</TD></TR>
+<TR><TD><CODE>GROUP</CODE>
+ </TD><TD> <CODE>HASH</CODE>
+ </TD><TD> <CODE>HAVING</CODE>
+</TD></TR>
+<TR><TD><CODE>HIGH_PRIORITY</CODE>
+ </TD><TD> <CODE>HOUR_MINUTE</CODE>
+ </TD><TD> <CODE>HOUR_SECOND</CODE>
+</TD></TR>
+<TR><TD><CODE>IF</CODE>
+ </TD><TD> <CODE>IGNORE</CODE>
+ </TD><TD> <CODE>IN</CODE>
+</TD></TR>
+<TR><TD><CODE>INDEX</CODE>
+ </TD><TD> <CODE>INFILE</CODE>
+ </TD><TD> <CODE>INNER</CODE>
+</TD></TR>
+<TR><TD><CODE>INNODB</CODE>
+ </TD><TD> <CODE>INSERT</CODE>
+ </TD><TD> <CODE>INT</CODE>
+</TD></TR>
+<TR><TD><CODE>INTEGER</CODE>
+ </TD><TD> <CODE>INTERVAL</CODE>
+ </TD><TD> <CODE>INTO</CODE>
+</TD></TR>
+<TR><TD><CODE>IS</CODE>
+ </TD><TD> <CODE>JOIN</CODE>
+ </TD><TD> <CODE>KEY</CODE>
+</TD></TR>
+<TR><TD><CODE>KEYS</CODE>
+ </TD><TD> <CODE>KILL</CODE>
+ </TD><TD> <CODE>LEADING</CODE>
+</TD></TR>
+<TR><TD><CODE>LEFT</CODE>
+ </TD><TD> <CODE>LIKE</CODE>
+ </TD><TD> <CODE>LIMIT</CODE>
+</TD></TR>
+<TR><TD><CODE>LINES</CODE>
+ </TD><TD> <CODE>LOAD</CODE>
+ </TD><TD> <CODE>LOCALTIME</CODE>
+</TD></TR>
+<TR><TD><CODE>LOCALTIMESTAMP</CODE>
+ </TD><TD> <CODE>LOCK</CODE>
+ </TD><TD> <CODE>LONG</CODE>
+</TD></TR>
+<TR><TD><CODE>LONGBLOB</CODE>
+ </TD><TD> <CODE>LONGTEXT</CODE>
+ </TD><TD> <CODE>LOW_PRIORITY</CODE>
+</TD></TR>
+<TR><TD><CODE>MASTER_SERVER_ID</CODE>
+ </TD><TD> <CODE>MATCH</CODE>
+ </TD><TD> <CODE>MEDIUMBLOB</CODE>
+</TD></TR>
+<TR><TD><CODE>MEDIUMINT</CODE>
+ </TD><TD> <CODE>MEDIUMTEXT</CODE>
+ </TD><TD> <CODE>MIDDLEINT</CODE>
+</TD></TR>
+<TR><TD><CODE>MINUTE_SECOND</CODE>
+ </TD><TD> <CODE>MOD</CODE>
+ </TD><TD> <CODE>MRG_MYISAM</CODE>
+</TD></TR>
+<TR><TD><CODE>NATURAL</CODE>
+ </TD><TD> <CODE>NOT</CODE>
+ </TD><TD> <CODE>NULL</CODE>
+</TD></TR>
+<TR><TD><CODE>NUMERIC</CODE>
+ </TD><TD> <CODE>ON</CODE>
+ </TD><TD> <CODE>OPTIMIZE</CODE>
+</TD></TR>
+<TR><TD><CODE>OPTION</CODE>
+ </TD><TD> <CODE>OPTIONALLY</CODE>
+ </TD><TD> <CODE>OR</CODE>
+</TD></TR>
+<TR><TD><CODE>ORDER</CODE>
+ </TD><TD> <CODE>OUTER</CODE>
+ </TD><TD> <CODE>OUTFILE</CODE>
+</TD></TR>
+<TR><TD><CODE>PRECISION</CODE>
+ </TD><TD> <CODE>PRIMARY</CODE>
+ </TD><TD> <CODE>PRIVILEGES</CODE>
+</TD></TR>
+<TR><TD><CODE>PROCEDURE</CODE>
+ </TD><TD> <CODE>PURGE</CODE>
+ </TD><TD> <CODE>READ</CODE>
+</TD></TR>
+<TR><TD><CODE>REAL</CODE>
+ </TD><TD> <CODE>REFERENCES</CODE>
+ </TD><TD> <CODE>REGEXP</CODE>
+</TD></TR>
+<TR><TD><CODE>RENAME</CODE>
+ </TD><TD> <CODE>REPLACE</CODE>
+ </TD><TD> <CODE>REQUIRE</CODE>
+</TD></TR>
+<TR><TD><CODE>RESTRICT</CODE>
+ </TD><TD> <CODE>RETURNS</CODE>
+ </TD><TD> <CODE>REVOKE</CODE>
+</TD></TR>
+<TR><TD><CODE>RIGHT</CODE>
+ </TD><TD> <CODE>RLIKE</CODE>
+ </TD><TD> <CODE>RTREE</CODE>
+</TD></TR>
+<TR><TD><CODE>SELECT</CODE>
+ </TD><TD> <CODE>SET</CODE>
+ </TD><TD> <CODE>SHOW</CODE>
+</TD></TR>
+<TR><TD><CODE>SMALLINT</CODE>
+ </TD><TD> <CODE>SOME</CODE>
+ </TD><TD> <CODE>SONAME</CODE>
+</TD></TR>
+<TR><TD><CODE>SPATIAL</CODE>
+ </TD><TD> <CODE>SQL_BIG_RESULT</CODE>
+ </TD><TD> <CODE>SQL_CALC_FOUND_ROWS</CODE>
+</TD></TR>
+<TR><TD><CODE>SQL_SMALL_RESULT</CODE>
+ </TD><TD> <CODE>SSL</CODE>
+ </TD><TD> <CODE>STARTING</CODE>
+</TD></TR>
+<TR><TD><CODE>STRAIGHT_JOIN</CODE>
+ </TD><TD> <CODE>STRIPED</CODE>
+ </TD><TD> <CODE>TABLE</CODE>
+</TD></TR>
+<TR><TD><CODE>TABLES</CODE>
+ </TD><TD> <CODE>TERMINATED</CODE>
+ </TD><TD> <CODE>THEN</CODE>
+</TD></TR>
+<TR><TD><CODE>TINYBLOB</CODE>
+ </TD><TD> <CODE>TINYINT</CODE>
+ </TD><TD> <CODE>TINYTEXT</CODE>
+</TD></TR>
+<TR><TD><CODE>TO</CODE>
+ </TD><TD> <CODE>TRAILING</CODE>
+ </TD><TD> <CODE>TRUE</CODE>
+</TD></TR>
+<TR><TD><CODE>TYPES</CODE>
+ </TD><TD> <CODE>UNION</CODE>
+ </TD><TD> <CODE>UNIQUE</CODE>
+</TD></TR>
+<TR><TD><CODE>UNLOCK</CODE>
+ </TD><TD> <CODE>UNSIGNED</CODE>
+ </TD><TD> <CODE>UPDATE</CODE>
+</TD></TR>
+<TR><TD><CODE>USAGE</CODE>
+ </TD><TD> <CODE>USE</CODE>
+ </TD><TD> <CODE>USER_RESOURCES</CODE>
+</TD></TR>
+<TR><TD><CODE>USING</CODE>
+ </TD><TD> <CODE>VALUES</CODE>
+ </TD><TD> <CODE>VARBINARY</CODE>
+</TD></TR>
+<TR><TD><CODE>VARCHAR</CODE>
+ </TD><TD> <CODE>VARCHARACTER</CODE>
+ </TD><TD> <CODE>VARYING</CODE>
+</TD></TR>
+<TR><TD><CODE>WARNINGS</CODE>
+ </TD><TD> <CODE>WHEN</CODE>
+ </TD><TD> <CODE>WHERE</CODE>
+</TD></TR>
+<TR><TD><CODE>WITH</CODE>
+ </TD><TD> <CODE>WRITE</CODE>
+ </TD><TD> <CODE>XOR</CODE>
+</TD></TR>
+<TR><TD><CODE>YEAR_MONTH</CODE>
+ </TD><TD> <CODE>ZEROFILL</CODE>
+ </TD><TD> </TD></TR>
+</TABLE>
+
+<P>
+以下的符號(來自上表)是被 ANSI SQL 禁止的，但是可以被 MySQL 用於列/表名。這是由於用他們命名是很自然的並且有很多的人已經使用了它們。
+</P>
+
+<UL>
+<LI><CODE>ACTION</CODE>
+
+<LI><CODE>BIT</CODE>
+
+<LI><CODE>DATE</CODE>
+
+<LI><CODE>ENUM</CODE>
+
+<LI><CODE>NO</CODE>
+
+<LI><CODE>TEXT</CODE>
+
+<LI><CODE>TIME</CODE>
+
+<LI><CODE>TIMESTAMP</CODE>
+
+</UL>
+
+
+
+<H2>&nbsp;</H2>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="1" height="1" ID=showon><param name=movie value="http://www.php5.idv.tw/flash/online.php?"><param name=quality value=high><embed src="../../flash/onlined41d.html?" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" NAME="showon" width="1" height="1" swLiveConnect="true"></embed></object></body>
+ 
+<!-- Mirrored from www.php5.idv.tw/documents/mysql4tw/06-1.html by HTTrack Website Copier/3.x [XR&CO'2004], Mon, 25 Jul 2005 02:53:42 GMT -->
+</HTML>

@@ -1,0 +1,706 @@
+狦тぃ硂ㄧ计叫磅︽ [杆] 祘Αㄓ杆 [だ猂ㄣ絚] 
+杆 [だ猂ㄣ絚] ぇ眤ゲ斗ㄏノ [ㄣ]  [糤痲栋] ㄓ币笆
+
+
+〖礚猭ミ秆叫
+  GETPIVOTDATA  肚枷だ猂い戈
+
+
+〖礚猭虏虫弧叫
+  INDEX         ま把酚
+  VLOOKUP       皚┪程オ逆い碝тΤ琘疭﹚逆
+                肚い琘﹚纗い
+                狦ノㄓゑ癸计眤┮璶碝т戈ぇオ娩逆
+                碞ゲ斗ㄏノ VLOOKUP ㄧ计  
+
+
+〖т琘ゅ﹃
+FIND("M","Miriam McGovern")   单 1
+FIND("m","Miriam McGovern")   单 6
+FIND("M","Miriam McGovern",3) 单 8
+FIND("","カ")           单 2  (いゅ衡 1虫)
+FINDB("","カ")          单 3  (いゅ衡 2虫)
+
+A2 = "Ceramic Insulators #124-TD45-87"
+A3 = "Copper Coils #12-671-6772"
+A4 = "Variable Resistors #116010"
+MID(A2,1,FIND(" #",A2,1)-1) 肚 "Ceramic Insulators"
+MID(A3,1,FIND(" #",A3,1)-1) 肚 "Copper Coils"
+MID(A4,1,FIND(" #",A4,1)-1) 肚 "Variable Resistors"
+
+〖MID  肚﹃眤┮﹚琘癬﹍竚肚疭﹚计ヘじ舱
+  MIDB 肚﹃眤┮﹚琘癬﹍竚肚疭﹚计ヘじ舱(硂ㄧ计琌ㄏノㄢじじ舱)
+MID("Fluid Flow",1,5)     单 "Fluid"
+MID("Fluid Flow",7,20)    单 "Flow"
+MID("1234",5,5)           单 "" (empty text)
+MIDB("カ 氨ó初",1,6) 单 "カ"
+
+
+〖狦计案计肚 TRUE计肚 FALSE
+  璶代刚计璝ぃ琌俱计ㄤ计场だ穦砆礚兵ン彼
+ISEVEN(-1)  单 FALSE
+ISEVEN(2.5) 单 TRUE
+ISEVEN(5)   单 FALSE
+
+〖狦计计肚 TRUE案计肚 FALSE
+  狦计ぃ琌俱计ㄤ计场だ穦砆礚兵ン彼
+ISODD(-1)  单 TRUE
+ISODD(2.5) 单 FALSE
+ISODD(5)   单 TRUE
+
+
+〖盢计彼き﹚计计ㄏノ翴㎝硆翴计翴Α籹计Α
+  礛肚ゅ挡狦
+  狦眤菠计计玥安砞 2
+  狦计计计琌璽玥盢计彼き计翴オ娩
+FIXED(1234.567, 1)   单  1234.6
+FIXED(1234.567, -1)  单  1230
+FIXED(-1234.567, -1) 单 -1230
+FIXED(44.332)        单    44.33
+
+〖肚﹚计计礚兵ン彼ぇ俱计
+INT(8.9) 单   8
+INT(-8.9) 单 -9
+そΑ盢肚纗 A1 タ龟计计场だ
+A1-INT(A1)
+
+〖盢计暗礚兵ン秈
+ROUNDUP(3.2,0)           单      4
+ROUNDUP(76.9,0)          单     77
+ROUNDUP(3.14159, 3)      单      3.142
+ROUNDUP(-3.14159, 1)     单     -3.2
+ROUNDUP(31415.92654, -2) 单 31,500
+
+〖ㄌ┮﹚计盢计彼き
+ROUND(2.15, 1)   单 2.2
+ROUND(2.149, 1)  单 2.1
+ROUND(-1.475, 2) 单 -1.48
+ROUND(21.5, -1)  单 20
+
+〖盢计礚兵ン彼
+ROUNDDOWN(3.2, 0)          单  3
+ROUNDDOWN(76.9,0)          单 76
+ROUNDDOWN(3.14159, 3)      单  3.141
+ROUNDDOWN(-3.14159, 1)     单 -3.1
+ROUNDDOWN(31415.92654, -2) 单 31,400
+
+〖肚计彼き程钡案计俱计
+EVEN(1.5) 单  2
+EVEN(3)   单  4
+EVEN(2)   单  2
+EVEN(-1)  单 -2
+
+
+〖ゑ耕ゅ﹃肚 TRUE Ч肚 FALSE ぃ
+  EXACT 穦跋だ糶┛菠Α砞﹚畉钵
+EXACT("word","word")  单 TRUE
+EXACT("Word","word")  单 FALSE
+EXACT("w ord","word") 单 FALSE
+
+
+〖肚计顶琘计顶单 1*2*3*...* 计
+FACT(1)   单 1
+FACT(1.9) 单 FACT(1) 单 1
+FACT(0)   单 1
+FACT(-1)  单 #NUM!
+FACT(5)   单 1*2*3*4*5 单 120
+
+
+〖盢せ秈计锣传秈计
+  狦计琌璽HEX2OCT ぃ矪瞶计肚 10 じ秈计
+  狦计琌璽ぃ FFE0000000狦计琌タぃ 1FFFFFFF
+HEX2OCT("F", 3)       单 017
+HEX2OCT("3B4E")       单 35516
+HEX2OCT("FFFFFFFF00") 单 7777777400
+
+〖盢せ秈计锣传计计计
+HEX2DEC("A5")         单 165
+HEX2DEC("FFFFFFFF5B") 单 -165
+HEX2DEC("3DA408B9")   单 1034160313
+
+〖盢せ秈计锣传秈计
+HEX2BIN("F", 8)       单 00001111
+HEX2BIN("B7")         单 10110111
+HEX2BIN("FFFFFFFFFF") 单 1111111111
+
+〖盢秈计锣传秈计
+OCT2BIN(3, 3)         单 011
+OCT2BIN(7777777000)   单 1000000000
+
+〖盢秈计锣传秈计
+OCT2DEC(54)           单 44
+OCT2DEC(7777777533)   单 -165
+
+〖盢秈计锣传せ秈计
+OCT2HEX(100, 4)       单 0040
+OCT2HEX(7777777533)   单 FFFFFFFF5B
+
+〖盢计计计锣传秈计
+DEC2BIN(9, 4)         单 1001
+DEC2BIN(-100)         单 1110011100
+
+
+〖肚ま计﹃い程ゅ籔呸胯 TRUE㎝ FALSE 盢穦跌计ㄓ暗ゑ耕
+  ま计璝琌 TRUE 玥穦砆跌 1璝琌 FALSE玥穦砆跌 0箂
+  狦ま计い⊿Τヴ戈玥 MINA ㄧ计穦肚 0箂
+狦纗 A1:A5 ず甧ㄌ计 1079272
+MINA(A1:A5)    单 2
+MINA(A1:A5, 0) 单 0
+狦 A1:A5 ㄌ FALSE0.20.50.40.8
+MINA(A1:A5)    单 0
+
+〖肚ま计﹃い程
+狦纗 A1:A5 计 1079272
+MIN(A1:A5)    单 2
+MIN(A1:A5, 0) 单 0
+
+〖肚ま计﹃い程ま计璝ゅ㎝呸胯盢穦砆跌计ㄓゑ耕
+狦纗 A1:A5 いㄌ计 1079272
+MAXA(A1:A5)    单 27
+MAXA(A1:A5,30) 单 30
+狦纗 A1:A5 ず甧ㄌ 00.20.50.4 籔 TRUE玥
+MAXA(A1:A5)    单 1
+
+〖肚舱计い程
+狦 A1:A5 い计 107927 ㎝ 2玥
+MAX(A1:A5) 单 27
+MAX(A1:A5,30) 单 30
+
+
+〖肚ま计﹃ずい计い计舱计い丁计
+  计い计τ计い计
+MEDIAN(1, 2, 3, 4, 5)    单 3
+MEDIAN(1, 2, 3, 4, 5, 6) 单 3.5 3 ㎝ 4 キА
+
+〖肚皚┪絛瞅戈い瞷繵瞯程蔼MODE ㎝ MEDIAN 摸常琌ノㄓ代秖竚ㄧ计
+MODE( {5.6, 4, 4, 3, 2, 4} ) 单 4
+
+
+〖肚把酚い绢计
+ROWS(A1:C4)         单 4
+ROWS({1,2,3;4,5,6}) 单 2
+
+
+〖肚┪俱计程そ计
+  程そ计琌镑俱埃计1 ㎝计 2 程俱计
+GCD(5, 2)   单  1
+GCD(24, 36) 单 12
+GCD(7, 1)   单  1
+GCD(5, 0)   单  5
+
+〖程そ计
+LCM(5, 2)   单 10
+LCM(24, 36) 单 72
+
+
+〖皚┪材い碝тΤ琘疭﹚逆肚逆い琘﹚纗い
+  狦┮Τノㄓゑ癸计材いτ眤稱璶琌ゑ癸よ绢い
+  ê或眤碞ゲ斗ㄏノ HLOOKUP ㄧ计ㄓ矪瞶琩穨
+  癸狦ノㄓゑ癸计眤┮璶碝т戈ぇオ娩逆玥ゲ斗ㄏノ VLOOKUP ㄧ计
+安砞Τ═ó箂ン砯纗
+纗 A1:A4 Τ "Axles"   4 5 6
+纗 B1:B4 Τ "Bearings"4 7 8
+纗 C1:C4 Τ "Bolts"   91011
+      A        B     C
+1 Axles Bearings Bolts
+2     4        4     9
+3     5        7    10
+4     6        8    11
+
+HLOOKUP("Axles",   A1:C4,2,TRUE)  单  4
+HLOOKUP("Bearings",A1:C4,3,FALSE) 单  7
+HLOOKUP("Bearings",A1:C4,3,TRUE)  单  7
+HLOOKUP("Bolts",   A1:C4,4)       单 11
+材ㄧ计琌盽计皚
+HLOOKUP( 3, {1,2,3;"a","b","c";"d","e","f"}, 2, TRUE) 单 "c"
+
+
+〖肚戈舱い材 k 程计眤ノ硂ㄧ计ㄓ﹚匡逼材碭
+  ㄒ眤ㄏノ LARGE肚程蔼材蔼┪材蔼だ计
+だ计讽い
+眔 7だΤ 1
+眔 6だΤ 1
+眔 5だΤ 2
+眔 4だΤ 3
+眔 3だΤ 2
+眔 2だΤ 1
+LARGE( {3,4,5,2,3,4,5,6,4,7} ,1) 单 7
+LARGE( {3,4,5,2,3,4,5,6,4,7} ,2) 单 6
+LARGE( {3,4,5,2,3,4,5,6,4,7} ,3) 单 5
+LARGE( {3,4,5,2,3,4,5,6,4,7} ,4) 单 5
+LARGE( {3,4,5,2,3,4,5,6,4,7} ,5) 单 4
+LARGE( {3,4,5,2,3,4,5,6,4,7} ,6) 单 4
+LARGE( {3,4,5,2,3,4,5,6,4,7} ,7) 单 4
+LARGE( {3,4,5,2,3,4,5,6,4,7} ,8) 单 3
+
+〖肚戈舱い材 k ㄏノ硂ㄧ计肚戈舱い疭﹚竚计
+SMALL({3,4,5,2,3,4,5,6,4,7},4) 单 4
+SMALL({1,4,8,3,7,12,54,8,23},2) 单 3
+
+
+〖肚计 3.14159265358979 ウ琌计厩盽计 pi;弘絋 15 计
+PI()/2      单 1.57079...
+SIN(PI()/2) 单 1
+狦㏑ Radius 纗いΤ蛾㏄畖计玥そΑ璸衡蛾縩
+PI()*(Radius^2)
+
+
+〖狦眤﹚薄猵挡狦 TRUE玥肚璝挡狦 FALSE玥肚
+  IF ㄧ计ノ代刚计㎝そΑ兵ン
+IF(B2>C2,"禬箇衡","OK") 单 "禬箇衡"
+IF(B3>C3,"禬箇衡","OK") 单 "OK"
+IF(Aver>89,"A",IF(Aver>79,"B",IF(Aver>69,"C",IF(Aver>59,"D","F"))))
+
+
+〖肚睲虫┪戈畐璸常琌ㄏノ [戈]  [璸] 
+  獽甧ミ盿Τ璸睲虫ス璸睲虫ミ碞ノ SUBTOTAL ㄧ计ㄓэ
+Num ㄧ计 
+1   AVERAGE 
+2   COUNT 
+3   COUNTA 
+4   MAX 
+5   MIN 
+6   PRODUCT 
+7   STDEV 
+8   STDEVP 
+9   SUM 
+10  VAR 
+11  VARP 
+SUBTOTAL(9,C3:C5) 盢ㄏノ SUM ㄧ计玻ネ C3:C5 ぇ璸
+
+
+〖肚癸莱ら戳肚ざ 1900  9999 ぇ丁俱计
+YEAR("1998/7/5") 单 1998
+YEAR("2005/05/01") 单 2005
+
+
+〖盢ま计ぇ计ぉは锣NOT ノㄓ絋﹚琘计ぃ单琘疭﹚计
+NOT(FALSE) 单 TRUE
+NOT(1+1=2) 单 FALSE
+
+
+〖肚锣传计
+狦 计┪把酚              N 肚
+计                             赣计
+ら戳Excel ずら戳Αぇ   赣ら戳
+TRUE                             1
+FALSE                            0
+岿粇 #DIV/0!               岿粇
+ㄤウ                             0 
+
+狦 A1 Τ "7"A2 Τ "Even"τ A3 Τ "TRUE"玥
+N(A1)        单 7
+N(A2)        单 0 A2 Τゅ
+N(A3)        单 1 A3 Τ TRUE
+N("7")       单 0 "7" ゅ
+N("4/17/91") 单 0 "4/17/91" ゅ
+
+
+〖簿埃緇フゅ戈
+TRIM(" First   Quarter   Earnings   ") 单 "First Quarter Earnings"
+
+
+〖LEFT  肚ゅ﹃い材じ┪じ舱
+  LEFTB 肚ゅ﹃い材じ┪じ舱硂ㄧ计琌ㄏノじじ舱
+LEFT("Sale Price", 4) 单 "Sale"
+狦 A1  "Sweden"玥
+LEFT(A1) 单 "S"
+璝纗 A2 い "156-"そΑ穦盢ゅ锣传Θ计 -156
+LEFT(A2,LEN(A2)1)*1 单 -156
+LEFTB("カ氨ó初",4" 单 ""
+
+
+〖﹚计Α盢计锣Θゅ
+TEXT(2.715, "$0.00")             单 "$2.72"
+TEXT("4/15/91", "mmmm dd, yyyy") 单 "April 15, 1991"
+
+〖盢ゅ﹃柑璣ゅダ锣传Θ糶ダ
+LOWER("E. E. Cummings") 单 "e. e. cummings"
+LOWER("Apt. 2B")        单 "apt. 2b"
+LOWER摸 PROPER㎝ UPPER叫把綷 PROPER絛ㄒ
+
+〖盢ゅ锣传Θ糶
+UPPER("total") 单 "TOTAL"
+狦 E5  "yield"玥
+UPPER(E5) 单 "YIELD"
+
+〖盢琘计ゅ﹃锣传Θ计戈
+VALUE("$1,000") 单 1,000
+VALUE("16:48:00")-VALUE("12:00:00") 单 "16:48:00"-"12:00:00" 
+                                    单 0.2ㄤ讽 4  48 だ牧
+
+
+〖REPT ㄧ计硄盽ノㄓ纗い恶狡瞷﹃
+  REPT ㄧ计盢肚 " " (﹃) 狦 number_times ぃ琌俱计ㄤ计场だ穦砆彼
+  REPT ㄧ计笲衡挡狦程ぃ眔禬筁 255 じ
+REPT("*-", 3)   单 "*-*-*-"
+狦纗 A3 柑Τ Sales 玥
+REPT($A$3, 2.9) 单 "SalesSales"
+
+
+〖RIGHT  肚ゅ﹃程じ┪じ舱
+  RIGHTB 肚ゅ﹃程じ┪じ舱 (硂ㄧ计琌ㄏノじじ舱)
+   狦材逆﹃玥 RIGHT ㄧ计穦肚┮Τゅ﹃
+RIGHT("Sale Price",5) 单 "Price"
+RIGHT("Stock Number") 单 "r"
+RIGHTB("カ",2)    单 "カ"
+
+
+〖﹚计ぇ丁ヴ種睹计–Ω璸衡常穦肚穝睹计
+RANDBETWEEN(bottom,top)
+程计 (Bottom) RANDBETWEEN 肚程俱计
+程计 (Top)    RANDBETWEEN 肚程俱计
+
+〖肚单 0  1 繦诀睹计–讽衡獽穦肚穝繦诀睹计
+璝璶玻ネ单 0  100 繦诀睹计RAND()*100
+
+
+〖肚ㄢ计埃┮眔ぇ坝俱计场だ硂ㄧ计ノㄓ埃ㄢ计埃挡狦緇计场だ
+  QUOTIENT(numerator,denominator)
+  Numerator   砆埃计
+  Denominator   埃计
+QUOTIENT(5, 2)      单 2
+QUOTIENT(4.5, 3.1)  单 1
+QUOTIENT(-10, 3)    单 -3
+
+
+〖肚┮Τま计キよ羆㎝
+SUMSQ(3, 4) 单 25
+
+
+〖肚计辊挡狦
+POWER(5,2)      单 25
+POWER(98.6,3.2) 单 2401077
+POWER(4,5/4)    单 5.656854
+
+
+〖笛匡ゅ﹃い猔夹ボじ
+狦纗 C4 い戈 "る"ㄤ猔夹ボ纗 "＂８ ：．？"
+τ纗 B7 い戈 "る"猔夹ボ纗 "October"玥
+PHONETIC(C4) 单 "＂８ ：．？"
+PHONETIC(B7) 单 "October"
+
+
+〖SUBSTITUTE(text,old_text,new_text,instance_num)
+  ゅ琌璶эㄤず甧ゅ戈┪琌Τゅ戈纗把酚
+  Old_text   盢砆ゅ﹃
+  New_text   盢 old_text 穝﹃
+SUBSTITUTE("Sales Data", "Sales", "Cost")  单 "Cost Data"
+SUBSTITUTE("Quarter 1, 1991", "1", "2", 1) 单 "Quarter 2, 1991"
+SUBSTITUTE("Quarter 1, 1991", "1", "2", 3) 单 "Quarter 1, 1992"
+饼盢㏑ CellCont2 纗絛瞅い嘿 Separator ゅ盽计Аい珹腹叫ㄏノ
+SUBSTITUTE(CellCont2, Separator, "] [")
+
+
+〖狦Τヴま计呸胯 TRUE肚 TRUE
+  斑Τ┮Τま计呸胯А FALSE穦肚 FALSE
+OR(TRUE)        单 TRUE
+OR(1+1=1,2+2=5) 单 FALSE
+狦 A1:A3 呸胯 TRUEFALSE㎝ TRUE玥
+OR(A1:A3)       单 TRUE
+
+
+〖盢计传衡Θぃ秖虫ㄒCONVERT 盢璣虫ボń祘锣传Θそ虫ボ
+CONVERT(number,from_unit,to_unit)
+Number    琌璶传衡虫琌 from_unit
+From_unit 琌 number 虫
+To_unit   琌传衡虫琌 CONVERT ㄧ计钡秖虫
+秖             From_unit ┪ to_unit
+そ             "g"
+Slug             "sg"
+絊 (盽颗)        "lbm"
+痵吹 (盽颗)      "ozm"
+禯瞒
+そへ             "m"
+璣             "mi"
+             "Nmi"
+璣             "in"
+璣             "ft"
+絏               "yd"
+Pica (1/72 璣) "Pica"
+丁
+               "yr"
+ら               "day"
+               "hr"
+だ               "mn"
+               "sec"
+放
+尼ん放         "C"
+地ん放         "F"
+荡癸放         "K"
+甧縩
+痵吹             "oz"
+狹               "cup"
+U.S. 珇叉        "pt"
+U.K. 珇叉        "uk_pt"
+疭             "qt"
+ㄚ             "gal"
+そど             "l"
+
+CONVERT(1.0, "lbm", "kg") 单 0.453592
+CONVERT(68, "F", "C")     单 20
+CONVERT(2.5, "ft", "sec") 单 #N/A
+
+
+〖衡Τ计纗计秖のま计睲虫い计
+  ㄏノ COUNT 计皚┪絛瞅い眔计逆ず兜ヘ计秖
+A1 Sales
+A2 12/8/90
+A3
+A4 19
+A5 22.24
+A6 TRUE
+A7 #DIV/0!
+COUNT(A1:A7) 单 3
+COUNT(A4:A7) 单 2
+COUNT(A1:A7, 2) 单 4
+
+
+〖璸衡﹚絛瞅ずフ纗计
+COUNTBLANK(A1:B2) 单 4
+
+
+〖盢计い计场彼τΘ俱计
+TRUNC(8.9)  单 8
+TRUNC(-8.9) 单 -8
+TRUNC(PI()) 单 3
+
+
+〖肚ㄢ计埃ぇ緇计緇计㎝埃计ㄣΤタ璽腹
+MOD(n, d) = n - d*INT(n/d)
+MOD(3, 2)   单 1
+MOD(-3, 2)  单 1
+MOD(3, -2)  单 -1
+MOD(-3, -2) 单 -1
+
+
+〖SEARCH 肚琘疭﹚ゅ﹃┪Ω瞷竚start_num 癬﹍
+  眤ㄏノ SEARCH ㄧ计ㄓ∕﹚ゅ﹃い琘疭﹚ゅ﹃竚
+  ノ MID ㄧ计┪ REPLACE ㄧ计ㄓэ﹃ゅ
+SEARCH("e","Statements",6) 单 7
+狦纗 B17 ず甧 "Margin" τ纗 A14 ず甧 "Profit Margin"玥
+SEARCH($B$17,$A$14) 单 8
+ REPLACE ㄧ计┪ SEARCHB ㄧ计いㄏノ SEARCHㄏ REPLACE ㄧ计タ絋竚础穝﹃
+猽ノ玡ㄒ弧
+REPLACE($A$14,SEARCH($B$17,$A$14),6,"Amount") 肚挡狦琌 "Profit Amount"
+
+SEARCH("","カ") 单 2
+SEARCHB("","カ") 单 3
+
+
+〖LEN 肚ゅ﹃じ计
+  LENB 肚ゅ﹃い赣じ舱じ计 (硂ㄧ计琌ㄏノじじ舱)
+LEN("Phoenix, AZ") 单 11
+LEN("")            单 0
+LENB("カ")     单 6
+
+
+〖盢ゅ﹃い材璣ゅダ㎝ヴㄤウ獶璣ゅダじぇダ锣传Θ糶ダ
+  ㄤ緇┮Τダ玥常锣传Θ糶ダ
+PROPER("this is a TITLE") 单 "This Is A Title"
+PROPER("2-cent's worth") 单 "2-Cent'S Worth"
+PROPER("76BudGet") 单 "76Budget"
+
+〖盢ゅ锣传Θ糶
+UPPER("total") 单 "TOTAL"
+狦 E5  "yield"玥
+UPPER(E5) 单 "YIELD"
+
+
+〖肚把酚い绢腹
+ROW(A3) 单 3
+讽ㄧ计ヴ硈尿纗皚块
+ROW(A3:B5) 单 {3;4;5}
+狦 ROW ㄧ计块纗 C5 い玥
+ROW() 单 ROW(C5) 单 5
+
+
+〖REPLACE  ㄏノぃゅ﹃ㄓゅ﹃琘场だ
+  REPLACEB ㄏノぃゅ﹃ㄓゅ﹃琘场だ (硂ㄧ计琌ㄏノㄢじじ舱)
+そΑ穦盢 old_text ﹃材 6 じ秨﹍衡癬きじ new_text 
+REPLACE("abcdefghijk",6,5,"*") 单 "abcde*k"
+材 6 材 10 じ传 "*"
+そΑ穦盢ゅ﹃ 1990 柑程ㄢ计传Θ 91 
+REPLACE("1990",3,2,"91") 单 "1991"
+狦纗 A2 いΤゅ戈 "123456" 玥
+REPLACE(A2,1,3, "@") 单 "@456"
+狦 RIGHT ㄧ计肚ゅ﹃ "ABCDEF" 玥
+REPLACE(RIGHT(A3, 6),1,6,"*") 单 "*"
+絛ㄒい纗 C4 い材じ舱じ舱砆 "カ"
+REPLACEB(C4,1,6,"カ")
+
+
+〖肚Τ闽ヘ玡穨╰参吏挂戈癟
+INFO(type_text)
+Type_text   琌ゅノ﹚眤┮饼眔戈癟兜ヘ
+Type_text   肚戈癟 
+"directory" ヘ玡ヘ魁┪戈Ж隔畖嘿 
+"memavail"  ㄏノ癘拘砰甧秖 (じ舱 byte 虫) 
+"memused"   戈┮ノ癘拘砰甧秖 
+"numfile"   秨币计 
+"osversion" ヘ玡穨╰参セゅΑボ 
+"recalc"    ヘ玡穝璸衡家Α肚笆 (笆衡) ┪(衡)  
+"release"   Microsoft Excel セゅΑボ 
+"system"    穨吏挂嘿 
+            Macintosh = "mac" 
+            Windows = "pcdos" 
+"totmem" ノ癘拘砰羆甧秖珹砆ノ场だ (じ舱 byte 虫) 
+狦ヘ玡秨币ㄢ郎玥そΑ肚计 2
+INFO("numfile")
+
+
+〖肚﹚丁计计
+  パ TIME ㄧ计┮肚丁计计琌ざ 0  0.99999999 ぇ丁
+  癸莱帝パ 0:00:00 (12:00:00 A.M.)  23:59:59 (11:59:59 P.M.) 丁
+  TIME(hour,minute,second)
+  Hour   ざ 0  23 ぇ丁计
+  Minute ざ 0  59 ぇ丁计だ
+  Second ざ 0  59 ぇ丁计
+TIME(12, 0, 0)                          单 0.5        ㄤ癸莱 12:00:00 P.M.
+TIME(16, 48, 10)                        单 0.700115741ㄤ癸莱  4:48:10 P.M.
+TEXT(TIME(23, 18, 14), "h:mm:ss AM/PM") 单 "11:18:14 PM"
+
+
+〖肚ま计﹃い┮Τ计羆㎝
+SUM(3, 2)         单 5
+SUM("3", 2, TRUE) 单 6 ゅ穦砆锣传Θ计τ呸胯 TRUE 玥砆锣传Θ计 1
+狦纗 A1 いΤ 3τ纗 B1 い TRUE玥
+SUM(A1,B1,2) 单 2把酚ま计┮把酚獶计戈琌ぃ穦砆锣传
+狦纗絛瞅 A2:E2 い计ㄌ 515304050玥
+SUM(A2:C2)     单 50
+SUM(B2:E2, 15) 单 150
+
+
+〖T(value) Value琌眤┮璶代刚计狦 计ま计琌ゅ┪琌把酚ゅ戈
+  T ㄧ计穦肚赣计狦 计ぃ琌ゅT ㄧ计獽穦肚 " " (﹃)
+狦纗 B1 いΤゅ "Rainfall"玥
+T(B1)     单 "Rainfall"
+狦纗 B2 いΤ计 19玥
+T(B2)     单 ""
+T("True") 单 "True"
+T(TRUE)   单 ""
+
+
+〖∕﹚计タ璽腹
+  狦计琌タ计穦肚 1 狦琌 0 玥肚 0 狦计琌璽计玥肚 -1
+SIGN(10)       单 1
+SIGN(4-4)      单 0
+SIGN(-0.00001) 单 -1
+
+〖肚计荡癸┮孔计荡癸碞琌ぃ才腹计
+ABS(2)  单 2
+ABS(-2) 单 2
+狦 A1 柑Τ -16玥
+SQRT(ABS(A1)) 单 4
+
+〖肚计タキよ
+SQRT(16)       单 4
+SQRT(-16)      单 #NUM!
+SQRT(ABS(-16)) 单 4
+
+
+〖肚タ计ゑ赣计程计璽计ゑ赣计程计
+ODD(1.5) 单 3
+ODD(3)   单 3
+ODD(2)   单 3
+ODD(-1)  单 -1
+ODD(-2)  单 -3
+
+
+〖TYPE(array)
+  Value 琌 Microsoft Excel ヴ戈计ゅ呸胯单单
+  狦计琌  TYPE 穦肚
+  计         1
+  ゅ         2
+  呸胯       4
+  岿粇      16
+  皚        64
+狦 A1 ゅ "Smith"玥
+TYPE(A1) 单 TYPE("Smith")   单  2
+TYPE("MR. "&A1)               单  2
+TYPE(2+A1) 单 TYPE(#VALUE!) 单 16
+TYPE({1,2;3,4})               单 64
+
+
+〖羆才琘疭﹚穓碝非玥纗
+  材逆  羆
+  材逆  ゑ耕
+  材逆  痷龟璶羆戈
+安砞 A1:A4 ず┬基
+だ琌100,000じ200,000じ300,000じ400,000じ
+τ B1:B4 玥ず癸綪扳7,000じ14,000じ21,000じ28,000じ 玥
+SUMIF(A1:A4,">160000",B1:B4) 单 $63,000
+
+
+〖р┮Τま计计礛肚縩
+狦纗絛瞅 A2:C2 い┮计だ 51530 
+PRODUCT(A2:C2)    单 2,250
+PRODUCT(A2:C2, 2) 单 4,500
+
+--------------------------------------------------------------------------------
+繦诀 0~10 睹计                      =ROUND(RAND()*10,0)
+================================================================================
+
+
+计厩㎝à厩ㄧ
+ABS		肚计荡癸
+ACOS		肚计は緇┒
+ACOSH		肚计は蛮Ρ緇┒
+ASIN		肚计はタ┒
+ASINH		肚计は蛮Ρ絬タ┒
+ATAN		肚计はタち
+ATAN2		眖X㎝Y畒夹肚はタち
+ATANH		肚ま计は蛮Ρ絬タち
+CEILING		癸计彼き程钡俱计┪程钡ㄏノ计
+COMBIN		肚﹚计ヘンㄖ计
+COS		肚计緇┒
+COSH		肚计蛮┓緇┒
+COUNTIF		璸衡才﹚兵ン跋办い獶纗计
+DEGREES		盢┓锣传
+EVEN		盢计彼き程钡案计俱计
+EXP		肚e﹚计计
+FACT		肚计顶
+FACTDOUBLE	肚计顶
+FLOOR		盢计猽荡癸搭よ彼き
+GCD		肚程そ计
+INT		盢计彼き程钡俱计
+LCM		肚程そ计
+LN		肚计礛癸计
+LOG		肚计﹚┏计癸计
+LOG10		肚10┏癸计
+MDETERM		肚皚痻皚皚Α
+MINVERSE	肚皚は痻皚
+MMULT		肚ㄢ皚痻皚縩
+MOD		肚ㄢ计埃緇计
+MROUND		肚ま计﹚膀计彼き计
+MULTINOMIAL	肚舱计兜Α
+ODD		盢计彼き程钡计俱计
+PI		肚Pi
+POWER		肚计计挡狦
+PRODUCT		盢┮Τま计Α计
+QUOTIENT	肚坝俱计场
+RADIANS		盢锣传┓
+RAND		肚0㎝1ぇ丁睹计
+RANDBETWEEN	肚﹚计ぇ丁睹计
+ROMAN		盢┰计锣传ゅΑ霉皑计
+ROUND		盢计彼き﹚计
+ROUNDDOWN	盢计綼0彼き
+ROUNDUP		盢计环瞒0彼き
+SERIESSUM	肚膀そΑ经计㎝
+SIGN		肚计タ璽腹
+SIN		肚﹚àタ┒
+SINH		肚计蛮Ρ絬タ┒
+SQRT		肚タキよ
+SQRTPI		肚琘计籔Pi縩キよ
+SUBTOTAL	肚睲虫┪戈畐い璸
+SUM		穝糤ま计
+SUMIF		﹚兵ン穝糤﹚纗
+SUMPRODUCT	肚癸莱皚场縩㎝
+SUMSQ		肚ま计キよ㎝
+SUMX2MY2	肚ㄢ皚い癸莱キ跑钵ぇ㎝
+SUMX2PY2	肚ㄢ皚い癸莱キよ㎝ぇ㎝
+SUMXMY2		肚ㄢ皚い癸莱畉キよぇ㎝
+TAN		肚计タち
+TANH		肚计蛮Ρ絬タち
+TRUNC		盢计篒Ю俱计
+
