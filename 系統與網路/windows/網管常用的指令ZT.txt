@@ -1,0 +1,445 @@
+網管常用的指令ZT 
+http://www.chinaunix.net 作者:adrianke  發表于：2003-03-07 11:22:42 
+
+如果你玩過路由器的話，就知道路由器里面那些很好玩的命令縮寫。  
+例如，"sh int" 的意思是 "show interface"。  
+現在 Windows 2000 也有了類似界面的工具，叫做 netsh。  
+
+我們在 Windows 2000 的 cmd shell 下，輸入 netsh  
+就出來：netsh> 提示符，  
+輸入 int ip 就顯示：  
+interface ip>  
+然后輸入 dump ，我們就可以看到當前系統的網絡配置：  
+
+# ----------------------------------  
+# Interface IP Configuration  
+# ----------------------------------  
+pushd interface ip  
+
+
+# Interface IP Configuration for "Local Area Connection"  
+
+set address name = "Local Area Connection" source = static addr = 192.168.1.168  
+mask = 255.255.255.0  
+add address name = "Local Area Connection" addr = 192.1.1.111 mask = 255.255.255.0  
+set address name = "Local Area Connection" gateway = 192.168.1.100 gwmetric = 1  
+set dns name = "Local Area Connection" source = static addr = 202.96.209.5  
+set wins name = "Local Area Connection" source = static addr = none  
+
+
+popd  
+# End of interface IP configuration  
+
+上面介紹的是通過交互方式操作的一種辦法。  
+我們可以直接輸入命令：  
+"netsh interface ip add address "Local Area Connection" 10.0.0.2  
+255.0.0.0"  
+來添加 IP 地址。  
+
+如果不知道語法，不要緊的哦！  
+在提示符下，輸入 ? 就可以找到答案了。方便不方便啊？  
+原來微軟的東西里面，也有那么一些讓人喜歡的玩意兒。可惜，之至者甚少啊！  
+
+
+Windows網絡命令行程序  
+這部分包括：  
+
+使用 ipconfig /all 查看配置  
+使用 ipconfig /renew 刷新配置  
+使用 ipconfig 管理 DNS 和 DHCP 類別 ID  
+使用 Ping 測試連接  
+使用 Arp 解決硬件地址問題  
+使用 nbtstat 解決 NetBIOS 名稱問題  
+使用 netstat 顯示連接統計  
+使用 tracert 跟蹤網絡連接  
+使用 pathping 測試路由器  
+使用 ipconfig /all 查看配置  
+發現和解決 TCP/IP 網絡問題時，先檢查出現問題的計算機上的 TCP/IP 配置。可以  
+使用 ipconfig 命令獲得主機配置信息，包括 IP 地址、子網掩碼和默認網關。  
+
+注意  
+
+對于 Windows 95 和 Windows 98 的客戶機，請使用 winipcfg 命令而不是 ipconfi  
+g 命令。  
+使用帶 /all 選項的 ipconfig 命令時，將給出所有接口的詳細配置報告，包括任何  
+已配置的串行端口。使用 ipconfig /all，可以將命令輸出重定向到某個文件，并將  
+輸出粘貼到其他文檔中。也可以用該輸出確認網絡上每臺計算機的 TCP/IP 配置，或  
+者進一步調查 TCP/IP 網絡問題。  
+
+例如，如果計算機配置的 IP 地址與現有的 IP 地址重復，則子網掩碼顯示為 0.0.0  
+.0。  
+
+下面的范例是 ipconfig /all 命令輸出，該計算機配置成使用 DHCP 服務器動態配置  
+TCP/IP，并使用 WINS 和 DNS 服務器解析名稱。  
+
+Windows 2000 IP Configuration  
+
+Node Type.. . . . . . . . : Hybrid  
+IP Routing Enabled.. . . . : No  
+WINS Proxy Enabled.. . . . : No  
+
+Ethernet adapter Local Area Connection:  
+
+Host Name.. . . . . . . . : corp1.microsoft.com  
+DNS Servers . . . . . . . : 10.1.0.200  
+Description. . . . . . . : 3Com 3C90x Ethernet Adapter  
+Physical Address. . . . . : 00-60-08-3E-46-07  
+DHCP Enabled.. . . . . . . : Yes  
+Autoconfiguration Enabled.: Yes  
+IP Address. . . . . . . . . : 192.168.0.112  
+Subnet Mask. . . . . . . . : 255.255.0.0  
+Default Gateway. . . . . . : 192.168.0.1  
+DHCP Server. . . . . . . . : 10.1.0.50  
+Primary WINS Server. . . . : 10.1.0.101  
+Secondary WINS Server. . . : 10.1.0.102  
+Lease Obtained.. . . . . . : Wednesday, September 02, 1998 10:32:13 AM  
+Lease Expires.. . . . . . : Friday, September 18, 1998 10:32:13 AM  
+
+
+如果 TCP/IP 配置沒有問題，下一步測試能夠連接到 TCP/IP 網絡上的其他主機。  
+
+使用 ipconfig /renew 刷新配置  
+解決 TCP/IP 網絡問題時，先檢查遇到問題的計算機上的 TCP/IP 配置。如果計算機  
+啟用 DHCP 并使用 DHCP 服務器獲得配置，請使用 ipconfig /renew 命令開始刷新租  
+約。  
+
+使用 ipconfig /renew 時，使用 DHCP 的計算機上的所有網卡（除了那些手動配置的  
+適配器）都盡量連接到 DHCP 服務器，更新現有配置或者獲得新配置。  
+
+也可以使用帶 /release 選項的 ipconfig 命令立即釋放主機的當前 DHCP 配置。有  
+關 DHCP 和租用過程的詳細信息，請參閱客戶機如何獲得配置。  
+
+注意  
+
+對于啟用 DHCP 的 Windows 95 和 Windows 98 客戶，請使用 winipcfg 命令的 rel  
+ease 和 renew 選項，而不是 ipconfig /release 和 ipconfig /renew 命令，手動  
+釋放或更新客戶的 IP 配置租約。  
+使用 ipconfig 管理 DNS 和 DHCP 類別 ID  
+也可以使用 ipconfig 命令：  
+
+顯示或重置 DNS 緩存。  
+詳細信息，請參閱使用 ipconfig 查看或重置客戶解析程序緩存。  
+
+刷新已注冊的 DNS 名稱。  
+詳細信息，請參閱使用 ipconfig 更新 DNS 客戶注冊。  
+
+顯示適配器的 DHCP 類別 ID。  
+詳細信息，請參閱顯示客戶機上的 DHCP 類別 ID 信息。  
+
+設置適配器的 DHCP 類別 ID。  
+詳細信息，請參閱設置客戶機上的 DHCP 類別 ID 信息。  
+
+使用 Ping 測試連接  
+Ping 命令有助于驗證 IP 級的連通性。發現和解決問題時，可以使用 Ping 向目標主  
+機名或 IP 地址發送 ICMP 回應請求。需要驗證主機能否連接到 TCP/IP 網絡和網絡  
+資源時，請使用 Ping。也可以使用 Ping 隔離網絡硬件問題和不兼容配置。  
+
+通常最好先用 Ping 命令驗證本地計算機和網絡主機之間的路由是否存在，以及要連  
+接的網絡主機的 IP 地址。Ping 目標主機的 IP 地址看它是否響應，如下：  
+
+ping IP_address  
+
+使用 Ping 時應該執行以下步驟：  
+
+Ping 環回地址驗證是否在本地計算機上安裝 TCP/IP 以及配置是否正確。  
+ping 127.0.0.1  
+
+Ping 本地計算機的 IP 地址驗證是否正確地添加到網絡。  
+ping IP_address_of_local_host  
+
+Ping 默認網關的 IP 地址驗證默認網關是否運行以及能否與本地網絡上的本地主機通  
+訊。  
+ping IP_address_of_default_gateway  
+
+Ping 遠程主機的 IP 地址驗證能否通過路由器通訊。  
+ping IP_address_of_remote_host  
+
+Ping 命令用 Windows 套接字樣式的名稱解析將計算機名解析成 IP 地址，所以如果  
+用地址成功，但是用名稱 Ping 失敗，則問題出在地址或名稱解析上，而不是網絡連  
+通性的問題。詳細信息，請參閱使用 Arp 解決硬件地址問題。  
+
+如果在任何點上都無法成功地使用 Ping，請確認：  
+
+安裝和配置 TCP/IP 之后重新啟動計算機。  
+“Internet 協議 (TCP/IP) 屬性”對話框“常規”選項卡上的本地計算機的 IP 地址  
+有效而且正確。  
+啟用 IP 路由，并且路由器之間的鏈路是可用的。  
+您可以使用 Ping 命令的不同選項來指定要使用的數據包大小、要發送多少數據包、  
+是否記錄用過的路由、要使用的生存時間 (TTL) 值以及是否設置“不分段”標志。可  
+以鍵入 ping -? 查看這些選項。  
+
+下例說明如何向 IP 地址 172.16.48.10 發送兩個 Ping，每個都是 1,450 字節：  
+
+C:\>ping -n 2 -l 1450 172.16.48.10  
+Pinging 172.16.48.10 with 1450 bytes of data:  
+
+Reply from 172.16.48.10:bytes=1450 time<10ms TTL=32  
+Reply from 172.16.48.10:bytes=1450 time<10ms TTL=32  
+
+Ping statistics for 157.59.8.1:  
+Packets:Sent = 2, Received = 2, Lost = 0 (0% loss),  
+Approximate roundtrip times in milli-seconds:  
+Minimum = 0ms, Maximum = 10ms, Average = 2ms  
+默認情況下，在顯示“請求超時”之前，Ping 等待 1,000 毫秒（1 秒）的時間讓每  
+個響應返回。如果通過 Ping 探測的遠程系統經過長時間延遲的鏈路，如衛星鏈路，  
+則響應可能會花更長的時間才能返回。可以使用 -w （等待）選項指定更長時間的超  
+時。  
+
+使用 Arp 解決硬件地址問題  
+“地址解析協議 (ARP)”允許主機查找同一物理網絡上的主機的媒體訪問控制地址，  
+如果給出后者的 IP 地址。為使 ARP 更加有效，每個計算機緩存 IP 到媒體訪問控制  
+地址映射消除重復的 ARP 廣播請求。  
+
+可以使用 arp 命令查看和修改本地計算機上的 ARP 表項。arp 命令對于查看 ARP 緩  
+存和解決地址解析問題非常有用。  
+
+詳細信息，請參閱查看“地址解析協議 (ARP)”緩存和添加靜態 ARP 緩存項目。  
+
+使用 nbtstat 解決 NetBIOS 名稱問題  
+TCP/IP 上的 NetBIOS (NetBT) 將 NetBIOS 名稱解析成 IP 地址。TCP/IP 為 NetBI  
+OS 名稱解析提供了很多選項，包括本地緩存搜索、WINS 服務器查詢、廣播、DNS 服  
+務器查詢以及 Lmhosts 和主機文件搜索。  
+
+Nbtstat 是解決 NetBIOS 名稱解析問題的有用工具。可以使用 nbtstat 命令刪除或  
+更正預加載的項目：  
+
+nbtstat -n 顯示由服務器或重定向器之類的程序在系統上本地注冊的名稱。  
+nbtstat -c 顯示 NetBIOS 名稱緩存，包含其他計算機的名稱對地址映射。  
+nbtstat -R 清除名稱緩存，然后從 Lmhosts 文件重新加載。  
+nbtstat -RR 釋放在 WINS 服務器上注冊的 NetBIOS 名稱，然后刷新它們的注冊。  
+nbtstat -a name 對 name 指定的計算機執行 NetBIOS 適配器狀態命令。適配器狀態  
+命令將返回計算機的本地 NetBIOS 名稱表，以及適配器的媒體訪問控制地址。  
+nbtstat -S 列出當前的 NetBIOS 會話及其狀態（包括統計），如下例所示：  
+NetBIOS connection table  
+
+Local name State   In/out Remote Host  Input  Output  
+------------------------------------------------------------------  
+CORP1 <00> Connected Out  CORPSUP1<20>  6MB   5MB  
+CORP1 <00> Connected Out  CORPPRINT<20> 108KB  116KB  
+CORP1 <00> Connected Out  CORPSRC1<20>  299KB  19KB  
+CORP1 <00> Connected Out  CORPEMAIL1<20> 324KB  19KB  
+CORP1 <03> Listening  
+使用 netstat 顯示連接統計  
+可以使用 netstat 命令顯示協議統計信息和當前的 TCP/IP 連接。netstat -a 命令  
+將顯示所有連接，而 netstat -r 顯示路由表和活動連接。netstat -e 命令將顯示  
+Ethernet 統計信息，而 netstat -s 顯示每個協議的統計信息。如果使用 netstat  
+-n，則不能將地址和端口號轉換成名稱。下面是 netstat 的輸出示例：  
+
+C:\>netstat -e  
+Interface Statistics  
+
+Received   Sent  
+Bytes         3995837940  47224622  
+Unicast packets    120099    131015  
+Non-unicast packets  7579544    3823  
+Discards        0       0  
+Errors         0       0  
+Unknown protocols   363054211  
+
+C:\>netstat -a  
+
+Active Connections  
+
+Proto Local Address   Foreign Address    State  
+TCP CORP1:1572    172.16.48.10:nbsession  ESTABLISHED  
+TCP CORP1:1589    172.16.48.10:nbsession  ESTABLISHED  
+TCP CORP1:1606    172.16.105.245:nbsession ESTABLISHED  
+TCP CORP1:1632    172.16.48.213:nbsession ESTABLISHED  
+TCP CORP1:1659    172.16.48.169:nbsession ESTABLISHED  
+TCP CORP1:1714    172.16.48.203:nbsession ESTABLISHED  
+TCP CORP1:1719    172.16.48.36:nbsession  ESTABLISHED  
+TCP CORP1:1241    172.16.48.101:nbsession ESTABLISHED  
+UDP CORP1:1025    *:*  
+UDP CORP1:snmp    *:*  
+UDP CORP1:nbname   *:*  
+UDP CORP1:nbdatagram *:*  
+UDP CORP1:nbname   *:*  
+UDP CORP1:nbdatagram *:*  
+
+C:\>netstat -s  
+IP Statistics  
+
+Packets Received       = 5378528  
+Received Header Errors    = 738854  
+Received Address Errors   = 23150  
+Datagrams Forwarded     = 0  
+Unknown Protocols Received  = 0  
+Received Packets Discarded  = 0  
+Received Packets Delivered  = 4616524  
+Output Requests       = 132702  
+Routing Discards       = 157  
+Discarded Output Packets   = 0  
+Output Packet No Route    = 0  
+Reassembly Required     = 0  
+Reassembly Successful       = 0  
+Reassembly Failures        =  
+Datagrams Successfully Fragmented = 0  
+Datagrams Failing Fragmentation  = 0  
+Fragments Created         = 0  
+
+ICMP Statistics  
+Received Sent  
+Messages         693    4  
+Errors          0     0  
+Destination Unreachable 685    0  
+Time Exceeded      0     0  
+Parameter Problems    0     0  
+Source Quenches     0     0  
+Redirects        0     0  
+Echoes          4     0  
+Echo Replies       0     4  
+Timestamps        0     0  
+Timestamp Replies    0     0  
+Address Masks      0     0  
+Address Mask Replies   0     0  
+
+TCP Statistics  
+
+Active Opens         = 597  
+Passive Opens        = 135  
+Failed Connection Attempts  = 107  
+Reset Connections      = 91  
+Current Connections     = 8  
+Segments Received      = 106770  
+Segments Sent        = 118431  
+Segments Retransmitted    = 461  
+
+UDP Statistics  
+
+Datagrams Received  = 4157136  
+No Ports       = 351928  
+Receive Errors    = 2  
+Datagrams Sent    = 13809  
+
+使用 tracert 跟蹤網絡連接  
+Tracert（跟蹤路由）是路由跟蹤實用程序，用于確定 IP 數據報訪問目標所采取的路  
+徑。Tracert 命令用 IP 生存時間 (TTL) 字段和 ICMP 錯誤消息來確定從一個主機到  
+網絡上其他主機的路由。  
+
+Tracert 工作原理  
+通過向目標發送不同 IP 生存時間 (TTL) 值的“Internet 控制消息協議 (ICMP)”回  
+應數據包，Tracert 診斷程序確定到目標所采取的路由。要求路徑上的每個路由器在  
+轉發數據包之前至少將數據包上的 TTL 遞減 1。數據包上的 TTL 減為 0 時，路由器  
+應該將“ICMP 已超時”的消息發回源系統。  
+
+Tracert 先發送 TTL 為 1 的回應數據包，并在隨后的每次發送過程將 TTL 遞增 1，  
+直到目標響應或 TTL 達到最大值，從而確定路由。通過檢查中間路由器發回的“ICM  
+P 已超時”的消息確定路由。某些路由器不經詢問直接丟棄 TTL 過期的數據包，這在  
+Tracert 實用程序中看不到。  
+
+Tracert 命令按順序打印出返回“ICMP 已超時”消息的路徑中的近端路由器接口列表  
+。如果使用 -d 選項，則 Tracert 實用程序不在每個 IP 地址上查詢 DNS。  
+
+在下例中，數據包必須通過兩個路由器（10.0.0.1 和 192.168.0.1）才能到達主機  
+172.16.0.99。主機的默認網關是 10.0.0.1，192.168.0.0 網絡上的路由器的 IP 地  
+址是 192.168.0.1。  
+
+C:\>tracert 172.16.0.99 -d  
+Tracing route to 172.16.0.99 over a maximum of 30 hops  
+1  2s  3s  2s 10,0.0,1  
+2  75 ms  83 ms  88 ms 192.168.0.1  
+3  73 ms  79 ms  93 ms 172.16.0.99  
+Trace complete.  
+用 tracert 解決問題  
+可以使用 tracert 命令確定數據包在網絡上的停止位置。下例中，默認網關確定 19  
+2.168.10.99 主機沒有有效路徑。這可能是路由器配置的問題，或者是 192.168.10.  
+0 網絡不存在（錯誤的 IP 地址）。  
+
+C:\>tracert 192.168.10.99  
+
+Tracing route to 192.168.10.99 over a maximum of 30 hops  
+
+1 10.0.0.1 reports:Destination net unreachable.  
+
+Trace complete.  
+
+Tracert 實用程序對于解決大網絡問題非常有用，此時可以采取幾條路徑到達同一個  
+點。  
+
+Tracert 命令行選項  
+Tracert 命令支持多種選項，如下表所示。  
+
+tracert [-d] [-h maximum_hops] [-j host-list] [-w timeout] target_name  
+
+選項 描述   
+-d 指定不將 IP 地址解析到主機名稱。  
+-h maximum_hops 指定躍點數以跟蹤到稱為 target_name 的主機的路由。  
+-j host-list 指定 Tracert 實用程序數據包所采用路徑中的路由器接口列表。  
+-w timeout 等待 timeout 為每次回復所指定的毫秒數。  
+target_name 目標主機的名稱或 IP 地址。  
+
+詳細信息，請參閱使用 tracert 命令跟蹤路徑。  
+
+使用 pathping 測試路由器  
+pathping 命令是一個路由跟蹤工具，它將 ping 和 tracert 命令的功能和這兩個工  
+具所不提供的其他信息結合起來。pathping 命令在一段時間內將數據包發送到到達最  
+終目標的路徑上的每個路由器，然后基于數據包的計算機結果從每個躍點返回。由于  
+命令顯示數據包在任何給定路由器或鏈接上丟失的程度，因此可以很容易地確定可能  
+導致網絡問題的路由器或鏈接。某些選項是可用的，如下表所示。  
+
+選項 名稱 功能  
+-n Hostnames 不將地址解析成主機名。  
+-h Maximum hops 搜索目標的最大躍點數。  
+-g Host-list 沿著路由列表釋放源路由。  
+-p Period 在 ping 之間等待的毫秒數。  
+-q Num_queries 每個躍點的查詢數。  
+-w Time-out 為每次回復所等待的毫秒數。  
+-T Layer 2 tag 將第 2 層優先級標記（例如，對于 IEEE 802.1p）連接到數據包并  
+將它發送到路徑中的每個網絡設備。這有助于標識沒有正確配置第 2 層優先級的網絡  
+設備。-T 開關用于測試服務質量 (QoS) 連通性。  
+-R RSVP test Che檢查以確定路徑中的每個路由器是否支持“資源保留協議 (RSVP)”  
+，此協議允許主機為數據流保留一定量的帶寬。 -R 開關用于測試服務質量 (QoS) 連  
+通性。  
+
+默認的躍點數是 30，并且超時前的默認等待時間是 3 秒。默認時間是 250 毫秒，并  
+且沿著路徑對每個路由器進行查詢的次數是 100。  
+
+以下是典型的 pathping 報告。躍點列表后所編輯的統計信息表明在每個獨立路由器  
+上數據包丟失的情況。  
+
+
+D:\>pathping -n msw  
+
+Tracing route to msw [7.54.1.196]  
+over a maximum of 30 hops:  
+0 172.16.87.35  
+1 172.16.87.218  
+2 192.68.52.1  
+3 192.68.80.1  
+4 7.54.247.14  
+5 7.54.1.196  
+
+Computing statistics for 125 seconds...  
+      Source to Here  This Node/Link  
+Hop RTT  Lost/Sent = Pct Lost/Sent = Pct Address  
+0                      172.16.87.35  
+                0/ 100 = 0%  |  
+1  41ms   0/ 100 = 0%   0/ 100 = 0% 172.16.87.218  
+               13/ 100 = 13%  |  
+2  22ms  16/ 100 = 16%   3/ 100 = 3% 192.68.52.1  
+                0/ 100 = 0%  |  
+3  24ms  13/ 100 = 13%   0/ 100 = 0% 192.68.80.1  
+                0/ 100 = 0%  |  
+4  21ms  14/ 100 = 14%   1/ 100 = 1% 10.54.247.14  
+                0/ 100 = 0%  |  
+5  24ms  13/ 100 = 13%   0/ 100 = 0% 10.54.1.196  
+
+Trace complete.  
+
+當運行 pathping 時，在測試問題時首先查看路由的結果。此路徑與 tracert 命令所  
+顯示的路徑相同。然后 pathping 命令對下一個 125 毫秒顯示忙消息（此時間根據躍  
+點計數變化）。在此期間，pathping 從以前列出的所有路由器和它們之間的鏈接之間  
+收集信息。在此期間結束時，它顯示測試結果。  
+
+最右邊的兩欄 This Node/Link Lost/Sent=Pct 和 Address 包含的信息最有用。172  
+.16.87.218（躍點 1）和 192.68.52.1（躍點 2）丟失 13% 的數據包。 所有其他鏈  
+接工作正常。在躍點 2 和 4 中的路由器也丟失尋址到它們的數據包（如 This Node  
+/Link 欄中所示），但是該丟失不會影響轉發的路徑。  
+
+對鏈接顯示的丟失率（在最右邊的欄中標記為 |）表明沿路徑轉發丟失的數據包。該  
+丟失表明鏈接阻塞。對路由器顯示的丟失率（通過最右邊欄中的 IP 地址顯示）表明  
+這些路由器的 CPU 可能超負荷運行。這些阻塞的路由器可能也是端對端問題的一個因  
+素，尤其是在軟件路由器轉發數據包時。
+
+ 
+ 

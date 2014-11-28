@@ -1,0 +1,482 @@
+Iptables 中文 man 文檔
+總覽 
+
+用iptables -ADC 來指定鏈的規則，-A添加 -D刪除 -C 修改 
+iptables - [RI] chain rule num rule-specification[option] 
+用iptables - RI 通過規則的順序指定 
+
+iptables -D chain rule num[option] 
+刪除指定規則 
+iptables -[LFZ] [chain][option] 
+用iptables -LFZ 鏈名 [選項] 
+
+iptables -[NX] chain 
+用 -NX 指定鏈 
+
+iptables -P chain target[options] 
+指定鏈的默認目標 
+
+iptables -E old-chain-name new-chain-name 
+-E 舊的鏈名 新的鏈名 
+用新的鏈名取代舊的鏈名 
+說明 
+Iptalbes 是用來設置、維護和檢查Linux內核的IP包過濾規則的。 
+可以定義不同的表，每個表都包含幾個內部的鏈，也能包含用戶定義的鏈。每個鏈都是一個規則列表，對對應的包進行匹配：每條規則指定應當如何處理與之相匹配的包。這被稱作'target'（目標），也可以跳向同一個表內的用戶定義的鏈。 
+
+TARGETS 
+防火牆的規則指定所檢查包的特徵，和目標。如果包不匹配，將送往該鏈中下一條規則檢查；如果匹配,那麼下一條規則由目標值確定.該目標值可以是用戶定義的 鏈名,或是某個專用值,如ACCEPT[通過], DROP[刪除], QUEUE[排隊], 或者 RETURN[返回]。 
+ACCEPT 表示讓這個包通過。DROP表示將這個包丟棄。QUEUE表示把這個包傳遞到用戶空間。RETURN表示停止這條鏈的匹配，到前一個鏈的規則重新開始。如 果到達了一個內建的鏈(的末端)，或者遇到內建鏈的規則是RETURN，包的命運將由鏈準則指定的目標決定。 
+
+TABLES 
+當前有三個表（哪個表是當前表取決於內核配置選項和當前模組)。 
+-t table 
+這個選項指定命令要操作的匹配包的表。如果內核被配置為自動載入模組，這時若模組沒有載入，(系統)將嘗試(為該表)載入適合的模組。這些表如 下：filter,這是默認的表，包含了內建的鏈INPUT（處理進入的包）、FORWORD（處理通過的包）和OUTPUT（處理本地生成的包）。 nat,這個表被查詢時表示遇到了產生新的連接的包,由三個內建的鏈構成：PREROUTING (修改到來的包)、OUTPUT（修改路由之前本地的包）、POSTROUTING（修改準備出去的包）。mangle 這個表用來對指定的包進行修改。它有兩個內建規則：PREROUTING（修改路由之前進入的包）和OUTPUT（修改路由之前本地的包）。 
+OPTIONS 
+這些可被iptables識別的選項可以區分不同的種類。 
+
+COMMANDS 
+這些選項指定執行明確的動作：若指令行下沒有其他規定,該行只能指定一個選項.對於長格式的命令和選項名,所用字母長度只要保證iptables能從其他選項中區分出該指令就行了。 
+-A -append 
+在所選擇的鏈末添加一條或更多規則。當源（位址）或者/與 目的（位址）轉換為多個位址時，這條規則會加到所有可能的位址(組合)後面。 
+
+-D -delete 
+從所選鏈中刪除一條或更多規則。這條命令可以有兩種方法：可以把被刪除規則指定為鏈中的序號(第一條序號為1),或者指定為要匹配的規則。 
+
+-R -replace 
+從選中的鏈中取代一條規則。如果源（位址）或者/與 目的（位址）被轉換為多位址，該命令會失敗。規則序號從1開始。 
+
+-I -insert 
+根據給出的規則序號向所選鏈中插入一條或更多規則。所以，如果規則序號為1，規則會被插入鏈的頭部。這也是不指定規則序號時的默認方式。 
+
+-L -list 
+顯示所選鏈的所有規則。如果沒有選擇鏈，所有鏈將被顯示。也可以和z選項一起使用，這時鏈會被自動列出和歸零。精確輸出受其他所給參數影響。 
+
+-F -flush 
+清空所選鏈。這等於把所有規則一個個的刪除。 
+
+--Z -zero 
+把所有鏈的包及位元組的計數器清空。它可以和 -L配合使用，在清空前察看計數器，請參見前文。 
+
+-N -new-chain 
+根據給出的名稱建立一個新的用戶定義鏈。這必須保證沒有同名的鏈存在。 
+
+-X -delete-chain 
+刪除指定的用戶自定義鏈。這個鏈必須沒有被引用，如果被引用，在刪除之前你必須刪除或者替換與之有關的規則。如果沒有給出參數，這條命令將試著刪除每個非內建的鏈。 
+
+
+-P -policy 
+設置鏈的目標規則。 
+
+-E -rename-chain 
+根據用戶給出的名字對指定鏈進行重命名，這僅僅是修飾，對整個表的結構沒有影響。TARGETS參數給出一個合法的目標。只有非用戶自定義鏈可以使用規則，而且內建鏈和用戶自定義鏈都不能是規則的目標。 
+
+-h Help. 
+幫助。給出當前命令語法非常簡短的說明。 
+
+PARAMETERS 
+參數 
+以下參數構成規則詳述，如用於add、delete、replace、append 和 check命令。 
+
+-p -protocal [!]protocol 
+規則或者包檢查(待檢查包)的協議。指定協議可以是tcp、udp、icmp中的一個或者全部，也可以是數值，代表這些協議中的某一個。當然也可 以使用在/etc/protocols中定義的協定名。在協議名前加上"!"表示相反的規則。數字0相當於所有all。Protocol all會匹配所有協議，而且這是缺省時的選項。在和check命令結合時，all可以不被使用。 
+-s -source [!] address[/mask] 
+指定源位址，可以是主機名、網路名和清楚的IP位址。mask說明可以是網路遮罩或清楚的數位，在網路遮罩的左邊指定網路遮罩左邊"1"的個 數，因此，mask值為24等於255.255.255.0。在指定地址前加上"!"說明指定了相反的地址段。標誌 --src 是這個選項的簡寫。 
+
+-d --destination [!] address[/mask] 
+指定目標位址，要獲取詳細說明請參見 -s標誌的說明。標誌 --dst 是這個選項的簡寫。 
+
+-j --jump target 
+-j 目標跳轉 
+指定規則的目標；也就是說，如果包匹配應當做什麼。目標可以是用戶自定義鏈（不是這條規則所在的），某個會立即決定包的命運的專用內建目標，或者 一個擴展（參見下面的EXTENSIONS）。如果規則的這個選項被忽略，那麼匹配的過程不會對包產生影響，不過規則的計數器會增加。 
+
+-i -in-interface [!] [name] 
+i -進入的（網路）介面 [!][名稱] 
+這是包經由該介面接收的可選的入口名稱，包通過該介面接收（在鏈INPUT、FORWORD和PREROUTING中進入的包）。當在介面名前使 用"!"說明後，指的是相反的名稱。如果介面名後面加上"+"，則所有以此介面名開頭的介面都會被匹配。如果這個選項被忽略，會假設為"+ "，那麼將匹配任意介面。 
+
+-o --out-interface [!][name] 
+-o --輸出介面[名稱] 
+這是包經由該介面送出的可選的出口名稱，包通過該口輸出（在鏈FORWARD、OUTPUT和POSTROUTING中送出的包）。當在介面名前 使用"!"說明後，指的是相反的名稱。如果介面名後面加上"+"，則所有以此介面名開頭的介面都會被匹配。如果這個選項被忽略，會假設為"+ "，那麼將匹配所有任意介面。 
+
+[!] -f, --fragment 
+[!] -f --分片 
+這意味著在分片的包中，規則只詢問第二及以後的片。自那以後由於無法判斷這種把包的源埠或目標埠（或者是ICMP類型的），這類包將不能匹配任何指定對他們進行匹配的規則。如果"!"說明用在了"-f"標誌之前，表示相反的意思。 
+
+OTHER OPTIONS 
+其他選項 
+還可以指定下列附加選項： 
+
+-v --verbose 
+-v --詳細 
+詳細輸出。這個選項讓list命令顯示介面位址、規則選項（如果有）和TOS（Type of Service）遮罩。包和位元組計數器也將被顯示，分別用K、M、G(首碼)表示1000、1,000,000和1,000,000,000倍（不過請參 看-x標誌改變它），對於添加,插入,刪除和替換命令，這會使一個或多個規則的相關詳細資訊被列印。 
+
+-n --numeric 
+-n --數字 
+數位輸出。IP位址和埠會以數位的形式列印。默認情況下，程式試顯示主機名、網路名或者服務（只要可用）。 
+
+-x -exact 
+-x -精確 
+擴展數字。顯示包和位元組計數器的精確值，代替用K,M,G表示的約數。這個選項僅能用於 -L 命令。 
+
+--line-numbers 
+當列表顯示規則時，在每個規則的前面加上行號，與該規則在鏈中的位置相對應。 
+
+MATCH EXTENSIONS 
+對應的擴展 
+iptables能夠使用一些與模組匹配的擴展包。以下就是含于基本包內的擴展包，而且他們大多數都可以通過在前面加上!來表示相反的意思。 
+
+tcp 
+當 --protocol tcp 被指定,且其他匹配的擴展未被指定時,這些擴展被裝載。它提供以下選項： 
+
+--source-port [!] [port[:port]] 
+源埠或埠範圍指定。這可以是服務名或埠號。使用格式埠：埠也可以指定包含的（埠）範圍。如果首埠號被忽略，默認是"0"，如果 末端口號被忽略，默認是"65535"，如果第二個埠號大於第一個，那麼它們會被交換。這個選項可以使用 --sport的別名。 
+
+--destionation-port [!] [port:[port]] 
+目標埠或埠範圍指定。這個選項可以使用 --dport別名來代替。 
+
+--tcp-flags [!] mask comp 
+匹配指定的TCP標記。第一個參數是我們要檢查的標記，一個用逗號分開的列表，第二個參數是用逗號分開的標記表,是必須被設置的。標記如下： SYN ACK FIN RST URG PSH ALL NONE。因此這條命令：iptables -A FORWARD -p tcp --tcp-flags SYN, ACK, FIN, RST SYN只匹配那些SYN標記被設置而ACK、FIN和RST標記沒有設置的包。 
+
+[!] --syn 
+只匹配那些設置了SYN位而清除了ACK和FIN位的TCP包。這些包用於TCP連接初始化時發出請求；例如，大量的這種包進入一個介面發生堵塞 時會阻止進入的TCP連接，而出去的TCP連接不會受到影響。這等於 --tcp-flags SYN, RST, ACK SYN。如果"--syn"前面有"!"標記，表示相反的意思。 
+
+--tcp-option [!] number 
+匹配設置了TCP選項的。 
+
+udp 
+當protocol udp 被指定,且其他匹配的擴展未被指定時,這些擴展被裝載,它提供以下選項： 
+
+--source-port [!] [port:[port]] 
+源埠或埠範圍指定。詳見 TCP擴展的--source-port選項說明。 
+
+--destination-port [!] [port:[port]] 
+目標埠或埠範圍指定。詳見 TCP擴展的--destination-port選項說明。 
+
+icmp 
+當protocol icmp被指定,且其他匹配的擴展未被指定時,該擴展被裝載。它提供以下選項： 
+--icmp-type [!] typename 
+這個選項允許指定ICMP類型，可以是一個數值型的ICMP類型，或者是某個由命令iptables -p icmp -h所顯示的ICMP類型名。 
+
+mac 
+--mac-source [!] address 
+匹配物理位址。必須是XX:XX:XX:XX:XX這樣的格式。注意它只對來自乙太設備並進入PREROUTING、FORWORD和INPUT鏈的包有效。 
+
+limit 
+這個模組匹配標誌用一個標記桶篩檢程式一一定速度進行匹配,它和LOG目標結合使用來給出有限的登陸數.當達到這個極限值時,使用這個擴展包的規則將進行匹配.(除非使用了"!"標記) 
+
+--limit rate 
+最大平均匹配速率：可賦的值有'/second', '/minute', '/hour', or '/day'這樣的單位，默認是3/hour。 
+
+--limit-burst number 
+待匹配包初始個數的最大值:若前面指定的極限還沒達到這個數值,則概數字加1.預設值為5 
+
+multiport 
+這個模組匹配一組源埠或目標埠,最多可以指定15個埠。只能和-p tcp 或者 -p udp 連著使用。 
+
+--source-port [port[, port]] 
+如果源埠是其中一個給定埠則匹配 
+
+--destination-port [port[, port]] 
+如果目標埠是其中一個給定埠則匹配 
+
+--port [port[, port]] 
+若源埠和目的埠相等並與某個給定埠相等,則匹配。 
+mark 
+這個模組和與netfilter篩檢程式標記欄位匹配（就可以在下面設置為使用MARK標記）。 
+
+--mark value [/mask] 
+匹配那些無符號標記值的包（如果指定mask，在比較之前會給遮罩加上邏輯的標記）。 
+
+owner 
+此模組試為本地生成包匹配包創建者的不同特徵。只能用於OUTPUT鏈，而且即使這樣一些包（如ICMP ping應答）還可能沒有所有者，因此永遠不會匹配。 
+
+--uid-owner userid 
+如果給出有效的user id，那麼匹配它的進程產生的包。 
+
+--gid-owner groupid 
+如果給出有效的group id，那麼匹配它的進程產生的包。 
+
+--sid-owner seessionid 
+根據給出的會話組匹配該進程產生的包。 
+
+state 
+此模組，當與連接跟蹤結合使用時，允許訪問包的連接跟蹤狀態。 
+
+--state state 
+這裏state是一個逗號分割的匹配連接狀態列表。可能的狀態是:INVALID表示包是未知連接，ESTABLISHED表示是雙向傳送的連 接，NEW表示包為新的連接，否則是非雙向傳送的，而RELATED表示包由新連接開始，但是和一個已存在的連接在一起，如FTP資料傳送，或者一個 ICMP錯誤。 
+
+unclean 
+此模組沒有可選項，不過它試著匹配那些奇怪的、不常見的包。處在實驗中。 
+
+tos 
+此模組匹配IP包首部的8位tos（服務類型）欄位（也就是說，包含在優先位中）。 
+
+--tos tos 
+這個參數可以是一個標準名稱，（用iptables -m tos -h 察看該列表），或者數值。 
+
+TARGET EXTENSIONS 
+iptables可以使用擴展目的模組：以下都包含在標準版中。 
+
+LOG 
+為匹配的包開啟內核記錄。當在規則中設置了這一選項後，linux內核會通過printk()列印一些關於全部匹配包的資訊（諸如IP包頭欄位等）。 
+--log-level level 
+記錄級別（數位或參看 syslog.conf(5)）。 
+--log-prefix prefix 
+在紀錄資訊前加上特定的首碼：最多14個字母長，用來和記錄中其他資訊區別。 
+
+--log-tcp-sequence 
+記錄TCP序列號。如果記錄能被用戶讀取那麼這將存在安全隱患。 
+
+--log-tcp-options 
+記錄來自TCP包頭部的選項。 
+--log-ip-options 
+記錄來自IP包頭部的選項。 
+
+MARK 
+用來設置包的netfilter標記值。只適用於mangle表。 
+
+--set-mark mark 
+
+REJECT 
+作為對匹配的包的回應，返回一個錯誤的包：其他情況下和DROP相同。 
+
+此目標只適用於INPUT、FORWARD和OUTPUT鏈，和調用這些鏈的用戶自定義鏈。這幾個選項控制返回的錯誤包的特性： 
+
+--reject-with type 
+Type可以是icmp-net-unreachable、icmp-host-unreachable、icmp-port- nreachable、icmp-proto-unreachable、 icmp-net-prohibited 或者 icmp-host-prohibited，該類型會返回相應的ICMP錯誤資訊（默認是port-unreachable）。選項 echo-reply也是允許的；它只能用於指定ICMP ping包的規則中，生成ping的回應。最後，選項tcp-reset可以用於在INPUT鏈中,或自INPUT鏈調用的規則，只匹配TCP協定：將回 應一個TCP RST包。 
+TOS 
+用來設置IP包的首部八位tos。只能用於mangle表。 
+
+--set-tos tos 
+你可以使用一個數值型的TOS 值，或者用iptables -j TOS -h 來查看有效TOS名列表。 
+MIRROR 
+這是一個試驗示範目標，可用於轉換IP首部欄位中的源位址和目標位址，再傳送該包,並只適用於INPUT、FORWARD和OUTPUT鏈，以及只調用它們的用戶自定義鏈。 
+
+SNAT 
+這個目標只適用於nat表的POSTROUTING鏈。它規定修改包的源位址（此連接以後所有的包都會被影響），停止對規則的檢查，它包含選項： 
+
+--to-source [-][:port-port] 
+可以指定一個單一的新的IP位址，一個IP位址範圍，也可以附加一個埠範圍（只能在指定-p tcp 或者-p udp的規則裏）。如果未指定埠範圍，源埠中512以下的（埠）會被安置為其他的512以下的埠；512到1024之間的埠會被安置為1024 以下的，其他埠會被安置為1024或以上。如果可能，埠不會被修改。 
+
+--to-destiontion [-][:port-port] 
+可以指定一個單一的新的IP位址，一個IP位址範圍，也可以附加一個埠範圍（只能在指定-p tcp 或者-p udp的規則裏）。如果未指定埠範圍，目標埠不會被修改。 
+
+MASQUERADE 
+只用於nat表的POSTROUTING鏈。只能用於動態獲取IP（撥號）連接：如果你擁有靜態IP位址，你要用SNAT。偽裝相當於給包發出時 所經過介面的IP位址設置一個映射，當介面關閉連接會終止。這是因為當下一次撥號時未必是相同的介面位址（以後所有建立的連接都將關閉）。它有一個選項： 
+
+--to-ports [-port>] 
+指定使用的源埠範圍，覆蓋默認的SNAT源位址選擇（見上面）。這個選項只適用於指定了-p tcp或者-p udp的規則。 
+
+REDIRECT 
+只適用於nat表的PREROUTING和OUTPUT鏈，和只調用它們的用戶自定義鏈。它修改包的目標IP位址來發送包到機器自身（本地生成的包被安置為位址127.0.0.1）。它包含一個選項： 
+
+--to-ports [] 
+指定使用的目的埠或埠範圍：不指定的話，目標埠不會被修改。只能用於指定了-p tcp 或 -p udp的規則。 
+
+DIAGNOSTICS 
+診斷 
+不同的錯誤資訊會列印成標準錯誤：退出代碼0表示正確。類似於不對的或者濫用的命令行參數錯誤會返回錯誤代碼2，其他錯誤返回代碼為1。 
+
+BUGS 
+臭蟲 
+Check is not implemented (yet). 
+檢查還未完成。 
+
+COMPATIBILITY WITH IPCHAINS 
+與ipchains的相容性 
+iptables和Rusty Russell的ipchains非常相似。主要區別是INPUT 鏈只用於進入本地主機的包,而OUTPUT只用於自本地主機生成的包。因此每個包只經過三個鏈的一個；以前轉發的包會經過所有三個鏈。其他主要區別是 -i 引用進入介面；-o引用輸出介面，兩者都適用於進入FORWARD鏈的包。當和可選擴展模組一起使用默認篩檢程式表時，iptables是一個純粹的包過濾 器。這能大大減少以前對IP偽裝和包過濾結合使用的混淆，所以以下選項作了不同的處理： 
+-j MASQ 
+-M -S 
+-M -L 
+在iptables中有幾個不同的鏈。 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+************************************************************************************************************************** 
+
+一個IP對多個NAT的實例: 
+給你一個例子： 
+#!/bin/bash 
+# Do iptables based masquerading and firewalling. 
+# ~spot, 09/01/2002 
+
+# Set default PATH 
+export PATH=/sbin:/usr/sbin:/bin:/usr/bin 
+
+# Load NAT modules 
+modprobe iptable_nat 
+modprobe ip_nat_ftp 
+modprobe ip_nat_irc 
+
+# Load connection-tracking modules 
+modprobe ip_conntrack 
+modprobe ip_conntrack_ftp 
+modprobe ip_conntrack_irc 
+
+# Disable response to broadcasts. 
+echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts 
+
+# Don't accept source routed packets. 
+echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route 
+
+# Disable ICMP redirect acceptance. 
+echo 0 > /proc/sys/net/ipv4/conf/all/accept_redirects 
+
+# Enable bad error message protection 
+echo 1 > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses 
+
+# Log spoofed packets, source routed packets, redirect packets 
+echo 1 > /proc/sys/net/ipv4/conf/all/log_martians 
+
+# Turn on IP forwarding 
+echo 1 > /proc/sys/net/ipv4/ip_forward 
+
+# Clean old iptables 
+iptables -F 
+iptables -X 
+iptables -Z 
+
+# Allow forwarding through the internal interface 
+iptables -A FORWARD -i eth1 -j ACCEPT 
+iptables -A FORWARD -o eth1 -j ACCEPT 
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT 
+
+# Default forward policy to DROP 
+iptables -P FORWARD DROP 
+
+# Do masquerading through eth0 
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE 
+
+# Port Forwarding 
+iptables -t nat -A PREROUTING -i eth0 -p tcp -m tcp --dport 2222 -j DNAT --to-destination 192.168.100.2:22 
+
+# Firewall Rules 
+
+# Loopback - Allow unlimited traffic 
+iptables -A INPUT -i lo -j ACCEPT 
+iptables -A OUTPUT -o lo -j ACCEPT 
+
+# SYN-Flooding Protection 
+iptables -N syn-flood 
+iptables -A INPUT -i eth0 -p tcp --syn -j syn-flood 
+iptables -A syn-flood -m limit --limit 1/s --limit-burst 4 -j RETURN 
+iptables -A syn-flood -j DROP 
+
+# Make sure that new TCP connections are SYN packets 
+iptables -A INPUT -i eth0 -p tcp ! --syn -m state --state NEW -j DROP 
+
+# Fragments : Don't trust the little buggers. Send 'em to hell. 
+iptables -A INPUT -i eth0 -f -j LOG --log-level debug --log-prefix "IPTABLES FRAGMENTS: " 
+iptables -A INPUT -i eth0 -f -j DROP 
+
+# Refuse spoofed packets claiming to be the loopback 
+iptables -A INPUT -i eth0 -d 127.0.0.0/8 -j DROP 
+
+# Allow BootP/DHCP UDP requests 
+iptables -A INPUT -i eth0 -p udp -d 0/0 --dport 67:68 -j ACCEPT 
+
+# DNS 
+# Allow UDP packets in for DNS client from nameservers 
+iptables -A INPUT -i eth0 -p udp -s 0/0 --sport 53 -m state --state ESTABLISHED -j ACCEPT 
+iptables -A INPUT -i eth0 -p udp -d 0/0 --dport 53 -j ACCEPT 
+
+# SSH 
+# allow all sshd incoming connections (including the port fw) 
+iptables -A INPUT -i eth0 -p tcp -d 0/0 --dport 22 -j ACCEPT 
+iptables -A INPUT -i eth0 -p tcp -d 0/0 --dport 2222 -j ACCEPT 
+
+# HTTP 
+# allow all http/https incoming/return connections 
+iptables -A INPUT -i eth0 -p tcp -s 0/0 --sport 80 -m state --state ESTABLISHED,RELATED -j ACCEPT 
+iptables -A INPUT -i eth0 -p tcp -s 0/0 --sport 443 -m state --state ESTABLISHED,RELATED -j ACCEPT 
+iptables -A INPUT -i eth0 -p tcp -d 0/0 --dport 80 -j ACCEPT 
+iptables -A INPUT -i eth0 -p tcp -d 0/0 --dport 443 -j ACCEPT 
+
+# FTP 
+# allow all ftpd incoming connections 
+iptables -A INPUT -i eth0 -p tcp -d 0/0 --dport 21 -j ACCEPT 
+
+# Enable active ftp transfers 
+iptables -A INPUT -i eth0 -p tcp -s 0/0 --sport 20 -m state --state ESTABLISHED,RELATED -j ACCEPT 
+
+# Enable passive ftp transfers 
+iptables -A INPUT -i eth0 -p tcp -s 0/0 --sport 1024:65535 --dport 1024:65535 -m state --state ESTABLISHED,RELATED -j ACCEPT 
+
+# Enable ident probes (IRC) 
+iptables -t filter -A INPUT -i eth0 -p tcp -d 0/0 --dport 113 -j ACCEPT 
+
+# Allow ICMP in if it is related to other connections 
+iptables -A INPUT -i eth0 -p icmp -m state --state ESTABLISHED,RELATED -j ACCEPT 
+
+# Allow bot traffic through 
+iptables -A INPUT -i eth0 -p tcp -d 0/0 --dport 8676 -j ACCEPT 
+
+# enable dcc 
+iptables -A INPUT -i eth0 -p tcp -m state --state RELATED -j ACCEPT 
+
+# LOGGING: 
+
+# UDP, log & drop 
+iptables -A INPUT -i eth0 -p udp -j LOG --log-level debug --log-prefix "IPTABLES UDP-IN: " 
+iptables -A INPUT -i eth0 -p udp -j DROP 
+
+# ICMP, log & drop 
+iptables -A INPUT -i eth0 -p icmp -j LOG --log-level debug --log-prefix "IPTABLES ICMP-IN: " 
+iptables -A INPUT -i eth0 -p icmp -j DROP 
+
+# Windows NetBIOS noise, log & drop 
+iptables -A INPUT -i eth0 -p tcp -s 0/0 --sport 137:139 -j LOG --log-level debug --log-prefix "IPTABLES NETBIOS-IN: " 
+iptables -A INPUT -i eth0 -p tcp -s 0/0 --sport 137:139 -j DROP 
+
+# IGMP noise, log & drop 
+iptables -A INPUT -i eth0 -p 2 -j LOG --log-level debug --log-prefix "IPTABLES IGMP-IN: " 
+iptables -A INPUT -i eth0 -p 2 -j DROP 
+
+# TCP, log & drop 
+iptables -A INPUT -i eth0 -p tcp -j LOG --log-level debug --log-prefix "IPTABLES TCP-IN: " 
+iptables -A INPUT -i eth0 -p tcp -j DROP 
+
+# Anything else not allowed, log & drop 
+iptables -A INPUT -i eth0 -j LOG --log-level debug --log-prefix "IPTABLES UNKNOWN-IN: " 
+iptables -A INPUT -i eth0 -j DROP 
+
+這個例子是做masqurede的，你的情況是做NAT，如果是靜態NAT，可以如下： 
+然後我們將分配給A、B、C主機的公網ip綁定到iptables防火牆的外網介面，執行以下命令： 
+ifconfig eth0 add 202.xxx.xxx.2netmask 255.255.255.0 
+ifconfig eth0 add 202.xxx.xxx.3 netmask 255.255.255.0 
+ifconfig eth0 add 202.xxx.xxx.3 netmask 255.255.255.0 
+首先，對防火牆接收到的目的ip為202.xxx.xxx.1和202.xxx.xxx.2的所有資料包進行目的NAT(DNAT)， 只寫兩個了： 
+iptables -A PREROUTING -i eth0 -d 202.xxx.xxx.1 -j DNAT --to 10.10.10.1 
+iptables -A PREROUTING -i eth0 -d 202.xxx.xxx.2 -j DNAT --to 10.10.10.2 
+　　其次，對iptables防火牆接收到的源ip位址為10.10.10.1和10.10.10.2的資料包進行源NAT(SNAT): 
+iptables -A POSTROUTING -o eth0 -s 10.10.10.1 -j SNAT --to 202.xxx.xxx.1 
+iptables -A POSTROUTING -o eth0 -s 10.10.10.2 -j SNAT --to 202.xxx.xxx.2 
+這樣就實現了靜態一一映射。 
+如果要基於埠：那麼就要這樣： 
+#映射埠，以UDP5000為例子 
+iptables -t nat -A PREROUTING -i eth0 -d 202.xxx.xxx.1 -p udp --dport 5000 -j DNAT --to 10.10.10.1 
+iptables -t nat -A POSTROUTING -o eth0 -s 10.10.10.1 -p udp --sport 5000 -j SNAT --to 202.xxx.xxx.1 
+
+#映射協定，以ICMP協定為例子 
+iptables -t nat -A PREROUTING -i eth0 -d 202.xxx.xxx.1 -p icmp -j DNAT --to 10.10.10.1 
+iptables -t nat -A POSTROUTING -o eth0 -s 10.10.10.1 -p icmp -j SNAT --to 202.xxx.xxx.1 
+
+基本的方法就是這樣了，要防火牆規則做得好，就去網上參考一些別人的規則樣例吧。 
+祝你順利！
+
+
+
+
+
+
+
+
+
+
+
+
+
+http://www.real-blog.com/linux-bsd-notes/182
+用 iptables 阻擋 ipJune 21, 2006 @ 12:20 am · Filed under Linux / BSD 筆記 
+假如要阻擋某個 ip 存取 Linux 伺服器，可以用以下指令:
+iptables -A INPUT -s ip_address -j DROP
+這時 ip_address 便不可以存取伺服器，要禁止連線到 ip_address，可以這樣:
+iptables -A OUTPUT -d ip_address -j DROP

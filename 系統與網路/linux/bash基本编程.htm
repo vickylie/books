@@ -1,0 +1,1235 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>ZCLinux --資訊與技術社區--Open Source World----Linux/kernel/iptabls/Shell/UCLinux--</TITLE>
+<META content="MSHTML 6.00.2800.1505" name=GENERATOR>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<style>
+BODY {
+	FONT-SIZE: 0.9em; MARGIN: 0px; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif
+}
+A:visited {
+	COLOR: navy; TEXT-DECORATION: none
+}
+A:active {
+	COLOR: navy; TEXT-DECORATION: none
+}
+A:link {
+	COLOR: navy; TEXT-DECORATION: none
+}
+A:hover {
+	TEXT-DECORATION: underline
+}
+H1 {
+	FONT-SIZE: 1.5em; MARGIN: 0px
+}
+H1 A:visited {
+	COLOR: #000
+}
+H1 A:active {
+	COLOR: #000
+}
+H1 A:link {
+	COLOR: #000
+}
+H1 A:hover {
+	COLOR: #47f; TEXT-DECORATION: none
+}
+H2 {
+	MARGIN-TOP: 10px; FONT-SIZE: 1em
+}
+H3 {
+	FONT-SIZE: 1.2em
+}
+H5 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+P {
+	FONT-SIZE: 10pt; MARGIN: 10px 0px
+}
+DIV.News {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 10px; FONT-SIZE: 10pt; PADDING-BOTTOM: 5px; PADDING-TOP: 5px; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif
+}
+DIV.dateTitle {
+	MARGIN-TOP: 10px; FONT-WEIGHT: bold; FONT-SIZE: 10pt; TEXT-ALIGN: right
+}
+.HeaderTitles {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px; WIDTH: 100%; PADDING-TOP: 10px; font-familyXXX: "Trebuchet MS"
+}
+.HeaderTitles A:visited {
+	FONT-WEIGHT: normal; FONT-SIZE: 0.75em; COLOR: white; TEXT-DECORATION: none
+}
+.HeaderTitles A:active {
+	FONT-WEIGHT: normal; FONT-SIZE: 0.75em; COLOR: white; TEXT-DECORATION: none
+}
+.HeaderTitles A:link {
+	FONT-WEIGHT: normal; FONT-SIZE: 0.75em; COLOR: white; TEXT-DECORATION: none
+}
+.HeaderTitles A:hover {
+	FONT-WEIGHT: normal; FONT-SIZE: 0.75em; COLOR: white; TEXT-DECORATION: none
+}
+.HeaderBar {
+	FONT-WEIGHT: normal; FONT-SIZE: 9pt; BACKGROUND-IMAGE: url(images/BlueTabBack.jpg); BACKGROUND-REPEAT: repeat-x; BORDER-COLLAPSE: collapse
+}
+.HeaderBar A:visited {
+	FONT-WEIGHT: normal; COLOR: whitesmoke; TEXT-DECORATION: none
+}
+.HeaderBar A:active {
+	FONT-WEIGHT: normal; COLOR: whitesmoke; TEXT-DECORATION: none
+}
+.HeaderBar A:link {
+	FONT-WEIGHT: normal; COLOR: whitesmoke; TEXT-DECORATION: none
+}
+.HeaderBarTab {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND-IMAGE: url(images/BlueTabFace.jpg); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; BACKGROUND-REPEAT: repeat-x; BORDER-COLLAPSE: collapse
+}
+.BlogStatsBar {
+	FONT-WEIGHT: normal; FONT-SIZE: 7pt; COLOR: silver; BORDER-COLLAPSE: collapse; TEXT-ALIGN: right
+}
+P.date IMG {
+	VERTICAL-ALIGN: middle
+}
+P.date {
+	PADDING-RIGHT: 0px; FONT-WEIGHT: bold; FONT-SIZE: 0.9em; MARGIN-BOTTOM: 0px; PADDING-BOTTOM: 4px; PADDING-TOP: 2px; TEXT-ALIGN: right
+}
+BLOCKQUOTE {
+	FONT-STYLE: italic
+}
+DIV.postTitle A:visited {
+	COLOR: navy; TEXT-DECORATION: none
+}
+DIV.postTitle A:active {
+	COLOR: navy; TEXT-DECORATION: none
+}
+DIV.postTitle A:link {
+	COLOR: navy; TEXT-DECORATION: none
+}
+DIV.post {
+	BORDER-RIGHT: gainsboro 2px solid; BORDER-TOP: gainsboro 2px solid; BORDER-LEFT: gainsboro 2px solid; BORDER-BOTTOM: gainsboro 2px solid
+}
+DIV.postTitle {
+	PADDING-LEFT: 3px; FONT-WEIGHT: bolder; FONT-SIZE: 10pt; PADDING-BOTTOM: 3px; PADDING-TOP: 3px; BORDER-BOTTOM: gainsboro 1px solid; BACKGROUND-COLOR: whitesmoke
+}
+DIV.postText {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 3px; FONT-SIZE: 10pt; PADDING-BOTTOM: 3px; PADDING-TOP: 3px
+}
+DIV.postFoot {
+	PADDING-RIGHT: 3px; BORDER-TOP: gainsboro 1px solid; PADDING-LEFT: 3px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; BACKGROUND-COLOR: whitesmoke; TEXT-ALIGN: right
+}
+#top {
+	PADDING-RIGHT: 0px; BORDER-TOP: black 4px solid; PADDING-LEFT: 0px; BACKGROUND-IMAGE: url(images/BlueTabBackground.gif); PADDING-BOTTOM: 0px; MARGIN: 0px; COLOR: whitesmoke; PADDING-TOP: 0px; BORDER-BOTTOM: black 4px solid; BACKGROUND-REPEAT: repeat
+}
+#tagline {
+	FONT-SIZE: 0.8em; MARGIN: 0px; COLOR: white
+}
+#leftmenu {
+	LEFT: 0px; WIDTH: 180px; PADDING-TOP: 5px; POSITION: absolute; HEIGHT: auto; BACKGROUND-COLOR: whitesmoke
+}
+#leftmenu H3 {
+	BORDER-TOP: gainsboro 1px solid; PADDING-LEFT: 3px; FONT-SIZE: 0.8em; PADDING-BOTTOM: 2px; MARGIN: 10px 0px 0px
+}
+#leftmenu UL {
+	PADDING-LEFT: 5px; FONT-SIZE: 9pt; MARGIN: 0px 0px 10px 5px; LIST-STYLE-TYPE: none
+}
+#leftmenu OL {
+	PADDING-LEFT: 5px; LIST-STYLE-POSITION: inside; FONT-SIZE: 9pt; MARGIN: 0px 5px 10px; LIST-STYLE-TYPE: decimal
+}
+#leftmenu LI {
+	FONT-SIZE: 9pt; MARGIN-BOTTOM: 5px; WORD-BREAK: break-all; WORD-WRAP: break-word
+}
+#leftmenu A {
+	PADDING-RIGHT: 1px; PADDING-LEFT: 1px; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; TEXT-DECORATION: none
+}
+#leftmenu A:active {
+	
+}
+#leftmenu A:visited {
+	
+}
+#leftmenu A:link {
+	
+}
+#leftmenu A:hover {
+	FONT-STYLE: italic
+}
+#main {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px; MARGIN-LEFT: 180px; BORDER-LEFT: #555 1px solid; PADDING-TOP: 10px; BORDER-BOTTOM: black 4px solid; BACKGROUND-COLOR: white
+}
+#footer {
+	FONT-SIZE: 0.7em; MARGIN: 0px; PADDING-TOP: 5px; TEXT-ALIGN: center
+}
+INPUT {
+	FONT-SIZE: 1em; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif
+}
+TEXTAREA {
+	FONT-SIZE: 1em; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif
+}
+.CommentForm {
+	FONT-SIZE: 9pt; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif
+}
+.Button {
+	BORDER-RIGHT: steelblue 1px solid; BORDER-TOP: steelblue 1px solid; BORDER-LEFT: steelblue 1px solid; BORDER-BOTTOM: steelblue 1px solid; BACKGROUND-COLOR: gainsboro
+}
+</style>
+</HEAD>
+<BODY>
+<FORM language=javascript id=Form1 name=Form1 
+onsubmit="if (!ValidatorOnSubmit()) return false;" action=77734.aspx 
+method=post><INPUT type=hidden name=__VIEWSTATE>
+<SCRIPT language=javascript 
+src="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/WebUIValidation.js" 
+type=text/javascript></SCRIPT>
+ 
+<DIV id=top>
+<DIV>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TD class=HeaderTitles>
+      <H1><A class=headermaintitle id=Header1_HeaderTitle 
+      href="http://blog.csdn.net/zcatlinux/">ZCLinux --資訊與技術社區--Open Source 
+      World----Linux/kernel/iptabls/Shell/UCLinux--</A></H1>
+      <P id=tagline>{{$創Linux標準,做Linux先鋒...}}</P></TD></TR></TBODY></TABLE></DIV>
+<DIV class=HeaderBar>
+<TABLE class=HeaderBar id=HeaderBar>
+  <TBODY>
+  <TR>
+    <TD class=HeaderBarTab noWrap>&nbsp; <A id=Header1_MyLinks1_HomeLink 
+      title=到聚合站點 href="http://blog.csdn.net/">CSDNBlog</A>&nbsp;&nbsp;|&nbsp; 
+      <A id=Header1_MyLinks1_PersonalHome 
+      title="訪問 ZCLinux --資訊與技術社區--Open Source World----Linux/kernel/iptabls/Shell/UCLinux--" 
+      href="http://blog.csdn.net/zcatlinux/">我的首頁</A>&nbsp;&nbsp;|&nbsp; <A 
+      id=Header1_MyLinks1_ContactLink accessKey=9 
+      href="http://blog.csdn.net/zcatlinux/contact.aspx">聯系作者</A>&nbsp;&nbsp;|&nbsp; 
+      <A id=Header1_MyLinks1_Syndication 
+      href="http://blog.csdn.net/zcatlinux/Rss.aspx">聚合</A> <A class=XMLLink 
+      id=Header1_MyLinks1_XMLLink 
+      href="http://blog.csdn.net/zcatlinux/Rss.aspx"><IMG alt="" 
+      src="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/xml.gif" 
+      border=0></A>&nbsp;&nbsp;|&nbsp; <A id=Header1_MyLinks1_Admin 
+      href="http://blog.csdn.net/zcatlinux/login.aspx">登錄</A> <IMG 
+      id=Header1_BlueTab alt="" 
+      src="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/BlueTabRight.jpg" 
+      align=absMiddle border=0> </TD>
+    <TD class=HeaderBarTabBack noWrap width="100%">
+      <DIV class=BlogStatsBar>
+      <TABLE class=BlogStatsBar>
+        <TBODY>
+        <TR>
+          <TD width="100%"></TD>
+          <TD class=BlogStatsBar noWrap>&nbsp; 756篇文章&nbsp;:: 16篇收藏:: 111篇評論:: 
+            28個Trackbacks 
+</TD></TR></TBODY></TABLE></DIV></TD></TR></TBODY></TABLE></DIV></DIV>
+<DIV id=leftmenu>
+
+
+<CENTER>
+
+
+<CENTER>
+
+<SCRIPT 
+src="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/show_ads.js" 
+type=text/javascript>
+</SCRIPT>
+</CENTER>
+<HR SIZE=1>
+
+<TABLE height=68 cellSpacing=0 cellPadding=0 width="90%" bgColor=#7b869c 
+border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle><SPAN class=style5>ZCLinux導航</SPAN></TD></TR>
+  <TR>
+    <TD height=48>
+      <TABLE cellSpacing=2 cellPadding=4 width="100%" bgColor=#e8eff7 
+        border=0><TBODY>
+        <TR>
+          <TD class=normal onmouseover="this.className='up1';" 
+          onmouseout="this.className='normal'" align=middle bgColor=#cccccc 
+          height=6><STRONG><A class=style4 
+            href="http://blog.csdn.net/zcatme/">首 頁</A></STRONG></TD></TR>
+        <TR>
+          <TD class=normal onmouseover="this.className='up1';" 
+          onmouseout="this.className='normal'" align=middle bgColor=#a9a9a9 
+          height=6><STRONG><A class=style4 
+            href="http://blog.csdn.net/zcatlinux/">資訊與技術</A></STRONG></TD></TR>
+        <TR>
+          <TD class=normal onmouseover="this.className='up1';" 
+          onmouseout="this.className='normal'" align=middle bgColor=#cccccc 
+          height=7><STRONG><A class=style4 
+            href="http://blog.csdn.net/zcatsoft/">開源軟件下載</A></STRONG></TD></TR><!--<tr>
+      <td height="3" align="center" bgcolor="#CCCCCC" class=style1 normal onmouseover="this.className='up1';" onmouseout="this.className='normal'"><strong><a href="http://blog.csdn.net/zcatservice/" class="style4">服務與方案</a></strong></td>
+      </tr>
+<tr>
+      <td height="3" align="center" bgcolor="#CCCCCC" class=style1 normal onmouseover="this.className='up1';" onmouseout="this.className='normal'"><strong><a href="http://blog.csdn.net/zcatview/" class="style4">IT產品視點</a></strong></td>
+      </tr>-->
+        <TR>
+          <TD class=normal onmouseover="this.className='up1';" 
+          onmouseout="this.className='normal'" align=middle bgColor=#cccccc 
+          height=3><STRONG><A class=style4 
+            href="http://www.xinmall.com/">新茂購物商城<FONT 
+            color=red>NEW</FONT></A></STRONG></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<HR SIZE=1>
+
+<TABLE cellSpacing=0 cellPadding=1 width="90%" bgColor=#9999cc border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle><FONT color=#ffffff><B>新聞資訊</B></FONT></TD></TR>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=0 cellPadding=1 width="100%" bgColor=#ffffff 
+        border=0><TBODY>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/91587.aspx">Linux產業&lt;8篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/91587.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/91800.aspx">軟件廠商&lt;21篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/91800.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/30510.aspx">Linux新聞&lt;192篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/30510.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/35589.aspx">IT資訊&lt;49篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/35589.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/37742.aspx">綜合報道&lt;77篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/37742.aspx/rss">(rss) 
+            </A></FONT></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD align=middle><FONT color=#ffffff><B>技術文檔</B></FONT></TD></TR>
+  <TR>
+    <TD align=middle>
+      <TABLE cellSpacing=0 cellPadding=2 width="100%" bgColor=#ffffff 
+        border=0><TBODY>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/33408.aspx">系統安全&lt;22篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/33408.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/33417.aspx">數據庫&lt;3篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/33417.aspx/rss">(rss)</A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/35179.aspx">應用案例&lt;7篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/35179.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/31308.aspx">UCLinux&lt;14篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/31308.aspx/rss">(rss)</A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/30221.aspx">Linux&lt;58篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/30221.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/30223.aspx">Solaris&lt;3篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/30223.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/30220.aspx">LAMP&lt;11篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/30220.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/30224.aspx">ZCLinuxBLog&lt;35篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/30224.aspx/rss">(rss) 
+            </A></FONT></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD align=middle><FONT color=#ffffff><B>開源世界</B></FONT></TD></TR>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=0 cellPadding=2 width="100%" bgColor=#ffffff 
+        border=0><TBODY>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/30218.aspx">Iptables&lt;4篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/30218.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/30219.aspx">Kernel&lt;10篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/30219.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/30222.aspx">Shell&lt;10篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/30222.aspx/rss">(rss) 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/33424.aspx">共享開源&lt;12篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/33424.aspx/rss">(rss) 
+            </A></FONT></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD align=middle><FONT color=#ffffff><B>雜文</B></FONT></TD></TR>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=0 cellPadding=2 width="100%" bgColor=#ffffff 
+        border=0><TBODY>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/30514.aspx">程序員&lt;5篇&gt;</A> 
+            <A 
+            href="http://blog.csdn.net/zcatlinux/category/30514.aspx/rss">(rss)</A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/30512.aspx">仙人指路&lt;1篇&gt; 
+            </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/48449.aspx">大話IT 
+            SHOW&lt;1篇&gt; </A></FONT></TD></TR>
+        <TR>
+          <TD align=middle><FONT size=2><A 
+            href="http://blog.csdn.net/zcatlinux/category/33849.aspx">用腦袋來經營&lt;13篇&gt;</A></FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<HR SIZE=1>
+
+<HR SIZE=1>
+
+<P><B><FONT color=#cc3300 
+size=2>ZCLinux服務宗旨：</FONT></B><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;讓更多的人了解Linux、使用Linux，歡迎更多的人進入Open 
+Source World！ M:<A 
+href="mailto:zcatlinux@yahoo.com.cn">zcatlinux@yahoo.com.cn</A></P>
+<HR SIZE=1>
+
+<P><B><FONT color=#cc3300 size=2>ZCLinux 
+聲明：</FONT></B><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A 
+href="http://blog.csdn.net/zcatlinux/">ZCLinux</A>為純技術類網站，本站所有轉載文檔等信息均來自互聯網，其版權屬于原作者，僅供學習參考使用，不作任何商業用途。<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如本站發布的內容觸犯了您的版權，懇請<A 
+href="mailto:zcatlinux@yahoo.com.cn">來信</A>告知。</P>
+<HR SIZE=1>
+
+<P><B>ZCLinux統計：</B><BR>
+<DIV align=left><IMG height=10 alt="ZCLinux BLog站點訪問統計" 
+src="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/Count.gif" 
+width=48>
+<SCRIPT language=javascript 
+src="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/counter.htm"></SCRIPT>
+ <SPAN id=liveclock 13px? height: 109px; style?="width:"></SPAN>
+<SCRIPT language=javascript>
+function www_helpor_net()
+{
+var Digital=new Date()
+var hours=Digital.getHours()
+var minutes=Digital.getMinutes()
+var seconds=Digital.getSeconds()
+
+if(minutes<=9)
+minutes="0"+minutes
+if(seconds<=9)
+seconds="0"+seconds
+myclock="<font size='5' color='#000055' face='Arial black'>"+hours+":"+minutes+":"+seconds+"</font>"
+if(document.layers){document.layers.liveclock.document.write(myclock)
+document.layers.liveclock.document.close()
+}else if(document.all)
+liveclock.innerHTML=myclock
+setTimeout("www_helpor_net()",1000)
+}
+www_helpor_net();
+//-->
+</SCRIPT>
+<BR>自2004年07月25日起 </DIV>
+<P></P>
+<H3 class=listtitle>文章</H3>
+<UL class=list>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/30218.aspx">Iptables</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/30218.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/35589.aspx">IT資訊</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/35589.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/30219.aspx">Kernel</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/30219.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/30220.aspx">LAMP</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/30220.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/30221.aspx">Linux</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/30221.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/91587.aspx">Linux產業</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/91587.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/30510.aspx">Linux新聞</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/30510.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/35179.aspx">Linux應用案例</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/35179.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/100289.aspx">Oracle</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/100289.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/30222.aspx">Shell</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/30222.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/30223.aspx">Solaris</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/30223.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/31308.aspx">UCLinux</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/31308.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/30224.aspx">ZCLinux BLog</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/30224.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/33424.aspx">ZCLinux 開源世界</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/33424.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/30514.aspx">程序員</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/30514.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/91800.aspx">軟件廠商</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/91800.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/91964.aspx">設備硬件</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/91964.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/33417.aspx">數據庫</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/33417.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/33408.aspx">系統安全</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/33408.aspx/rss">(RSS)</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/37742.aspx">綜合報道</A><A 
+  href="http://blog.csdn.net/zcatlinux/category/37742.aspx/rss">(RSS)</A></LI></UL>
+<H3 class=listtitle>收藏</H3>
+<UL class=list>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/48449.aspx">★ 大話IT Show 
+  &lt;1篇&gt;</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/30512.aspx">★ 仙人指路（study） 
+  &lt;1篇&gt;</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/33849.aspx">★ 用腦袋來經營 
+  &lt;13篇&gt;</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/category/78862.aspx">Windows 
+類收藏</A></LI></UL>
+<H3 class=listtitle>相冊</H3><!--category title-->
+<UL class=list>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/Gallery/32469.aspx">Other_IMG</A>
+  <LI class=listitem><A 
+  href="http://blog.csdn.net/zcatlinux/Gallery/30239.aspx">ZCLinux_img</A></LI></UL>
+<H3 class=listtitle>Linux 技術世界</H3>
+<UL class=list>
+  <LI class=listitem><A href="http://www.chinaunix.com/" target=_blank><IMG 
+  alt=中國UNIX技術社區 
+  src="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/chinaunixlogo.gif" 
+  border=0></A>
+  <LI class=listitem><A href="http://www.linuxaid.com.cn/" 
+  target=_blank>Linuxaid</A>
+  <LI class=listitem><A href="http://dev.csdn.net/user/zcatlinux" 
+  target=_blank>http://dev.csdn.net/user/zcatlinux</A></LI></UL>
+<H3 class=listtitle>Open Source Code</H3>
+<UL class=list>
+  <LI class=listitem><A href="http://blog.csdn.net/myhan" 
+  target=_blank>myhan</A><A href="http://blog.csdn.net/myhan/Rss.aspx" 
+  target=_blank>(RSS)</A>
+  <LI class=listitem><A href="http://www.qmailcn.org/" 
+  target=_blank>Qmailcn</A></LI></UL>
+<H3 class=listtitle>UCLinux</H3>
+<UL class=list>
+  <LI class=listitem><A href="http://www.tomlinux.com/" 
+  target=_blank>TomLinux</A></LI></UL>
+<H3 class=listtitle>本站LOGO</H3>
+<UL class=list>
+  <LI class=listitem><A 
+  href="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/o_zcatlogo5.gif" 
+  target=_blank><IMG alt="ZCLinux --120*60--" 
+  src="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/o_zcatlogo5.gif" 
+  border=0></A>
+  <LI class=listitem><A 
+  href="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/o_zcatlogo7.gif" 
+  target=_blank><IMG alt="ZCLinux --88*31--" 
+  src="ZCLinux --資訊與技術社區--Open Source World----Linux-kernel-iptabls-Shell-UCLinux--.files/o_zcatlogo7.gif" 
+  border=0></A></LI></UL>
+<H3 class=listtitle>友情鏈接</H3>
+<UL class=list>
+  <LI class=listitem><A href="http://www.xinmall.com/" target=_blank><IMG 
+  alt=新茂購物商城 src="" border=0></A>
+  <LI class=listitem><A href="http://www.donews.net/ProgramLife/" 
+  target=_blank>ProgramLife's Blog</A><A 
+  href="http://www.donews.net/programlife/Rss.aspx" target=_blank>(RSS)</A>
+  <LI class=listitem><A href="http://winyi.com/tt" 
+  target=_blank>http://winyi.com/tt</A><A 
+  href="http://winyi.com/tt/index.php?md=rss" target=_blank>(RSS)</A>
+  <LI class=listitem><A href="http://www.longwin.com.tw/~jon/blog/" 
+  target=_blank>Tsung's Blog</A>
+  <LI class=listitem><A href="http://www.yaleisoft.com/china/" 
+  target=_blank>YaLeiSoft</A>
+  <LI class=listitem><A href="http://www.umsky.com/" target=_blank>仔仔和朋友的家</A>
+  <LI class=listitem><A href="http://java.mblogger.cn/xxrl/" 
+  target=_blank>孔曰成仁,孟曰取E</A><A href="http://java.mblogger.cn/xxrl/Rss.aspx" 
+  target=_blank>(RSS)</A></LI></UL>
+<H3 class=listtitle>存檔</H3>
+<UL class=list>
+  <LI><A 
+  href="http://blog.csdn.net/zcatlinux/archive/2005/02.aspx">2005年02月(64)</A>
+  <LI><A 
+  href="http://blog.csdn.net/zcatlinux/archive/2005/01.aspx">2005年01月(46)</A>
+  <LI><A 
+  href="http://blog.csdn.net/zcatlinux/archive/2004/12.aspx">2004年12月(9)</A>
+  <LI><A 
+  href="http://blog.csdn.net/zcatlinux/archive/2004/11.aspx">2004年11月(71)</A>
+  <LI><A 
+  href="http://blog.csdn.net/zcatlinux/archive/2004/10.aspx">2004年10月(150)</A>
+  <LI><A 
+  href="http://blog.csdn.net/zcatlinux/archive/2004/09.aspx">2004年09月(207)</A>
+  <LI><A 
+  href="http://blog.csdn.net/zcatlinux/archive/2004/08.aspx">2004年08月(191)</A></LI></UL>
+<H3 class=listtitle>最近評論</H3>
+<UL class=list>
+  <LI class=listitem>panic：<A 
+  title="點擊查看《Red Hat Enterprise Linux 4.0 強健功能與安全性》" 
+  href="http://blog.csdn.net/zcatlinux/archive/2005/07/01/409481.aspx">以后偶也是linux陣營的一員:P</A>
+  <LI class=listitem>alexa：<A title="點擊查看《PHP驚現安全漏洞 易執行惡意代碼和DoS攻擊》" 
+  href="http://blog.csdn.net/zcatlinux/archive/2005/04/22/358507.aspx">一個接一個的漏洞發現, 
+  不斷推動技術的完善與進步 <BR></A>
+  <LI class=listitem>鏈.：<A title=點擊查看《Linux能否守住HPC市場?》 
+  href="http://blog.csdn.net/zcatlinux/archive/2005/02/23/298766.aspx">鏈. 
+  <BR>和我做鏈吧^^my blog^^ <BR>http://winyi.com/tt</A>
+  <LI class=listitem>paddy102：<A title=點擊查看《嵌入式系統開發，為什么選擇Linux？》 
+  href="http://blog.csdn.net/zcatlinux/archive/2004/08/10/70130.aspx">一家之言，不厚道</A>
+  <LI class=listitem>strug：<A title=點擊查看《嵌入式系統開發，為什么選擇Linux？》 
+  href="http://blog.csdn.net/zcatlinux/archive/2004/08/10/70130.aspx">原來是一廣告 
+  <BR></A></LI></UL><BR><BR></DIV>
+<DIV id=main>
+<SCRIPT>function StorePage(){d=document;t=d.selection?(d.selection.type!='None'?d.selection.createRange().text:''):(d.getSelection?d.getSelection():'');void(keyit=window.open('http://www.365key.com/storeit.aspx?t='+escape(d.title)+'&u='+escape(d.location.href)+'&c='+escape(t),'keyit','scrollbars=no,width=475,height=575,left=75,top=20,status=no,resizable=yes'));keyit.focus();}</SCRIPT>
+
+<DIV class=post>
+<DIV class=postTitle><A 
+href="http://blog.csdn.net/zcatlinux/archive/2004/08/18/77734.aspx">Bash 實例，第 2 
+部分：更多的 bash 基本編程</A> </DIV>
+<DIV class=postText>
+<BLOCKQUOTE>
+  <P>Daniel Robbins<BR>總裁兼 CEO，Gentoo Technologies, Inc.<BR>2000 年 4 月</P>
+  <P>在前一篇 bash 的介紹性文章中，Daniel Robbins 為您講解了腳本語言的一些基本元素和使用 bash 
+  的原因。在本文（即第二部分）中，Daniel 繼續前一篇的內容，并講解條件 (if-then) 語句、循環和更多的 bash 
+基本結構。</P></BLOCKQUOTE><!-- END ABSTRACT --><!-- BODY -->
+<P>我們先看一下處理命令行自變量的簡單技巧，然后再看看 bash 基本編程結構。</P><A id=1 name=1></A>
+<P><STRONG class=subhead>接收自變量</STRONG><BR>在<A 
+href="http://www-4.ibm.com/software/developerWorks/library/bash.html"><FONT 
+color=#002c99> 介紹性文章</FONT></A>中的樣本程序中，我們使用環境變量 "$1" 來引用第一個命令行自變量。類似地，可以使用 
+"$2"、"$3" 等來引用傳遞給腳本的第二和第三個自變量。這里有一個例子：</P>
+<P><A id=code1 name=code1></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> #!/usr/bin/env bash
+ 
+ echo name of script is $0
+ echo first argument is $1
+ echo second argument is $2
+ echo seventeenth argument is $17
+ echo number of arguments is $#
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>除以下兩個細節之外，此例無需說明。第一，"$0" 將擴展成從命令行調用的腳本名稱，"$#" 
+將擴展成傳遞給腳本的自變量數目。試驗以上腳本，通過傳遞不同類型的命令行自變量來了解其工作原理。</P>
+<P>有時需要一次引用<I>所有</I>命令行自變量。針對這種用途，bash 實現了變量 "$@"，它擴展成所有用空格分開的命令行參數。在本文稍后的 "for" 
+循環部分中，您將看到使用該變量的例子。</P><A id=2 name=2></A>
+<P><STRONG class=subhead>Bash 編程結構</STRONG><BR>如果您曾用過如 C、Pascal、Python 或 Perl 
+那樣的過程語言編程，則一定熟悉 "if" 語句和 "for" 循環那樣的標準編程結構。對于這些標準結構的大多數，Bash 有自己的版本。在下幾節中，將介紹幾種 
+bash 
+結構，并演示這些結構和您已經熟悉的其它編程語言中結構的差異。如果以前編程不多，也不必擔心。我提供了足夠的信息和示例，使您可以跟上本文的進度。</P><A 
+id=3 name=3></A>
+<P><STRONG class=subhead>方便的條件語句</STRONG><BR>如果您曾用 C 
+編寫過與文件相關的代碼，則應該知道：要比較特定文件是否比另一個文件新需要大量工作。那是因為 C 沒有任何內置語法來進行這種比較，必須使用兩個 stat() 
+調用和兩個 stat 結構來進行手工比較。相反，bash 內置了標準文件比較運算符，因此，確定“/tmp/myfile 是否可讀”與查看“$myvar 是否大于 
+4”一樣容易。</P>
+<P>下表列出最常用的 bash 比較運算符。同時還有如何正確使用每一選項的示例。示例要跟在 "if" 之后。例如：</P>
+<P><A id=code2 name=code2></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> if [ -z "$myvar" ]
+then 
+    echo "myvar is not defined"
+fi
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<CENTER>
+<TABLE bgColor=#eeeeee border=0>
+  <TBODY>
+  <TR bgColor=#0033c0>
+    <TD><B><FONT color=#ffffff>運算符</FONT></B></TD>
+    <TD><B><FONT color=#ffffff>描述</FONT></B></TD>
+    <TD><B><FONT color=#ffffff>示例</FONT></B></TD></TR>
+  <TR bgColor=#888888>
+    <TD colSpan=3><B><FONT color=#ffffff>文件比較運算符</FONT></B></TD></TR>
+  <TR>
+    <TD>-e <I>filename</I> </TD>
+    <TD>如果 <I>filename</I> 存在，則為真</TD>
+    <TD>[ -e /var/log/syslog ]</TD></TR>
+  <TR>
+    <TD>-d <I>filename</I> </TD>
+    <TD>如果 <I>filename</I> 為目錄，則為真</TD>
+    <TD>[ -d /tmp/mydir ]</TD></TR>
+  <TR>
+    <TD>-f <I>filename</I> </TD>
+    <TD>如果 <I>filename</I> 為常規文件，則為真</TD>
+    <TD>[ -f /usr/bin/grep ]</TD></TR>
+  <TR>
+    <TD>-L <I>filename</I> </TD>
+    <TD>如果 <I>filename</I> 為符號鏈接，則為真</TD>
+    <TD>[ -L /usr/bin/grep ]</TD></TR>
+  <TR>
+    <TD>-r <I>filename</I> </TD>
+    <TD>如果 <I>filename</I> 可讀，則為真</TD>
+    <TD>[ -r /var/log/syslog ]</TD></TR>
+  <TR>
+    <TD>-w <I>filename</I> </TD>
+    <TD>如果 <I>filename</I> 可寫，則為真</TD>
+    <TD>[ -w /var/mytmp.txt ]</TD></TR>
+  <TR>
+    <TD>-x <I>filename</I> </TD>
+    <TD>如果 <I>filename</I> 可執行，則為真</TD>
+    <TD>[ -L /usr/bin/grep ]</TD></TR>
+  <TR>
+    <TD><I>filename1</I> -nt <I>filename2</I> </TD>
+    <TD>如果 <I>filename1</I> 比 <I>filename2</I> 新，則為真</TD>
+    <TD>[ /tmp/install/etc/services -nt /etc/services ]</TD></TR>
+  <TR>
+    <TD><I>filename1</I> -ot <I>filename2</I> </TD>
+    <TD>如果 <I>filename1</I> 比 <I>filename2</I> 舊，則為真</TD>
+    <TD>[ /boot/bzImage -ot arch/i386/boot/bzImage ]</TD></TR>
+  <TR bgColor=#888888>
+    <TD colSpan=3><B><FONT color=#ffffff>字符串比較運算符</FONT></B> <FONT 
+      color=#ffffff size=-1>（請注意引號的使用，這是防止空格擾亂代碼的好方法）</FONT></TD></TR>
+  <TR>
+    <TD>-z <I>string</I> </TD>
+    <TD>如果 <I>string</I> 長度為零，則為真</TD>
+    <TD>[ -z "$myvar" ]</TD></TR>
+  <TR>
+    <TD>-n <I>string</I> </TD>
+    <TD>如果 <I>string</I> 長度非零，則為真</TD>
+    <TD>[ -n "$myvar" ]</TD></TR>
+  <TR>
+    <TD><I>string1</I> = <I>string2</I></TD>
+    <TD>如果 <I>string1</I> 與 <I>string2</I> 相同，則為真</TD>
+    <TD>[ "$myvar" = "one two three" ]</TD></TR>
+  <TR>
+    <TD><I>string1</I> != <I>string2</I></TD>
+    <TD>如果 <I>string1</I> 與 <I>string2</I> 不同，則為真</TD>
+    <TD>[ "$myvar" != "one two three" ]</TD></TR>
+  <TR bgColor=#888888>
+    <TD colSpan=3><B><FONT color=#ffffff>算術比較運算符</FONT></B></TD></TR>
+  <TR>
+    <TD><I>num1</I> -eq <I>num2</I></TD>
+    <TD>等于</TD>
+    <TD>[ 3 -eq $mynum ]</TD></TR>
+  <TR>
+    <TD><I>num1</I> -ne <I>num2</I></TD>
+    <TD>不等于</TD>
+    <TD>[ 3 -ne $mynum ]</TD></TR>
+  <TR>
+    <TD><I>num1</I> -lt <I>num2</I></TD>
+    <TD>小于</TD>
+    <TD>[ 3 -lt $mynum ]</TD></TR>
+  <TR>
+    <TD><I>num1</I> -le <I>num2</I></TD>
+    <TD>小于或等于</TD>
+    <TD>[ 3 -le $mynum ]</TD></TR>
+  <TR>
+    <TD><I>num1</I> -gt <I>num2</I></TD>
+    <TD>大于</TD>
+    <TD>[ 3 -gt $mynum ]</TD></TR>
+  <TR>
+    <TD><I>num1</I> -ge <I>num2</I></TD>
+    <TD>大于或等于</TD>
+    <TD>[ 3 -ge $mynum ]</TD></TR></TBODY></TABLE></CENTER>
+<P>有時，有幾種不同方法來進行特定比較。例如，以下兩個代碼段的功能相同：</P>
+<P><A id=code3 name=code3></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> if [ "$myvar" -eq 3 ]
+then 
+     echo "myvar equals 3"
+fi
+ 
+ 
+ if [ "$myvar" = "3" ]
+then 
+     echo "myvar equals 3"
+fi
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>上面兩個比較執行相同的功能，但是第一個使用算術比較運算符，而第二個使用字符串比較運算符。</P><A id=4 name=4></A>
+<P><STRONG 
+class=subhead>字符串比較說明</STRONG><BR>大多數時候，雖然可以不使用括起字符串和字符串變量的雙引號，但這并不是好主意。為什么呢？因為如果環境變量中恰巧有一個空格或制表鍵，bash 
+將無法分辨，從而無法正常工作。這里有一個錯誤的比較示例：</P>
+<P><A id=code4 name=code4></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> if [ $myvar = "foo bar oni" ]
+then 
+     echo "yes"
+fi
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>在上例中，如果 myvar 等于 "foo"，則代碼將按預想工作，不進行打印。但是，如果 myvar 等于 "foo bar 
+oni"，則代碼將因以下錯誤失敗：</P>
+<P><A id=code5 name=code5></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> [: too many arguments
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>在這種情況下，"$myvar"（等于 "foo bar oni"）中的空格迷惑了 bash。bash 擴展 "$myvar" 之后，代碼如下：</P>
+<P><A id=code6 name=code6></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> [ foo bar oni = "foo bar oni" ]
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>因為環境變量沒放在雙引號中，所以 bash 
+認為方括號中的自變量過多。可以用雙引號將字符串自變量括起來消除該問題。請記住，如果養成將所有字符串自變量用雙引號括起的習慣，將除去很多類似的編程錯誤。"foo 
+bar oni" 比較<I>應該</I>寫成：</P>
+<P><A id=code7 name=code7></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> if [ "$myvar" = "foo bar oni" ]
+then 
+     echo "yes"
+fi
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P></P>
+<TABLE class=sidebar cellPadding=3 width="35%" align=right border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <P><STRONG 
+      class=subhead>更多引用細節</STRONG><BR>如果要擴展環境變量，則必須將它們用<I>雙引號</I>、而不是單引號括起。單引號<I> 
+      禁用</I>變量（和歷史）擴展。</P></TD></TR></TBODY></TABLE><BR><BR>
+<P>以上代碼將按預想工作，而不會有任何令人不快的意外出現。</P><A id=5 name=5></A>
+<P><STRONG class=subhead>循環結構："for"</STRONG><BR>好了，已經講了條件語句，下面該探索 bash 
+循環結構了。我們將從標準的 "for" 循環開始。這里有一個簡單的例子：</P>
+<P><A id=code8 name=code8></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> 
+ #!/usr/bin/env bash
+ 
+ for x in one two three four
+ do
+     echo number $x
+ done
+ 
+ <FONT color=#ff0000>輸出：</FONT>
+ 
+ number one
+ number two 
+ number three 
+ number four
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>發生了什么？"for" 循環中的 "for x" 部分定義了一個名為 "$x" 的新環境變量（也稱為循環控制變量），它的值被依次設置為 
+"one"、"two"、"three" 和 "four"。每一次賦值之后，執行一次循環體（"do" 和 "done" 
+之間的代碼）。在循環體內，象其它環境變量一樣，使用標準的變量擴展語法來引用循環控制變量 "$x"。還要注意，"for" 循環總是接收 "in" 
+語句之后的某種類型的字列表。在本例中，指定了四個英語單詞，但是字列表也可以引用磁盤上的文件，甚至文件通配符。看看下面的例子，該例演示如何使用標準 shell 
+通配符：</P>
+<P><A id=code9 name=code9></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> #!/usr/bin/env bash
+ 
+ for myfile in /etc/r*
+ do
+     if [ -d "$myfile" ] 
+then 
+       echo "$myfile (dir)"
+else
+       echo "$myfile"
+fi
+ done
+ 
+ <FONT color=#ff0000>輸出：</FONT>
+ 
+ /etc/rc.d (dir)
+ /etc/resolv.conf
+ /etc/resolv.conf~
+ /etc/rpc                  
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>以上代碼列出在 /etc 中每個以 "r" 開頭的文件。要做到這點，bash 在執行循環之前首先取得通配符 /etc/r*，然后擴展它，用字符串 
+/etc/rc.d /etc/resolv.conf /etc/resolv.conf~ /etc/rpc 替換。一旦進入循環，根據 myfile 
+是否為目錄，"-d" 條件運算符用來執行兩個不同操作。如果是目錄，則將 "(dir)" 附加到輸出行。</P>
+<P>還可以在字列表中使用多個通配符、甚至是環境變量：</P>
+<P><A id=code10 name=code10></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> 
+ for x in /etc/r??? /var/lo* /home/drobbins/mystuff/* /tmp/${MYPATH}/*
+ do
+     cp $x /mnt/mydir
+ done
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>Bash 將在所有正確位置上執行通配符和環境變量擴展，并可能創建一個非常長的字列表。</P>
+<P>雖然所有通配符擴展示例使用了<I>絕對</I>路徑，但也可以使用相對路徑，如下所示：</P>
+<P><A id=code11 name=code11></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> 
+ for x in ../* mystuff/*
+ do
+     echo $x is a silly file
+ done
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>在上例中，bash 相對于當前工作目錄執行通配符擴展，就象在命令行中使用相對路徑一樣。研究一下通配符擴展。您將注意到，如果在通配符中使用絕對路徑，bash 
+將通配符擴展成一個絕對路徑列表。否則，bash 將在后面的字列表中使用相對路徑。如果只引用當前工作目錄中的文件（例如，如果輸入 "for x in 
+*"），則產生的文件列表將沒有路徑信息的前綴。請記住，可以使用 "basename" 可執行程序來除去前面的路徑信息，如下所示：</P>
+<P><A id=code12 name=code12></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> 
+ for x in /var/log/*
+ do
+     echo `basename $x` is a file living in /var/log
+ done
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>當然，在腳本的命令行自變量上執行循環通常很方便。這里有一個如何使用本文開始提到的 "$@" 變量的例子：</P>
+<P><A id=code13 name=code13></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> 
+ #!/usr/bin/env bash
+ 
+ for thing in "$@"
+ do
+     echo you typed ${thing}.
+ done
+ 
+ <FONT color=#ff0000>輸出：</FONT>
+ 
+ $ allargs hello there you silly
+ you typed hello.
+ you typed there.
+ you typed you.
+ you typed silly.
+</PRE></TD></TR></TBODY></TABLE><BR><BR><A id=arith name=arith></A>
+<P><STRONG class=subhead>Shell 算術</STRONG><BR>在學習另一類型的循環結構之前，最好先熟悉如何執行 shell 
+算術。是的，確實如此：可以使用 shell 結構來執行簡單的整數運算。只需將特定的算術表達式用 "$((" 和 "))" 括起，bash 
+就可以計算表達式。這里有一些例子：</P>
+<P><A id=newcode1 name=newcode1></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> $ echo $(( 100 / 3 ))
+ 33
+ $ myvar="56"
+ $ echo $(( $myvar + 12 ))
+ 68
+ $ echo $(( $myvar - $myvar ))
+0 $ myvar=$(( $myvar + 1 ))
+$ echo $myvar
+ 57
+</PRE></TD></TR></TBODY></TABLE><BR><BR>您已經熟悉如何執行數學操作，現在該介紹其它兩種 bash 循環結構 
+"while" 和 "until" 了。 <A id=more name=more></A>
+<P><STRONG class=subhead>更多的循環結構："while" 和 "until"</STRONG><BR>只要特定條件為真，"while" 
+語句就會執行，其格式如下：</P>
+<P><A id=newcode2 name=newcode2></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> while [ condition ]
+ do
+     statements
+ done
+</PRE></TD></TR></TBODY></TABLE><BR><BR>通常使用 "While" 語句來循環一定次數，比如，下例將循環 10 
+次：<BR><BR>
+<P><A id=newcode3 name=newcode3></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> myvar=0
+ while [ $myvar -ne 10 ]
+ do
+     echo $myvar
+     myvar=$(( $myvar + 1 ))
+ done
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>可以看到，上例使用了算術表達式來使條件最終為假，并導致循環終止。</P>
+<P>"Until" 語句提供了與 "while" 語句相反的功能：只要特定條件為<I>假</I>，它們就重復。下面是一個與前面的 "while" 
+循環具有同等功能的 "until" 循環：</P>
+<P><A id=newcode4 name=newcode4></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> myvar=0
+ until [ $myvar -eq 10 ]
+ do
+     echo $myvar
+     myvar=$(( $myvar + 1 ))
+ done
+</PRE></TD></TR></TBODY></TABLE><BR><BR><A id=case name=case></A>
+<P><STRONG class=subhead>Case 語句</STRONG><BR>Case 語句是另一種便利的條件結構。這里有一個示例片段：</P>
+<P><A id=code14 name=code14></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> 
+ case "${x##*.}" in
+      gz)
+            gzunpack ${SROOT}/${x}
+            ;;
+      bz2)
+            bz2unpack ${SROOT}/${x}
+            ;;
+      *)
+            echo "Archive format not recognized."
+            exit
+            ;;
+ esac                                      
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>在上例中，bash 首先擴展 "${x##*.}"。在代碼中，"$x" 是文件的名稱，"${x##.*}" 
+除去文件中最后句點后文本之外的所有文本。然后，bash 將產生的字符串與 ")" 左邊列出的值做比較。在本例中，"${x##.*}" 先與 "gz" 
+比較，然后是 "bz2"，最后是 "*"。如果 "${x##.*}" 與這些字符串或模式中的任何一個匹配，則執行緊接 ")" 之后的行，直到 ";;" 
+為止，然后 bash 繼續執行結束符 "esac" 
+之后的行。如果不匹配任何模式或字符串，則不執行任何代碼行，在這個特殊的代碼片段中，至少要執行一個代碼塊，因為任何不與 "gz" 或 "bz2" 
+匹配的字符串都將與 "*" 模式匹配。</P><A id=6 name=6></A>
+<P><STRONG class=subhead>函數與名稱空間</STRONG><BR>在 bash 中，甚至可以定義與其它過程語言（如 Pascal 和 
+C）類似的函數。在 bash 中，函數甚至可以使用與腳本接收命令行自變量類似的方式來接收自變量。讓我們看一下樣本函數定義，然后再從那里繼續：</P>
+<P><A id=code15 name=code15></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> 
+ tarview() {
+     echo -n "Displaying contents of $1 "
+     if [ ${1##*.} = tar ]
+then 
+         echo "(uncompressed tar)"
+         tar tvf $1
+     elif [ ${1##*.} = gz ]
+then 
+         echo "(gzip-compressed tar)"
+         tar tzvf $1
+     elif [ ${1##*.} = bz2 ]
+then 
+         echo "(bzip2-compressed tar)"
+         cat $1 | bzip2 -d | tar tvf -
+fi
+ }
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P></P>
+<TABLE class=sidebar cellPadding=3 width="35%" align=right border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <P><STRONG class=subhead>另一種情況</STRONG><BR>可以使用 "case" 
+      語句來編寫上面的代碼。您知道如何編寫嗎？</P></TD></TR></TBODY></TABLE><BR><BR>
+<P>我們在上面定義了一個名為 "tarview" 的函數，它接收一個自變量，即某種類型的 tar 文件。在執行該函數時，它確定自變量是哪種 tar 
+文件類型（未壓縮的、gzip 壓縮的或 bzip2 壓縮的），打印一行信息性消息，然后顯示 tar 
+文件的內容。應該如下調用上面的函數（在輸入、粘貼或找到該函數后，從腳本或命令行調用它）：</P>
+<P><A id=code16 name=code16></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> $ tarview shorten.tar.gz
+ Displaying contents of shorten.tar.gz (gzip-compressed tar)
+ drwxr-xr-x ajr/abbot         0 1999-02-27 16:17 shorten-2.3a/
+ -rw-r--r-- ajr/abbot      1143 1997-09-04 04:06 shorten-2.3a/Makefile
+ -rw-r--r-- ajr/abbot      1199 1996-02-04 12:24 shorten-2.3a/INSTALL
+ -rw-r--r-- ajr/abbot       839 1996-05-29 00:19 shorten-2.3a/LICENSE
+ ....  
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P></P>
+<TABLE class=sidebar cellPadding=3 width="35%" align=right border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <P><STRONG class=subhead>交互地使用它們</STRONG><BR>別忘了，可以將函數（如上面的函數）放在 ~/.bashrc 
+      或 ~/.bash_profile 中，以便在 bash 中隨時使用它們。</P></TD></TR></TBODY></TABLE><BR><BR>
+<P>如您所見，可以使用與引用命令行自變量同樣的機制來在函數定義內部引用自變量。另外，將把 "$#" 宏擴展成包含自變量的數目。唯一可能不完全相同的是變量 
+"$0"，它將擴展成字符串 "bash"（如果從 shell 交互運行函數）或調用函數的腳本名稱。</P><A id=7 name=7></A>
+<P><STRONG 
+class=subhead>名稱空間</STRONG><BR>經常需要在函數中創建環境變量。雖然有可能，但是還有一個技術細節應該了解。在大多數編譯語言（如 
+C）中，當在函數內部創建變量時，變量被放置在單獨的局部名稱空間中。因此，如果在 C 中定義一個名為 myfunction 的函數，并在該函數中定義一個名為 
+"x" 的自變量，則任何名為 "x" 的全局變量（函數之外的變量）將不受它的印象，從而消除了負作用。</P>
+<P>在 C 中是這樣，但在 bash 中卻不是。在 bash 
+中，每當在函數內部創建環境變量，就將其添加到<I>全局</I>名稱空間。這意味著，該變量將重寫函數之外的全局變量，并在函數退出之后繼續存在：</P>
+<P><A id=code17 name=code17></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> #!/usr/bin/env bash
+ 
+ myvar="hello"
+ 
+ myfunc() {
+ 
+     myvar="one two three"
+     for x in $myvar
+     do
+         echo $x
+     done
+ }
+ 
+ myfunc
+ 
+ echo $myvar $x
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>運行此腳本時，它將輸出 "one two three three"，這顯示了在函數中定義的 "$myvar" 如何影響全局變量 
+"$myvar"，以及循環控制變量 "$x" 如何在函數退出之后繼續存在（如果 "$x" 全局變量存在，也將受到影響）。</P>
+<P>在這個簡單的例子中，很容易找到該錯誤，并通過使用其它變量名來改正錯誤。但這不是正確的方法，解決此問題的最好方法是通過使用 "local" 
+命令，在一開始就預防影響全局變量的可能性。當使用 "local" 
+在函數內部創建變量時，將把它們放在<I>局部</I>名稱空間中，并且不會影響任何全局變量。這里演示了如何實現上述代碼，以便不重寫全局變量：</P>
+<P><A id=code18 name=code18></A></P>
+<TABLE class=code-sample cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><PRE> 
+ #!/usr/bin/env bash
+ 
+ myvar="hello"
+ 
+ myfunc() {
+     local x
+     local myvar="one two three"
+     for x in $myvar
+     do
+         echo $x
+     done
+ }
+ 
+ myfunc
+ 
+ echo $myvar $x
+</PRE></TD></TR></TBODY></TABLE><BR><BR>
+<P>此函數將輸出 "hello" -- 不重寫全局變量 "$myvar"，"$x" 在 myfunc 
+之外不繼續存在。在函數的第一行，我們創建了以后要使用的局部變量 x，而在第二個例子 (local myvar="one two three"") 
+中，我們創建了局部變量 myvar，<I>同時</I>為其賦值。在將循環控制變量定義為局部變量時，使用第一種形式很方便，因為不允許說："for local x 
+in $myvar"。此函數不影響任何全局變量，鼓勵您用這種方式設計所有的函數。只有在明確希望要修改全局變量時，才<I> 不</I>應該使用 
+"local"。</P><A id=8 name=8></A>
+<P><STRONG class=subhead>結束語</STRONG><BR>我們已經學習了最基本的 bash 功能，現在要看一下如何基于 bash 
+開發整個應用程序。下一部分正要講到。再見！</P><A id=resources name=resources></A>
+<P><STRONG class=subhead>參考資料</STRONG><BR></P>
+<UL>
+  <LI>閱讀介紹性的 bash 文章，<I>developerWorks</I> 上的“<A 
+  href="http://www-4.ibm.com/software/developerWorks/library/bash.html"><FONT 
+  color=#002c99> Bash 實例，第 1 部分</FONT></A>” 
+  <LI>訪問 <A href="http://www.gnu.org/software/bash/bash.html"><FONT 
+  color=#002c99>GNU's bash 主頁</FONT></A> 
+  <LI>查看 <A href="http://www.gnu.org/manual/bash/index.html"><FONT 
+  color=#002c99>bash online reference manual</FONT></A></LI></UL>
+<P>轉自：<B><A href="http://www-900.ibm.com/developerWorks/cn/index.shtml"><FONT 
+color=#000080>IBM developerWorks 中國網站</FONT></A></B></P><BR>[<A 
+href="javascript:StorePage()">點擊此處收藏本文</A>] </DIV>
+<DIV class=postFoot>發表于 2004年08月18日 9:12 AM </DIV></DIV><LINK 
+href="http://blog.csdn.net/zcatlinux/Services/Pingback.aspx" rel=pingback><!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blog.csdn.net/zcatlinux/archive/2004/08/18/77734.aspx"
+dc:identifier="http://blog.csdn.net/zcatlinux/archive/2004/08/18/77734.aspx"
+dc:title="Bash 實例，第 2 部分：更多的 bash 基本編程"
+trackback:ping="http://blog.csdn.net/zcatlinux/services/trackbacks/77734.aspx" />
+</rdf:RDF>
+--><BR>
+<DIV id=comments>
+<H3></H3>
+<DIV class=post>
+<DIV class=postTitle>烤雞翅膀&nbsp;發表于<SPAN>2004-08-23 6:04 
+PM</SPAN>&nbsp;&nbsp;</DIV>
+<DIV class=postText>好文\</DIV></DIV><BR></DIV>
+<DIV class=CommentForm id=commentform>
+<H3>發表評論</H3>
+<TABLE class=CommentForm>
+  <TBODY>
+  <TR>
+    <TD width=69 height=0></TD>
+    <TD></TD></TR>
+  <TR>
+    <TD width=70>大名：</TD>
+    <TD align=left><INPUT id=PostComment.ascx_tbName style="WIDTH: 300px" 
+      size=40 name=PostComment.ascx:tbName> <SPAN 
+      id=PostComment.ascx_RequiredFieldValidator2 
+      style="DISPLAY: none; COLOR: red" initialvalue="" 
+      evaluationfunction="RequiredFieldValidatorEvaluateIsValid" 
+      display="Dynamic" errormessage="<br>請輸入尊姓大名" 
+      controltovalidate="PostComment.ascx_tbName"><BR>請輸入尊姓大名</SPAN> </TD></TR>
+  <TR>
+    <TD width=70>網址：</TD>
+    <TD align=left><INPUT id=PostComment.ascx_tbUrl style="WIDTH: 300px" 
+      size=40 name=PostComment.ascx:tbUrl> </TD></TR>
+  <TR>
+    <TD>驗證碼</TD>
+    <TD><INPUT id=PostComment.ascx_ValidationKey style="WIDTH: 150px" 
+      name=PostComment.ascx:ValidationKey> <IMG src="" align=absMiddle> </TD></TR>
+  <TR>
+    <TD colSpan=3>評論&nbsp; <SPAN id=PostComment.ascx_RequiredFieldValidator3 
+      style="DISPLAY: none; COLOR: red" initialvalue="" 
+      evaluationfunction="RequiredFieldValidatorEvaluateIsValid" 
+      display="Dynamic" errormessage="<br>請輸入評論" 
+      controltovalidate="PostComment.ascx_tbComment"><BR>請輸入評論</SPAN> <BR><TEXTAREA id=PostComment.ascx_tbComment style="WIDTH: 381px; HEIGHT: 193px" name=PostComment.ascx:tbComment rows=10 cols=50></TEXTAREA> 
+    </TD></TR>
+  <TR>
+    <TD colSpan=3><INPUT language=javascript class=Button id=PostComment.ascx_btnSubmit onclick="if (typeof(Page_ClientValidate) == 'function') Page_ClientValidate(); " type=submit value=提交 name=PostComment.ascx:btnSubmit>&nbsp;&nbsp;&nbsp; 
+      <INPUT id=PostComment.ascx_chkRemember type=checkbox 
+      name=PostComment.ascx:chkRemember><LABEL 
+      for=PostComment.ascx_chkRemember>記住我？</LABEL></TD></TR>
+  <TR>
+    <TD colSpan=3><SPAN id=PostComment.ascx_Message 
+    style="COLOR: red"></SPAN></TD></TR></TBODY></TABLE></DIV></DIV>
+<P id=footer>Powered by: <BR><A id=Footer1_Hyperlink2 
+href="http://scottwater.com/blog" name=Hyperlink1><IMG alt="" src="" 
+border=0></A> <A id=Footer1_Hyperlink3 href="http://asp.net/" 
+name=Hyperlink1><IMG alt="" src="" border=0></A> <BR>Copyright © ZCLinux </P>
+<SCRIPT language=javascript type=text/javascript>
+<!--
+	var Page_Validators =  new Array(document.all["PostComment.ascx_RequiredFieldValidator2"], document.all["PostComment.ascx_RequiredFieldValidator3"]);
+		// -->
+</SCRIPT>
+
+<SCRIPT language=javascript type=text/javascript>
+<!--
+var Page_ValidationActive = false;
+if (typeof(clientInformation) != "undefined" && clientInformation.appName.indexOf("Explorer") != -1) {
+    if ((typeof(Page_ValidationVer) != "undefined") && (Page_ValidationVer == "125"))
+        ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    return true;
+}
+// -->
+</SCRIPT>
+</FORM></BODY></HTML>

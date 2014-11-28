@@ -1,0 +1,712 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)http://phorum.vbird.org/viewtopic.php?t=34 -->
+<HTML dir=ltr><HEAD><TITLE>鳥哥的 Linux 新手討論區 :: 觀看文章 - [ NAT ] NAT 的簡易設定</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=big5">
+<META http-equiv=Content-Style-Type content=text/css><LINK 
+title="鳥哥的 Linux 新手討論區 首頁" href="./index.php" rel=top><LINK title=搜尋 
+href="./search.php" rel=search><LINK title=常見問題 href="./faq.php" rel=help><LINK 
+title=會員列表 href="./memberlist.php" rel=author><LINK title=上一篇主題 
+href="viewtopic.php?t=34&amp;view=previous" rel=prev><LINK title=下一篇主題 
+href="viewtopic.php?t=34&amp;view=next" rel=next><LINK title=精華區的熱門討論文章 
+href="viewforum.php?f=1" rel=up><LINK title=精華區的熱門討論文章 href="viewforum.php?f=1" 
+rel="chapter forum"><LINK title="各類 Linux 討論區" href="viewforum.php?f=2" 
+rel="chapter forum"><LINK title=鳥哥的書籍討論區 href="viewforum.php?f=10" 
+rel="chapter forum"><LINK title="LPI 認證討論區" href="viewforum.php?f=7" 
+rel="chapter forum"><LINK title="ADSL 相關討論區" href="viewforum.php?f=3" 
+rel="chapter forum"><LINK title="Study Area 臨時布告欄" href="viewforum.php?f=9" 
+rel="chapter forum"><LINK title=站務公告 href="viewforum.php?f=4" 
+rel="chapter forum"><LINK title="鳥哥的 Linux 與 ADSL 文件站務討論區" 
+href="viewforum.php?f=5" rel="chapter forum"><LINK title=閒聊 
+href="viewforum.php?f=6" rel="chapter forum"><LINK title=測試反應區 
+href="viewforum.php?f=8" rel="chapter forum"><!-- link rel="stylesheet" href="templates/subSilver/subSilver.css" type="text/css" -->
+<STYLE type=text/css>@import url( templates/subSilver/formIE.css );
+BODY {
+	SCROLLBAR-FACE-COLOR: #dee3e7; SCROLLBAR-HIGHLIGHT-COLOR: #ffffff; SCROLLBAR-SHADOW-COLOR: #dee3e7; SCROLLBAR-3DLIGHT-COLOR: #d1d7dc; SCROLLBAR-ARROW-COLOR: #006699; SCROLLBAR-TRACK-COLOR: #efefef; SCROLLBAR-DARKSHADOW-COLOR: #98aab1; BACKGROUND-COLOR: #e5e5e5
+}
+FONT {
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+TH {
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+TD {
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+P {
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+A:link {
+	COLOR: #006699
+}
+A:active {
+	COLOR: #006699
+}
+A:visited {
+	COLOR: #006699
+}
+A:hover {
+	COLOR: #dd6900; TEXT-DECORATION: underline
+}
+HR {
+	BORDER-RIGHT: #d1d7dc 0px solid; BORDER-TOP: #d1d7dc 1px solid; BORDER-LEFT: #d1d7dc 0px solid; BORDER-BOTTOM: #d1d7dc 0px solid; HEIGHT: 0px
+}
+.bodyline {
+	BORDER-RIGHT: #98aab1 1px solid; BORDER-TOP: #98aab1 1px solid; BORDER-LEFT: #98aab1 1px solid; BORDER-BOTTOM: #98aab1 1px solid; BACKGROUND-COLOR: #ffffff
+}
+.forumline {
+	BORDER-RIGHT: #006699 2px solid; BORDER-TOP: #006699 2px solid; BORDER-LEFT: #006699 2px solid; BORDER-BOTTOM: #006699 2px solid; BACKGROUND-COLOR: #ffffff
+}
+TD.row1 {
+	BACKGROUND-COLOR: #efefef
+}
+TD.row2 {
+	BACKGROUND-COLOR: #dee3e7
+}
+TD.row3 {
+	BACKGROUND-COLOR: #d1d7dc
+}
+TD.rowpic {
+	BACKGROUND-IMAGE: url(templates/subSilver/images/cellpic2.jpg); BACKGROUND-REPEAT: repeat-y; BACKGROUND-COLOR: #ffffff
+}
+TH {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; BACKGROUND-IMAGE: url(templates/subSilver/images/cellpic3.gif); COLOR: #ffa34f; HEIGHT: 25px; BACKGROUND-COLOR: #006699
+}
+TD.cat {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; BACKGROUND-IMAGE: url(templates/subSilver/images/cellpic1.gif); BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px; BACKGROUND-COLOR: #d1d7dc
+}
+TD.catHead {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; BACKGROUND-IMAGE: url(templates/subSilver/images/cellpic1.gif); BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px; BACKGROUND-COLOR: #d1d7dc
+}
+TD.catSides {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; BACKGROUND-IMAGE: url(templates/subSilver/images/cellpic1.gif); BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px; BACKGROUND-COLOR: #d1d7dc
+}
+TD.catLeft {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; BACKGROUND-IMAGE: url(templates/subSilver/images/cellpic1.gif); BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px; BACKGROUND-COLOR: #d1d7dc
+}
+TD.catRight {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; BACKGROUND-IMAGE: url(templates/subSilver/images/cellpic1.gif); BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px; BACKGROUND-COLOR: #d1d7dc
+}
+TD.catBottom {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; BACKGROUND-IMAGE: url(templates/subSilver/images/cellpic1.gif); BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px; BACKGROUND-COLOR: #d1d7dc
+}
+TD.cat {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; HEIGHT: 29px; BORDER-RIGHT-WIDTH: 0px
+}
+TD.catHead {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; HEIGHT: 29px; BORDER-RIGHT-WIDTH: 0px
+}
+TD.catBottom {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; HEIGHT: 29px; BORDER-RIGHT-WIDTH: 0px
+}
+TH.thHead {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; FONT-WEIGHT: bold; BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px
+}
+TH.thSides {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; FONT-WEIGHT: bold; BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px
+}
+TH.thTop {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; FONT-WEIGHT: bold; BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px
+}
+TH.thLeft {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; FONT-WEIGHT: bold; BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px
+}
+TH.thRight {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; FONT-WEIGHT: bold; BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px
+}
+TH.thBottom {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; FONT-WEIGHT: bold; BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px
+}
+TH.thCornerL {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; FONT-WEIGHT: bold; BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px
+}
+TH.thCornerR {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; FONT-WEIGHT: bold; BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; HEIGHT: 28px
+}
+TD.row3Right {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; BACKGROUND-COLOR: #d1d7dc
+}
+TD.spaceRow {
+	BORDER-RIGHT: #ffffff solid; BORDER-TOP: #ffffff solid; BORDER-LEFT: #ffffff solid; BORDER-BOTTOM: #ffffff solid; BACKGROUND-COLOR: #d1d7dc
+}
+TH.thHead {
+	BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 12px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 1px
+}
+TD.catHead {
+	BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 12px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 1px
+}
+TH.thSides {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 1px
+}
+TD.catSides {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 1px
+}
+TD.spaceRow {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 1px
+}
+TH.thRight {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 1px
+}
+TD.catRight {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 1px
+}
+TD.row3Right {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 1px
+}
+TH.thLeft {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+TD.catLeft {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+TH.thBottom {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 1px; BORDER-RIGHT-WIDTH: 1px
+}
+TD.catBottom {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 1px; BORDER-RIGHT-WIDTH: 1px
+}
+TH.thTop {
+	BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+TH.thCornerL {
+	BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+TH.thCornerR {
+	BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 1px
+}
+.maintitle {
+	FONT-WEIGHT: bold; FONT-SIZE: 22px; COLOR: #000000; LINE-HEIGHT: 120%; FONT-FAMILY: "Trebuchet MS",Verdana, Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.gen {
+	FONT-SIZE: 12px
+}
+.genmed {
+	FONT-SIZE: 11px
+}
+.gensmall {
+	FONT-SIZE: 10px
+}
+.gen {
+	COLOR: #000000
+}
+.genmed {
+	COLOR: #000000
+}
+.gensmall {
+	COLOR: #000000
+}
+A.gen {
+	COLOR: #006699; TEXT-DECORATION: none
+}
+A.genmed {
+	COLOR: #006699; TEXT-DECORATION: none
+}
+A.gensmall {
+	COLOR: #006699; TEXT-DECORATION: none
+}
+A.gen:hover {
+	COLOR: #dd6900; TEXT-DECORATION: underline
+}
+A.genmed:hover {
+	COLOR: #dd6900; TEXT-DECORATION: underline
+}
+A.gensmall:hover {
+	COLOR: #dd6900; TEXT-DECORATION: underline
+}
+.mainmenu {
+	FONT-SIZE: 11px; COLOR: #000000
+}
+A.mainmenu {
+	COLOR: #006699; TEXT-DECORATION: none
+}
+A.mainmenu:hover {
+	COLOR: #dd6900; TEXT-DECORATION: underline
+}
+.cattitle {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #006699; LETTER-SPACING: 1px
+}
+A.cattitle {
+	COLOR: #006699; TEXT-DECORATION: none
+}
+A.cattitle:hover {
+	TEXT-DECORATION: underline
+}
+.forumlink {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #006699
+}
+A.forumlink {
+	COLOR: #006699; TEXT-DECORATION: none
+}
+A.forumlink:hover {
+	COLOR: #dd6900; TEXT-DECORATION: underline
+}
+.nav {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #000000
+}
+A.nav {
+	COLOR: #006699; TEXT-DECORATION: none
+}
+A.nav:hover {
+	TEXT-DECORATION: underline
+}
+.topictitle {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #000000
+}
+H1 {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #000000
+}
+H2 {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #000000
+}
+A.topictitle:link {
+	COLOR: #006699; TEXT-DECORATION: none
+}
+A.topictitle:visited {
+	COLOR: #5493b4; TEXT-DECORATION: none
+}
+A.topictitle:hover {
+	COLOR: #dd6900; TEXT-DECORATION: underline
+}
+.name {
+	FONT-SIZE: 11px; COLOR: #000000
+}
+.postdetails {
+	FONT-SIZE: 10px; COLOR: #000000
+}
+.postbody {
+	FONT-SIZE: 12px; LINE-HEIGHT: 18px
+}
+A.postlink:link {
+	COLOR: #006699; TEXT-DECORATION: none
+}
+A.postlink:visited {
+	COLOR: #5493b4; TEXT-DECORATION: none
+}
+A.postlink:hover {
+	COLOR: #dd6900; TEXT-DECORATION: underline
+}
+.code {
+	BORDER-RIGHT: #d1d7dc 1px solid; BORDER-TOP: #d1d7dc 1px solid; FONT-SIZE: 11px; BORDER-LEFT: #d1d7dc 1px solid; COLOR: #006600; BORDER-BOTTOM: #d1d7dc 1px solid; FONT-FAMILY: Courier, 'Courier New', sans-serif; BACKGROUND-COLOR: #fafafa
+}
+.quote {
+	BORDER-RIGHT: #d1d7dc 1px solid; BORDER-TOP: #d1d7dc 1px solid; FONT-SIZE: 11px; BORDER-LEFT: #d1d7dc 1px solid; COLOR: #444444; LINE-HEIGHT: 125%; BORDER-BOTTOM: #d1d7dc 1px solid; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #fafafa
+}
+.copyright {
+	FONT-SIZE: 10px; COLOR: #444444; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; LETTER-SPACING: -1px
+}
+A.copyright {
+	COLOR: #444444; TEXT-DECORATION: none
+}
+A.copyright:hover {
+	COLOR: #000000; TEXT-DECORATION: underline
+}
+INPUT {
+	BORDER-LEFT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; FONT: 11px Verdana, Arial, Helvetica, sans-serif; COLOR: #000000; BORDER-TOP-COLOR: #000000; BORDER-RIGHT-COLOR: #000000
+}
+TEXTAREA {
+	BORDER-LEFT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; FONT: 11px Verdana, Arial, Helvetica, sans-serif; COLOR: #000000; BORDER-TOP-COLOR: #000000; BORDER-RIGHT-COLOR: #000000
+}
+SELECT {
+	BORDER-LEFT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; FONT: 11px Verdana, Arial, Helvetica, sans-serif; COLOR: #000000; BORDER-TOP-COLOR: #000000; BORDER-RIGHT-COLOR: #000000
+}
+INPUT.post {
+	BACKGROUND-COLOR: #ffffff
+}
+TEXTAREA.post {
+	BACKGROUND-COLOR: #ffffff
+}
+SELECT {
+	BACKGROUND-COLOR: #ffffff
+}
+INPUT {
+	TEXT-INDENT: 2px
+}
+INPUT.button {
+	FONT-SIZE: 11px; COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #efefef
+}
+INPUT.mainoption {
+	FONT-WEIGHT: bold; BACKGROUND-COLOR: #fafafa
+}
+INPUT.liteoption {
+	FONT-WEIGHT: normal; BACKGROUND-COLOR: #fafafa
+}
+.helpline {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BACKGROUND-COLOR: #dee3e7; BORDER-BOTTOM-STYLE: none
+}
+</STYLE>
+
+<META content="MSHTML 6.00.2800.1276" name=GENERATOR></HEAD>
+<BODY text=#000000 vLink=#5493b4 link=#006699 bgColor=#e5e5e5><A name=top></A>
+<TABLE cellSpacing=0 cellPadding=10 width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD class=bodyline>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD><A href="http://phorum.vbird.org/index.php"><IMG 
+            alt="鳥哥的 Linux 新手討論區 首頁" src="[NAT]NAT的簡易設定.files/VBirdTitle.jpg" 
+            vspace=1 border=0></A></TD>
+          <TD vAlign=center align=middle width="100%"><SPAN 
+            class=maintitle>鳥哥的 Linux 新手討論區</SPAN><BR><SPAN 
+            class=gen>特別適合新手的討論區<BR>&nbsp; </SPAN>
+            <TABLE cellSpacing=0 cellPadding=2 border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=top noWrap align=middle><SPAN 
+                  class=mainmenu>&nbsp;<A class=mainmenu 
+                  href="http://linux.vbird.org/" target=_blank><IMG height=13 
+                  alt=鳥哥的私房菜館 hspace=3 
+                  src="[NAT]NAT的簡易設定.files/icon_mini_members.gif" width=12 
+                  border=0>首頁 </A></SPAN>&nbsp; <A class=mainmenu 
+                  href="http://linux.vbird.org/Searching.php" target=_blank><IMG 
+                  height=13 alt=搜尋資料自鳥哥的主網站 hspace=3 
+                  src="[NAT]NAT的簡易設定.files/icon_mini_search.gif" width=12 
+                  border=0>主站特搜</A><SPAN> <SPAN class=mainmenu>&nbsp;<A 
+                  class=mainmenu href="http://phorum.vbird.org/faq.php"><IMG 
+                  height=13 alt=常見問題 hspace=3 
+                  src="[NAT]NAT的簡易設定.files/icon_mini_faq.gif" width=12 
+                  border=0>常見問題</A></SPAN><SPAN class=mainmenu>&nbsp; &nbsp;<A 
+                  class=mainmenu href="http://phorum.vbird.org/search.php"><IMG 
+                  height=13 alt=搜尋 hspace=3 
+                  src="[NAT]NAT的簡易設定.files/icon_mini_search.gif" width=12 
+                  border=0>搜尋</A>&nbsp; &nbsp;<A class=mainmenu 
+                  href="http://phorum.vbird.org/memberlist.php"><IMG height=13 
+                  alt=會員列表 hspace=3 
+                  src="[NAT]NAT的簡易設定.files/icon_mini_members.gif" width=12 
+                  border=0>會員列表</A>&nbsp; &nbsp;<A class=mainmenu 
+                  href="http://phorum.vbird.org/groupcp.php"><IMG height=13 
+                  alt=會員群組 hspace=3 
+                  src="[NAT]NAT的簡易設定.files/icon_mini_groups.gif" width=12 
+                  border=0>會員群組</A>&nbsp; &nbsp;<A class=mainmenu 
+                  href="http://phorum.vbird.org/profile.php?mode=register"><IMG 
+                  height=13 alt=會員註冊 hspace=3 
+                  src="[NAT]NAT的簡易設定.files/icon_mini_register.gif" width=12 
+                  border=0>會員註冊</A></SPAN>&nbsp; </SPAN></TD></TR>
+              <TR>
+                <TD vAlign=top noWrap align=middle height=25><SPAN 
+                  class=mainmenu>&nbsp;<A class=mainmenu 
+                  href="http://phorum.vbird.org/profile.php?mode=editprofile"><IMG 
+                  height=13 alt=個人資料 hspace=3 
+                  src="[NAT]NAT的簡易設定.files/icon_mini_profile.gif" width=12 
+                  border=0>個人資料</A>&nbsp; &nbsp;<A class=mainmenu 
+                  href="http://phorum.vbird.org/privmsg.php?folder=inbox"><IMG 
+                  height=13 alt=登入檢查您的私人訊息 hspace=3 
+                  src="[NAT]NAT的簡易設定.files/icon_mini_message.gif" width=12 
+                  border=0>登入檢查您的私人訊息</A>&nbsp; &nbsp;<A class=mainmenu 
+                  href="http://phorum.vbird.org/login.php"><IMG height=13 alt=登入 
+                  hspace=3 src="[NAT]NAT的簡易設定.files/icon_mini_login.gif" 
+                  width=12 
+        border=0>登入</A>&nbsp;</SPAN></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><BR>
+      <TABLE cellSpacing=2 cellPadding=2 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=bottom align=left colSpan=2><A class=maintitle 
+            href="http://phorum.vbird.org/viewtopic.php?t=34&amp;start=0&amp;postdays=0&amp;postorder=asc&amp;highlight=">[ 
+            NAT ] NAT 的簡易設定</A><BR><SPAN class=gensmall><B></B><BR>&nbsp; 
+          </SPAN></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=2 cellPadding=2 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=bottom noWrap align=left><SPAN class=nav><A 
+            href="http://phorum.vbird.org/posting.php?mode=newtopic&amp;f=1"><IMG 
+            alt=發表新主題 src="[NAT]NAT的簡易設定.files/post.gif" align=middle 
+            border=0></A>&nbsp;&nbsp;&nbsp;<A 
+            href="http://phorum.vbird.org/posting.php?mode=reply&amp;t=34"><IMG 
+            alt=回覆主題 src="[NAT]NAT的簡易設定.files/reply.gif" align=middle 
+            border=0></A></SPAN></TD>
+          <TD vAlign=center align=left width="100%"><SPAN 
+            class=nav>&nbsp;&nbsp;&nbsp;<A class=nav 
+            href="http://phorum.vbird.org/index.php">鳥哥的 Linux 新手討論區 首頁</A> 
+            -&gt; <A class=nav 
+            href="http://phorum.vbird.org/viewforum.php?f=1">精華區的熱門討論文章</A></SPAN></TD>
+          <TD vAlign=bottom align=right><SPAN class=mainmenu><A class=mainmenu 
+            title="" 
+            href="http://phorum.vbird.org/printview.php?t=34&amp;start=0" 
+            target=_blank><IMG alt="" src="[NAT]NAT的簡易設定.files/print-topic.gif" 
+            border=0></A></SPAN></TD></TR></TBODY></TABLE>
+      <TABLE class=forumline cellSpacing=1 cellPadding=3 width="100%" 
+        border=0><TBODY>
+        <TR align=right>
+          <TD class=catHead colSpan=2 height=28><SPAN class=nav><A class=nav 
+            href="http://phorum.vbird.org/viewtopic.php?t=34&amp;view=previous">上一篇主題</A> 
+            :: <A class=nav 
+            href="http://phorum.vbird.org/viewtopic.php?t=34&amp;view=next">下一篇主題</A> 
+            &nbsp;</SPAN></TD></TR>
+        <TR>
+          <TH class=thLeft noWrap width=150 height=26>發表人</TH>
+          <TH class=thRight noWrap>內容</TH></TR>
+        <TR>
+          <TD class=row1 vAlign=top align=left width=150><SPAN 
+            style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 11px; FILTER: glow(color=#FFA34F,strength=3); PADDING-BOTTOM: 1px; COLOR: orange; PADDING-TOP: 1px; HEIGHT: 10px"><A 
+            name=108></A><B>VBird</B></SPAN><BR><SPAN 
+            class=postdetails>站長鳥哥<BR><IMG title=站長鳥哥 alt=站長鳥哥 
+            src="[NAT]NAT的簡易設定.files/adminVBird.gif" border=0><BR><BR><BR>註冊時間: 
+            2002-06-09<BR>文章: 3443<BR>來自: 南台灣<BR>人氣指數: <B><FONT 
+            color=blue>Unlimit</FONT></B><BR><SPAN style="COLOR: #ffa34f"><FONT 
+            color=violet>=離線=</FONT></SPAN></SPAN><BR></TD>
+          <TD class=row1 vAlign=top width="100%" height=28>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="100%"><A 
+                  href="http://phorum.vbird.org/viewtopic.php?p=108#108"><IMG 
+                  title=發表 height=9 alt=發表 
+                  src="[NAT]NAT的簡易設定.files/icon_minipost.gif" width=12 
+                  border=0></A><SPAN class=postdetails>發表於: 2002-06-13 
+                  01:39<SPAN class=gen>&nbsp;</SPAN>&nbsp; &nbsp;文章主題: [ NAT ] 
+                  NAT 的簡易設定</SPAN></TD>
+                <TD vAlign=top noWrap><A 
+                  href="http://phorum.vbird.org/posting.php?mode=quote&amp;p=108"><IMG 
+                  title=引言回覆 alt=引言回覆 src="[NAT]NAT的簡易設定.files/icon_quote.gif" 
+                  border=0></A> </TD></TR>
+              <TR>
+                <TD colSpan=2>
+                  <HR>
+                </TD></TR>
+              <TR>
+                <TD colSpan=2><SPAN class=postbody></SPAN>
+                  <TABLE cellSpacing=1 cellPadding=3 width="90%" align=center 
+                  border=0>
+                    <TBODY>
+                    <TR>
+                      <TD><SPAN class=genmed><B>引言回覆:</B></SPAN></TD></TR>
+                    <TR>
+                      <TD class=quote>小弟有一些問題要問一下....... 
+                        <BR>但是我要問這些問題之前我發勢我有先看過 <BR><A 
+                        href="http://aerosol.ev.ncku.edu.tw/~vbird/linux/linux_22nat.html" 
+                        target=_blank>http://aerosol.ev.ncku.edu.tw/~vbird/linux/linux_22nat.html</A> 
+                        <BR>上的文章..... 可是因該是我的資質不足....希望幫我一下... 
+                        <BR><BR>有兩台電腦...... 
+                        <BR>=================================================== 
+                        <BR>第二台: Windows Me, 名稱:pc02, 一張網路卡, 而網卡的設定如下: <BR>IP: 
+                        192.168.1.2 <BR>Mask: 255.255.255.0 <BR>Gateway: 
+                        192.168.1.1(這不是都要指向Linux的那一台嗎?) <BR>DNS1: 168.95.192.1 
+                        <BR>DNS2: 168.95.1.1 <BR>主機名稱: pc02(我不知道是什麼意思, 
+                        所以打得跟電腦名稱一樣) <BR>網域: abc.abc(我不知道我的網域是什麼, 所以設定成這一個) 
+                        <BR><BR>以上就是在 Windows Me 中的設定 <BR><BR>第一台: RedHat Linux 
+                        7.2, 主機名稱:localhost.localdomain, 兩張網卡: <BR>eth0: <BR>IP: 
+                        192.168.1.1 <BR>Mask: 255.255.255.0 <BR>Gateway: 
+                        192.168.1.1 <BR>DNS1: 168.95.192.1 <BR>DNS2: 168.95.1.1 
+                        <BR><BR>eth1: <BR>IP: 動態, 所以Mask, Gateway, 都是空白 
+                        <BR>DNS1: 168.95.192.1 <BR>DNS2: 168.95.1.1 
+                        <BR><BR>上網方式: <BR>HiNet ADSL, 動態IP, 使用 Linux 內的 pppoe 
+                        上網, 並且是開機立即 <BR>撥接, 不是用rp-pppoe. 
+                        <BR>====================================================== 
+                        <BR>以上是我的設定, 請問有什麼地方是設錯的嗎!? <BR>還有, 
+                        那個網域可以隨便打嗎!?還是要花錢去申請, 可是我只是學生, 沒給個錢的..... 
+                        <BR><BR>/etc/sysconfig/network==&gt;己經加上"FORWARD_IPV4=yes" 
+                        <BR><BR>┌/sbin/depmod -a <BR>│/sbin/modprobe ip_masq_ftp 
+                        <BR>│/sbin/modprobe ip_masq_raudio <BR>│/sbin/modprobe 
+                        ip_masq_irc <BR>│/sbin/modprobe ip_masq_autofw 
+                        <BR>│/sbin/modprobe ip_masq_cuseeme <BR>│/sbin/modprobe 
+                        ip_masq_portfw <BR>│/sbin/modprobe ip_masq_quake 
+                        <BR>│/sbin/modprobe ip_masq_vdolive <BR>│/sbin/modprobe 
+                        ip_masq_user <BR>└/sbin/modprobe ip_masq_mfw 
+                        <BR><BR>也全部都啟動.... <BR>然後我在一開始安裝時即選擇"Everything", 
+                        所以應該需要的都有了吧!! <BR><BR>我的Windows(192.168.1.2)可以 ping 
+                        到linux(192.168.1.1)主機, <BR>而 Linux 也可以 Ping 到 Windows 
+                        <BR>Linux主機對外也都沒有問題....對內也沒問題..... <BR>但是為什麼我的 Windows 
+                        不可以Ping 到外面?? <BR>請幫幫我!! <BR><BR>我也搞了很久都沒有什麼進展, 
+                        希望大家給我指點迷經 <BR>丫廖 </TD></TR></TBODY></TABLE><SPAN 
+                  class=postbody><BR>在回答這個問題之前，想先請您瞭解一下『虛擬 IP』與『實體 
+                  IP』的異同點，基本上，『虛擬IP』共有三段，而我們常使用的 192.168.xxx.xxx 就屬於 C Class 
+                  段的虛擬 IP 咯！那虛擬 IP 有何限制呢？基本上，虛擬 IP 是『不可以直接』跟 Internet 
+                  上面的資料交流的！所以，我們才需要 NAT 主機來將 虛擬 IP 的資料經過 IP 偽裝後，就可以與 Internet 
+                  溝通資料了！而由於這種『 IP 偽裝』使得經由 NAT 主機流出去的資料，看起來都是同一個 IP 的緣故！ 
+                  <BR><BR>OK！那我們來看看您的問題： <BR>Windows ME 的設定是正確的！只不過在 DNS 
+                  與網域的設定上，可以選擇跟你最相近的主機名稱來填寫，不過，這個不重要！隨便寫也是可以的！ <BR>
+                  <OL type=1>
+                    <LI>在 /etc/sysconfig/network 這個檔案裡面，將： <BR>GATEWAYDEV=eth0 
+                    <BR>設定成為： <BR>GATEWAYDEV=ppp0 <BR>或者根本就不要設定！因為網路會自動去捉取！ 
+                    <BR>另外，你可以在提示字元底下執行： <BR>echo 1 &gt; 
+                    /proc/sys/net/ipv4/ip_forward <BR>來啟動NAT的服務！而這一行應該要加入 
+                    /etc/rc.d/rc.local 裡面的最後一行，讓開機自動執行！ <BR><BR>
+                    <LI>好了！剛剛我們提到所謂的虛擬 IP 不可以跟 Internet 直接溝通，所以就需要使用 IP 
+                    偽裝的技術了！要如何偽裝呢？如果你是以 Red Hat 6.x 以前的版本，那使用 ipchains 吧，如果是 
+                    RedHat 7.x 以後的版本，就需要特別注意了！因為 Red Hat 7.x 預設是同時會開啟 ipchains 與 
+                    iptables ，但這兩個套件會衝到！所以你必需關閉任何一個之後，才能進行 IP 偽裝術！ <BR>執行 setup 
+                    <BR>然後進入System services ，如果是 Red Hat 7.x 的話，那就關掉 ipchains 
+                    吧，然後： <BR>/etc/rc.d/init.d/xinetd restart <BR>啟動 iptables 吧！ 
+                    <BR><BR>
+                    <LI>開始偽裝了！你可以參考一下底下這一篇小州前輩文章： <BR><BR><A 
+                    href="http://www.study-area.org/tips/iptables.htm" 
+                    target=_blank>http://www.study-area.org/tips/iptables.htm</A> 
+                    <BR><BR>或者直接在你的指令列下達： <BR>如果是 ipchains 的話，那就： <BR>ipchains 
+                    -F <BR>ipchains -X <BR>ipchains -A forward -j MASQ -s 
+                    192.168.1.0/24 -d 0.0.0.0/0 <BR>ipchains -P input ACCEPT 
+                    <BR>ipchains -P output ACCEPT <BR>ipchains -P forward ACCEPT 
+                    <BR><BR>如果是 iptables 的話，那就： <BR>iptables -F <BR>iptables -X 
+                    <BR>iptables -P INPUT ACCEPT <BR>iptables -P OUTPUT ACCEPT 
+                    <BR>iptables -P FORWARD ACCEPT <BR>iptables -t nat -A 
+                    POSTROUTING -o ppp0 -s 192.168.1.0/24 -j MASQUERADE 
+                  </LI></OL><BR>你先試試看吧！也可以看一下底下這一個關於網路除錯的網頁： <BR><A 
+                  href="http://aerosol.ev.ncku.edu.tw/~vbird/problem/linux/problem_3.htm" 
+                  target=_blank>http://aerosol.ev.ncku.edu.tw/~vbird/problem/linux/problem_3.htm</A> 
+                  <BR></SPAN>
+                  <TABLE cellSpacing=1 cellPadding=3 width="90%" align=center 
+                  border=0>
+                    <TBODY>
+                    <TR>
+                      <TD><SPAN class=genmed><B>引言回覆:</B></SPAN></TD></TR>
+                    <TR>
+                      <TD class=quote>鳥哥謝謝你, 經由你的指導我的兩台電腦終於可以一起上網了!!! 
+                        <BR><BR>但是我測了很久, 在網頁的瀏灠是沒有問題, 但是在開啟 FTP 時會有點怪怪的, 
+                        好像可以連上去但無法顯示出來, 不知道是那裡出了問題!?但是在 Linux 
+                        主機上是都可以沒問題喔...只是在我的 WinME 出現這個 Truble 就是了!! 
+                        <BR>是否可以題示一下!! </TD></TR></TBODY></TABLE><SPAN 
+                  class=postbody>嗨！ <BR>是這樣的，如果你有看小州前輩寫的那篇關於 iptables 的 NAT 
+                  教學的話，那麼應該會知道其實還有一些模組需要載入的！例如底下的幾個模組： <BR><BR>modprobe 
+                  ip_nat_ftp <BR>modprobe ip_conntrack <BR>modprobe 
+                  ip_conntrack_ftp <BR>modprobn ip_conntrack_irc 
+                  <BR><BR>這些也都可以寫到 /etc/rc.d/rc.local 
+                  裡面去！其中，ip_nat_ftp就是在處理關於FTP的問題的！這個模組需要載入之後，你在進行 FTP 
+                  連線的時候，才不會有問題！ <BR><BR>另外，你提到的關於 PASV 
+                  的開啟方法！呵呵！剛剛我才試出來！正在高興呢！如果你跟我一樣是使用 CuteFTP 
+                  的話，那麼在：最上方的命令列中的『ftp』『設定』裡面的『選擇』（註：每個版本或釵酗ㄕP，反正就是找到『設定』那一個選項就是了），然後尋找到『防火牆』的相關設定哪邊，你會看到需要輸入：
+                  <OL type=1>
+                    <LI>主機 <BR>
+                    <LI>埠 <BR>
+                    <LI>使用者 <BR>
+                    <LI>密碼 <BR>
+                    <LI>類型 <BR>
+                    <LI>啟動防火牆存取 <BR></LI></OL><BR>等等的設定，將主機與埠號設定為你的 NAT 主機（例如 
+                  192.168.1.2 埠號為 21 啦）使用者與密碼就設定你的帳號與密碼，然後<SPAN 
+                  style="FONT-WEIGHT: bold">類型最重要，要選擇『PASV 
+                  模式』</SPAN>，然後在防火牆存取那邊打勾，就OK了！連上外部的 FTP 
+                  就沒問題啦！你可以試試看呦！加油吧！有問題再聯絡。 <IMG alt="Very Happy" 
+                  src="[NAT]NAT的簡易設定.files/icon_biggrin.gif" 
+                  border=0><BR>_________________<BR>給 Linux 新手的建議： <BR>1. 
+                  發生了不可預知的電腦問題，先想想看硬體有沒有問題？ <BR>2. 再想想看相關軟體有沒有安裝？ <BR>3. 
+                  最後再來想設定有沒有錯誤？ <BR>4. 然而，遇到挫折不要灰心，因為『這是一定要的啦！～～』 <BR>有空也來 <A 
+                  class=postlink href="http://linux.vbird.org/" 
+                  target=_blank><IMG src="[NAT]NAT的簡易設定.files/VBirdTitle2.jpg" 
+                  border=0></A> 坐坐！</SPAN><SPAN 
+              class=gensmall></SPAN></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD class=row1 vAlign=center align=left width=150><SPAN class=nav><A 
+            class=nav 
+            href="http://phorum.vbird.org/viewtopic.php?t=34#top">回頂端</A></SPAN></TD>
+          <TD class=row1 vAlign=bottom noWrap width="100%" height=28>
+            <TABLE height=18 cellSpacing=0 cellPadding=0 width=18 border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=center noWrap><A 
+                  href="http://phorum.vbird.org/profile.php?mode=viewprofile&amp;u=2"><IMG 
+                  title=檢視會員個人資料 alt=檢視會員個人資料 
+                  src="[NAT]NAT的簡易設定.files/icon_profile.gif" border=0></A> <A 
+                  href="http://phorum.vbird.org/privmsg.php?mode=post&amp;u=2"><IMG 
+                  title=發送私人訊息 alt=發送私人訊息 src="[NAT]NAT的簡易設定.files/icon_pm.gif" 
+                  border=0></A> <A href="http://linux.vbird.org/" 
+                  target=_userwww><IMG title=參觀發表人的個人網站 alt=參觀發表人的個人網站 
+                  src="[NAT]NAT的簡易設定.files/icon_www.gif" border=0></A>
+                  <SCRIPT language=JavaScript type=text/javascript><!--
+
+	if ( navigator.userAgent.toLowerCase().indexOf('mozilla') != -1 && navigator.userAgent.indexOf('5.') == -1 && navigator.userAgent.indexOf('6.') == -1 )
+		document.write(' ');
+	else
+		document.write('</td><td>&nbsp;</td><td valign="top" nowrap="nowrap"><div style="position:relative"><div style="position:absolute"></div><div style="position:absolute;left:3px;top:-1px"></div></div>');
+
+				//--></SCRIPT>
+                   <NOSCRIPT></NOSCRIPT></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD class=spaceRow colSpan=2 height=1><IMG height=1 alt="" 
+            src="[NAT]NAT的簡易設定.files/spacer.gif" width=1></TD></TR>
+        <TR align=middle>
+          <TD class=catBottom colSpan=2 height=28>
+            <TABLE cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+                <FORM action=viewtopic.php?t=34&amp;start=0 method=post>
+                <TD align=middle><SPAN class=gensmall>從之前的文章開始顯示: <SELECT 
+                  name=postdays><OPTION value=0 selected>所有文章</OPTION><OPTION 
+                    value=1>1 天</OPTION><OPTION value=7>7 天</OPTION><OPTION 
+                    value=14>2 星期</OPTION><OPTION value=30>1 個月</OPTION><OPTION 
+                    value=90>3 個月</OPTION><OPTION value=180>6 個月</OPTION><OPTION 
+                    value=364>1 年</OPTION></SELECT>&nbsp;<SELECT 
+                    name=postorder><OPTION value=asc 
+                    selected>最舊的</OPTION><OPTION 
+value=desc>最新的</OPTION></SELECT>&nbsp;<INPUT class=liteoption type=submit value=Go name=submit></SPAN></TD></FORM></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=2 cellPadding=2 width="100%" align=center border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=center noWrap align=left><SPAN class=nav><A 
+            href="http://phorum.vbird.org/posting.php?mode=newtopic&amp;f=1"><IMG 
+            alt=發表新主題 src="[NAT]NAT的簡易設定.files/post.gif" align=middle 
+            border=0></A>&nbsp;&nbsp;&nbsp;<A 
+            href="http://phorum.vbird.org/posting.php?mode=reply&amp;t=34"><IMG 
+            alt=回覆主題 src="[NAT]NAT的簡易設定.files/reply.gif" align=middle 
+            border=0></A></SPAN></TD>
+          <TD vAlign=center align=left width="100%"><SPAN 
+            class=nav>&nbsp;&nbsp;&nbsp;<A class=nav 
+            href="http://phorum.vbird.org/index.php">鳥哥的 Linux 新手討論區 首頁</A> 
+            -&gt; <A class=nav 
+            href="http://phorum.vbird.org/viewforum.php?f=1">精華區的熱門討論文章</A></SPAN></TD>
+          <TD vAlign=top noWrap align=right><SPAN class=gensmall>所有的時間均為 台北時間 
+            (GMT + 8 小時)</SPAN><BR><SPAN class=nav></SPAN></TD>
+          <TD vAlign=bottom align=right><SPAN class=mainmenu><A class=mainmenu 
+            title="" 
+            href="http://phorum.vbird.org/printview.php?t=34&amp;start=0" 
+            target=_blank><IMG alt="" src="[NAT]NAT的簡易設定.files/print-topic.gif" 
+            border=0></A></SPAN></TD></TR>
+        <TR>
+          <TD align=left colSpan=3><SPAN 
+            class=nav>第<B>1</B>頁(共<B>1</B>頁)</SPAN></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=2 width="100%" align=center border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top noWrap align=left width="40%"><SPAN 
+            class=gensmall></SPAN><BR><BR></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=2 width="100%" align=center border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top align=left>
+            <FORM name=quick_reply action=posting.php method=post><!-- Quick_Reply_MOD --><TEXTAREA class=post style="WIDTH: 500px" onclick="{if(document.quick_reply.message.value=='快速回覆主題') document.quick_reply.message.value=''}" name=message rows=7 wrap=virtual cols=35>快速回覆主題</TEXTAREA><BR><INPUT 
+            type=hidden value=abd2ffe4086ddf73613920be91ab4620 name=sid><INPUT 
+            type=hidden value=reply name=mode><INPUT type=hidden value=1 
+            name=post><INPUT type=hidden value=34 name=t> <INPUT 
+            onclick="if(document.quick_reply.message.value == '快速回覆主題' || document.quick_reply.message.value == ''){ alert('發表文章必須要有文章內容'); return false;}else{ return true;}" 
+            type=image alt=快速回覆主題 src="[NAT]NAT的簡易設定.files/quick_reply.gif" 
+            border=0> </FORM></TD>
+          <TD vAlign=top noWrap align=right>
+            <FORM name=jumpbox 
+            onsubmit="if(document.jumpbox.f.value == -1){return false;}" 
+            action=viewforum.php method=get>
+            <TABLE cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+                <TD noWrap><SPAN class=gensmall>前往:&nbsp;<SELECT 
+                  onchange="if(this.options[this.selectedIndex].value != -1){ forms['jumpbox'].submit() }" 
+                  name=f><OPTION value=-1>選擇一個版面</OPTION><OPTION 
+                    value=-1>&nbsp;</OPTION><OPTION 
+                    value=-1>精華區討論文章</OPTION><OPTION 
+                    value=-1>----------------</OPTION><OPTION value=1 
+                    selected>精華區的熱門討論文章</OPTION><OPTION 
+                    value=-1>&nbsp;</OPTION><OPTION value=-1>Linux 與 ADSL 
+                    相關討論</OPTION><OPTION 
+                    value=-1>----------------</OPTION><OPTION value=2>各類 Linux 
+                    討論區</OPTION><OPTION value=10>鳥哥的書籍討論區</OPTION><OPTION 
+                    value=7>LPI 認證討論區</OPTION><OPTION value=3>ADSL 
+                    相關討論區</OPTION><OPTION value=9>Study Area 
+                    臨時布告欄</OPTION><OPTION value=4>站務公告</OPTION><OPTION 
+                    value=5>鳥哥的 Linux 與 ADSL 文件站務討論區</OPTION><OPTION 
+                    value=6>閒聊</OPTION><OPTION 
+value=8>測試反應區</OPTION></SELECT>&nbsp;<INPUT class=liteoption type=submit value=Go></SPAN></TD></TR></TBODY></TABLE></FORM><SPAN 
+            class=gensmall>您 <B>無法</B> 在這個版面發表文章<BR>您 <B>無法</B> 在這個版面回覆文章<BR>您 
+            <B>無法</B> 在這個版面編輯文章<BR>您 <B>無法</B> 在這個版面刪除文章<BR>您 <B>無法</B> 
+            在這個版面進行投票<BR></SPAN></TD></TR></TBODY></TABLE>
+      <DIV align=center><SPAN class=copyright><BR><BR><!--
+	We request you retain the full copyright notice below including the link to www.phpbb.com.
+	This not only gives respect to the large amount of time given freely by the developers
+	but also helps build interest, traffic and use of phpBB 2.0. If you cannot (for good
+	reason) retain the full copyright we request you at least leave in place the
+	Powered by phpBB 2.0.6 line, with phpBB linked to www.phpbb.com. If you refuse
+	to include even this then support on our forums may be affected.
+
+	The phpBB Group : 2002
+// -->Powered 
+      by <A class=copyright href="http://www.phpbb.com/" target=_phpbb>phpBB</A> 
+      2.0.6 &copy; 2001, 2002 phpBB Group<BR>繁體中文強化版由&nbsp;<A 
+      href="http://phpbb-tw.net/" target=_blank><FONT 
+      color=#ff6633>竹貓星球PBB2中文強化開發小組</FONT></A>&nbsp;製作</SPAN></DIV></TD></TR></TBODY></TABLE><BR>
+<CENTER><FONT size=-2>這個頁面共花費了 0.707765 秒執行 : 共有 13 項資料被查詢 : GZIP 壓縮 關閉 : Debug 
+Mode</FONT></CENTER></BODY></HTML>

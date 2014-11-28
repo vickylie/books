@@ -1,0 +1,2373 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="ModDate" content="D:20040830032104+08'00'">
+<meta name="CreationDate" content="D:20040830032104+08'00'">
+<meta name="Creator" content="PScript5.dll Version 5.2">
+<meta name="Producer" content="Acrobat Distiller 6.0 (Windows)">
+<meta name="Author" content="mars">
+<title>文書編輯器</title>
+
+</head><body  bgcolor=#ffffff vlink="blue" link="blue">
+<table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=1><b>Page 1</b></a></font></td></tr></table><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:261;left:108"><nobr>1/89</nobr></div>
+</span></font>
+<font size=6 face="Times"><span style="font-size:45px;font-family:Times">
+<div style="position:absolute;top:287;left:70"><nobr>文書編輯器</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:447;left:234"><nobr>如果說這是一本探討 Linux 的書，為什麼會有一整個章節來介紹文書編輯</nobr></div>
+<div style="position:absolute;top:476;left:198"><nobr>器呢</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+
+<div style="position:absolute;top:475;left:235"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:476;left:241"><nobr>？這主要是因為 Linux 絕大多數(可以說是全部)的設定項和控制檔案都是</nobr></div>
+<div style="position:absolute;top:506;left:198"><nobr>敘述式的(script)，必需靠文書編輯器來修改設定，再加上如果把 Linux 當成是</nobr></div>
+<div style="position:absolute;top:536;left:198"><nobr>開發平台，gnu c，shell script，html，perl，…都得靠文書編輯器來寫。簡單地</nobr></div>
+<div style="position:absolute;top:566;left:198"><nobr>說，只使用文書編輯器就可以完成 Linux 上所有的工作。</nobr></div>
+<div style="position:absolute;top:618;left:234"><nobr>目前 UNIX 系統上的文書編輯器有二大主流，一個是 vi，另一個是 emacs。</nobr></div>
+<div style="position:absolute;top:646;left:198"><nobr>vi 是所有商業化 UNIX 系統都會有的文書編輯器，vi 的特點是「十指不離鍵盤」</nobr></div>
+<div style="position:absolute;top:677;left:198"><nobr>和「單調的介面」，vi 的指令可以透過標準的 57 鍵鍵盤(想像一下手提打字機)來</nobr></div>
+
+<div style="position:absolute;top:707;left:198"><nobr>完成，不需要滑鼠和擴充功能鍵</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:706;left:451"><nobr>2</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:707;left:456"><nobr>，雖然是互動式編輯，螢幕上卻沒有選單，編</nobr></div>
+<div style="position:absolute;top:737;left:198"><nobr>輯指令也不會顯示。這對於熟練的使用者來說是非常方便的，清爽的畫面，不</nobr></div>
+<div style="position:absolute;top:767;left:198"><nobr>需要離開鍵盤使用滑鼠，也不需要讓手指作不正常的伸展來按組合鍵；不過，</nobr></div>
+<div style="position:absolute;top:797;left:198"><nobr>初學者就麻煩了，一大堆要記的指令，進去連輸入文字都不行，vi 是公認在</nobr></div>
+<div style="position:absolute;top:825;left:198"><nobr>UNIX 上最難學的文書編輯器，只是由於普遍性和強大的功能，vi 也是最多人</nobr></div>
+
+<div style="position:absolute;top:857;left:198"><nobr>使用的文書編輯器。</nobr></div>
+<div style="position:absolute;top:911;left:234"><nobr>emacs 是 GNU 發展，預備取代 vi 的下一代編輯器，簡單的操作介面，可以</nobr></div>
+<div style="position:absolute;top:943;left:198"><nobr>輸出或編輯網頁，電子郵件，支援滑鼠操作，完整的線上說明和選單系統，即</nobr></div>
+<div style="position:absolute;top:972;left:198"><nobr>使是第一次接觸的使用者也可以很快地上手，對於熟悉 Windows 的使用者，一</nobr></div>
+<div style="position:absolute;top:1002;left:198"><nobr>打開 Xwindow 選了幾個文書編輯器後，一定回到 emacs。emacs 的優點還不止這</nobr></div>
+<div style="position:absolute;top:1032;left:198"><nobr>樣，emacs 提供了一個 vi 的相容模式，讓熟悉 vi 的使用者可以依照舊的習慣來</nobr></div>
+<div style="position:absolute;top:1062;left:198"><nobr>使用 emacs</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:1060;left:283"><nobr>3</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:1062;left:288"><nobr>。不過，emacs 還是有一些弱點，第一是除了 Linux 之外，emacs 在</nobr></div>
+<div style="position:absolute;top:1092;left:198"><nobr>其它的 UNIX 系統並非內含的套件，需要自行安裝，其次，可能最重要的因素</nobr></div>
+<div style="position:absolute;top:1121;left:198"><nobr>是 vi 在 UNIX 中已經形成一種文化，習慣圖形介面的人也許會對 vi「十指不離</nobr></div>
+<div style="position:absolute;top:1151;left:198"><nobr>鍵盤」的哲學嗤之以鼻，不過，vi 的使用者也覺得「正統的程式設計師」是不會用</nobr></div>
+<div style="position:absolute;top:1181;left:198"><nobr>到滑鼠的</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:1179;left:270"><nobr>4</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:1181;left:275"><nobr>。emacs 有一個姊妹版本，在 Xwindow 下執行的 xemacs，就原始碼而</nobr></div>
+<div style="position:absolute;top:1211;left:198"><nobr>言，emacs 和 xemacs 是不同的，不過，兩者在使用上的確是非常近似的。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:1264;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:1266;left:94"><nobr>一本 Windows 的書就不會去討論記事本，或至少不會花這麼長的篇輻。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:1304;left:87"><nobr>2</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:1306;left:98"><nobr>這其實是歷史因素，早期的終端機鍵盤不是 101 鍵的。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:1344;left:87"><nobr>3</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:1346;left:98"><nobr>由此可見 GNU 的企圖心和 vi 在 UNIX 中的地位</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:1438;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=2><b>Page 2</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:1524;left:108"><nobr>2/89</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:1552;left:234"><nobr>由於筆者算是 vi 愛用者(vi-guy)，下面的介紹是以 vi 為主，emacs 為輔，在</nobr></div>
+<div style="position:absolute;top:1582;left:198"><nobr>此僅對 emacs 愛用者致歉。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:1710;left:193"><nobr>我剛接觸 <b>Linux</b>，該學 <b>vi </b>還是 <b>emacs</b>，還是有其它的編輯器</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:1790;left:234"><nobr>很難回答，但又很常見的問題。其實，純文字模式下的 emacs 指令也是多如</nobr></div>
+<div style="position:absolute;top:1820;left:198"><nobr>牛毛的；而如果在圖形介面下 vi 也有選單式的 gvim 可供使用；再者，以目前</nobr></div>
+<div style="position:absolute;top:1850;left:198"><nobr>而言，兩者在雙位元語系(如中日韓文)上的支援也是相當的。因此，如果熟練的</nobr></div>
+<div style="position:absolute;top:1879;left:198"><nobr>話，這兩者的實用性都是很高的，只是 vi 有歷史上的優勢，所以使用者人數遠</nobr></div>
+<div style="position:absolute;top:1909;left:198"><nobr>高於 emacs。</nobr></div>
+<div style="position:absolute;top:1966;left:234"><nobr>當然，真的要比較優劣的話，vi 純文字的應用上是略勝一籌的。 一方面是</nobr></div>
+<div style="position:absolute;top:1994;left:198"><nobr>vi 有太多可以大量快速編輯的命令，相同的狀況下，emacs 就可能要使用到 ex</nobr></div>
+<div style="position:absolute;top:2026;left:198"><nobr>命令；另一方面是 emacs 比較大，這在一般的 pc 主機本機執行的時候是感受不</nobr></div>
+
+<div style="position:absolute;top:2055;left:198"><nobr>到差異的，然而，在遠端控制的情形下，emacs 就會明顯地慢下去；最後，</nobr></div>
+<div style="position:absolute;top:2083;left:198"><nobr>emacs 用了太多的組合鍵，這常會跟終端環境的控制鍵有衝突，例如，標定區</nobr></div>
+<div style="position:absolute;top:2115;left:198"><nobr>塊用的[Ctrl]+[Space]就會跟中文輸入法的切換鍵衝突，必須改用較麻煩的[Ctrl]</nobr></div>
+<div style="position:absolute;top:2143;left:198"><nobr>+@。</nobr></div>
+<div style="position:absolute;top:2201;left:234"><nobr>不過，emacs 也有 vi 比不上的優點就是擴充性，emacs 可以直接使用 ftp 和</nobr></div>
+<div style="position:absolute;top:2230;left:198"><nobr>telnet，也可以呼叫網頁瀏覽器和收發 mail/news，如何抉擇其實還是看個人的</nobr></div>
+<div style="position:absolute;top:2261;left:198"><nobr>主觀喜好。</nobr></div>
+<div style="position:absolute;top:2318;left:234"><nobr>在 Linux 上當然還有其它的文字編輯器可以使用，像是 joe 和 pico。不過，</nobr></div>
+<div style="position:absolute;top:2347;left:198"><nobr>功能大多有限制，就管理員的觀點而言，vi 應該是首選，不過，如果您真的覺</nobr></div>
+
+<div style="position:absolute;top:2377;left:198"><nobr>得有很大的挫折感，用 emacs 也可以。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:2505;left:193"><nobr>如何取得這些編輯器</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:2607;left:87"><nobr>4</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:2607;left:98"><nobr>O’REILLY “Learning the vi Editor”的作者 Linda Lamb 甚至把 vi 和 emacs 的使用者心態形容為宗教戰爭。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:2701;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=3><b>Page 3</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+
+<div style="position:absolute;top:2787;left:108"><nobr>3/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:2815;left:234"><nobr>在 Linux 中，vi 和 emacs 的普遍性和 c 函式庫幾乎相等，除非您使用的是</nobr></div>
+<div style="position:absolute;top:2845;left:198"><nobr>特殊小型化的 Linux(像 DSL)，那麼，emacs 可能沒有(除非是內嵌式 Linux，vi</nobr></div>
+<div style="position:absolute;top:2875;left:198"><nobr>一定會有)，不然的話，散佈套件本身一定會提供這兩種基本的文書編輯器，您</nobr></div>
+<div style="position:absolute;top:2905;left:198"><nobr>無需擔心。</nobr></div>
+<div style="position:absolute;top:2961;left:234"><nobr>如果要取得最新版本的話，可以分別到：</nobr></div>
+<div style="position:absolute;top:3016;left:234"><nobr>vim：</nobr></div>
+<div style="position:absolute;top:3016;left:342"><nobr>http://www.vim.org/download.php</nobr></div>
+
+<div style="position:absolute;top:3073;left:234"><nobr>emacs：</nobr></div>
+<div style="position:absolute;top:3073;left:342"><nobr>http://ftp.gnu.org/pub/gnu/emacs/</nobr></div>
+</span></font>
+<font size=5 face="Times"><span style="font-size:31px;font-family:Times">
+<div style="position:absolute;top:3223;left:113"><nobr>1 VI/VIM</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:3353;left:234"><nobr>vi，唸作 vee-eye，是視覺化編輯器(visual editor)的簡稱</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:3353;left:667"><nobr>1</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:3355;left:672"><nobr>，這是相對於列編</nobr></div>
+<div style="position:absolute;top:3385;left:198"><nobr>輯器的稱呼。列編輯器是讀卡機時代的產物，終端機每一次讀取及處理一列的</nobr></div>
+<div style="position:absolute;top:3415;left:198"><nobr>資料。體會一下吧，執行：</nobr></div>
+<div style="position:absolute;top:3479;left:176"><nobr>$ cat /root/install.log ;觀察一下這個檔案的內容</nobr></div>
+<div style="position:absolute;top:3504;left:176"><nobr>$ ex /root/install.log ;什麼都沒有出現</nobr></div>
+<div style="position:absolute;top:3573;left:234"><nobr>輸入 3 可以到第 3 行，輸入 2,5 顯示第 2 到第 5 行的內容，輸入 vi 可以直接</nobr></div>
+<div style="position:absolute;top:3603;left:198"><nobr>進入編輯器 vi。懂了吧，vi 其實是 ex 的「視覺化」模式。輸入：q 可以離開，如</nobr></div>
+<div style="position:absolute;top:3633;left:198"><nobr>果不行的話就輸入：q!。</nobr></div>
+
+<div style="position:absolute;top:3688;left:234"><nobr>vi 開發的時代非常早，有些文獻甚至認為可以回溯到 1960 年代</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:3688;left:738"><nobr>2</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:3690;left:744"><nobr>，在幾乎</nobr></div>
+<div style="position:absolute;top:3720;left:198"><nobr>四十年的時間裡，vi 有非常多的衍生品，其中 Bram Moolenaar 由 1988 年開始</nobr></div>
+<div style="position:absolute;top:3749;left:198"><nobr>開發的 vim(VI iMproved)可能是目前最受歡迎的一種，Fedora Core 上所提供的</nobr></div>
+<div style="position:absolute;top:3777;left:198"><nobr>vi 版本其實就是 vim。 vim 改良/增加了很多 vi 的指令，這使得有些 vim 命令在</nobr></div>
+</span></font>
+
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:3830;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:3832;left:98"><nobr>另一個說法是源自原作者 Vince Idiot 的名字</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:3870;left:87"><nobr>2</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:3872;left:94"><nobr>根據 Robert Boy 在 http://www.sbernard.ee/vince.html 中的說法</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:3964;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=4><b>Page 4</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:4050;left:108"><nobr>4/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:4076;left:198"><nobr>vi 中不能執行或有不同的結果，在本章的編排上，vim 獨有的增強功能是獨立</nobr></div>
+<div style="position:absolute;top:4108;left:198"><nobr>放在 1.6 中敘述的，不過，為了行文的順暢加上本文並不是學術文件，在指令</nobr></div>
+<div style="position:absolute;top:4138;left:198"><nobr>或敘述的部份如果 vim 和 vi 有不一樣的地方，文中是以 vim 為準而且沒有加上</nobr></div>
+<div style="position:absolute;top:4167;left:198"><nobr>特別的註解，如果您是原生版 vi 或其它衍生品的愛好者，筆者謹在此致歉。</nobr></div>
+<div style="position:absolute;top:4224;left:234"><nobr>現在，建立一個文字檔來作練習。</nobr></div>
+<div style="position:absolute;top:4281;left:234"><nobr>在文字終端機直接下指令：</nobr></div>
+
+<div style="position:absolute;top:4346;left:176"><nobr>$ vi viexer</nobr></div>
+<div style="position:absolute;top:4414;left:234"><nobr>先不要急著打字，vi 有三種模式，一般模式(normal)，插入模式(insert)和命</nobr></div>
+<div style="position:absolute;top:4444;left:198"><nobr>令模式(command)，預設進入的時候是一般模式，提供文件的編輯功能，是不</nobr></div>
+<div style="position:absolute;top:4474;left:198"><nobr>能輸入文字的。</nobr></div>
+<div style="position:absolute;top:4530;left:234"><nobr>按下 i，切換成插入模式，注意一下，這時左下角出現「-- INSERT-- 」的字</nobr></div>
+<div style="position:absolute;top:4560;left:198"><nobr>樣</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:4558;left:216"><nobr>1</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:4560;left:221"><nobr>，可以打字了，輸入:</nobr></div>
+<div style="position:absolute;top:4682;left:176"><nobr>Name Gender A/C State Phone Date</nobr></div>
+<div style="position:absolute;top:4707;left:176"><nobr>=======================================</nobr></div>
+<div style="position:absolute;top:4733;left:176"><nobr>Ken m aadult MA 23030011 2003-1-13</nobr></div>
+<div style="position:absolute;top:4758;left:176"><nobr>Mars M adulte CA 86002201 2002-11-14</nobr></div>
+<div style="position:absolute;top:4784;left:176"><nobr>Judy F child cA 76542299 2002-12-14</nobr></div>
+<div style="position:absolute;top:4809;left:176"><nobr>Helen F adult HW 60077719 2003-01-10</nobr></div>
+<div style="position:absolute;top:4835;left:176"><nobr>murphy m children NY 56443321 2002-12-4</nobr></div>
+
+<div style="position:absolute;top:4903;left:234"><nobr>完成後按下[ESC]，再輸入：wq 存檔離開。利用</nobr></div>
+<div style="position:absolute;top:4968;left:176"><nobr>$ cat viexer</nobr></div>
+<div style="position:absolute;top:5037;left:234"><nobr>觀察一下剛才輸入的成果。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:5104;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:5105;left:98"><nobr>其實現在開啟的是 vim(Vi iMproved)意即改良版 vi，vi 是不會有訊息的，多按一下[ESC]，如果有嗶聲，代</nobr></div>
+<div style="position:absolute;top:5135;left:94"><nobr>表在一般模式。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:5227;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=5><b>Page 5</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:5313;left:108"><nobr>5/89</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:27px;font-family:Times">
+<div style="position:absolute;top:5427;left:134"><nobr><b>1.1 vi </b>的基本檔案功能</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:5589;left:155"><nobr><b>1.1.1 </b>開啟檔案</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+
+<div style="position:absolute;top:5739;left:193"><nobr>直接開啟</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:5819;left:234"><nobr>直接在 vi 命令後面接上檔案的路徑和名稱就可以直接開啟該檔案，如果所</nobr></div>
+<div style="position:absolute;top:5849;left:198"><nobr>指定的檔案不存在，vi 就當作是開啟舊檔。這是使用 vi 最常見的方式。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:5977;left:193"><nobr>使用選單來選擇</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:6057;left:234"><nobr>使用命令 e 或是在 vi 命令後面接著的是目錄路徑而非檔案路徑，vim 會啟</nobr></div>
+<div style="position:absolute;top:6087;left:198"><nobr>動選單，使用者可以利用↓↑鍵選擇檔案名稱，再以[Enter]來開啟。</nobr></div>
+
+<div style="position:absolute;top:6152;left:176"><nobr># vi /usr/share/doc/initscripts-7.42/</nobr></div>
+<div style="position:absolute;top:6203;left:176"><nobr>================================================================</nobr></div>
+<div style="position:absolute;top:6254;left:176"><nobr>&quot; Press ? for keyboard shortcuts</nobr></div>
+<div style="position:absolute;top:6279;left:176"><nobr>&quot; Sorted by name (.bak,,.o,.h,.info,.swp,.obj at end of list)</nobr></div>
+<div style="position:absolute;top:6305;left:176"><nobr>&quot;= /usr/share/doc/initscripts-7.42/</nobr></div>
+<div style="position:absolute;top:6330;left:176"><nobr>../</nobr></div>
+<div style="position:absolute;top:6356;left:176"><nobr>ChangeLog</nobr></div>
+<div style="position:absolute;top:6381;left:176"><nobr>changes.ipv6</nobr></div>
+
+</span></font>
+
+<div style="position:absolute;top:6490;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=6><b>Page 6</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:6576;left:108"><nobr>6/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:6600;left:176"><nobr>ipv6-6to4.howto</nobr></div>
+<div style="position:absolute;top:6626;left:176"><nobr>ipv6-tunnel.howto</nobr></div>
+<div style="position:absolute;top:6651;left:176"><nobr>static-routes-ipv6</nobr></div>
+<div style="position:absolute;top:6677;left:176"><nobr>sysconfig.txt</nobr></div>
+<div style="position:absolute;top:6702;left:176"><nobr>sysvinitfiles</nobr></div>
+
+<div style="position:absolute;top:6771;left:234"><nobr>按下「？」可以顯示在選單模式下可以使用的命令：</nobr></div>
+<div style="position:absolute;top:6826;left:234"><nobr>[Enter] 開啟檔案或切換目錄</nobr></div>
+<div style="position:absolute;top:6882;left:234"><nobr>o</nobr></div>
+<div style="position:absolute;top:6884;left:306"><nobr>依游標的所在開啟新視窗</nobr></div>
+<div style="position:absolute;top:6939;left:234"><nobr>O</nobr></div>
+<div style="position:absolute;top:6941;left:306"><nobr>切換不同的視窗</nobr></div>
+<div style="position:absolute;top:6996;left:234"><nobr>p</nobr></div>
+<div style="position:absolute;top:6998;left:306"><nobr>預覽檔案內容</nobr></div>
+<div style="position:absolute;top:7053;left:234"><nobr>i</nobr></div>
+
+<div style="position:absolute;top:7054;left:306"><nobr>切換是否顯示檔案的時間和大小</nobr></div>
+<div style="position:absolute;top:7109;left:234"><nobr>r</nobr></div>
+<div style="position:absolute;top:7111;left:306"><nobr>降冪排序</nobr></div>
+<div style="position:absolute;top:7166;left:234"><nobr>s</nobr></div>
+<div style="position:absolute;top:7168;left:306"><nobr>升冪排序，再按一次可以切換欄位</nobr></div>
+<div style="position:absolute;top:7223;left:234"><nobr>- </nobr></div>
+<div style="position:absolute;top:7225;left:306"><nobr>回上一層目錄</nobr></div>
+<div style="position:absolute;top:7280;left:234"><nobr>R</nobr></div>
+<div style="position:absolute;top:7281;left:306"><nobr>將檔案更名(您必須有合適的權限)</nobr></div>
+
+<div style="position:absolute;top:7337;left:234"><nobr>D</nobr></div>
+<div style="position:absolute;top:7338;left:306"><nobr>刪除檔案(您必須有合適的權限)</nobr></div>
+<div style="position:absolute;top:7395;left:234"><nobr>？</nobr></div>
+<div style="position:absolute;top:7395;left:306"><nobr>切換 help 畫面</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:7513;left:155"><nobr><b>1.1.2 </b>關閉檔案</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:7753;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=7><b>Page 7</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+
+<div style="position:absolute;top:7839;left:108"><nobr>7/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:7867;left:234"><nobr>這和兩個命令 w(write)，q(quit)有關。w 和 q 是屬於 ex 命令，必須在一般模</nobr></div>
+<div style="position:absolute;top:7897;left:198"><nobr>式下使用，並且要先用「：」來指定是 ex 命令。</nobr></div>
+<div style="position:absolute;top:7952;left:234"><nobr>q 是結束的意思，如果輸入 q 會出現「No write since last change」的錯誤訊息</nobr></div>
+<div style="position:absolute;top:7983;left:198"><nobr>，這是因為文章的內容已經被更動過了，加上!可以強制離開。；w 是存檔的意</nobr></div>
+<div style="position:absolute;top:8013;left:198"><nobr>思，後面接著檔名就可以「另存新檔」。輸入：w /tmp/vitemp，再輸入：q，回到</nobr></div>
+<div style="position:absolute;top:8043;left:198"><nobr>提示符號下，執行：</nobr></div>
+<div style="position:absolute;top:8107;left:176"><nobr>$ cat /tmp/vitemp</nobr></div>
+
+<div style="position:absolute;top:8108;left:356"><nobr>；觀察一下 vitemp 的內容</nobr></div>
+<div style="position:absolute;top:8177;left:234"><nobr>所以，</nobr></div>
+<div style="position:absolute;top:8233;left:234"><nobr>：w 存檔</nobr></div>
+<div style="position:absolute;top:8290;left:234"><nobr>：q 離開</nobr></div>
+<div style="position:absolute;top:8346;left:234"><nobr>：q! 不存檔離開</nobr></div>
+<div style="position:absolute;top:8403;left:234"><nobr>：wq 存檔離開</nobr></div>
+<div style="position:absolute;top:8460;left:234"><nobr>：wq!強制存檔離開，通常用在使用者修改唯讀屬性的檔案</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:27px;font-family:Times">
+<div style="position:absolute;top:8603;left:134"><nobr><b>1.2 vi </b>的模式</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:8761;left:234"><nobr>回想一下前面提到的，vi 只用到標準鍵盤(也就是沒有現在 101 鍵鍵盤右方</nobr></div>
+<div style="position:absolute;top:8790;left:198"><nobr>的擴充鍵和數字鍵)，那如何區分打字和編輯指令呢？想像一下，有兩個鍵盤，</nobr></div>
+<div style="position:absolute;top:8820;left:198"><nobr>一個負責輸入，一個負責編輯，例如，在輸入的鍵盤上「w」就代表輸入小寫的</nobr></div>
+<div style="position:absolute;top:8848;left:198"><nobr>w，而編輯的鍵盤上 w 代表右移一個字，也就是相同的按鍵有不同的意義。</nobr></div>
+<div style="position:absolute;top:8907;left:234"><nobr>當然，實際上只有一個鍵盤，靠著一些功能鍵來作兩種模式的轉換。提醒</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:9016;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=8><b>Page 8</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:9102;left:108"><nobr>8/89</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:9130;left:198"><nobr>您一下，vi 也是區分大小寫的，雖然搜尋的時候可以指定不區分大小寫，但一</nobr></div>
+<div style="position:absolute;top:9160;left:198"><nobr>般模式一定區分大小寫。直接執行：</nobr></div>
+<div style="position:absolute;top:9225;left:176"><nobr>$ vi</nobr></div>
+<div style="position:absolute;top:9293;left:234"><nobr>現在按下 i(insert)，注意右下角顯示「--INSERT--」的訊息，輸入 vi 在第一行</nobr></div>
+<div style="position:absolute;top:9323;left:198"><nobr>行首就出現 vi 了。按下[ESC]注意「--INSERT--」消失了，這代表回到一般模式，</nobr></div>
+<div style="position:absolute;top:9353;left:198"><nobr>按下 u(undo)，回復上一個動作，可以發現開頭的 vi 不見了，再按下[CTRL] + r</nobr></div>
+<div style="position:absolute;top:9381;left:198"><nobr>(redo)，又回來了。</nobr></div>
+</span></font>
+
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:9380;left:350"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:9439;left:234"><nobr>還有其它的指令可以切換一般模式和插入模式，現在按下 a(append)，輸入</nobr></div>
+<div style="position:absolute;top:9467;left:198"><nobr>vi，發現不一樣了嗎？vi 在原本的 vi 後面出現，按下[ESC]，再按下 u，這一次</nobr></div>
+<div style="position:absolute;top:9499;left:198"><nobr>輸入 o(open)，再輸入 vi，vi 在下一行出現了。</nobr></div>
+<div style="position:absolute;top:9555;left:234"><nobr>整理一下，預設的模式是一般模式，按下 i 可以換到插入模式，插入點在</nobr></div>
+<div style="position:absolute;top:9585;left:198"><nobr>游標之前。按下[ESC]可以回到一般模式。還有：</nobr></div>
+<div style="position:absolute;top:9697;left:234"><nobr>I</nobr></div>
+
+<div style="position:absolute;top:9699;left:280"><nobr>在行首插入文字</nobr></div>
+<div style="position:absolute;top:9754;left:234"><nobr>a</nobr></div>
+<div style="position:absolute;top:9756;left:280"><nobr>插入點在游標之後</nobr></div>
+<div style="position:absolute;top:9811;left:234"><nobr>A</nobr></div>
+<div style="position:absolute;top:9812;left:280"><nobr>在行末插入文字</nobr></div>
+<div style="position:absolute;top:9867;left:234"><nobr>o</nobr></div>
+<div style="position:absolute;top:9869;left:280"><nobr>在游標的下一行開啟新行</nobr></div>
+<div style="position:absolute;top:9924;left:234"><nobr>O</nobr></div>
+<div style="position:absolute;top:9926;left:280"><nobr>在游標的上一行開啟新行</nobr></div>
+
+<div style="position:absolute;top:9981;left:234"><nobr>s</nobr></div>
+<div style="position:absolute;top:9983;left:280"><nobr>刪除現存字元，再插入文字</nobr></div>
+<div style="position:absolute;top:10038;left:234"><nobr>S</nobr></div>
+<div style="position:absolute;top:10039;left:280"><nobr>刪除現存行，再插入文字</nobr></div>
+<div style="position:absolute;top:10095;left:234"><nobr>R</nobr></div>
+<div style="position:absolute;top:10096;left:280"><nobr>以取代方式輸入文字</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:10185;left:87"><nobr>1</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:10187;left:94"><nobr>．傳統上要反向回復要下:redo 的命令，[CTRL]+r 這個命令只有 vim 才有。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:10279;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=9><b>Page 9</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:10365;left:108"><nobr>9/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:10391;left:234"><nobr>[INSERT]</nobr></div>
+<div style="position:absolute;top:10393;left:342"><nobr>和 i 一樣，僅限 vim</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+
+<div style="position:absolute;top:10391;left:493"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:10448;left:234"><nobr>[INSERT][INSERT]</nobr></div>
+<div style="position:absolute;top:10450;left:450"><nobr>和 R 一樣，僅限 vim</nobr></div>
+<div style="position:absolute;top:10507;left:234"><nobr>附帶提供一個小技巧，輸入 10a#[ESC]可以產生連續 20 個「#」，20a+-[ESC]</nobr></div>
+<div style="position:absolute;top:10536;left:198"><nobr>可以產生連續 10 個「+-」，10o#[ESC]則可以產生 10 行以「#」開頭的行。</nobr></div>
+<div style="position:absolute;top:10591;left:234"><nobr>ex 指令模式可以看成一般模式的特殊形態，按下：可以在最下方看到「：」</nobr></div>
+<div style="position:absolute;top:10623;left:198"><nobr>，在：後面可以輸入 ex 指令；先介紹一個編入行號的命令，這對初學 vi 的使</nobr></div>
+<div style="position:absolute;top:10653;left:198"><nobr>用者常有意想不到幫助。</nobr></div>
+
+<div style="position:absolute;top:10709;left:234"><nobr>按下[Esc]到一般模式(即使您已經在一般模式，按下[Esc]也不會有問題)。先</nobr></div>
+<div style="position:absolute;top:10739;left:198"><nobr>按下「：」，輸入 set number，就可以將文章編上行號，set nonumber 可以取消。</nobr></div>
+<div style="position:absolute;top:10769;left:198"><nobr>進一步地，這兩個命令可以簡寫為「se nu」和「se nonu」</nobr></div>
+<div style="position:absolute;top:10890;left:200"><nobr>44 # Run gettys in standard runlevels</nobr></div>
+<div style="position:absolute;top:10915;left:200"><nobr>45 1:2345:respawn:/sbin/mingetty --autologin root tty1</nobr></div>
+<div style="position:absolute;top:10941;left:200"><nobr>46 2:2345:respawn:/sbin/mingetty tty2</nobr></div>
+<div style="position:absolute;top:10966;left:200"><nobr>47 3:2345:respawn:/sbin/mingetty tty3</nobr></div>
+<div style="position:absolute;top:10992;left:200"><nobr>48 4:2345:respawn:/sbin/mingetty tty4</nobr></div>
+<div style="position:absolute;top:11017;left:200"><nobr>49 5:2345:respawn:/sbin/mingetty tty5</nobr></div>
+
+<div style="position:absolute;top:11043;left:200"><nobr>50 6:2345:respawn:/sbin/mingetty tty6</nobr></div>
+<div style="position:absolute;top:11068;left:200"><nobr>51</nobr></div>
+<div style="position:absolute;top:11120;left:176"><nobr>:se nu                                        50,1          93%</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:11419;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:11420;left:98"><nobr>在 vim 中[INSERT]可以重複切換輸入方式為插入或取代，這好像比較直覺，不過，為了巨集的撰寫，基本</nobr></div>
+<div style="position:absolute;top:11450;left:94"><nobr>指令 a i o s 還是要記。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:11542;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=10><b>Page 10</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:11628;left:108"><nobr>10/89</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:27px;font-family:Times">
+<div style="position:absolute;top:11647;left:134"><nobr><b>1.3 vi </b>的編輯命令</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:11805;left:234"><nobr>換個方法來開啟檔案，首先，直接執行 vi，再輸入：r viexer，將剛剛的</nobr></div>
+<div style="position:absolute;top:11833;left:198"><nobr>viexer 讀入。我們先熟悉一下如何移動游標。這裡先提醒一下，編輯命令是不會</nobr></div>
+<div style="position:absolute;top:11865;left:198"><nobr>顯示出來也不需要按下[ENTER]來確定。</nobr></div>
+
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:11982;left:155"><nobr><b>1.3.1 </b>移動游標</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:12059;left:234"><nobr>h j k l 分別代表了←，↓，↑，→移動一個字元</nobr></div>
+<div style="position:absolute;top:12116;left:234"><nobr>w b e 代表往右(w)或往左(b)移一個字及字尾(e)</nobr></div>
+<div style="position:absolute;top:12173;left:234"><nobr>0 ^ $ 移到行首(0)或行尾($)，^會移到第一個非空字元</nobr></div>
+<div style="position:absolute;top:12230;left:234"><nobr>( )</nobr></div>
+<div style="position:absolute;top:12231;left:280"><nobr>代表往右或往左移動一句，句子是以．？！分隔</nobr></div>
+
+<div style="position:absolute;top:12287;left:234"><nobr>{ }</nobr></div>
+<div style="position:absolute;top:12288;left:280"><nobr>代表往右或往左移動一段，vi 是以空行代表分段</nobr></div>
+<div style="position:absolute;top:12346;left:234"><nobr>有時候，純粹只是瀏覽檔案，捲動螢幕可能更方便：</nobr></div>
+<div style="position:absolute;top:12400;left:234"><nobr>[CTRL]+f</nobr></div>
+<div style="position:absolute;top:12402;left:378"><nobr>往下移一個螢幕</nobr></div>
+<div style="position:absolute;top:12457;left:234"><nobr>[CTRL]+b</nobr></div>
+<div style="position:absolute;top:12459;left:378"><nobr>往上移一個螢幕</nobr></div>
+<div style="position:absolute;top:12514;left:234"><nobr>[CTRL]+d</nobr></div>
+<div style="position:absolute;top:12515;left:378"><nobr>往下移半個螢幕</nobr></div>
+
+<div style="position:absolute;top:12571;left:234"><nobr>[CTRL]+u</nobr></div>
+<div style="position:absolute;top:12572;left:378"><nobr>往上移半個螢幕</nobr></div>
+<div style="position:absolute;top:12627;left:234"><nobr>z [ENTER]</nobr></div>
+<div style="position:absolute;top:12629;left:378"><nobr>以游標所在作為螢幕頂端</nobr></div>
+<div style="position:absolute;top:12684;left:234"><nobr>H</nobr></div>
+<div style="position:absolute;top:12686;left:378"><nobr>移到螢幕頂端</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:12805;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=11><b>Page 11</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:12891;left:108"><nobr>11/89</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:12917;left:234"><nobr>M</nobr></div>
+<div style="position:absolute;top:12919;left:378"><nobr>移到螢幕中間</nobr></div>
+<div style="position:absolute;top:12974;left:234"><nobr>L</nobr></div>
+<div style="position:absolute;top:12976;left:378"><nobr>移到螢幕底端</nobr></div>
+<div style="position:absolute;top:13031;left:234"><nobr>G</nobr></div>
+<div style="position:absolute;top:13033;left:378"><nobr>移到文章結尾</nobr></div>
+<div style="position:absolute;top:13089;left:234"><nobr>配合數值，可以讓移動指令更具彈性，使用前面提過的 set 命令，輸入：</nobr></div>
+<div style="position:absolute;top:13117;left:198"><nobr>set nu，以便編入行號，再輸入 4G 可以移到第 4 行，4w 可以移到&quot;8…”的字首</nobr></div>
+
+<div style="position:absolute;top:13149;left:198"><nobr>，2be 可以移到&quot;adulte”的字尾，3k 上移三行，保持在一樣的位置，很方便吧。</nobr></div>
+<div style="position:absolute;top:13179;left:198"><nobr>當然，如果您覺得行號很礙眼，：set nonu 就可以取消了。</nobr></div>
+<div style="position:absolute;top:13235;left:234"><nobr>在設定檔中，通常需要改的是特定的關鍵字。例如，web server 的設定檔</nobr></div>
+<div style="position:absolute;top:13264;left:198"><nobr>httpd.conf，預設有一千行以上，如果只是想變更首頁的位置，尋找關鍵</nobr></div>
+<div style="position:absolute;top:13295;left:198"><nobr>字&quot;DocumentRoot&quot;要比看完整個檔案快多了。</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:13413;left:155"><nobr><b>1.3.2 </b>搜尋指令</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:13492;left:234"><nobr>尋找可以看作是一種移動的方法 -- 依照關鍵字來移動。</nobr></div>
+<div style="position:absolute;top:13548;left:234"><nobr>假定要在這個簡單的清單中尋找有關 adult 的字，回到一般模式下輸入：</nobr></div>
+<div style="position:absolute;top:13613;left:176"><nobr>1G/adult</nobr></div>
+<div style="position:absolute;top:13682;left:234"><nobr>游標現在停在第三行 aadult 的第二個 a 下方，按下 n，游標移動到第四行的</nobr></div>
+<div style="position:absolute;top:13710;left:198"><nobr>adult。連續按下 n 可以在所有的字串 adult 中順序移動。觀察一下，預設的搜尋是</nobr></div>
+<div style="position:absolute;top:13741;left:198"><nobr>模糊搜尋且區分大小寫的，vi 只管 adult 這三個相連接的字母而不管是不是一個</nobr></div>
+<div style="position:absolute;top:13771;left:198"><nobr>字，所以 aadult，adulte 都會被找到。在進一步討論之前先試試看 N，N 是反向</nobr></div>
+<div style="position:absolute;top:13801;left:198"><nobr>搜尋。</nobr></div>
+
+<div style="position:absolute;top:13857;left:234"><nobr>現在，如果真的要找 adult 這個字怎麼辦呢？先輸入：</nobr></div>
+<div style="position:absolute;top:13922;left:176"><nobr>/\&lt;adult</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:14068;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=12><b>Page 12</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:14154;left:108"><nobr>12/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:14182;left:234"><nobr>連續按下 n，這次只有 adult 和 adulte 被找到，\&lt;是符合字首的意思，也就</nobr></div>
+<div style="position:absolute;top:14212;left:198"><nobr>是搜尋樣式 adult 必須是一個字的開頭。聰明的您應該知道怎麼作了吧，輸入：</nobr></div>
+
+<div style="position:absolute;top:14277;left:176"><nobr>/\&lt;adult\&gt;</nobr></div>
+<div style="position:absolute;top:14345;left:234"><nobr>就可以正確地找到 adult 這個字了。所以：</nobr></div>
+<div style="position:absolute;top:14400;left:234"><nobr>/</nobr></div>
+<div style="position:absolute;top:14402;left:306"><nobr>向後文尋找</nobr></div>
+<div style="position:absolute;top:14457;left:234"><nobr>?</nobr></div>
+<div style="position:absolute;top:14459;left:306"><nobr>向前文尋找</nobr></div>
+<div style="position:absolute;top:14514;left:234"><nobr>n</nobr></div>
+<div style="position:absolute;top:14515;left:306"><nobr>往前尋找下一個</nobr></div>
+
+<div style="position:absolute;top:14570;left:234"><nobr>N</nobr></div>
+<div style="position:absolute;top:14572;left:306"><nobr>往後尋找下一個</nobr></div>
+<div style="position:absolute;top:14627;left:234"><nobr>\&lt;</nobr></div>
+<div style="position:absolute;top:14629;left:306"><nobr>字首相符</nobr></div>
+<div style="position:absolute;top:14684;left:234"><nobr>\&gt;</nobr></div>
+<div style="position:absolute;top:14686;left:306"><nobr>字尾相符</nobr></div>
+<div style="position:absolute;top:14741;left:234"><nobr>\&lt;text\&gt; 全字相符</nobr></div>
+
+<div style="position:absolute;top:14800;left:234"><nobr>尋找後的游標落點預設在搜尋字串的開頭，這是可以改變的，首先是行，</nobr></div>
+<div style="position:absolute;top:14829;left:198"><nobr>加上數字可以將落點上移或下移數行，如/Ken/2，游標的落點會在下兩行 Judy</nobr></div>
+<div style="position:absolute;top:14859;left:198"><nobr>的 J 下方；另外，b 代表字首，e 代表字尾，–代表左移，+代表右移，所以/</nobr></div>
+<div style="position:absolute;top:14887;left:198"><nobr>Ken/e+2，游標的落點會在後面的 m 下方。這裡有一個要注意的地方，由於 vi 會</nobr></div>
+<div style="position:absolute;top:14918;left:198"><nobr>將新的落點設為預設的行，所以像/2003/-1 是無法配合 n 使用的(會永遠找到匹</nobr></div>
+<div style="position:absolute;top:14948;left:198"><nobr>配的上一行)，要用 N 來代替。</nobr></div>
+<div style="position:absolute;top:15005;left:234"><nobr>還有一種特殊的尋找是尋找對稱的括號，將游標任意停在左括號&quot;(&quot;上按下</nobr></div>
+<div style="position:absolute;top:15033;left:198"><nobr>%，就移到右邊的括號了，這在程式的除錯上十分有用。</nobr></div>
+
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:15153;left:155"><nobr><b>1.3.3 </b>基本編輯</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:15232;left:234"><nobr>以下介紹基本的刪除，移動和複製的作法。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:15331;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=13><b>Page 13</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:15417;left:108"><nobr>13/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+
+<div style="position:absolute;top:15445;left:234"><nobr>回到剛才的 viexer，想要刪除第一行，只要輸入 1Gdd 就可以了，1G 是到</nobr></div>
+<div style="position:absolute;top:15475;left:198"><nobr>第一行 d 是刪除(delete)，dd 會刪除游標所在的行，dd 可以配合數字來使用，</nobr></div>
+<div style="position:absolute;top:15503;left:198"><nobr>2dd 會刪除剩下的兩行。按下 2u 回復這兩個動作。</nobr></div>
+<div style="position:absolute;top:15561;left:234"><nobr>如果要進行更細部的工作，例如刪除兩個字，或是 6 到 12 個字母，那就要</nobr></div>
+<div style="position:absolute;top:15591;left:198"><nobr>配合前面的移動指令來作了。</nobr></div>
+<div style="position:absolute;top:15648;left:234"><nobr>這個部分實作上須要活用，以下提供一些例子希望有幫助：</nobr></div>
+<div style="position:absolute;top:15703;left:234"><nobr>2G2wdw</nobr></div>
+<div style="position:absolute;top:15705;left:342"><nobr>刪除第二行的第三個字</nobr></div>
+<div style="position:absolute;top:15760;left:234"><nobr>1G3w2dw</nobr></div>
+
+<div style="position:absolute;top:15761;left:378"><nobr>刪除第一行的第四和第五個字</nobr></div>
+<div style="position:absolute;top:15817;left:234"><nobr>3Gwd$</nobr></div>
+<div style="position:absolute;top:15818;left:378"><nobr>將第三行除第一個字外刪除，這裡的 d$可以用 D 取代</nobr></div>
+<div style="position:absolute;top:15873;left:234"><nobr>3G2db</nobr></div>
+<div style="position:absolute;top:15875;left:378"><nobr>刪除第二行倒數兩個字</nobr></div>
+<div style="position:absolute;top:15930;left:234"><nobr>1G4l5dl</nobr></div>
+<div style="position:absolute;top:15932;left:342"><nobr>刪除第一行第 5 到第 9 個字元</nobr></div>
+<div style="position:absolute;top:15987;left:234"><nobr>d/NY</nobr></div>
+<div style="position:absolute;top:15988;left:342"><nobr>會把游標到 NY 之間的字元都刪除</nobr></div>
+
+<div style="position:absolute;top:16045;left:234"><nobr>任何刪除的資料會被暫存到緩衝區(register)，可以使用 p(put)將這些資料貼</nobr></div>
+<div style="position:absolute;top:16075;left:198"><nobr>回來，如果游標所在的位置不同，就造成了移動的效果，下面的第一個命令將</nobr></div>
+<div style="position:absolute;top:16105;left:198"><nobr>第一行移動到結尾，第二個命令將最後一行移動到開頭：</nobr></div>
+<div style="position:absolute;top:16160;left:234"><nobr>1GddGp</nobr></div>
+<div style="position:absolute;top:16217;left:234"><nobr>Gdd1GP</nobr></div>
+<div style="position:absolute;top:16273;left:234"><nobr>P 是向前貼上，p 是向後貼上</nobr></div>
+<div style="position:absolute;top:16332;left:234"><nobr>複製的道理是完全一樣的，命令是 y(yank)，意思是將選取的內容「拉」到緩</nobr></div>
+<div style="position:absolute;top:16362;left:198"><nobr>衝區中，配合 p 就可以複製了。舉兩個簡單的例子：</nobr></div>
+<div style="position:absolute;top:16417;left:234"><nobr>1G2yyGp</nobr></div>
+
+<div style="position:absolute;top:16418;left:378"><nobr>將第 1，2 行複製到結尾</nobr></div>
+<div style="position:absolute;top:16474;left:234"><nobr>1GwywP</nobr></div>
+<div style="position:absolute;top:16475;left:342"><nobr>將第一行的第二個字重覆一次</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:16594;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=14><b>Page 14</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:16680;left:108"><nobr>14/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:16708;left:234"><nobr>只有三個命令：</nobr></div>
+<div style="position:absolute;top:16763;left:234"><nobr>d</nobr></div>
+
+<div style="position:absolute;top:16765;left:306"><nobr>刪除</nobr></div>
+<div style="position:absolute;top:16820;left:234"><nobr>y</nobr></div>
+<div style="position:absolute;top:16822;left:306"><nobr>複製</nobr></div>
+<div style="position:absolute;top:16877;left:234"><nobr>p/P</nobr></div>
+<div style="position:absolute;top:16878;left:306"><nobr>向(後/前)貼上</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:27px;font-family:Times">
+<div style="position:absolute;top:17018;left:134"><nobr><b>1.4 Regular Express</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:17118;left:234"><nobr>Regular Express 通常譯為規則表達式，說實話，這樣的翻譯比沒翻還慘，</nobr></div>
+
+<div style="position:absolute;top:17149;left:198"><nobr>只不過實在沒有合適的語句，就將就點了。其實，規則表達式只是一種比對文</nobr></div>
+<div style="position:absolute;top:17179;left:198"><nobr>字的規則，以 viexer 來看，如果要尋找的是 Ken，這是很明確的，直接找就可</nobr></div>
+<div style="position:absolute;top:17209;left:198"><nobr>以了，但是，如果要找的是第二欄是 F 的行，或者不是 2003 年的紀錄，就需要</nobr></div>
+<div style="position:absolute;top:17239;left:198"><nobr>依賴規則表達式了。</nobr></div>
+<div style="position:absolute;top:17295;left:234"><nobr>規則表達式在 UNIX 中使用的非常廣泛，由各種文書編輯器到命令(如</nobr></div>
+<div style="position:absolute;top:17323;left:198"><nobr>grep，sed，awk 等)，語言(如 c，perl，sql 等)都可以使用，不過，套句常用的</nobr></div>
+<div style="position:absolute;top:17355;left:198"><nobr>話，「知道的人多，會用的人少」，規則表達式是個易學難精的東西，您可以想</nobr></div>
+<div style="position:absolute;top:17384;left:198"><nobr>成這是進入 Linux 世界的第一道障礙。</nobr></div>
+<div style="position:absolute;top:17441;left:234"><nobr>規則表達式在 UNIX 中歷史悠久，在發展的過程中也有一些陸續的增訂，</nobr></div>
+
+<div style="position:absolute;top:17471;left:198"><nobr>一般而言，Linux 所附的 vi/vim 大多支援。以下是規則表達式中常用的中介字符</nobr></div>
+<div style="position:absolute;top:17499;left:198"><nobr>(metacharacter)：</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:17572;left:193"><nobr>傳統的規則表達式<b>:</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:17652;left:234"><nobr>．</nobr></div>
+<div style="position:absolute;top:17652;left:280"><nobr>除了換行字元以外的所有字元，c.t 可以代表 cat 和 cut</nobr></div>
+<div style="position:absolute;top:17709;left:234"><nobr>＊</nobr></div>
+
+<div style="position:absolute;top:17709;left:280"><nobr>這和 dos 中的*很類似但不同，＊代表 0 或多個前面的字元，所以，</nobr></div>
+<div style="position:absolute;top:17737;left:198"><nobr>1*0 可以代表 10，110 或 1110。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:17857;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=15><b>Page 15</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:17943;left:108"><nobr>15/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:17969;left:234"><nobr>^</nobr></div>
+<div style="position:absolute;top:17971;left:280"><nobr>代表一行的開頭</nobr></div>
+<div style="position:absolute;top:18026;left:234"><nobr>$</nobr></div>
+
+<div style="position:absolute;top:18028;left:280"><nobr>代表一行的結尾</nobr></div>
+<div style="position:absolute;top:18083;left:234"><nobr>[ ]</nobr></div>
+<div style="position:absolute;top:18085;left:280"><nobr>符合括號中的任一字元，[ab].*代表以 a 或 b 開頭的行，括號中以「 -</nobr></div>
+<div style="position:absolute;top:18114;left:198"><nobr>」連接代表範圍，[a-z]代表所有小寫字母；以^開頭代表「非」，如[^0-9]代表不是</nobr></div>
+<div style="position:absolute;top:18144;left:198"><nobr>數字的字元。</nobr></div>
+<div style="position:absolute;top:18199;left:234"><nobr>\( \) 標定一個區段，使用時以\1，\2…叫回來</nobr></div>
+<div style="position:absolute;top:18256;left:234"><nobr>\&lt; \&gt; 字首，字尾或全文相符</nobr></div>
+
+<div style="position:absolute;top:18313;left:234"><nobr>&amp;</nobr></div>
+<div style="position:absolute;top:18314;left:280"><nobr>重覆前面的結果</nobr></div>
+<div style="position:absolute;top:18370;left:234"><nobr>\L</nobr></div>
+<div style="position:absolute;top:18371;left:280"><nobr>強制小寫，只用在取代狀況</nobr></div>
+<div style="position:absolute;top:18426;left:234"><nobr>\U</nobr></div>
+<div style="position:absolute;top:18428;left:280"><nobr>強制大寫，只用在取代狀況</nobr></div>
+<div style="position:absolute;top:18483;left:234"><nobr>\e</nobr></div>
+<div style="position:absolute;top:18485;left:280"><nobr>停止強制小寫，只用在取代狀況</nobr></div>
+<div style="position:absolute;top:18540;left:234"><nobr>\E</nobr></div>
+
+<div style="position:absolute;top:18541;left:280"><nobr>停止強制大寫，只用在取代狀況</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:18613;left:193"><nobr>延伸的規則表達式<b>:</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:18691;left:234"><nobr>\|</nobr></div>
+<div style="position:absolute;top:18693;left:280"><nobr>或</nobr></div>
+<div style="position:absolute;top:18748;left:234"><nobr>\+</nobr></div>
+<div style="position:absolute;top:18750;left:280"><nobr>符合一個或多個前述的規則表達式，注意，＊代表零或多個</nobr></div>
+
+<div style="position:absolute;top:18805;left:234"><nobr>\=</nobr></div>
+<div style="position:absolute;top:18807;left:280"><nobr>符合前面零或一個規則表達式</nobr></div>
+<div style="position:absolute;top:18862;left:234"><nobr>\&amp;</nobr></div>
+<div style="position:absolute;top:18863;left:280"><nobr>符合前面規則表達式的特定字串，如/reguler\&amp;..會符合 regular 中的</nobr></div>
+<div style="position:absolute;top:18892;left:198"><nobr>re 但不會符合 recharge 中的 re。</nobr></div>
+<div style="position:absolute;top:18948;left:234"><nobr>\_</nobr></div>
+<div style="position:absolute;top:18950;left:280"><nobr>行尾，主要配合.或 s 來用，如 the\_.end 可以代表同一行也可以是不</nobr></div>
+<div style="position:absolute;top:18980;left:198"><nobr>同行。</nobr></div>
+
+</span></font>
+
+<div style="position:absolute;top:19120;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=16><b>Page 16</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:19206;left:108"><nobr>16/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:19232;left:234"><nobr>\{n,m} 符合前面 n 到 m 個規則表達式，且盡可能地多。這個部分比較複</nobr></div>
+<div style="position:absolute;top:19264;left:198"><nobr>雜：</nobr></div>
+<div style="position:absolute;top:19321;left:306"><nobr>只有指定 n，例如\{2}表示符合前面兩個規則表達式</nobr></div>
+<div style="position:absolute;top:19377;left:306"><nobr>不指定 m，例如\{2,}表示符合至少前面兩個規則表達式</nobr></div>
+<div style="position:absolute;top:19434;left:306"><nobr>不指定 n，例如\{,2}表示符合前面零到兩個規則表達式</nobr></div>
+
+<div style="position:absolute;top:19491;left:306"><nobr>使用&quot;-&quot;開頭，表示盡可能地少，例如\{-2,5}</nobr></div>
+<div style="position:absolute;top:19546;left:234"><nobr>\%^ 檔案開頭</nobr></div>
+<div style="position:absolute;top:19603;left:234"><nobr>\%$ 檔案結尾</nobr></div>
+<div style="position:absolute;top:19660;left:234"><nobr>\a</nobr></div>
+<div style="position:absolute;top:19661;left:280"><nobr>所有的文字，等同於[a-zA-Z]</nobr></div>
+<div style="position:absolute;top:19716;left:234"><nobr>\b</nobr></div>
+<div style="position:absolute;top:19716;left:280"><nobr>backspace</nobr></div>
+<div style="position:absolute;top:19773;left:234"><nobr>\c</nobr></div>
+
+<div style="position:absolute;top:19775;left:280"><nobr>不區分大小寫，\cword 可以是 Word，WOrD 或 word</nobr></div>
+<div style="position:absolute;top:19830;left:234"><nobr>\C</nobr></div>
+<div style="position:absolute;top:19831;left:280"><nobr>強制區分大小寫</nobr></div>
+<div style="position:absolute;top:19887;left:234"><nobr>\d</nobr></div>
+<div style="position:absolute;top:19888;left:280"><nobr>十進位數字，等同於[0-9]</nobr></div>
+<div style="position:absolute;top:19943;left:234"><nobr>\D</nobr></div>
+<div style="position:absolute;top:19945;left:280"><nobr>非十進位數字，等同於[^0-9]</nobr></div>
+<div style="position:absolute;top:20000;left:234"><nobr>\e</nobr></div>
+<div style="position:absolute;top:20000;left:280"><nobr>[ESC]</nobr></div>
+
+<div style="position:absolute;top:20057;left:234"><nobr>\f</nobr></div>
+<div style="position:absolute;top:20059;left:280"><nobr>檔案保留字元，使用：set isfname 可以知道現行的檔案保留字元，顯</nobr></div>
+<div style="position:absolute;top:20088;left:198"><nobr>示的數字代表 ASCII 字碼</nobr></div>
+<div style="position:absolute;top:20143;left:234"><nobr>\F</nobr></div>
+<div style="position:absolute;top:20145;left:280"><nobr>和\f 類似，但不包含數字</nobr></div>
+<div style="position:absolute;top:20200;left:234"><nobr>\h</nobr></div>
+<div style="position:absolute;top:20202;left:280"><nobr>任意文字包含底線，等同於[a-zA-Z_]</nobr></div>
+<div style="position:absolute;top:20257;left:234"><nobr>\H</nobr></div>
+<div style="position:absolute;top:20259;left:280"><nobr>非\h 的字元</nobr></div>
+
+</span></font>
+
+<div style="position:absolute;top:20383;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=17><b>Page 17</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:20469;left:108"><nobr>17/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:20495;left:234"><nobr>\i</nobr></div>
+<div style="position:absolute;top:20497;left:280"><nobr>符合識別字元，使用：set isident 可以知道現行的識別字元</nobr></div>
+<div style="position:absolute;top:20552;left:234"><nobr>\I</nobr></div>
+<div style="position:absolute;top:20554;left:280"><nobr>符合非數字形式的識別字元</nobr></div>
+<div style="position:absolute;top:20609;left:234"><nobr>\k</nobr></div>
+
+<div style="position:absolute;top:20611;left:280"><nobr>符合在 iskeyword 中定義的字元</nobr></div>
+<div style="position:absolute;top:20666;left:234"><nobr>\K</nobr></div>
+<div style="position:absolute;top:20667;left:280"><nobr>和\k 類似，但不包含數字</nobr></div>
+<div style="position:absolute;top:20722;left:234"><nobr>\l</nobr></div>
+<div style="position:absolute;top:20724;left:280"><nobr>小寫字母，等同於[a-z]</nobr></div>
+<div style="position:absolute;top:20779;left:234"><nobr>\L</nobr></div>
+<div style="position:absolute;top:20781;left:280"><nobr>非小寫字母，等同於[^a-z]</nobr></div>
+<div style="position:absolute;top:20836;left:234"><nobr>\n</nobr></div>
+<div style="position:absolute;top:20838;left:280"><nobr>換行字元</nobr></div>
+
+<div style="position:absolute;top:20893;left:234"><nobr>\p</nobr></div>
+<div style="position:absolute;top:20894;left:280"><nobr>非列印字元，由 isprint 定義</nobr></div>
+<div style="position:absolute;top:20950;left:234"><nobr>\P</nobr></div>
+<div style="position:absolute;top:20951;left:280"><nobr>和\p 類似，但不包含數字</nobr></div>
+<div style="position:absolute;top:21006;left:234"><nobr>\r</nobr></div>
+<div style="position:absolute;top:21006;left:280"><nobr>[ENTER]</nobr></div>
+<div style="position:absolute;top:21063;left:234"><nobr>\s</nobr></div>
+<div style="position:absolute;top:21065;left:280"><nobr>空白或[TAB](white space)</nobr></div>
+<div style="position:absolute;top:21120;left:234"><nobr>\S</nobr></div>
+
+<div style="position:absolute;top:21121;left:280"><nobr>非空白和[TAB]</nobr></div>
+<div style="position:absolute;top:21177;left:234"><nobr>\t</nobr></div>
+<div style="position:absolute;top:21177;left:280"><nobr>tab</nobr></div>
+<div style="position:absolute;top:21233;left:234"><nobr>\u</nobr></div>
+<div style="position:absolute;top:21235;left:280"><nobr>大寫字母，等同於[A-Z]</nobr></div>
+<div style="position:absolute;top:21290;left:234"><nobr>\U</nobr></div>
+<div style="position:absolute;top:21292;left:280"><nobr>非大寫字母，等同於[^A-Z]</nobr></div>
+<div style="position:absolute;top:21347;left:234"><nobr>\w</nobr></div>
+<div style="position:absolute;top:21349;left:280"><nobr>任意數字文字加底線，等同於[0-9a-zA-Z_]</nobr></div>
+
+<div style="position:absolute;top:21404;left:234"><nobr>\W</nobr></div>
+<div style="position:absolute;top:21405;left:280"><nobr>非\w 的字元</nobr></div>
+<div style="position:absolute;top:21460;left:234"><nobr>\x</nobr></div>
+<div style="position:absolute;top:21462;left:280"><nobr>十六進位數字，等同於[0-9a-f]</nobr></div>
+<div style="position:absolute;top:21517;left:234"><nobr>\X</nobr></div>
+<div style="position:absolute;top:21519;left:280"><nobr>非十六進位數字，等同於[^0-9a-f]</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:21646;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=18><b>Page 18</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:21732;left:108"><nobr>18/89</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:21751;left:193"><nobr><b>POSIX </b>方括號表示法<b>:</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:21831;left:234"><nobr>[:alnum:]</nobr></div>
+<div style="position:absolute;top:21833;left:342"><nobr>所有文字與數字</nobr></div>
+<div style="position:absolute;top:21888;left:234"><nobr>[:alpha:]</nobr></div>
+<div style="position:absolute;top:21889;left:342"><nobr>文字</nobr></div>
+<div style="position:absolute;top:21945;left:234"><nobr>[:blank:]</nobr></div>
+
+<div style="position:absolute;top:21946;left:342"><nobr>空白和[TAB]</nobr></div>
+<div style="position:absolute;top:22001;left:234"><nobr>[:cntrl:]</nobr></div>
+<div style="position:absolute;top:22003;left:342"><nobr>控制字元</nobr></div>
+<div style="position:absolute;top:22058;left:234"><nobr>[:digit:]</nobr></div>
+<div style="position:absolute;top:22060;left:342"><nobr>數字</nobr></div>
+<div style="position:absolute;top:22115;left:234"><nobr>[:graph:]</nobr></div>
+<div style="position:absolute;top:22117;left:342"><nobr>除空白外的列印字元</nobr></div>
+<div style="position:absolute;top:22172;left:234"><nobr>[:lower:]</nobr></div>
+<div style="position:absolute;top:22173;left:342"><nobr>小寫字元</nobr></div>
+
+<div style="position:absolute;top:22228;left:234"><nobr>[:print:]</nobr></div>
+<div style="position:absolute;top:22230;left:342"><nobr>含空白的列印字元</nobr></div>
+<div style="position:absolute;top:22285;left:234"><nobr>[:punct:]</nobr></div>
+<div style="position:absolute;top:22287;left:342"><nobr>標點符號</nobr></div>
+<div style="position:absolute;top:22342;left:234"><nobr>[:space:]</nobr></div>
+<div style="position:absolute;top:22344;left:342"><nobr>空白</nobr></div>
+<div style="position:absolute;top:22399;left:234"><nobr>[:upper:]</nobr></div>
+<div style="position:absolute;top:22400;left:342"><nobr>大寫字元</nobr></div>
+<div style="position:absolute;top:22456;left:234"><nobr>[:xdigit:]</nobr></div>
+
+<div style="position:absolute;top:22457;left:342"><nobr>十六進位數字</nobr></div>
+<div style="position:absolute;top:22512;left:234"><nobr>[:return:]</nobr></div>
+<div style="position:absolute;top:22512;left:342"><nobr>[ENTER]</nobr></div>
+<div style="position:absolute;top:22569;left:234"><nobr>[:tab:]</nobr></div>
+<div style="position:absolute;top:22569;left:342"><nobr>[TAB]</nobr></div>
+<div style="position:absolute;top:22626;left:234"><nobr>[:escape:]</nobr></div>
+<div style="position:absolute;top:22626;left:342"><nobr>[ESC]</nobr></div>
+<div style="position:absolute;top:22683;left:234"><nobr>[:backspace:] 倒退鍵</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:22909;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=19><b>Page 19</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:22995;left:108"><nobr>19/89</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:23014;left:155"><nobr><b>1.4.1 </b>代換<b>(substitution)</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:23093;left:234"><nobr>使用 ex 命令作代換(substitution)應該是最容易了解規則表達式的練習。代換</nobr></div>
+<div style="position:absolute;top:23123;left:198"><nobr>命令的形式為：</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:23178;left:234"><nobr>：[範圍]s/[目標]/[取代]/[參數]</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:23236;left:234"><nobr>還是用 viexer 作範例，由於印刷上的半形空格並不明顯，以下用□代替空</nobr></div>
+<div style="position:absolute;top:23266;left:198"><nobr>格，另外，以下的範例都是獨立的，並沒有累積性，如果要實驗的話，作完應</nobr></div>
+<div style="position:absolute;top:23296;left:198"><nobr>該要回復：</nobr></div>
+<div style="position:absolute;top:23351;left:234"><nobr>:3s/Ken/Bob/</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:23350;left:330"><nobr>1</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:23409;left:234"><nobr>這是最基本的形式，可以將第三行的 Ken 改為 Bob。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:23480;left:193"><nobr>範圍</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:23560;left:234"><nobr>在 ex 命令中範圍的基本形式為 n,m 代表第 n 到第 m 行，例如：</nobr></div>
+<div style="position:absolute;top:23615;left:234"><nobr>:3,7s/2003/2002/</nobr></div>
+<div style="position:absolute;top:23674;left:234"><nobr>可以將第 3 行到第 7 行的 2003 置換成 2002，這裡的 7 也可以改為$代表最</nobr></div>
+<div style="position:absolute;top:23704;left:198"><nobr>後一行。有的時候在編輯中，相對位置可能比較直覺，例如游標在第 3 行，上述</nobr></div>
+
+<div style="position:absolute;top:23734;left:198"><nobr>的命令可以改為：</nobr></div>
+<div style="position:absolute;top:23788;left:234"><nobr>:.,+4s/2003/2002/</nobr></div>
+<div style="position:absolute;top:23847;left:234"><nobr>這裡的「．」代表目前所在的行，+ 代表向下，–代表向上，所以游標如果</nobr></div>
+<div style="position:absolute;top:23877;left:198"><nobr>在第 5 行，</nobr></div>
+<div style="position:absolute;top:23932;left:234"><nobr>:-2,+2s/2003/2002/</nobr></div>
+<div style="position:absolute;top:23990;left:234"><nobr>可以達到相同的結果。這裡要記得，相對位置是以目前游標所在的行而定(</nobr></div>
+<div style="position:absolute;top:24020;left:198"><nobr>可以使用[CTRL]+g 確定)，所以，如果游標在第 2 行，而希望修改的範圍是第 5</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:24078;left:87"><nobr>1</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:24080;left:94"><nobr>在 vim 中其實是不用加最後的 /，不過，其它用到規則表達式的地方多半都是要加的，養成習慣比較好</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:24172;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=20><b>Page 20</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:24258;left:108"><nobr>20/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:24286;left:198"><nobr>行和第 5 行的下一行，則以下的命令會產生錯誤：</nobr></div>
+<div style="position:absolute;top:24341;left:234"><nobr>:5,+1s/2003/2002/</nobr></div>
+<div style="position:absolute;top:24400;left:234"><nobr>因為這樣等於是指定了 5,3 的範圍，這時應該用「；」取代「，」，「；」的意</nobr></div>
+
+<div style="position:absolute;top:24430;left:198"><nobr>義是將指定的行設為預設行，這樣就不會出錯了。</nobr></div>
+<div style="position:absolute;top:24486;left:234"><nobr>另外，也可以直接用搜尋樣式來指定範圍，例如，要將範圍定為由連續的</nobr></div>
+<div style="position:absolute;top:24516;left:198"><nobr>「=」到文章結束，可以這樣定義：</nobr></div>
+<div style="position:absolute;top:24571;left:234"><nobr>:/^=\+$/,$s/2003/2002/</nobr></div>
+<div style="position:absolute;top:24629;left:234"><nobr>開頭的 ^ 代表一行的開始，^=就表示以 = 開頭的行，「\+」代表一個以上，</nobr></div>
+<div style="position:absolute;top:24659;left:198"><nobr>所以^=\+就代表了連續的 = ，後面的$是行尾，代表該行的結尾也必須是「=」。</nobr></div>
+<div style="position:absolute;top:24689;left:198"><nobr>這樣是為了避免找到像= = = = + 的行，再後面的$是末行的意思，這兩個$不要</nobr></div>
+<div style="position:absolute;top:24719;left:198"><nobr>搞錯了。</nobr></div>
+<div style="position:absolute;top:24775;left:234"><nobr>最後，「%」和 1,$具有相同的意義，也就是全文。</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:24847;left:193"><nobr>取代目標</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:24927;left:234"><nobr>在正式介紹取代之前，先說明三個常被混淆的用法：</nobr></div>
+<div style="position:absolute;top:24984;left:234"><nobr>首先，所有的搜尋或取代在同一行中預設只發生一次，要強制全面搜尋須</nobr></div>
+<div style="position:absolute;top:25013;left:198"><nobr>加上參數 g。</nobr></div>
+<div style="position:absolute;top:25070;left:234"><nobr>其次 *，\+，\=這三個字符，無論是那一個都只和緊接在前的字元有關，而</nobr></div>
+<div style="position:absolute;top:25098;left:198"><nobr>*尤其容易弄錯，請記得 * 是代表 0 或多個。一個簡單的例子：</nobr></div>
+<div style="position:absolute;top:25139;left:176"><nobr>1□100□□100□□□10000□□□□100000□□□□□10000000</nobr></div>
+
+<div style="position:absolute;top:25183;left:234"><nobr>如果想把一個以上的空格改為一個空格，以下的命令：</nobr></div>
+<div style="position:absolute;top:25237;left:234"><nobr>:s/□*/□/</nobr></div>
+<div style="position:absolute;top:25296;left:234"><nobr>只會在 1 前面加上一個空白，修改一下：</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:25435;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=21><b>Page 21</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:25521;left:108"><nobr>21/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:25547;left:234"><nobr>:s/□*/□/g</nobr></div>
+<div style="position:absolute;top:25606;left:234"><nobr>好像更慘，所有的字元都空了一格，這就是因為 * 連 0 個也算的關係。再修</nobr></div>
+
+<div style="position:absolute;top:25636;left:198"><nobr>正一下：</nobr></div>
+<div style="position:absolute;top:25691;left:234"><nobr>:s/□□*/□/g</nobr></div>
+<div style="position:absolute;top:25749;left:234"><nobr>當然，用\+來代替 * 也是可以的。</nobr></div>
+<div style="position:absolute;top:25806;left:234"><nobr>如果是連續重覆的字串，例如 abcabcabc 就必須使用\( \)來標記，前述的三</nobr></div>
+<div style="position:absolute;top:25836;left:198"><nobr>組 abc 就可以表示為\(abc\)\{3}。</nobr></div>
+<div style="position:absolute;top:25892;left:234"><nobr>第三，．，[]，^和$等中介字元只有在搜尋字串比對的時候有特殊意義，</nobr></div>
+<div style="position:absolute;top:25923;left:198"><nobr>在取代的時候只代表自己。如：</nobr></div>
+<div style="position:absolute;top:25977;left:234"><nobr>:%/s/$/$/</nobr></div>
+<div style="position:absolute;top:26036;left:234"><nobr>可以在每一行的結尾加上$。</nobr></div>
+
+<div style="position:absolute;top:26091;left:234"><nobr>-----------------------------------------------------</nobr></div>
+<div style="position:absolute;top:26149;left:234"><nobr>現在，回頭來看看 viexer，這張清單顯然有一些格式上錯誤，當然，像這</nobr></div>
+<div style="position:absolute;top:26179;left:198"><nobr>樣只有 5 行的清單，大可以進入插入模式直接修改，不過，如果這是一張有</nobr></div>
+<div style="position:absolute;top:26207;left:198"><nobr>100 筆或 1000 筆更多資料的清單，那麼，一個修改指令就可能可以省卻數個小</nobr></div>
+<div style="position:absolute;top:26239;left:198"><nobr>時的操作，更不用提人工修改時的失誤了。</nobr></div>
+<div style="position:absolute;top:26294;left:234"><nobr>1．第一欄的人名沒有遵守第一個字母大寫，這很簡單，只要將每行第一</nobr></div>
+<div style="position:absolute;top:26326;left:198"><nobr>個字母改為大寫就可以了：</nobr></div>
+<div style="position:absolute;top:26380;left:234"><nobr>:3,$s/^./\U&amp;/</nobr></div>
+
+<div style="position:absolute;top:26437;left:234"><nobr>2．將第二欄及第四欄均改為大寫，這裡要介紹一個很重要的標記技巧：</nobr></div>
+<div style="position:absolute;top:26469;left:198"><nobr>用分欄字元來標記。</nobr></div>
+<div style="position:absolute;top:26524;left:234"><nobr>:3,$s/\([^□]*\)□\([^□]*\)□\([^□]*\)□\([^□]*\)/\1□\U\2\E□\3□\U\4\E/</nobr></div>
+<div style="position:absolute;top:26582;left:234"><nobr>有點頭大對吧，一個個地來看，首先，「\([^□]*\)」是一個標記，其中 ^ 代表</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:26698;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=22><b>Page 22</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:26784;left:108"><nobr>22/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:26812;left:198"><nobr>不是，[^□]就代表不是空白的字元，*是零或多個，所以「\([^□]*\)」就記錄一行</nobr></div>
+
+<div style="position:absolute;top:26842;left:198"><nobr>中開始不包含空白的字串，由於空白是分欄字元，「\([^□]*\)」就相當於第一欄的</nobr></div>
+<div style="position:absolute;top:26872;left:198"><nobr>文字，接下來，「\([^□]*\)□\([^□]*\)□\([^□]*\)□\([^□]*\)」就代表了第一欄到第四</nobr></div>
+<div style="position:absolute;top:26901;left:198"><nobr>欄。取代的時候，用\1，\2，\3…來代表之前的標記，所以\1 就代表了第一欄，</nobr></div>
+<div style="position:absolute;top:26929;left:198"><nobr>\2 代表第二欄…，再用\U 將第二欄改為大寫，由於我們並不想改到第三欄，所</nobr></div>
+<div style="position:absolute;top:26961;left:198"><nobr>以用\E 結束，以相同的模式套到第四欄就可以了。其實是很簡單的。</nobr></div>
+<div style="position:absolute;top:27018;left:234"><nobr>使用延伸的規則表達式上述的命令可以簡化為：</nobr></div>
+<div style="position:absolute;top:27073;left:234"><nobr>:3,$s/\(\S*\)□\(\S*\)□\(\S*\)□\(\S*\)/\1□\U\2\E□\3□\U\4\E/</nobr></div>
+<div style="position:absolute;top:27130;left:234"><nobr>3．將第三欄的 adult 改為 ad，child 改為 ch。由於這份清單上的 adult 和</nobr></div>
+<div style="position:absolute;top:27159;left:198"><nobr>child 是有錯別字的，所以要加上比對的字符，這裡使用\S 避免和分欄字元衝突</nobr></div>
+
+<div style="position:absolute;top:27216;left:234"><nobr>:3,$s/\(\S*\)□\(\S*\)□\(\S*adult\S*\)/\1□\2□ad/</nobr></div>
+<div style="position:absolute;top:27273;left:234"><nobr>:3,$s/\(\S*\)□\(\S*\)□\(\S*child\S*\)/\1□\2□ch/</nobr></div>
+<div style="position:absolute;top:27330;left:234"><nobr>4．希望統一日期的格式為 yyyy-mm-dd，意即在不足兩位數的月份和日期</nobr></div>
+<div style="position:absolute;top:27361;left:198"><nobr>前補零。這裡使用\d 來代表數字，當然，用[0-9]也可以。</nobr></div>
+<div style="position:absolute;top:27416;left:234"><nobr>:%s/\(\d*\)-\(\d\)-\(\d*\)$/\1-0\2-\3/</nobr></div>
+<div style="position:absolute;top:27473;left:234"><nobr>:%s/\(\d*\)-\(\d*\)-\(\d\)$/\1-\2-0\3/</nobr></div>
+<div style="position:absolute;top:27531;left:234"><nobr>以下是修改過後的檔案，下一節的敘述將修改後的 viexer 作範本。</nobr></div>
+<div style="position:absolute;top:27596;left:176"><nobr>Name Gender A/C State Phone Date</nobr></div>
+<div style="position:absolute;top:27647;left:176"><nobr>===================================</nobr></div>
+
+<div style="position:absolute;top:27673;left:176"><nobr>Ken M ad  MA 23030011 2003-01-13</nobr></div>
+<div style="position:absolute;top:27698;left:176"><nobr>Mars M ad  CA 86002201 2002-11-14</nobr></div>
+<div style="position:absolute;top:27724;left:176"><nobr>Judy F ch  CA 76542299 2002-12-14</nobr></div>
+<div style="position:absolute;top:27749;left:176"><nobr>Helen F ad  HW 60077719 2003-01-10</nobr></div>
+<div style="position:absolute;top:27775;left:176"><nobr>Murphy M ch  NY 56443321 2002-12-04</nobr></div>
+<div style="position:absolute;top:27844;left:234"><nobr>規則表達式的重點是活用，再舉一個例子：使用代換的時候，螢幕下方會</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:27961;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=23><b>Page 23</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:28047;left:108"><nobr>23/89</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:28075;left:198"><nobr>出現類似「11 substitutions on 34 lines」的字樣，如果要取得檔案的一般資訊。可以</nobr></div>
+<div style="position:absolute;top:28105;left:198"><nobr>用&amp;作自我代換，再由代換統計結果得知</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:28103;left:518"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:28105;left:523"><nobr>，如：</nobr></div>
+<div style="position:absolute;top:28160;left:234"><nobr>:%s/^</nobr></div>
+
+<div style="position:absolute;top:28160;left:378"><nobr>→檔案總行數</nobr></div>
+<div style="position:absolute;top:28217;left:234"><nobr>:%s/\i\+/&amp;/g</nobr></div>
+<div style="position:absolute;top:28217;left:378"><nobr>→檔案總字數</nobr></div>
+<div style="position:absolute;top:28273;left:234"><nobr>:%s/./&amp;/g</nobr></div>
+<div style="position:absolute;top:28273;left:378"><nobr>→檔案總字元數</nobr></div>
+<div style="position:absolute;top:28330;left:234"><nobr>:%s/\&lt;the\&gt;/&amp;/gi →檔案中「the」出現的總數</nobr></div>
+
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:28450;left:155"><nobr><b>1.4.2 </b>全域代換<b>(Global Replacement)</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:28529;left:234"><nobr>全域代換是純粹字面直譯，其實，稱作條件式代換可能比較合適。全域代</nobr></div>
+<div style="position:absolute;top:28559;left:198"><nobr>換的語法為：</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:28613;left:234"><nobr>：g/[規則表達式]s/[目標]/[取代]/[參數]</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:28672;left:234"><nobr>例如，我們希望在小孩(ch)的紀錄前面加上兩個「*」，可以這樣作：</nobr></div>
+<div style="position:absolute;top:28727;left:234"><nobr>:g/\&lt;ch\&gt;/s/^/**/</nobr></div>
+<div style="position:absolute;top:28785;left:234"><nobr>而要在「=======」前後加上一列空行，則可以用：</nobr></div>
+<div style="position:absolute;top:28840;left:234"><nobr>:g/^==*$/s//\r&amp;\r/</nobr></div>
+<div style="position:absolute;top:28899;left:234"><nobr>在這裡由於 g 後面的搜尋字串和 s 的目標字串是相同的因此不需要重覆寫</nobr></div>
+<div style="position:absolute;top:28929;left:198"><nobr>出；\r 代表[ENTER]</nobr></div>
+</span></font>
+
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:28927;left:354"><nobr>2</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:29090;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:29092;left:94"><nobr>這只是作為規則表達式的觀念練習罷了，實作上，用 wc 這個命令比較快。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:29130;left:87"><nobr>2</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+
+<div style="position:absolute;top:29132;left:94"><nobr>這是因為舊的鍵盤中，換行鍵的名稱是 return</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:29224;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=24><b>Page 24</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:29310;left:108"><nobr>24/89</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:29329;left:155"><nobr><b>1.4.3 </b>其它的 <b>ex </b>命令</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+
+<div style="position:absolute;top:29406;left:234"><nobr>ex 命令其實是很複雜的，完整的 ex 命令介紹已經超出了本書的範圍，以</nobr></div>
+<div style="position:absolute;top:29437;left:198"><nobr>下只介紹 vi 中常用的 d(delete，刪除)，mo(move，移動)，t(copy to，複製)。</nobr></div>
+<div style="position:absolute;top:29494;left:234"><nobr>這些命令的格式和 s 是相同的，例如，要刪除第 3 行到最後一行，可以用</nobr></div>
+<div style="position:absolute;top:29524;left:198"><nobr>：</nobr></div>
+<div style="position:absolute;top:29579;left:234"><nobr>:3,$d</nobr></div>
+<div style="position:absolute;top:29638;left:234"><nobr>同樣的道理，</nobr></div>
+<div style="position:absolute;top:29693;left:234"><nobr>:3,5t0</nobr></div>
+<div style="position:absolute;top:29751;left:234"><nobr>可以將第 3 行到第 5 行複製到文件開頭，這裡要注意一下，ex 命令中只要</nobr></div>
+<div style="position:absolute;top:29781;left:198"><nobr>是貼上，一定都是向後貼，所以要貼到開頭必須指定到第 0 行。而：</nobr></div>
+
+<div style="position:absolute;top:29836;left:234"><nobr>:1,5mo$</nobr></div>
+<div style="position:absolute;top:29894;left:234"><nobr>可以把第 1 到第 5 行移到文件結尾。</nobr></div>
+<div style="position:absolute;top:29951;left:234"><nobr>也許您會覺得這樣的作法並不會比基本的編輯命令來得快，不過，一旦配</nobr></div>
+<div style="position:absolute;top:29981;left:198"><nobr>合 g 這個全域命令，往往會有意想不到的效果。例如，要刪除剛才在「====」前</nobr></div>
+<div style="position:absolute;top:30011;left:198"><nobr>後加上的空行，可以用：</nobr></div>
+<div style="position:absolute;top:30066;left:234"><nobr>:g/^$/d</nobr></div>
+<div style="position:absolute;top:30125;left:234"><nobr>這在大型的文件中可能會節省數十分鐘的修改時間。</nobr></div>
+<div style="position:absolute;top:30181;left:234"><nobr>再提供幾個例子：</nobr></div>
+<div style="position:absolute;top:30236;left:234"><nobr>:g/\&lt;ch\&gt;/mo$</nobr></div>
+
+<div style="position:absolute;top:30295;left:234"><nobr>可以把小孩和大人的資料分開。</nobr></div>
+<div style="position:absolute;top:30350;left:234"><nobr>:3,$g/^/mo2</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:30487;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=25><b>Page 25</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:30573;left:108"><nobr>25/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:30601;left:234"><nobr>可以把資料全部倒過來。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:30729;left:193"><nobr>標定區塊</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:30809;left:234"><nobr>下面是一個基本的 dns 設定檔(named.conf)：</nobr></div>
+<div style="position:absolute;top:30931;left:176"><nobr>zone &quot;.&quot; IN {</nobr></div>
+<div style="position:absolute;top:30955;left:214"><nobr>type hint;</nobr></div>
+<div style="position:absolute;top:30981;left:214"><nobr>file &quot;named.ca&quot;;</nobr></div>
+<div style="position:absolute;top:31007;left:176"><nobr>};</nobr></div>
+
+<div style="position:absolute;top:31058;left:176"><nobr>zone &quot;localhost&quot; IN {</nobr></div>
+<div style="position:absolute;top:31083;left:214"><nobr>type master;</nobr></div>
+<div style="position:absolute;top:31108;left:214"><nobr>file &quot;localhost.zone&quot;;</nobr></div>
+<div style="position:absolute;top:31134;left:214"><nobr>allow-update { none; };</nobr></div>
+<div style="position:absolute;top:31160;left:176"><nobr>};</nobr></div>
+<div style="position:absolute;top:31211;left:176"><nobr>zone &quot;0.0.127.in-addr.arpa&quot; IN {</nobr></div>
+
+<div style="position:absolute;top:31236;left:214"><nobr>type master;</nobr></div>
+<div style="position:absolute;top:31261;left:214"><nobr>file &quot;named.local&quot;;</nobr></div>
+<div style="position:absolute;top:31287;left:214"><nobr>allow-update { none; };</nobr></div>
+<div style="position:absolute;top:31313;left:176"><nobr>};</nobr></div>
+<div style="position:absolute;top:31382;left:234"><nobr>如果想把 localhost 和 0.0.127.in-addr.arpa 這兩個區塊對換，只要：</nobr></div>
+<div style="position:absolute;top:31437;left:234"><nobr>:/&quot;localhost&quot;/;/^$/mo$</nobr></div>
+<div style="position:absolute;top:31495;left:234"><nobr>注意，這裡的搜尋目標是「&quot;localhost&quot;」到以下的第一個空行，所以，必須用</nobr></div>
+
+<div style="position:absolute;top:31525;left:198"><nobr>；號將預設行定在搜尋目標「&quot;localhost&quot;」上。又，想把 localhost 這個 zone 的 type</nobr></div>
+<div style="position:absolute;top:31555;left:198"><nobr>改為 slave。由於，每一個 zone 都有 type 這個關鍵字，因此，搜尋目標必須是</nobr></div>
+<div style="position:absolute;top:31584;left:198"><nobr>「&quot;localhost&quot;」所屬的區塊才行:</nobr></div>
+<div style="position:absolute;top:31640;left:234"><nobr>:g/&quot;localhost&quot;/;/^$/s/type \a*/type slave/</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:31750;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=26><b>Page 26</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+
+<div style="position:absolute;top:31836;left:108"><nobr>26/89</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:27px;font-family:Times">
+<div style="position:absolute;top:31950;left:134"><nobr><b>1.5 </b>進階的編輯命令</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:32051;left:234"><nobr>這一節主要敘述排版或編輯大型文件所用的命令，這些命令和 1.2 節比較</nobr></div>
+<div style="position:absolute;top:32081;left:198"><nobr>的話，可以說是非必要的，但是，往往卻可以省下大量的時間和精力，用得到</nobr></div>
+<div style="position:absolute;top:32111;left:198"><nobr>一次通常就值回票價了。以下一樣用 viexer 作為範例，而為了行文的方便，下面</nobr></div>
+<div style="position:absolute;top:32140;left:198"><nobr>每一個小節都是獨立的，如果要實際操作，記得按下 u 回復。</nobr></div>
+
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:32201;left:155"><nobr><b>1.5.1 </b>縮排與字型格式</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:32273;left:193"><nobr>手動縮排</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:32353;left:234"><nobr>在討論縮排之前，先來看看 vi 對行和螢幕寬度的處理，還是開啟 viexer，</nobr></div>
+<div style="position:absolute;top:32382;left:198"><nobr>執行 3G3J，J 是 join，會將 3，4，5 行接在一起，不過，看起來會是 2 行:</nobr></div>
+<div style="position:absolute;top:32447;left:125"><nobr>Ken M ad MA 23030011 2003-01-13 Mars M ad CA 86002201 2002-11-14 Judy F ch CA</nobr></div>
+
+<div style="position:absolute;top:32473;left:125"><nobr>76</nobr></div>
+<div style="position:absolute;top:32498;left:125"><nobr>542299 2002-12-14</nobr></div>
+<div style="position:absolute;top:32567;left:234"><nobr>其實這只是表象而已，按下$，游標移到了 4 的下方，另外，使用命令：</nobr></div>
+<div style="position:absolute;top:32623;left:234"><nobr>：%l(小寫的 L)</nobr></div>
+<div style="position:absolute;top:32680;left:234"><nobr>可以清楚地顯示斷行符號，先使用 u 回復 J 的動作。所以，斷行的原因是字</nobr></div>
+<div style="position:absolute;top:32710;left:198"><nobr>數超過螢幕的寬度，這可以用 wrapmargin 來調整，先使用 u 回復 J 的動作。</nobr></div>
+<div style="position:absolute;top:32738;left:198"><nobr>wrapmargin 簡單地說就是右邊界的意思，設定的時候簡寫為 wm 就行了。</nobr></div>
+<div style="position:absolute;top:32797;left:234"><nobr>：set wm=50</nobr></div>
+<div style="position:absolute;top:32853;left:234"><nobr>現在執行 Go[ESC]，再執行 80i=[ESC]，產生全行的「=」，然後輸入「This is</nobr></div>
+
+<div style="position:absolute;top:32881;left:198"><nobr>a wrapmargin test for VIM. Now showing the result set by wm=50」，會得到：</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:33013;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=27><b>Page 27</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:33099;left:108"><nobr>27/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:33149;left:176"><nobr>==================================================================</nobr></div>
+<div style="position:absolute;top:33174;left:176"><nobr>This is a wrapmargin test for</nobr></div>
+<div style="position:absolute;top:33200;left:176"><nobr>VIM. Now it is the result</nobr></div>
+<div style="position:absolute;top:33225;left:176"><nobr>setting by wm=50.</nobr></div>
+
+<div style="position:absolute;top:33293;left:234"><nobr>在第 9 行下:s/./&amp;/g 可以檢查出第 9 行只有 29 個字元( 29 &lt; (80-50))。這裡有</nobr></div>
+<div style="position:absolute;top:33323;left:198"><nobr>三點要知道，首先 wrapmargin 只在插入模式下有用，意即對剪下/複製/貼上的</nobr></div>
+<div style="position:absolute;top:33353;left:198"><nobr>字是無效的，第二，wrapmargin 對不斷字的狀況(像第 8 行)無效，第三</nobr></div>
+<div style="position:absolute;top:33381;left:198"><nobr>wrapmargin 不影響設定之前存在文字。</nobr></div>
+<div style="position:absolute;top:33440;left:234"><nobr>重要的觀念是對邊界的調整不會影響到實際文字的內容。常用的排版方式</nobr></div>
+<div style="position:absolute;top:33469;left:198"><nobr>有[TAB]，&gt;&gt;/&lt;&lt;，命令行上的 left，right，center，也有因應程式撰寫需要的自</nobr></div>
+
+<div style="position:absolute;top:33499;left:198"><nobr>動縮排(autoindent)。</nobr></div>
+<div style="position:absolute;top:33554;left:234"><nobr>[TAB]是最常用的移位方式，預設值是 8 個字元，tabstop 這個選項可以調</nobr></div>
+<div style="position:absolute;top:33586;left:198"><nobr>整這個值。</nobr></div>
+<div style="position:absolute;top:33642;left:234"><nobr>：set ts=11</nobr></div>
+<div style="position:absolute;top:33699;left:234"><nobr>就可以使[TAB]一次跳 11 個字元。</nobr></div>
+<div style="position:absolute;top:33754;left:234"><nobr>&gt;&gt;和&lt;&lt;可以讓一行向右或向左移動一段距離，預設是 8 個字元，可以用:</nobr></div>
+<div style="position:absolute;top:33784;left:198"><nobr>set sw(shiftwidth)來觀察或設定，所以先用:set sw=4 設定一次是 4 個空白，再使</nobr></div>
+<div style="position:absolute;top:33816;left:198"><nobr>用 3G5&gt;&gt;就可以將所有紀錄縮排 4 個字元。</nobr></div>
+
+<div style="position:absolute;top:33871;left:234"><nobr>ex 命令:le(ft)，:ri(ght)，:ce(nter)是另一種方式，如：</nobr></div>
+<div style="position:absolute;top:33929;left:234"><nobr>：3,$le5</nobr></div>
+<div style="position:absolute;top:33986;left:234"><nobr>可以把第 3 行到最後一行縮排 5 個字元。ce 和 ri 則與 textwidth 設定有關，</nobr></div>
+<div style="position:absolute;top:34016;left:198"><nobr>預設的 textwidth 是 0</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:34014;left:359"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:34016;left:364"><nobr>，意即文件寬度是 80 個字元，ce 會依 80 個字元對所在的</nobr></div>
+<div style="position:absolute;top:34045;left:198"><nobr>行作置中對齊；ri 和一般所見即所得編輯器的向右對齊不同，行必須因為位移</nobr></div>
+
+<div style="position:absolute;top:34075;left:198"><nobr>，前置空白靠向右側才有用。用法和 le 相同。</nobr></div>
+<div style="position:absolute;top:34132;left:234"><nobr>整理一下和縮排有關的設定值：</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:34182;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:34182;left:94"><nobr>textwidth 如果不是 0，vim 會自動將 wrapmargin 設為 0</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:34276;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=28><b>Page 28</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:34362;left:108"><nobr>28/89</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:34388;left:234"><nobr>sw(shiftwidth)</nobr></div>
+<div style="position:absolute;top:34390;left:450"><nobr>移位寬度，預設為 8</nobr></div>
+<div style="position:absolute;top:34445;left:234"><nobr>ts(tabstop)</nobr></div>
+<div style="position:absolute;top:34445;left:450"><nobr>[TAB]所移動的字元數，預設為 8</nobr></div>
+<div style="position:absolute;top:34502;left:234"><nobr>tw(textwidth)</nobr></div>
+<div style="position:absolute;top:34504;left:414"><nobr>螢幕寬度，預設為 0(代表 80)</nobr></div>
+<div style="position:absolute;top:34558;left:234"><nobr>wm(wrapmargin)</nobr></div>
+<div style="position:absolute;top:34560;left:450"><nobr>右邊界，預設為 0</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:34688;left:193"><nobr>自動縮排</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:34768;left:234"><nobr>下面是一段將 vi 文字轉為 html 的 perl 程式：</nobr></div>
+<div style="position:absolute;top:34833;left:176"><nobr>sub vim2html</nobr></div>
+<div style="position:absolute;top:34859;left:176"><nobr>{</nobr></div>
+<div style="position:absolute;top:34883;left:214"><nobr>my( $infile ) = @_;</nobr></div>
+<div style="position:absolute;top:34909;left:214"><nobr>my( $outfile );</nobr></div>
+<div style="position:absolute;top:34960;left:214"><nobr>open(IN, &quot;$infile&quot; ) || die &quot;Couldn't read from $infile: $!.\n&quot;;</nobr></div>
+
+<div style="position:absolute;top:35011;left:214"><nobr>($outfile = $infile) = s:.*/::g;</nobr></div>
+<div style="position:absolute;top:35036;left:214"><nobr>$outfile = s/\.txt$//g;</nobr></div>
+<div style="position:absolute;top:35087;left:214"><nobr>open( OUT, &quot;&gt;$outfile.html&quot; )</nobr></div>
+<div style="position:absolute;top:35113;left:289"><nobr>|| die &quot;Couldn't write to $outfile.html: $!.\n&quot;;</nobr></div>
+<div style="position:absolute;top:35138;left:214"><nobr>my $head = uc( $outfile );</nobr></div>
+<div style="position:absolute;top:35208;left:234"><nobr>由於閱讀上的便利(否則函式或迴圈會難以分辨)，在撰寫的時候常需要作</nobr></div>
+
+<div style="position:absolute;top:35237;left:198"><nobr>不同階層的縮排。這時可以使用 autoindent 的功能，使得插入模式下，下一行跟</nobr></div>
+<div style="position:absolute;top:35268;left:198"><nobr>著上一行縮排，只要，</nobr></div>
+<div style="position:absolute;top:35324;left:234"><nobr>：set ai</nobr></div>
+<div style="position:absolute;top:35381;left:234"><nobr>就可以了。要取消的話就執行：set noai。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:35539;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=29><b>Page 29</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:35625;left:108"><nobr>29/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:35646;left:193"><nobr>大小寫轉換</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:35725;left:234"><nobr>～(tilde)可以直接轉換文字的大小寫，～是一個直接執行的命令，直接要轉</nobr></div>
+<div style="position:absolute;top:35756;left:198"><nobr>換大小寫的任何一個字母上按下～就可以了。前面加上數字可以增加～影響的</nobr></div>
+<div style="position:absolute;top:35785;left:198"><nobr>字元數，如 1G10～可以將第一行前 10 個字母的大小寫互換。這樣的作法對要強</nobr></div>
+<div style="position:absolute;top:35815;left:198"><nobr>制改為大寫或小寫的狀況並沒有幫助，這需要 gu 和 gU 這兩個命令</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:35813;left:720"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:35815;left:725"><nobr>。</nobr></div>
+
+<div style="position:absolute;top:35870;left:234"><nobr>gu 是改為強制小寫而 gU 則是強改為大寫，這兩個指令都可以指定範圍。如</nobr></div>
+<div style="position:absolute;top:35900;left:198"><nobr>gu+4 可以把游標所在及以下的四行全改為小寫，1GgUG 則可以將整篇文章都</nobr></div>
+<div style="position:absolute;top:35931;left:198"><nobr>改為大寫。</nobr></div>
+<div style="position:absolute;top:35988;left:234"><nobr>如果要針對的是特定的字或範圍，就必須用規則表達式來作代換，這部分</nobr></div>
+<div style="position:absolute;top:36018;left:198"><nobr>這參考 1.3.1。</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:36135;left:155"><nobr><b>1.5.2 </b>暫存區</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+
+<div style="position:absolute;top:36214;left:234"><nobr>回想一下，要將第 2 行到第 4 行複製到第 6 行之後可以下「2G3yy6Gp」的命</nobr></div>
+<div style="position:absolute;top:36244;left:198"><nobr>令，這個命令實際上是將第 2 行到第 4 行的內容先放到暫存區(register)，當下 p</nobr></div>
+<div style="position:absolute;top:36274;left:198"><nobr>的命令時，會把暫存區的內容貼(put)到預設行的下方。這有點像 windows 的剪貼</nobr></div>
+<div style="position:absolute;top:36303;left:198"><nobr>簿，然而，vi 其實提供了非常多樣的暫存區。</nobr></div>
+<div style="position:absolute;top:36359;left:234"><nobr>:registers 可以顯示目前的暫存區內容</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:36358;left:523"><nobr>2</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:36360;left:528"><nobr>，觀察一下，第一個名為 &quot; 的暫存區</nobr></div>
+
+<div style="position:absolute;top:36390;left:198"><nobr>。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:36461;left:193"><nobr>預設暫存區<b>(Unamed register)</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:36542;left:234"><nobr>當下了 c，d，s，x，y 之後，更動或複製的文字會暫存在名為 &quot; 的暫存區</nobr></div>
+<div style="position:absolute;top:36571;left:198"><nobr>，如果接著直接下命令 p 或 P 而不指定暫存區，就會貼上預設暫存區的內容。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+
+<div style="position:absolute;top:36668;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:36668;left:94"><nobr>gu/U 只有 vim 才有，其實有方法讓~可以接受範圍，:set tildeop 可以讓~變為一般指令，讓5 成為可能。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:36708;left:87"><nobr>2</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:36710;left:94"><nobr>這個命令可以簡化為:reg 或:di (display registers)</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:36802;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=30><b>Page 30</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+
+<div style="position:absolute;top:36888;left:108"><nobr>30/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:36909;left:193"><nobr>編號暫存區<b>(Numbered registers)</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:36989;left:234"><nobr>由 2 到 9 的暫存區依次儲存了使用過的前 8 個預設暫存區的內容。指令</nobr></div>
+<div style="position:absolute;top:37017;left:198"><nobr>5Gyy 會將第 5 行存入預設暫存區，可以用:registers 來檢視。注意一下，這時暫</nobr></div>
+<div style="position:absolute;top:37048;left:198"><nobr>存區 0 和暫存區 1 的內容也都是第 5 行。再執行 1Gdd，這時預設暫存區的內容</nobr></div>
+<div style="position:absolute;top:37078;left:198"><nobr>會被第一行取代，第 5 行的內容會被移入暫存區 2。</nobr></div>
+
+<div style="position:absolute;top:37135;left:226"><nobr>「&quot;」用來指定特定的暫存區。如果要重新貼上第 5 行的內容只要下「&quot;2p」就可</nobr></div>
+<div style="position:absolute;top:37165;left:198"><nobr>以了。再用:registers 觀察一下，第 0 暫存區並沒有改變。暫存區 0 和 1 比較特殊</nobr></div>
+<div style="position:absolute;top:37194;left:198"><nobr>，0 專門存 y(yank，複製)的結果，所以剛剛 1Gdd 並不會改到暫存區 0，再下一</nobr></div>
+<div style="position:absolute;top:37224;left:198"><nobr>個 2Gyy 的命令就取代掉了；暫存區 1 和預設暫存區是相同的，這純粹是為了</nobr></div>
+<div style="position:absolute;top:37254;left:198"><nobr>相容舊版的 vi。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:37325;left:193"><nobr>短刪除暫存區<b>(Small delete register)</b></nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:37405;left:234"><nobr>短刪除指的是刪除不足一行的字元。執行 G2dw，被刪除的兩個字會留在預</nobr></div>
+<div style="position:absolute;top:37435;left:198"><nobr>設暫存區和名稱為「-」的暫存區。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:37507;left:193"><nobr>自訂暫存區<b>(Named registers)</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:37585;left:234"><nobr>vi 由英文字母的 a～z 提供了 26 個自訂暫存區讓使用者自行定義。一樣地，</nobr></div>
+<div style="position:absolute;top:37617;left:198"><nobr>使用「&quot;」來定義，指令 1G&quot;ayy 將第一行存入暫存區 a，再執行 5G2w&quot;byw 將第 5</nobr></div>
+
+<div style="position:absolute;top:37646;left:198"><nobr>行第三個字存入暫存區 b。要貼上的時候一樣用「&quot;」來指定，例如，G&quot;ap 將第一</nobr></div>
+<div style="position:absolute;top:37676;left:198"><nobr>行的內容(暫存區 a)貼到文件結尾，而 1G&quot;bP 則可以將暫存區 b 貼到第一行的開</nobr></div>
+<div style="position:absolute;top:37706;left:198"><nobr>頭。這在需要重覆貼文字的時候是非常方便的，例如筆者在撰寫這篇文章的時</nobr></div>
+<div style="position:absolute;top:37736;left:198"><nobr>候就把「規則表達式」命名為暫存區 e，regular expression 命名為暫存區 r，「暫存</nobr></div>
+<div style="position:absolute;top:37765;left:198"><nobr>區」命名為暫存區 s…來節省打字的時間。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:37837;left:193"><nobr>唯讀暫存區<b>(Read-only registers)</b></nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:37917;left:229"><nobr>「．，%，#，：」這四個暫存區是唯讀的，只能直接使用。「．」這個暫存區</nobr></div>
+<div style="position:absolute;top:37947;left:198"><nobr>儲存了前次插入模式下的輸入內容，以提供[CTRL]+@或[CTRL]+A 使用(參見</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:38065;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=31><b>Page 31</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:38151;left:108"><nobr>31/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:38177;left:198"><nobr>1.4.5)；%則儲存了目前編輯的檔案名稱，所以&quot;%P 可以直接貼上檔案名稱；#</nobr></div>
+
+<div style="position:absolute;top:38209;left:198"><nobr>則儲存了新增的檔名(alternate file)，如使用:r install.log 命令讀入 install.log，暫</nobr></div>
+<div style="position:absolute;top:38239;left:198"><nobr>存區#的內容就是 install.log；「：」是 ex 命令的紀錄，所以，輸入&quot;:P 會貼上字串</nobr></div>
+<div style="position:absolute;top:38268;left:198"><nobr>「r  install.log」。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:38340;left:193"><nobr>空暫存區<b>(Black hole register)</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:38420;left:234"><nobr>這有點像/dev/null，以「_」(底線)為名的暫存區是一個空洞，放入這個暫存</nobr></div>
+<div style="position:absolute;top:38450;left:198"><nobr>區的資料會被直接捨棄，主要用在不想改變預設暫存區的內容時使用。如 1Gdd</nobr></div>
+
+<div style="position:absolute;top:38479;left:198"><nobr>會將第 1 行存入預設暫存區，如果單純只是想刪除可以用 1G&quot;_dd。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:38551;left:193"><nobr>搜尋暫存區<b>(Last search pattern register)</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:38631;left:225"><nobr>「&quot;/」會儲存上一次搜尋的字或模式，如先執行 /2003，再執行&quot;/p，貼上的內</nobr></div>
+<div style="position:absolute;top:38661;left:198"><nobr>容就是 2003。</nobr></div>
+<div style="position:absolute;top:38717;left:234"><nobr>其實還有其它的暫存區，如名稱為「=」的暫存區也是唯讀的，提供給</nobr></div>
+
+<div style="position:absolute;top:38746;left:198"><nobr>expression 使用，expression 可以視為是 vim 對 ex 命令的擴充，其中提供了運算</nobr></div>
+<div style="position:absolute;top:38777;left:198"><nobr>子，布林代數，控制函數等進階功能；另外，還有 * 和 + 是在圖形介面的 gvim</nobr></div>
+<div style="position:absolute;top:38807;left:198"><nobr>所使用的。</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:38925;left:155"><nobr><b>1.5.3 </b>書籤<b>(Marks)</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:39003;left:234"><nobr>開啟 viexer，執行 1G5wma，再執行 4G3wmb，好了，您現在已經定義了</nobr></div>
+<div style="position:absolute;top:39032;left:198"><nobr>a，b 兩個書籤，執行:marks 可以觀察目前定義的書籤，按下 G 移到最後一行，</nobr></div>
+
+<div style="position:absolute;top:39063;left:198"><nobr>執行「'a」可以回到第一行，「'b」可以到第四行，如果用「`」(反引號，通常在鍵盤</nobr></div>
+<div style="position:absolute;top:39093;left:198"><nobr>的左上方&quot;～&quot;的下面)，則可以到定義的位置，如「`b」可以移到 CA 的 C 下方。所</nobr></div>
+<div style="position:absolute;top:39123;left:198"><nobr>以：</nobr></div>
+<div style="position:absolute;top:39178;left:234"><nobr>m</nobr></div>
+<div style="position:absolute;top:39179;left:280"><nobr>定義書籤，可用的書籤有 a-z 和 A-Z 共 52 個。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:39328;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=32><b>Page 32</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:39414;left:108"><nobr>32/89</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:39440;left:234"><nobr>'</nobr></div>
+<div style="position:absolute;top:39442;left:280"><nobr>單引號用來移動游標到書籤所在的行</nobr></div>
+<div style="position:absolute;top:39497;left:234"><nobr>`</nobr></div>
+<div style="position:absolute;top:39499;left:280"><nobr>反引號用來移動游標到書籤所在的字</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:39617;left:155"><nobr><b>1.5.4 </b>多視窗操作</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+
+<div style="position:absolute;top:39695;left:234"><nobr>有時候為了方便參閱長文件或同時編輯一份以上的文件，vi 可以分割出一</nobr></div>
+<div style="position:absolute;top:39725;left:198"><nobr>個以上的視窗。以安裝紀錄檔 /root/install.log 為例，首先開啟 install.log，接著移</nobr></div>
+<div style="position:absolute;top:39755;left:198"><nobr>到第 20 行，執行</nobr></div>
+<div style="position:absolute;top:39812;left:234"><nobr>：sp</nobr></div>
+<div style="position:absolute;top:39867;left:234"><nobr>sp(split)是分離的意思，文件由第 20 行分成獨立的兩邊如下圖：</nobr></div>
+<div style="position:absolute;top:39933;left:90"><nobr>Installing dosfstools-2.8-1.</nobr></div>
+<div style="position:absolute;top:39959;left:90"><nobr>Installing e2fsprogs-1.27-3.</nobr></div>
+<div style="position:absolute;top:39984;left:90"><nobr>Installing eject-2.0.12-4.</nobr></div>
+<div style="position:absolute;top:40010;left:90"><nobr>Installing file-3.37-5.</nobr></div>
+
+<div style="position:absolute;top:40035;left:90"><nobr>Installing gdbm-1.8.0-14.</nobr></div>
+<div style="position:absolute;top:40061;left:90"><nobr>Installing glib-1.2.10-5.</nobr></div>
+<div style="position:absolute;top:40086;left:90"><nobr>Installing glib2-2.0.1-2.</nobr></div>
+<div style="position:absolute;top:40112;left:90"><nobr>Installing hdparm-4.6-1.</nobr></div>
+<div style="position:absolute;top:40137;left:90"><nobr>Installing hesiod-3.0.2-18.</nobr></div>
+<div style="position:absolute;top:40163;left:90"><nobr>Installing iputils-20020124-3.</nobr></div>
+<div style="position:absolute;top:40188;left:90"><nobr>Installing ksymoops-2.4.4-1.</nobr></div>
+<div style="position:absolute;top:40214;left:90"><nobr>Installing losetup-2.11n-12.</nobr></div>
+<div style="position:absolute;top:40239;left:90"><nobr>install.log                                                   20,1            2%</nobr></div>
+
+<div style="position:absolute;top:40265;left:90"><nobr>Installing glibc-2.2.5-34.</nobr></div>
+<div style="position:absolute;top:40290;left:90"><nobr>Installing bdflush-1.5-17.</nobr></div>
+<div style="position:absolute;top:40316;left:90"><nobr>Installing bzip2-libs-1.0.2-2.</nobr></div>
+<div style="position:absolute;top:40341;left:90"><nobr>Installing chkconfig-1.3.5-3.</nobr></div>
+<div style="position:absolute;top:40367;left:90"><nobr>Installing cracklib-2.7-15.</nobr></div>
+<div style="position:absolute;top:40392;left:90"><nobr>Installing db1-1.85-8.</nobr></div>
+<div style="position:absolute;top:40418;left:90"><nobr>Installing db2-2.4.14-10.</nobr></div>
+<div style="position:absolute;top:40443;left:90"><nobr>Installing db3-3.3.11-6.</nobr></div>
+<div style="position:absolute;top:40469;left:90"><nobr>Installing dosfstools-2.8-1.</nobr></div>
+
+<div style="position:absolute;top:40494;left:90"><nobr>Installing e2fsprogs-1.27-3.</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:40591;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=33><b>Page 33</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:40677;left:108"><nobr>33/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:40701;left:90"><nobr>install.log                                                   20,1            1%</nobr></div>
+<div style="position:absolute;top:40820;left:234"><nobr>按下[CTRL]+w 再按下 w，可以在兩個視窗間切換，z 可以調整視窗的大小</nobr></div>
+<div style="position:absolute;top:40850;left:198"><nobr>，例如在上方的視窗執行 z5[ENTER]將上方視窗的行高調整為 5 行。按一次</nobr></div>
+<div style="position:absolute;top:40878;left:198"><nobr>[CTRL]+w，再按下 = 可以回復原來的均分狀態。</nobr></div>
+
+<div style="position:absolute;top:40937;left:234"><nobr>隨著不同的需要，也可以作垂直分割(vertically split)，輸入</nobr></div>
+<div style="position:absolute;top:40994;left:234"><nobr>：vs viexer</nobr></div>
+<div style="position:absolute;top:41051;left:234"><nobr>畫面變成了三個視窗</nobr></div>
+<div style="position:absolute;top:41112;left:100"><nobr>Mars M ad CA 86002201 2002-11-14</nobr></div>
+<div style="position:absolute;top:41108;left:424"><nobr>|Installing basesystem-7.0-2.</nobr></div>
+<div style="position:absolute;top:41138;left:100"><nobr>Judy F ch CA 76542299 2002-12-14</nobr></div>
+<div style="position:absolute;top:41133;left:424"><nobr>|Installing glibc-2.2.5-34.</nobr></div>
+<div style="position:absolute;top:41166;left:100"><nobr>Helen F ad HW 60077719 2003-01-10</nobr></div>
+<div style="position:absolute;top:41166;left:424"><nobr>|Installing bdflush-1.5-17.</nobr></div>
+
+<div style="position:absolute;top:41192;left:100"><nobr>Murphy M ch NY 56443321 2002-12-14 |Installing bzip2-libs-1.0.2-2.</nobr></div>
+<div style="position:absolute;top:41217;left:424"><nobr>|Installing chkconfig-1.3.5-3.</nobr></div>
+<div style="position:absolute;top:41243;left:424"><nobr>|Installing cracklib-2.7-15.</nobr></div>
+<div style="position:absolute;top:41268;left:424"><nobr>|Installing db1-1.85-8.</nobr></div>
+</span></font>
+<font size=3 color="#ffffff" face="Times"><span style="font-size:16px;font-family:Times;color:#ffffff">
+<div style="position:absolute;top:41294;left:172"><nobr>[CTRL]+W</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:41294;left:424"><nobr>|Installing db2-2.4.14-10.</nobr></div>
+</span></font>
+
+<font size=3 color="#ffffff" face="Times"><span style="font-size:16px;font-family:Times;color:#ffffff">
+<div style="position:absolute;top:41318;left:172"><nobr>+ →向下擴展</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:41318;left:424"><nobr>|Installing db3-3.3.11-6.</nobr></div>
+</span></font>
+<font size=3 color="#ffffff" face="Times"><span style="font-size:16px;font-family:Times;color:#ffffff">
+<div style="position:absolute;top:41344;left:172"><nobr>- →向上縮減</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:41344;left:424"><nobr>|Installing dosfstools-2.8-1.</nobr></div>
+</span></font>
+<font size=3 color="#ffffff" face="Times"><span style="font-size:16px;font-family:Times;color:#ffffff">
+
+<div style="position:absolute;top:41369;left:172"><nobr>&gt; →向右擴展</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:41369;left:424"><nobr>|Installing e2fsprogs-1.27-3.</nobr></div>
+</span></font>
+<font size=3 color="#ffffff" face="Times"><span style="font-size:16px;font-family:Times;color:#ffffff">
+<div style="position:absolute;top:41395;left:172"><nobr>&lt; →向左縮減</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:41395;left:424"><nobr>|Installing eject-2.0.12-4.</nobr></div>
+<div style="position:absolute;top:41421;left:100"><nobr>vinew            6,1                 Bot install.log [+]      20,1            1%</nobr></div>
+
+<div style="position:absolute;top:41447;left:100"><nobr>Installing glibc-2.2.5-34.</nobr></div>
+<div style="position:absolute;top:41472;left:100"><nobr>Installing bdflush-1.5-17.</nobr></div>
+<div style="position:absolute;top:41498;left:100"><nobr>Installing bzip2-libs-1.0.2-2.</nobr></div>
+<div style="position:absolute;top:41523;left:100"><nobr>Installing chkconfig-1.3.5-3.</nobr></div>
+<div style="position:absolute;top:41549;left:100"><nobr>Installing cracklib-2.7-15.</nobr></div>
+<div style="position:absolute;top:41574;left:100"><nobr>Installing db1-1.85-8.</nobr></div>
+<div style="position:absolute;top:41600;left:100"><nobr>Installing db2-2.4.14-10.</nobr></div>
+<div style="position:absolute;top:41625;left:100"><nobr>Installing db3-3.3.11-6.</nobr></div>
+<div style="position:absolute;top:41651;left:100"><nobr>Installing dosfstools-2.8-1.</nobr></div>
+
+<div style="position:absolute;top:41676;left:100"><nobr>Installing e2fsprogs-1.27-3.</nobr></div>
+<div style="position:absolute;top:41702;left:100"><nobr>install.log [+]                                               20,1            1%</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:41854;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=34><b>Page 34</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:41940;left:108"><nobr>34/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:41968;left:234"><nobr>在左上角的視窗按下[CTRL]+W，配合 +，- ， &gt; ， &lt;的使用可以調整各視</nobr></div>
+
+<div style="position:absolute;top:41998;left:198"><nobr>窗的相對大小，如[CTRL]+W 5&gt;可以將上方兩個視窗的邊界右移 5 個字元。一樣</nobr></div>
+<div style="position:absolute;top:42028;left:198"><nobr>地，按下[CTRL]+W 再按下 = 可以恢復預設的大小。</nobr></div>
+<div style="position:absolute;top:42085;left:234"><nobr>在多視窗環境中，暫存區的用法和單一視窗是一樣的，游標移到下方的視</nobr></div>
+<div style="position:absolute;top:42114;left:198"><nobr>窗執行 10Gyy，再移回左上方的視窗執行 p，就可以在 viexer 貼上 install.log 的</nobr></div>
+<div style="position:absolute;top:42144;left:198"><nobr>第 10 行。</nobr></div>
+<div style="position:absolute;top:42201;left:234"><nobr>游標再移回下方的視窗，執行：close 可以關閉這個視窗，再移到左方的視</nobr></div>
+<div style="position:absolute;top:42230;left:198"><nobr>窗執行：only 則可以關閉右方的視窗。整理一下多視窗環境的命令：</nobr></div>
+<div style="position:absolute;top:42285;left:234"><nobr>:sp</nobr></div>
+
+<div style="position:absolute;top:42287;left:342"><nobr>水平分割視窗，後面跟著檔案名稱可以開啟該檔案</nobr></div>
+<div style="position:absolute;top:42342;left:234"><nobr>:vs</nobr></div>
+<div style="position:absolute;top:42344;left:342"><nobr>垂直分割視窗，後面跟著檔案名稱可以開啟該檔案</nobr></div>
+<div style="position:absolute;top:42399;left:234"><nobr>[CTRL]+W 執行多視窗專屬命令</nobr></div>
+<div style="position:absolute;top:42456;left:234"><nobr>:only</nobr></div>
+<div style="position:absolute;top:42458;left:342"><nobr>只留下所在的視窗</nobr></div>
+<div style="position:absolute;top:42512;left:234"><nobr>:close</nobr></div>
+<div style="position:absolute;top:42514;left:342"><nobr>關閉所在的視窗</nobr></div>
+</span></font>
+
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:42632;left:155"><nobr><b>1.5.5 </b>外部命令</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:42711;left:234"><nobr>外部命令指的是 shell 提示下所執行的命令，vi 可以用「：sh」的方式暫時離</nobr></div>
+<div style="position:absolute;top:42741;left:198"><nobr>開 vi 回到命令提示字元，要回到 vi 的話，使用 exit 或[CTRL]+d 就可以了。這裡</nobr></div>
+<div style="position:absolute;top:42770;left:198"><nobr>的 shell 預設是指向/bin/bash，如果路徑不對或希望使用 bash 以外的 shell(像</nobr></div>
+<div style="position:absolute;top:42799;left:198"><nobr>tcsh)，可以利用 set shell 選項來變更，例如：</nobr></div>
+<div style="position:absolute;top:42857;left:234"><nobr>：set shell=/bin/tcsh</nobr></div>
+<div style="position:absolute;top:42914;left:234"><nobr>可以將預設的 shell 改為 tcsh。「：！」可以讓 shell 命令直接在 vi 的命令列上</nobr></div>
+
+<div style="position:absolute;top:42943;left:198"><nobr>執行，例如「：!date」可以直接傳回系統日期。配合讀入命令 r 可以讓這些傳回值</nobr></div>
+<div style="position:absolute;top:42974;left:198"><nobr>直接插入本文，</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:43117;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=35><b>Page 35</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:43203;left:108"><nobr>35/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:43231;left:234"><nobr>：r !date;echo &quot;Writen by $USER&quot;</nobr></div>
+<div style="position:absolute;top:43288;left:234"><nobr>可以在游標的下一行插入日期和作者，這裡用&quot;；&quot;分隔兩個命令。</nobr></div>
+
+<div style="position:absolute;top:43345;left:234"><nobr>專屬文字的外部命令</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:43343;left:398"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:43345;left:403"><nobr>可以直接在 vi 內引用，以下舉一個簡單的例子，sort</nobr></div>
+<div style="position:absolute;top:43375;left:198"><nobr>可以針對檔案的內容作排序，所以：</nobr></div>
+<div style="position:absolute;top:43431;left:234"><nobr>：3,$!sort</nobr></div>
+<div style="position:absolute;top:43488;left:234"><nobr>可以將所有紀錄排序。</nobr></div>
+</span></font>
+
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:43606;left:155"><nobr><b>1.5.6 </b>其它雜項命令</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:43752;left:193"><nobr><b>[CTRL]+A</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:43833;left:234"><nobr>[CTRL]+A 在插入模式和一般模式都可以使用，作用並不相同。在插入模式</nobr></div>
+<div style="position:absolute;top:43864;left:198"><nobr>中的[CTRL]+A 會將暫存區「．」的內容貼上，這在輸入重覆的字串時很好用，</nobr></div>
+<div style="position:absolute;top:43894;left:198"><nobr>例如，在 viexer 中執行 Go 輸入 remark，再按下[ESC]，然後進入插入模式，這</nobr></div>
+<div style="position:absolute;top:43924;left:198"><nobr>時，只要按下[CTRL]+A 就可以自動貼上 remark 這個字。</nobr></div>
+
+<div style="position:absolute;top:43980;left:234"><nobr>在一般模式中[CTRL]+A 可以簡單地將數字遞增，例如，執行 3G$再按著</nobr></div>
+<div style="position:absolute;top:44009;left:198"><nobr>[CTRL]+A 不放，可以一直讓日期增加。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:44135;left:193"><nobr><b>[CTRL]+K</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:44215;left:234"><nobr>[CTRL]+K 原意是要輸入鍵盤所不支援的 ASCII 字元的時候使用，例如，</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:44286;left:87"><nobr>1</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:44288;left:94"><nobr>像 sort，diff，uniq 等，實際運用的狀況會跟 vi 及各命令的版本有關，讀者得自己測一下</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:44380;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=36><b>Page 36</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:44466;left:108"><nobr>36/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:44494;left:198"><nobr>要輸入控制字元&lt;delete&gt;，在插入模式中可以用[CTRL]+K 在？出現時按下</nobr></div>
+<div style="position:absolute;top:44522;left:198"><nobr>DT，會出現「^?」的字元，這就是代表 ASCII 字碼 7f 的&lt;delete&gt;</nobr></div>
+
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:44522;left:692"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:44524;left:697"><nobr>。然而，用在鍵</nobr></div>
+<div style="position:absolute;top:44554;left:198"><nobr>盤的特殊鍵時卻有意想不到的效果，如上例中在?時按下[PageDown]，會出現</nobr></div>
+<div style="position:absolute;top:44582;left:198"><nobr>&lt;PageDown&gt;的字樣，向右鍵會出現&lt;right&gt;…，這在撰寫技術文件時很好用。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+
+<div style="position:absolute;top:44651;left:193"><nobr><b>[CTRL]+R</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:44732;left:234"><nobr>[CTRL]+R 可以在插入模式下直接貼上暫存區的內容。首先在一般模式下用</nobr></div>
+<div style="position:absolute;top:44763;left:193"><nobr>「3G&quot;ayw」指定 Ken 為暫存區 a 的內容，進入插入模式，按下[CTRL]+R，出現&quot;</nobr></div>
+<div style="position:absolute;top:44793;left:198"><nobr>時按下 a，就可以貼上 Ken 這個字了。</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:27px;font-family:Times">
+<div style="position:absolute;top:44936;left:134"><nobr><b>1.6 </b>巨集</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:45037;left:234"><nobr>巨集(macro)是 vi 最令人驚豔的功能，只要熟悉基本的命令加上少許的技巧</nobr></div>
+<div style="position:absolute;top:45066;left:198"><nobr>就可以作出許多自動的功能。vi 的巨集有兩個主要的類別，一個是簡寫</nobr></div>
+<div style="position:absolute;top:45094;left:198"><nobr>(abbreviate)，可以把插入模式和一般模式常用的詞句簡化為較短的字；一個是</nobr></div>
+<div style="position:absolute;top:45126;left:198"><nobr>對應(map)，可以簡化插入模式或一般模式中的命令。</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:45242;left:155"><nobr><b>1.6.1 Abbreviate</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:45320;left:234"><nobr>假定「http://www.google.com/linux」是文件中經常需要輸入的 URL，定義一</nobr></div>
+
+<div style="position:absolute;top:45350;left:198"><nobr>個易記的簡寫會比較方便，執行</nobr></div>
+<div style="position:absolute;top:45407;left:234"><nobr>：ab mys http://www.google.com/linux</nobr></div>
+<div style="position:absolute;top:45464;left:234"><nobr>現在 mys 就代表了 http://www.google.com/linux，進入插入模式，輸入</nobr></div>
+<div style="position:absolute;top:45492;left:198"><nobr>mys，再按下空白鍵，mys 就變成了 http://www.google.com/linux，很簡單吧。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:45549;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:45551;left:94"><nobr>這個部分可以用 :help digraphs-default 查閱完整的列表</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:45643;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=37><b>Page 37</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:45729;left:108"><nobr>37/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:45757;left:234"><nobr>直接以 ab 來定義簡寫會同時影響到插入模式和一般模式，以上例而言，回</nobr></div>
+<div style="position:absolute;top:45787;left:198"><nobr>到一般模式，輸入：mys□，mys 一樣會被展開為 http://www.google.com/linux，</nobr></div>
+<div style="position:absolute;top:45817;left:198"><nobr>對不完全熟悉 vi 命令的使用者而言，這可能會意外地造成不便。比如說，以 wq</nobr></div>
+<div style="position:absolute;top:45846;left:198"><nobr>定義常用網頁查詢(web query)，執行</nobr></div>
+<div style="position:absolute;top:45901;left:234"><nobr>:ab wq http://tw.yahoo.com</nobr></div>
+
+<div style="position:absolute;top:45960;left:234"><nobr>這在插入模式中正常，但是當使用者要存檔離開而下:wq 的命令時就造成</nobr></div>
+<div style="position:absolute;top:45990;left:198"><nobr>錯誤，vi 會自動將 wq 展開為 http://tw.yahoo.com。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:45988;left:593"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:45990;left:599"><nobr>解決的方法是將插入模式和</nobr></div>
+<div style="position:absolute;top:46019;left:198"><nobr>一般模式的簡寫分開，ia 代表插入模式的簡寫；ca 代表命令模式的簡寫。</nobr></div>
+<div style="position:absolute;top:46076;left:234"><nobr>首先，清除 wq 的設定，執行</nobr></div>
+<div style="position:absolute;top:46131;left:234"><nobr>:una wq</nobr></div>
+
+<div style="position:absolute;top:46190;left:234"><nobr>再修改一下之前的命令就可以了。</nobr></div>
+<div style="position:absolute;top:46245;left:234"><nobr>:ia wq http://tw.yahoo.com</nobr></div>
+<div style="position:absolute;top:46303;left:234"><nobr>這樣，wq 就只對插入模式作用。以下列出相關的命令：</nobr></div>
+<div style="position:absolute;top:46358;left:234"><nobr>ab</nobr></div>
+<div style="position:absolute;top:46360;left:306"><nobr>定義簡寫，只輸入 ab 則顯示所有簡寫</nobr></div>
+<div style="position:absolute;top:46415;left:234"><nobr>ia</nobr></div>
+<div style="position:absolute;top:46417;left:306"><nobr>定義插入模式簡寫，只輸入 ia 則顯示所有插入模式的簡寫</nobr></div>
+<div style="position:absolute;top:46472;left:234"><nobr>ca</nobr></div>
+<div style="position:absolute;top:46474;left:306"><nobr>定義一般模式簡寫，只輸入 ca 則顯示所有一般模式的簡寫</nobr></div>
+
+<div style="position:absolute;top:46529;left:234"><nobr>una</nobr></div>
+<div style="position:absolute;top:46530;left:306"><nobr>清除簡寫，後面要加上簡寫的名稱</nobr></div>
+<div style="position:absolute;top:46585;left:234"><nobr>iuna</nobr></div>
+<div style="position:absolute;top:46587;left:306"><nobr>清除插入模式簡寫</nobr></div>
+<div style="position:absolute;top:46642;left:234"><nobr>cuna</nobr></div>
+<div style="position:absolute;top:46644;left:306"><nobr>清除一般模式簡寫</nobr></div>
+<div style="position:absolute;top:46699;left:234"><nobr>abc</nobr></div>
+<div style="position:absolute;top:46701;left:306"><nobr>清除所有簡寫</nobr></div>
+</span></font>
+
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:46783;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:46784;left:94"><nobr>當然，使用者一樣可以用 ZZ 或:x 離開這只是舉例罷了。附帶一提 ia 和 ca 只有 vim 才有，傳統上是預設使用</nobr></div>
+<div style="position:absolute;top:46814;left:94"><nobr>者熟悉 vi 的。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:46906;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=38><b>Page 38</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:46992;left:108"><nobr>38/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+
+<div style="position:absolute;top:47018;left:234"><nobr>iabc</nobr></div>
+<div style="position:absolute;top:47020;left:306"><nobr>清除所有插入模式簡寫</nobr></div>
+<div style="position:absolute;top:47075;left:234"><nobr>cabc</nobr></div>
+<div style="position:absolute;top:47077;left:306"><nobr>清除所有一般模式簡寫</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:47192;left:155"><nobr><b>1.6.2 Map</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:47328;left:234"><nobr>比起簡單的 ab 功能，map 可以定義完整的命令，達到半自動化的目的，一</nobr></div>
+<div style="position:absolute;top:47358;left:198"><nobr>般所謂的巨集指的通常就是 map。map 可以在一般模式或插入模式下使用，只是</nobr></div>
+
+<div style="position:absolute;top:47387;left:198"><nobr>插入模式下要用「map!」來定義。</nobr></div>
+<div style="position:absolute;top:47444;left:234"><nobr>由於 <b style="color:black;background-color:#ffff66">vi 設定</b> map 先讀取，所以，如果 map 的定義和預設的命令有衝突，那</nobr></div>
+<div style="position:absolute;top:47474;left:198"><nobr>原先的命令會被 map 的命令取代，例如，E 原來的意義為根據空白，[TAB]或</nobr></div>
+<div style="position:absolute;top:47504;left:198"><nobr>換行字元移動游標到單字的結尾，現在執行：</nobr></div>
+<div style="position:absolute;top:47560;left:234"><nobr>：map E Go</nobr></div>
+<div style="position:absolute;top:47617;left:234"><nobr>這時命令 E 就代表 Go – 移到文件結尾開新行輸入。所以，先知道 vi 有那些</nobr></div>
+<div style="position:absolute;top:47647;left:198"><nobr>命令是自己較不常用是蠻重要的。對初學者而言，使用「=」開頭來定義，是較不</nobr></div>
+
+<div style="position:absolute;top:47677;left:198"><nobr>傷神的方式</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:47675;left:288"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:47677;left:293"><nobr>。</nobr></div>
+<div style="position:absolute;top:47734;left:234"><nobr>下面的例子定義指令「=p」，會複製所在的行：</nobr></div>
+<div style="position:absolute;top:47790;left:234"><nobr>：map =p yyP</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:47915;left:193"><nobr><b>timeoutlen</b></nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:47997;left:234"><nobr>這裡有一點要注意，在輸入「=」和「p」的中間不能隔超過 1 秒，否則 vi 就不</nobr></div>
+<div style="position:absolute;top:48027;left:198"><nobr>會解讀這個複合命令。如果所在的終端機很慢或使用者人數太多會延遲，可以</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:48075;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:48075;left:94"><nobr>&quot;=&quot;在 lisp 模式中會用到，又，equalprg 選項(預設是空的)也會用到，如果您在開發 lisp 這就不適合了。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:48169;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=39><b>Page 39</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:48255;left:108"><nobr>39/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:48283;left:198"><nobr>設定「timeoutlen(gth)」，單位是千分之一秒，預設為 1000，就是 1 秒。</nobr></div>
+<div style="position:absolute;top:48340;left:234"><nobr>：set tm=5000</nobr></div>
+<div style="position:absolute;top:48397;left:234"><nobr>可以把停等時間延長至 5 秒鐘。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:48468;left:193"><nobr>非列印字元</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:48546;left:234"><nobr>map 其實可以完成很複雜的工作，例如，定義一個名為「=t」的巨集，可以</nobr></div>
+<div style="position:absolute;top:48578;left:198"><nobr>在游標所在的行前後加上&lt;TITLE&gt;…&lt;/TITLE&gt;的 html 標籤，首先來分析要完成</nobr></div>
+<div style="position:absolute;top:48608;left:198"><nobr>的動作。比如，有一行是</nobr></div>
+<div style="position:absolute;top:48662;left:234"><nobr>My Default Web</nobr></div>
+<div style="position:absolute;top:48721;left:234"><nobr>希望用「=t」使成為</nobr></div>
+<div style="position:absolute;top:48776;left:234"><nobr>&lt;TITLE&gt;My Default Web&lt;/TITLE&gt;</nobr></div>
+
+<div style="position:absolute;top:48834;left:234"><nobr>假定不知道游標所在的確切位置(當然在這一行!)，先按下[ESC]回到一般</nobr></div>
+<div style="position:absolute;top:48864;left:198"><nobr>模式，再執行 I，在行首插入&lt;TITLE&gt;，因為不知道這一行多長，所以，再按下</nobr></div>
+<div style="position:absolute;top:48892;left:198"><nobr>[ESC]，再執行 A，在行尾插入&lt;/TITLE&gt;。整個過程應該是：</nobr></div>
+<div style="position:absolute;top:48949;left:234"><nobr>[ESC] → I → &lt;TITLE&gt; → [ESC] → A → &lt;/TITLE&gt;</nobr></div>
+<div style="position:absolute;top:49008;left:234"><nobr>顯然地，問題是如何在定義 map 時輸入[ESC]。這裡要記得「[CTRL]+v+功能</nobr></div>
+
+<div style="position:absolute;top:49038;left:198"><nobr>鍵」這個方式。先輸入</nobr></div>
+<div style="position:absolute;top:49094;left:234"><nobr>：map□=t□</nobr></div>
+<div style="position:absolute;top:49151;left:234"><nobr>按下[CTRL]+v，請注意在輸入列上會出現一個「^」的標記，再按下[ESC]，</nobr></div>
+<div style="position:absolute;top:49181;left:198"><nobr>這時原先的標記就成了「 ^[ 」，這就可以當作[ESC]鍵來使用了。所以「=t」的巨集</nobr></div>
+<div style="position:absolute;top:49211;left:198"><nobr>應該是：</nobr></div>
+<div style="position:absolute;top:49267;left:234"><nobr>：map =t ^[I&lt;TITLE&gt;^[A&lt;/TITLE&gt;^[</nobr></div>
+<div style="position:absolute;top:49324;left:234"><nobr>再提醒一次，&quot;^[&quot;不是直接輸入的，是用[CTRL]+v 接著按[ESC]完成的。了</nobr></div>
+
+</span></font>
+
+<div style="position:absolute;top:49432;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=40><b>Page 40</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:49518;left:108"><nobr>40/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:49546;left:198"><nobr>解這種方式之後，map 馬上變得非常強悍。以下是一個常見的 xinetd 服務設定檔</nobr></div>
+<div style="position:absolute;top:49576;left:198"><nobr>：</nobr></div>
+<div style="position:absolute;top:49641;left:176"><nobr>service telnet</nobr></div>
+<div style="position:absolute;top:49666;left:176"><nobr>{</nobr></div>
+<div style="position:absolute;top:49691;left:247"><nobr>flags</nobr></div>
+
+<div style="position:absolute;top:49691;left:392"><nobr>= REUSE</nobr></div>
+<div style="position:absolute;top:49716;left:247"><nobr>socket_type</nobr></div>
+<div style="position:absolute;top:49716;left:392"><nobr>= stream</nobr></div>
+<div style="position:absolute;top:49742;left:247"><nobr>wait</nobr></div>
+<div style="position:absolute;top:49742;left:392"><nobr>= no</nobr></div>
+<div style="position:absolute;top:49767;left:247"><nobr>user</nobr></div>
+<div style="position:absolute;top:49767;left:392"><nobr>= root</nobr></div>
+<div style="position:absolute;top:49793;left:247"><nobr>server</nobr></div>
+<div style="position:absolute;top:49793;left:392"><nobr>= /usr/sbin/in.telnetd</nobr></div>
+
+<div style="position:absolute;top:49818;left:247"><nobr>log_on_failure += USERID</nobr></div>
+<div style="position:absolute;top:49844;left:247"><nobr>disable</nobr></div>
+<div style="position:absolute;top:49844;left:392"><nobr>= yes</nobr></div>
+<div style="position:absolute;top:49870;left:176"><nobr>}</nobr></div>
+<div style="position:absolute;top:49939;left:234"><nobr>規矩是這樣的：disable 這一行如果是 yes 就代表這個服務預設不啟動，如</nobr></div>
+<div style="position:absolute;top:49968;left:198"><nobr>果是 no 就代表啟動。兩個簡單的巨集「=no」代表將設定值改為 no，「=yes」代表</nobr></div>
+<div style="position:absolute;top:49998;left:198"><nobr>將設定值改為 yes。</nobr></div>
+<div style="position:absolute;top:50053;left:234"><nobr>:map =no :/^\s*disable/s/=.\+$/= no/^M</nobr></div>
+<div style="position:absolute;top:50110;left:234"><nobr>:map =yes :/^\s*disable/s/=.\+$/= yes/^M</nobr></div>
+
+<div style="position:absolute;top:50168;left:234"><nobr>其中^M 是[CTRL]+v 再按下[ENTER]的結果。如此，只要執行 =no 或</nobr></div>
+<div style="position:absolute;top:50197;left:198"><nobr>=yes，不用進入插入模式，也不用移動游標，很方便吧。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:50266;left:193"><nobr><b>map!</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:50348;left:234"><nobr>如果要定義的巨集是在插入模式下使用的話，必須用 map!來定義，例如，</nobr></div>
+<div style="position:absolute;top:50378;left:198"><nobr>要在插入模式中用「=u」執行回復動作：</nobr></div>
+<div style="position:absolute;top:50435;left:234"><nobr>：map! =u ^[ua</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:50506;left:193"><nobr>錄製巨集</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:50584;left:234"><nobr>vim 提供了一個相當方便的錄製巨集功能，讓不熟悉巨集的使用者也可以</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:50695;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=41><b>Page 41</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:50781;left:108"><nobr>41/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:50809;left:198"><nobr>很方便地撰寫巨集。方式很簡單：</nobr></div>
+
+<div style="position:absolute;top:50864;left:234"><nobr><b>q&lt;</b>命名暫存區<b>&gt; → </b>執行 → <b>q</b></nobr></div>
+<div style="position:absolute;top:50923;left:234"><nobr>以複製一行為例，先以 qm 指定將之後的命令錄到暫存區 m，執行 yyP，複</nobr></div>
+<div style="position:absolute;top:50952;left:198"><nobr>製一行，再按下 q 停止錄製，這時，暫存區 m 的內容就是在 qm 到 q 之間的命</nobr></div>
+<div style="position:absolute;top:50982;left:198"><nobr>令，利用&quot;mp 就可以觀察到結果了。這在撰寫很複雜的巨集時有用，可以先由錄</nobr></div>
+<div style="position:absolute;top:51012;left:198"><nobr>製的方式產生一個樣本，再來修改。</nobr></div>
+</span></font>
+
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:51130;left:155"><nobr><b>1.6.3 </b>儲存巨集</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:51208;left:234"><nobr>巨集是要額外儲存的，不然，辛苦撰寫的巨集，在離開 vi 之後就消失了，</nobr></div>
+<div style="position:absolute;top:51239;left:198"><nobr>下一次，還要再定義一次，這就太麻煩了。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:51306;left:193"><nobr><b>mkexrc/mkvimrc</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:51388;left:234"><nobr>使用「:mk」可以把所有設定輸出到指定的檔案，「:mkv」則可以加上 vim 的</nobr></div>
+
+<div style="position:absolute;top:51418;left:198"><nobr>版本資訊，不指定檔名的話，mk 會存到目錄下的「.<b style="color:black;background-color:#A0FFFF">exrc</b>」而 mkv 會存到</nobr></div>
+<div style="position:absolute;top:51448;left:198"><nobr>「.vimrc」。</nobr></div>
+<div style="position:absolute;top:51504;left:234"><nobr>執行:mk <b style="color:black;background-color:#A0FFFF">exrc</b> 將設定值輸出到 <b style="color:black;background-color:#A0FFFF">exrc</b>，離開檔案，觀察一下 <b style="color:black;background-color:#A0FFFF">exrc</b> 的內容，似</nobr></div>
+<div style="position:absolute;top:51535;left:198"><nobr>乎比自訂的部份要多，這是因為所有的設定值都輸出了。利用：</nobr></div>
+
+<div style="position:absolute;top:51599;left:176"><nobr>vi  -c &quot;source <b style="color:black;background-color:#A0FFFF">exrc</b>&quot; newfile</nobr></div>
+<div style="position:absolute;top:51667;left:234"><nobr>開啟新檔，剛剛定義的 ab，map 就又都可以使用了。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:51735;left:193"><nobr><b>.<b style="color:black;background-color:#A0FFFF">exrc</b>/.vimrc</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:51817;left:234"><nobr>傳統上，vi 在啟動的時候會讀取主目錄下名為.<b style="color:black;background-color:#A0FFFF">exrc</b> 的目錄作初始化，vim</nobr></div>
+
+<div style="position:absolute;top:51847;left:198"><nobr>則用.vimrc，不過，為了相容性，這兩種方法都可被接受。在命令列執行：</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:51958;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=42><b>Page 42</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:52044;left:108"><nobr>42/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:52094;left:176"><nobr>vi /.vimrc</nobr></div>
+<div style="position:absolute;top:52162;left:234"><nobr>直接撰寫主目錄下的.vimrc 如下：</nobr></div>
+<div style="position:absolute;top:52227;left:176"><nobr>&quot;A VIM source file for testing</nobr></div>
+<div style="position:absolute;top:52252;left:176"><nobr>ab myweb http://www.google.com/linux</nobr></div>
+
+<div style="position:absolute;top:52278;left:176"><nobr>map =x dwwP</nobr></div>
+<div style="position:absolute;top:52303;left:176"><nobr>map! =u ^[ua</nobr></div>
+<div style="position:absolute;top:52329;left:176"><nobr>set nu</nobr></div>
+<div style="position:absolute;top:52397;left:234"><nobr>這個檔案中 &quot; 開頭的行是註解，另外，：是不需要加的，之後，直接執行</nobr></div>
+<div style="position:absolute;top:52462;left:176"><nobr>vi newfile</nobr></div>
+<div style="position:absolute;top:52530;left:234"><nobr>這時，行號會顯示，同時，.vimrc 中定義的 ab 和 map 也會生效。</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:27px;font-family:Times">
+<div style="position:absolute;top:52674;left:134"><nobr><b>1.7 VIM </b>專屬改良功能</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:52829;left:234"><nobr>VIM 是 vi 的增強版本，當然有一些不同的增強功能，這些功能可以大略地</nobr></div>
+<div style="position:absolute;top:52861;left:198"><nobr>分為兩個部份，一個是程式撰寫，一個是編輯。程式撰寫的部分主要是針對 C</nobr></div>
+<div style="position:absolute;top:52891;left:198"><nobr>語言，不過，以目前的 vim 6.2 而言，如果單就語法偵錯的功能來說，幾乎是遍</nobr></div>
+<div style="position:absolute;top:52920;left:198"><nobr>及了所有 Linux 常用的 script，甚至包括了像 sendmail 和 named 的設定檔語法。</nobr></div>
+<div style="position:absolute;top:52977;left:234"><nobr>由於這不是專門講解 vim 的書籍，在此，筆者並不擬詳細闡述所有的功能</nobr></div>
+<div style="position:absolute;top:53007;left:198"><nobr>，以下主要針對讓一般不熟練使用者能方便使用 vim 的視覺模式和網際網路的</nobr></div>
+<div style="position:absolute;top:53037;left:198"><nobr>特定功能作介紹，至於初始環境，自動命令，檔案判別和語法偵錯的部份就只</nobr></div>
+<div style="position:absolute;top:53067;left:198"><nobr>有綱要式的簡介，詳細的部份就有賴讀者自行發掘。</nobr></div>
+
+<div style="position:absolute;top:53123;left:234"><nobr>這裡要請讀者注意一件事，vim6.2 預設的安裝目錄是 /usr /local /share/ vim/</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:53221;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=43><b>Page 43</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:53307;left:108"><nobr>43/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:53333;left:198"><nobr>vim61，不過 Fedora Core 是放在/usr / share/ vim/ vim62 下，所以下面在說明安</nobr></div>
+<div style="position:absolute;top:53365;left:198"><nobr>裝目錄的時候是指/usr / share/ vim/ vim62，這和手冊有些不同。</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:53483;left:155"><nobr><b>1.7.1 </b>線上求助</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:53560;left:234"><nobr>vim 有非常完整的線上求助系統，檔案數量超過一百個，行數約 3 萬行，</nobr></div>
+<div style="position:absolute;top:53591;left:198"><nobr>這些檔案都在安裝目錄下的 doc 目錄中。另外在 tutor 目錄中有一篇入門文件，</nobr></div>
+<div style="position:absolute;top:53621;left:198"><nobr>對初次入門的使用者，這是一個很的開始。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:53746;left:193"><nobr><b>vimtutor</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:53828;left:234"><nobr>直接在命令列上執行 vimtutor 就開始教學之旅，這個 tutor 其實設計得很好</nobr></div>
+<div style="position:absolute;top:53857;left:198"><nobr>，剛好可以邊操作，邊學習。如第 1 節：</nobr></div>
+
+<div style="position:absolute;top:53921;left:149"><nobr>** To move the cursor, press the h,j,k,l keys as indicated. **</nobr></div>
+<div style="position:absolute;top:53947;left:196"><nobr>^</nobr></div>
+<div style="position:absolute;top:53972;left:196"><nobr>k              Hint:  The h key is at the left and moves left.</nobr></div>
+<div style="position:absolute;top:53998;left:168"><nobr>&lt; h       l &gt;               The l key is at the right and moves right.</nobr></div>
+<div style="position:absolute;top:54023;left:196"><nobr>j                     The j key looks like a down arrow</nobr></div>
+<div style="position:absolute;top:54049;left:196"><nobr>v</nobr></div>
+<div style="position:absolute;top:54074;left:144"><nobr>1. Move the cursor around the screen until you are comfortable.</nobr></div>
+
+<div style="position:absolute;top:54125;left:144"><nobr>2. Hold down the down key (j) until it repeats.</nobr></div>
+<div style="position:absolute;top:54152;left:135"><nobr>---&gt; Now you know how to move to the next lesson.</nobr></div>
+<div style="position:absolute;top:54202;left:144"><nobr>3. Using the down key, move to Lesson 1.2.</nobr></div>
+<div style="position:absolute;top:54254;left:135"><nobr>Note: If you are ever unsure about something you typed, press &lt;ESC&gt; to place</nobr></div>
+<div style="position:absolute;top:54278;left:163"><nobr>you in Normal mode.  Then retype the command you wanted.</nobr></div>
+<div style="position:absolute;top:54348;left:234"><nobr>這是練習使用 h，j，k，l 來作上下左右的移動，最後按住 j 移到 1.2 節，也</nobr></div>
+
+<div style="position:absolute;top:54377;left:198"><nobr>提醒使用者，在任何不確定的環境下使用[ESC]可以到一般模式。以下的課程也</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:54484;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=44><b>Page 44</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:54570;left:108"><nobr>44/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:54598;left:198"><nobr>是類似的，您都可以一邊看著說明，一邊驗證成果。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:54723;left:193"><nobr><b>help</b></nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:54805;left:234"><nobr>在 vim 中，直接輸入：help 或按下&lt;F1&gt;就可以出現求助畫面。</nobr></div>
+<div style="position:absolute;top:54870;left:92"><nobr>*help.txt*      For Vim version 6.1.  Last change: 2001 Sep 14</nobr></div>
+<div style="position:absolute;top:54921;left:308"><nobr>VIM - main help file</nobr></div>
+<div style="position:absolute;top:54946;left:749"><nobr>k</nobr></div>
+<div style="position:absolute;top:54972;left:146"><nobr>Move around:  Use the cursor keys, or &quot;h&quot; to go left,    </nobr></div>
+<div style="position:absolute;top:54972;left:731"><nobr>h   l</nobr></div>
+
+<div style="position:absolute;top:54997;left:272"><nobr>&quot;j&quot; to go down, &quot;k&quot; to go up, &quot;l&quot; to go right.       j</nobr></div>
+<div style="position:absolute;top:55023;left:92"><nobr>Close this window:  Use &quot;:q&lt;Enter&gt;&quot;.</nobr></div>
+<div style="position:absolute;top:55048;left:119"><nobr>Get out of Vim:  Use &quot;:qa!&lt;Enter&gt;&quot; (careful, all changes are lost!).</nobr></div>
+
+<div style="position:absolute;top:55099;left:92"><nobr>Jump to a subject:  Position the cursor on a tag between |bars| and hit CTRL-].</nobr></div>
+<div style="position:absolute;top:55125;left:119"><nobr>With the mouse:  &quot;:set mouse=a&quot; to enable the mouse (in xterm or GUI).</nobr></div>
+<div style="position:absolute;top:55149;left:186"><nobr>Double-click the left mouse button on a tag between |bars|.</nobr></div>
+<div style="position:absolute;top:55174;left:129"><nobr>jump back:  Type CTRL-T or CTRL-O (repeat to go further back).</nobr></div>
+<div style="position:absolute;top:55244;left:234"><nobr>建議您仔細讀一下內容，這裡有很多使用線上說明的重要技巧。首先是如</nobr></div>
+<div style="position:absolute;top:55274;left:198"><nobr>何求助，：help 中有一大段是安裝目錄下 doc 目錄中說明檔的簡介，您可以直</nobr></div>
+<div style="position:absolute;top:55304;left:198"><nobr>接依需求開啟相關的檔案，也可以用</nobr></div>
+
+<div style="position:absolute;top:55360;left:234"><nobr>：help &lt;查詢目標&gt;</nobr></div>
+<div style="position:absolute;top:55417;left:234"><nobr>的方式直接查閱特定命令的用法。這裡的查詢目標有一些特定的語法：</nobr></div>
+<div style="position:absolute;top:55472;left:234"><nobr>1．查詢是分模式的，預設是一般模式，如：help a 會查到一般模式下的 a</nobr></div>
+<div style="position:absolute;top:55504;left:198"><nobr>命令，而：help :a 才能查到命令模式下的插入命令。插入模式的命令要以「i_」開</nobr></div>
+<div style="position:absolute;top:55533;left:198"><nobr>頭，「v_」開頭則是代表視覺模式，設定選項則要以單引號括住，如要查</nobr></div>
+<div style="position:absolute;top:55561;left:198"><nobr>autoindent 這個自動縮排選項要使用：help 'autoindent'。</nobr></div>
+<div style="position:absolute;top:55618;left:234"><nobr>2．控制鍵要使用破折號( dash - )連接，控制要大寫，例如要查閱插入模式</nobr></div>
+<div style="position:absolute;top:55650;left:198"><nobr>下的「[CTRL] + A」的功能，必須使用：help i_CTRL-A</nobr></div>
+
+</span></font>
+
+<div style="position:absolute;top:55747;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=45><b>Page 45</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:55833;left:108"><nobr>45/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:55861;left:234"><nobr>其次是 tag 的移動，下面是：help 中的一小段，由管線</nobr></div>
+<div style="position:absolute;top:55859;left:675"><nobr>∣()所包含的文字稱</nobr></div>
+<div style="position:absolute;top:55891;left:198"><nobr>為 tag，如|usr_21.txt|。</nobr></div>
+<div style="position:absolute;top:55956;left:176"><nobr>Editing Effectively</nobr></div>
+<div style="position:absolute;top:55981;left:176"><nobr>|usr_20.txt|  Typing command-line commands quickly</nobr></div>
+
+<div style="position:absolute;top:56007;left:176"><nobr>|usr_21.txt|  Go away and come back</nobr></div>
+<div style="position:absolute;top:56032;left:176"><nobr>|usr_22.txt|  Finding the file to edit</nobr></div>
+<div style="position:absolute;top:56101;left:234"><nobr>將游標移到 tag 中按下[CTRL]+]，就可以移到這個 tag 所連接的位置，要回</nobr></div>
+<div style="position:absolute;top:56130;left:198"><nobr>原來的 help，只要按[CTRL]+O 就可以了。</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:56248;left:155"><nobr><b>1.7.2 </b>視覺模式</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:56327;left:234"><nobr>如果您對 vi 多如牛毛的指令實在受不了，那 vim 的視覺模式(Visual)可能是</nobr></div>
+
+<div style="position:absolute;top:56357;left:198"><nobr>一大福音。其實，視覺模式就是反白標記的意思，vim 的視覺功能非常強大，甚</nobr></div>
+<div style="position:absolute;top:56386;left:198"><nobr>至可以標記欄位或函數區塊。以下還是用 viexer 作為範例，先用</nobr></div>
+<div style="position:absolute;top:56443;left:234"><nobr>：%s/□\+/\t/</nobr></div>
+<div style="position:absolute;top:56500;left:234"><nobr>將 viexer 排整齊一點。不要急著進視覺模式，在視覺模式中，一切都以切換</nobr></div>
+<div style="position:absolute;top:56530;left:198"><nobr>到視覺模式時的游標位置開始，所以，養成習慣，先想一下要幹嘛。假定，想</nobr></div>
+<div style="position:absolute;top:56560;left:198"><nobr>要複製第 3 行到第 5 行的第 4 個字 CA 到文章結尾，首先，以 3G 移動游標到第</nobr></div>
+<div style="position:absolute;top:56588;left:198"><nobr>3 行開頭，按下 v ，這時左下方會出現 – VISUAL – 的字樣，移動游標到第 5</nobr></div>
+<div style="position:absolute;top:56619;left:198"><nobr>行的 CA，這時，游標移動的區域會被反白，如下圖所示。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:57010;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=46><b>Page 46</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:57096;left:108"><nobr>46/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:57566;left:234"><nobr>再來，按下 y 就可以複製這個區塊同時離開視覺模式，要貼到結尾只要 Gp</nobr></div>
+<div style="position:absolute;top:57596;left:198"><nobr>就可以了。在視覺模式中，其實是可以用一般模式的方式來移動游標的，像上</nobr></div>
+<div style="position:absolute;top:57625;left:198"><nobr>面的例子，按下 v 以後，輸入 2+3w 也可以有一樣的結果。</nobr></div>
+<div style="position:absolute;top:57682;left:234"><nobr>如果要選取的目標是行的話，例如，將第 3 行到第 5 行移到結尾，用 V (大</nobr></div>
+<div style="position:absolute;top:57712;left:198"><nobr>寫)，會比較快，V 是行模式，只要按上下的方向鍵就可以了。</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:57780;left:193"><nobr><b>Visual Block</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:57860;left:234"><nobr>[CTRL]+v 是區塊模式，這在選取的範圍是欄位時特別有用，以下示範將</nobr></div>
+<div style="position:absolute;top:57892;left:198"><nobr>第 5 欄和第 6 欄對換。首先，將游標移到第 3 行的第 4 欄和第 5 欄之間的空白</nobr></div>
+<div style="position:absolute;top:57920;left:198"><nobr>(3G4wh)，執行[CTRL]+v ，再輸入 G5e</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:57920;left:508"><nobr>1</nobr></div>
+</span></font>
+
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:57921;left:513"><nobr>標定第 5 欄，按下 d，剪下來，這時會</nobr></div>
+<div style="position:absolute;top:57951;left:198"><nobr>自動回到一般模式，再下$p 就可以了。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:58179;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:58181;left:94"><nobr>當然可以用方向鍵，不過，如果這些紀錄延續好幾頁呢，真的記不得命令在 vim 中還是不方便的。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:58273;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=47><b>Page 47</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+
+<div style="position:absolute;top:58359;left:108"><nobr>47/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:58795;left:193"><nobr>標記函數區塊</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:58875;left:234"><nobr>在設定檔或程式語言中，常有由( )，&lt; &gt;，[ ]，{ }，所定義的文字區塊，如</nobr></div>
+<div style="position:absolute;top:58906;left:198"><nobr>果要移動或複製這種區塊，在視覺模式中可以直接用左右方的各種括號來標記</nobr></div>
+<div style="position:absolute;top:58935;left:198"><nobr>，還是用 named.conf 來實驗。</nobr></div>
+<div style="position:absolute;top:58992;left:234"><nobr>假定要標記 localhost 這個 zone 區塊，首先，將游標移到按下 V，進入行模</nobr></div>
+
+<div style="position:absolute;top:59021;left:198"><nobr>式，按下 ｝就可以了，注意一下，vim 是非常聰明的，會自動找到對稱的括號</nobr></div>
+<div style="position:absolute;top:59052;left:198"><nobr>。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:58479;left:516"><nobr>移到行尾按 p</nobr></div>
+<div style="position:absolute;top:58558;left:254"><nobr>標記後按 d</nobr></div>
+<div style="position:absolute;top:59168;left:388"><nobr>游標先停在這行</nobr></div>
+<div style="position:absolute;top:59185;left:388"><nobr>任意位置</nobr></div>
+<div style="position:absolute;top:59256;left:455"><nobr>按｝會自動找到</nobr></div>
+<div style="position:absolute;top:59274;left:455"><nobr>對稱的</nobr></div>
+
+<div style="position:absolute;top:59274;left:455"><nobr>｝</nobr></div>
+<div style="position:absolute;top:59384;left:393"><nobr>行模式</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:59536;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=48><b>Page 48</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:59622;left:108"><nobr>48/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:59643;left:193"><nobr>大小寫轉換</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:59722;left:234"><nobr>標記之後，按下 u 可以將所有區塊內的文字轉成小寫，U 可以轉成大寫，</nobr></div>
+
+<div style="position:absolute;top:59753;left:198"><nobr>當然啦，～就是大小寫互換了。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:59823;left:193"><nobr>使用滑鼠</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:59904;left:234"><nobr>如果您可以使用滑鼠的話，那視覺模式就更方便了。無論在一般或插入模</nobr></div>
+<div style="position:absolute;top:59933;left:198"><nobr>式下，連擊兩下左鍵或拖曳滑鼠就可以進入視覺模式(相當於 v)，連擊三下就可</nobr></div>
+<div style="position:absolute;top:59963;left:198"><nobr>以進入視覺化的行模式(相當於 V)，這在插入模式的剪下/複製是非常方便的。以</nobr></div>
+<div style="position:absolute;top:59993;left:198"><nobr>下示範在插入模式下複製 viexer 的第 3 行取代掉第 5 行。</nobr></div>
+<div style="position:absolute;top:60050;left:234"><nobr>開啟 viexer 後，先執行</nobr></div>
+
+<div style="position:absolute;top:60106;left:234"><nobr>：set mouse=a</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:60104;left:342"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:60163;left:234"><nobr>開啟在所有模式中的滑鼠功能，按下 i 進入插入模式，拖曳滑鼠將第 3 行</nobr></div>
+<div style="position:absolute;top:60193;left:198"><nobr>標記，按下 y，再拖曳滑鼠將第 5 行標記，按下 p 就可以了，注意現在的模式</nobr></div>
+<div style="position:absolute;top:60223;left:198"><nobr>，還是插入模式。</nobr></div>
+</span></font>
+<font size=4 face="Times"><span style="font-size:22px;font-family:Times">
+<div style="position:absolute;top:60341;left:155"><nobr><b>1.7.3 </b>初始環境</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:60418;left:234"><nobr>VIM 的初始環境有點複雜，依手冊的說明總共有 12 個步驟，不過，其中</nobr></div>
+<div style="position:absolute;top:60449;left:198"><nobr>有的步驟只有特定環境才會生效，這裡暫時跳過，以下整理出六個主要的啟動</nobr></div>
+<div style="position:absolute;top:60479;left:198"><nobr>流程，如果讀者想了解詳細的步驟，可以在 vim 中執行「：help startup」。</nobr></div>
+<div style="position:absolute;top:60534;left:234"><nobr>1．讀取系統參數</nobr></div>
+<div style="position:absolute;top:60591;left:234"><nobr>2．vim 執行時的命令列選項</nobr></div>
+<div style="position:absolute;top:60647;left:234"><nobr>3．vimrc 或 <b style="color:black;background-color:#A0FFFF">exrc</b></nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+
+<div style="position:absolute;top:60705;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:60707;left:94"><nobr>其實，不要 set 也可以使用滑鼠，但是，這樣作其實是用 Linux 終端機的滑鼠功能來作，不能切換模式。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:60799;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=49><b>Page 49</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:60885;left:108"><nobr>49/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:60911;left:234"><nobr>4．plugin</nobr></div>
+<div style="position:absolute;top:60968;left:234"><nobr>5．viminfo</nobr></div>
+
+<div style="position:absolute;top:61025;left:234"><nobr>6．自動命令</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:61098;left:193"><nobr>系統參數</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:61176;left:234"><nobr>SHELL 和 TERM 這兩個環境變數是 vim 一啟動就要讀取的，這決定了 vim</nobr></div>
+<div style="position:absolute;top:61208;left:198"><nobr>的終端機行為和預設的 shell (例如，執行 :sh 時要呼叫什麼 shell)，由於這是一</nobr></div>
+<div style="position:absolute;top:61237;left:198"><nobr>開始就讀入了，使用者在 vimrc 中的設定會取代掉開始值。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:61309;left:193"><nobr>命令列選項</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:61387;left:234"><nobr>vim 其實有非常多不同的啟動方式：</nobr></div>
+<div style="position:absolute;top:61442;left:234"><nobr>vim -b</nobr></div>
+<div style="position:absolute;top:61444;left:320"><nobr>二進位模式，這主要用在編輯二進位檔案，像有格式的資料庫</nobr></div>
+<div style="position:absolute;top:61476;left:198"><nobr>檔案，當然也可以是編譯過的二進位執行檔。</nobr></div>
+<div style="position:absolute;top:61540;left:176"><nobr>使用:%!xxd 可以進一步轉成 16 進位格式，如下圖，:%!xxd -r 可以轉回來。</nobr></div>
+<div style="position:absolute;top:61591;left:176"><nobr>0000080: 0080 0408 50ab 0000 50ab 0000 0500 0000  ....P...P.......</nobr></div>
+<div style="position:absolute;top:61617;left:176"><nobr>0000090: 0010 0000 0100 0000 00b0 0000 0030 0508  .............0..</nobr></div>
+<div style="position:absolute;top:61642;left:176"><nobr>00000a0: 0030 0508 dc02 0000 c405 0000 0600 0000  .0..?..?......@^</nobr></div>
+
+<div style="position:absolute;top:61668;left:176"><nobr>00000b0: 0010 0000 0200 0000 c4b0 0000 c430 0508  ........?..?..^@</nobr></div>
+<div style="position:absolute;top:61693;left:176"><nobr>00000c0: c430 0508 d000 0000 d000 0000 0600 0000  ?..?..?......3^@</nobr></div>
+<div style="position:absolute;top:61719;left:176"><nobr>00000d0: 0400 0000 0400 0000 0801 0000 0881 0408  ................</nobr></div>
+<div style="position:absolute;top:61744;left:176"><nobr>00000e0: 0881 0408 2000 0000 2000 0000 0400 0000  .... ... .......</nobr></div>
+<div style="position:absolute;top:61770;left:176"><nobr>00000f0: 0400 0000 2f6c 6962 2f6c 642d 6c69 6e75  ..../lib/ld-linu</nobr></div>
+<div style="position:absolute;top:61795;left:176"><nobr>0000100: 782e 736f 2e32 0000 0400 0000 1000 0000  x.so.2..........</nobr></div>
+<div style="position:absolute;top:61917;left:234"><nobr>vim -e</nobr></div>
+<div style="position:absolute;top:61919;left:320"><nobr>啟動在 ex 模式，這可以讓您體會一下上個世紀 70 年代編輯檔</nobr></div>
+<div style="position:absolute;top:61950;left:198"><nobr>案的方式，在 ex 模式中，只能以命令來編輯檔案，例如，1,3p 顯示檔案的 1 到</nobr></div>
+
+</span></font>
+
+<div style="position:absolute;top:62062;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=50><b>Page 50</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:62148;left:108"><nobr>50/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:62174;left:198"><nobr>3 行；2a，在第二行後插入文字( 按[CTRL]+d 結束 )，唯一的好處是不用多按一</nobr></div>
+<div style="position:absolute;top:62206;left:198"><nobr>個「：」，輸入 vi 或 Q 可以回到一般 模式。ex 是這個命令的別名。</nobr></div>
+<div style="position:absolute;top:62316;left:234"><nobr>vim -R</nobr></div>
+<div style="position:absolute;top:62318;left:320"><nobr>唯讀模式，這在想觀察檔案又怕誤改到的時候使用，任何的修</nobr></div>
+<div style="position:absolute;top:62349;left:198"><nobr>改是不能存檔的，必須使用 w!或 wq!來強制執行。view 是這個命 令的別名。</nobr></div>
+
+<div style="position:absolute;top:62459;left:234"><nobr>vim -g</nobr></div>
+<div style="position:absolute;top:62461;left:320"><nobr>啟動圖形介面的 vim，這會在 1.7.1 節介紹，gvim 是這個命令的</nobr></div>
+<div style="position:absolute;top:62493;left:198"><nobr>別名。</nobr></div>
+<div style="position:absolute;top:62546;left:234"><nobr>vim -Rg</nobr></div>
+<div style="position:absolute;top:62548;left:320"><nobr>啟動在圖形介面並使用唯讀模式，gview 是這個命令的別名。</nobr></div>
+<div style="position:absolute;top:62659;left:234"><nobr>vim -Z</nobr></div>
+<div style="position:absolute;top:62661;left:320"><nobr>限制模式，會限制 vim 中 shell 命令的使用，這包含了使用 :sh</nobr></div>
+<div style="position:absolute;top:62692;left:198"><nobr>回到 shell 的功能。rvim 是這個命令的別名。</nobr></div>
+<div style="position:absolute;top:62803;left:234"><nobr>vim -RZ</nobr></div>
+
+<div style="position:absolute;top:62805;left:320"><nobr>限制模式且唯讀，rview 是這個命令的別名。</nobr></div>
+<div style="position:absolute;top:62916;left:234"><nobr>vim -gZ</nobr></div>
+<div style="position:absolute;top:62917;left:320"><nobr>gvim 加限制模式，rgvim 是這個命令的別名。</nobr></div>
+<div style="position:absolute;top:63030;left:234"><nobr>vim -y</nobr></div>
+<div style="position:absolute;top:63032;left:320"><nobr>簡易模式</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:63029;left:393"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:63032;left:399"><nobr>，簡易模式中 vim 會直接進入插入模式，如果目前的</nobr></div>
+
+<div style="position:absolute;top:63063;left:198"><nobr>環境支援圖形介面的話，會直接進入 gvim，同時 vim 會對應不同的功能鍵，如</nobr></div>
+<div style="position:absolute;top:63091;left:198"><nobr>[CTRL]+a 是全選，[CTRL]+c 是複製，[CTRL]+ x 是剪下，[CTRL]+ v 是貼上，</nobr></div>
+<div style="position:absolute;top:63121;left:198"><nobr>[CTRL]+ z 是回復，[CTRL]+y 是反回復，甚至可以用[SHIFT]+[方向鍵]來標記</nobr></div>
+<div style="position:absolute;top:63152;left:198"><nobr>區塊。簡單地說，就是模擬成記事本。evim 是這個命令的別名。</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:63231;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:63233;left:94"><nobr>在實測中，如果 gvim(vim-X11)沒有安裝 vim -y 會不正常，有時會無法結束。</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:63325;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=51><b>Page 51</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:63411;left:108"><nobr>51/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:63492;left:234"><nobr>vim -yR</nobr></div>
+<div style="position:absolute;top:63494;left:320"><nobr>簡易模式並以唯讀開啟，eview 是這個命令的別名。</nobr></div>
+<div style="position:absolute;top:63606;left:234"><nobr>vim -d</nobr></div>
+<div style="position:absolute;top:63608;left:320"><nobr>差別模式，可以用來比較兩個以上檔案的不同，例如，在</nobr></div>
+<div style="position:absolute;top:63637;left:198"><nobr>viexer 中將最後一行複製到第 2 行之後，另存新檔為 vinew，執行</nobr></div>
+
+<div style="position:absolute;top:63694;left:239"><nobr>vim -d viexer vinew </nobr></div>
+<div style="position:absolute;top:63753;left:234"><nobr>會產生兩個垂直分割的視窗，vim 會自動以反白標記不同的地方 vimdiff 是</nobr></div>
+<div style="position:absolute;top:63783;left:198"><nobr>這個命令的別名。</nobr></div>
+<div style="position:absolute;top:63960;left:99"><nobr>Name Gender A/C State Phone Date      |  Name Gender A/C State Phone Date</nobr></div>
+<div style="position:absolute;top:63985;left:99"><nobr>======================================|  =====================================</nobr></div>
+<div style="position:absolute;top:64011;left:99"><nobr>Ken M ad MA 23030011 2003-01-13       |  Ken M ad MA 23030011 2003-01-13</nobr></div>
+<div style="position:absolute;top:64036;left:99"><nobr>Mars M ad CA 86002201 2002-11-14      |  Mars M ad CA 86002201 2002-11-14</nobr></div>
+</span></font>
+<font size=3 color="#ffffff" face="Times"><span style="font-size:16px;font-family:Times;color:#ffffff">
+<div style="position:absolute;top:64062;left:99"><nobr>--------------------------------------|  Murphy M ch NY 56443321 2002-12-14</nobr></div>
+
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:64087;left:99"><nobr>Judy F ch CA 76542299 2002-12-14      |  Judy F ch CA 76542299 2002-12-14</nobr></div>
+<div style="position:absolute;top:64113;left:99"><nobr>Helen F ad HW 60077719 2003-01-10     |  Helen F ad HW 60077719 2003-01-10</nobr></div>
+<div style="position:absolute;top:64138;left:99"><nobr>Murphy M ch NY 56443321 2002-12-14    |  Murphy M ch NY 56443321 2002-12-14</nobr></div>
+<div style="position:absolute;top:64164;left:441"><nobr>|  </nobr></div>
+<div style="position:absolute;top:64189;left:441"><nobr>|  </nobr></div>
+<div style="position:absolute;top:64215;left:441"><nobr>|  </nobr></div>
+<div style="position:absolute;top:64240;left:441"><nobr>|  </nobr></div>
+<div style="position:absolute;top:64266;left:441"><nobr>|  </nobr></div>
+
+</span></font>
+<font size=3 color="#ffffff" face="Times"><span style="font-size:16px;font-family:Times;color:#ffffff">
+<div style="position:absolute;top:64292;left:90"><nobr>viexer                 3,1            All vinew               7,1            All</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:64429;left:193"><nobr><b>vimrc/<b style="color:black;background-color:#A0FFFF">exrc</b></b></nobr></div>
+</span></font>
+
+<div style="position:absolute;top:64588;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=52><b>Page 52</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:64674;left:108"><nobr>52/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+
+<div style="position:absolute;top:64700;left:234"><nobr>vimrc 或 <b style="color:black;background-color:#A0FFFF">exrc</b> 是 vim 的 source 檔，vim 在啟動的時候，會依序讀取系統的</nobr></div>
+<div style="position:absolute;top:64730;left:198"><nobr>vimrc，使用者主目錄下的.vimrc 和執行目錄下的.vimrc，初始化 vim 的環境</nobr></div>
+</span></font>
+<font size=2 face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:64730;left:785"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:64732;left:790"><nobr>。</nobr></div>
+<div style="position:absolute;top:64787;left:234"><nobr>vim 的系統路徑(runtimepath)，Red Hat 預設在 /usr/share/vim/vim61/macro</nobr></div>
+
+<div style="position:absolute;top:64818;left:198"><nobr>下，所以，vim 啟動的時候首先會讀取 /usr/share/vim/vim61/macro/vimrc，預設</nobr></div>
+<div style="position:absolute;top:64848;left:198"><nobr>的 vimrc 設定了雙位元語系(中日韓)的支援，啟動語法功能(syntax on)，定義一</nobr></div>
+<div style="position:absolute;top:64878;left:198"><nobr>組自動命令可以直接編輯 gzip 壓縮的檔案，同時增訂了撰寫 html 時常用的標籤</nobr></div>
+<div style="position:absolute;top:64908;left:198"><nobr>對應。</nobr></div>
+<div style="position:absolute;top:64972;left:176"><nobr>if v:lang = &quot;^ko&quot;</nobr></div>
+<div style="position:absolute;top:64998;left:176"><nobr>．．．．．．</nobr></div>
+<div style="position:absolute;top:65022;left:191"><nobr>set fileencodings=big5</nobr></div>
+<div style="position:absolute;top:65075;left:176"><nobr>．．．．．．</nobr></div>
+
+<div style="position:absolute;top:65100;left:176"><nobr>endif</nobr></div>
+<div style="position:absolute;top:65150;left:176"><nobr>set nocompatible</nobr></div>
+<div style="position:absolute;top:65150;left:393"><nobr>&quot;設定不相容傳統 vi，不建議改，相容的話，所有增強</nobr></div>
+<div style="position:absolute;top:65175;left:401"><nobr>&quot;功能都會被停止</nobr></div>
+<div style="position:absolute;top:65201;left:176"><nobr>set bs=2                 &quot;設定倒退鍵可以在任何模式下使用</nobr></div>
+<div style="position:absolute;top:65226;left:176"><nobr>&quot;set ai                  &quot;自動縮排，要啟動的話把前面的&quot;去掉就可以了</nobr></div>
+<div style="position:absolute;top:65252;left:176"><nobr>&quot;set backup             &quot;預設是不保留暫存檔，要保留的話去掉開頭的&quot;。</nobr></div>
+
+<div style="position:absolute;top:65278;left:176"><nobr>set viminfo='20,\&quot;50</nobr></div>
+<div style="position:absolute;top:65278;left:392"><nobr>&quot;viminfo 可以看成是編輯紀錄，這裡會保留 50 個暫存</nobr></div>
+<div style="position:absolute;top:65303;left:392"><nobr>&quot;區和 20 個書籤。</nobr></div>
+<div style="position:absolute;top:65328;left:176"><nobr>set history=50          &quot;保留 50 筆命令列紀錄</nobr></div>
+<div style="position:absolute;top:65354;left:176"><nobr>set ruler               &quot;設定尺規，尺規會顯示在畫面的右下方</nobr></div>
+<div style="position:absolute;top:65381;left:176"><nobr>………</nobr></div>
+<div style="position:absolute;top:65406;left:176"><nobr>if &amp;t_Co &gt; 2 || has(&quot;gui_running&quot;)</nobr></div>
+
+<div style="position:absolute;top:65431;left:186"><nobr>syntax on</nobr></div>
+<div style="position:absolute;top:65431;left:392"><nobr>&quot;設定預設開啟語法功能</nobr></div>
+<div style="position:absolute;top:65456;left:176"><nobr>&quot; set hlsearch</nobr></div>
+<div style="position:absolute;top:65456;left:392"><nobr>&quot;這個功能預設是開的，所以如果您很討厭搜尋反白可</nobr></div>
+<div style="position:absolute;top:65483;left:176"><nobr>以</nobr></div>
+<div style="position:absolute;top:65481;left:392"><nobr>&quot;把前面的&quot;拿掉，改為 set nohlsearch 即可</nobr></div>
+<div style="position:absolute;top:65508;left:176"><nobr>endif</nobr></div>
+<div style="position:absolute;top:65534;left:176"><nobr>………</nobr></div>
+
+<div style="position:absolute;top:65558;left:176"><nobr>&quot; 最後定義一些常用的 html 標籤，這些巨集預設只能在一般模式下使用，也很好</nobr></div>
+<div style="position:absolute;top:65585;left:176"><nobr>記， &quot;都是用,h 開頭，如,h1 就是前後加上&lt;H1&gt;的標籤，如果要改為在插入模式也</nobr></div>
+<div style="position:absolute;top:65610;left:176"><nobr>能用，在&quot;nmap 改為 imap 後不要忘了在定義字串前加上&lt;ESC&gt;</nobr></div>
+<div style="position:absolute;top:65636;left:176"><nobr>nmap ,mh wbgueyei&lt;&lt;ESC&gt;ea&gt;&lt;/&lt;ESC&gt;pa&gt;&lt;ESC&gt;bba</nobr></div>
+
+<div style="position:absolute;top:65661;left:176"><nobr>nmap ,h1 _i&lt;h1&gt;&lt;ESC&gt;A&lt;/h1&gt;&lt;ESC&gt;</nobr></div>
+<div style="position:absolute;top:65687;left:176"><nobr>nmap ,h2 _i&lt;h2&gt;&lt;ESC&gt;A&lt;/h2&gt;&lt;ESC&gt;</nobr></div>
+<div style="position:absolute;top:65712;left:176"><nobr>………</nobr></div>
+</span></font>
+
+<font size=2 face="Times"><span style="font-size:6px;font-family:Times">
+<div style="position:absolute;top:65757;left:87"><nobr>1</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:65759;left:94"><nobr>有一個特例是使用 evim 或 vim -y 的時候，會首先讀取系統目錄下的 evim.vim</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:65005;left:569"><nobr>這一段是定義雙位</nobr></div>
+<div style="position:absolute;top:65027;left:569"><nobr>元語系的字碼，除</nobr></div>
+<div style="position:absolute;top:65049;left:569"><nobr>非您非常熟悉，否</nobr></div>
+<div style="position:absolute;top:65070;left:569"><nobr>則不要更動。</nobr></div>
+
+</span></font>
+
+<div style="position:absolute;top:65851;left:0"><hr><table border=0 width=100%><tr><td bgcolor=eeeeee align=right><font face=arial,sans-serif><a name=53><b>Page 53</b></a></font></td></tr></table></div><font size=3 face="Times"><span style="font-size:13px;font-family:Times">
+<div style="position:absolute;top:65937;left:108"><nobr>53/89</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:66004;left:234"><nobr>使用者的.vimrc 或.<b style="color:black;background-color:#A0FFFF">exrc</b> 的定義會蓋掉預設值，vim 會依序尋找，系統變數</nobr></div>
+<div style="position:absolute;top:66032;left:198"><nobr>$VIMINIT(預設沒有定義)，使用者主目錄下的.vimrc，系統變數$EXINIT(預設</nobr></div>
+<div style="position:absolute;top:66063;left:198"><nobr>沒有定義)，使用者主目錄下的.<b style="color:black;background-color:#A0FFFF">exrc</b>。vim 在這四項裏面只要找到一項就不會再</nobr></div>
+
+<div style="position:absolute;top:66093;left:198"><nobr>找其它的。如果 vim 所讀取的設定檔有 set <b style="color:black;background-color:#A0FFFF">exrc</b> 的話，vim 還會再試著讀取執行</nobr></div>
+<div style="position:absolute;top:66123;left:198"><nobr>目錄下的.vimrc 或.<b style="color:black;background-color:#A0FFFF">exrc</b>。</nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:17px;font-family:Times">
+<div style="position:absolute;top:66248;left:193"><nobr><b>plugin</b></nobr></div>
+</span></font>
+<font size=3 face="Times"><span style="font-size:16px;font-family:Times">
+<div style="position:absolute;top:66328;left:234"><nobr>plugin 是 vim 的外掛程式，這些以.vim 結尾的檔案是由 ex 命令加上 vim 專</nobr></div>
+
+<div style="position:absolute;top:66359;left:198"><nobr>屬的 script 組成的，分成通用(global plugin)和檔案(filetype plugin)兩種，前者會</nobr></div>
+<div style="position:absolute;top:66390;left:198"><nobr>對所有檔案均發生效用，後者只針對特定類型的檔案。</nobr></div>
+<div style="position:absolute;top:66446;left:234"><nobr>要使用通用 plugin 的功能必須把寫好的.vim 檔放到 vim 安裝目錄下名為</nobr></div>
+<div style="position:absolute;top:66474;left:198"><nobr>plugin 的目錄，以 vim 本身附的 justify.vim 為例，這是一個將文件作左右對齊的</nobr></div>
+<div style="position:absolute;top:66506;left:198"><nobr>模 組 ， 首 先 將 /usr/share/vim/vim61/macro 下 的 justify.vim 複 製 到 /</nobr></div>
+<div style="position:absolute;top:66534;left:198"><nobr>usr/share/vim/vim61/plugin，vim 啟動的時候就會自動讀取這個 plugin。以下是一</nobr></div>
+<div style="position:absolute;top:66565;left:198"><nobr>份簡單的 sed 說明文件。</nobr></div>
+<div style="position:absolute;top:66630;left:176"><nobr>The file README.boot gives instructions for making a &quot;bootstrap&quot;</nobr></div>
+
+<div style="position:absolute;top:66656;left:176"><nobr>version of sed on systems which lack any pre-existing and working</nobr></div>
+<div style="position:absolute;top:66681;left:176"><nobr>version of sed.</nobr></div>
+<div style="position:absolute;top:66732;left:176"><nobr>The file djgpp/README contains instructions for building sed</nobr></div>
+<div style="position:absolute;top:66758;left:176"><nobr>on DOS based systems using the djgpp compiler and its associated</nobr></div>
+<div style="position:absolute;top:66783;left:176"><nobr>tools.</nobr></div>
+<div style="position:absolute;top:66834;left:176"><nobr>See the file BUGS for instructions about reporting bugs.</nobr></div>
+<div style="position:absolute;top:66902;left:234"><nobr>假定要將第一段作左右對齊，先定義頁面寬度，再執行外掛命令 Justify：</nobr></div>
+<div style="position:absolute;top:66959;left:234"><nobr>：set tw=67</nobr></div>
+<div style="position:absolute;top:67016;left:234"><nobr>：1;/^$/-2Justify</nobr></div>

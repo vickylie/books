@@ -1,0 +1,10 @@
+實用 SMTP 指令使用 
+Telnet 連接到 email server 的 port 25 後，
+便會出現交談模式，可以輸入 SMTP 指令，以下是常用的 SMTP 指令，
+測試 SMTP Server 很有用:
+HELO “yourname” - 知會 SMTP Server 你是誰，
+例如 HELP example.com
+MAIL FROM “email@server.com” - 寄件者電郵地址
+RCPT TO: “email@smtpserver.com” - 收件者電郵地址
+DATA - 以上步驟通過後，可以用 DATA 開頭並輸入信件內容，結束時用 “.”
+QUIT - 離開用 QUIT 結束 

@@ -1,0 +1,5 @@
+¶}±Ò
+/usr/sbin/sendmail -bd -q30m
+
+Ãö³¬
+kill ....

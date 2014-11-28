@@ -1,0 +1,61 @@
+
+# 查看可能的 HD 
+# ls /dev/s*
+/dev/sda1  /dev/sda5  /dev/sda   /dev/sda2  /dev/sdb   
+
+
+# 顯示幾顆 HD 以及該 partition information , 以下是二顆 HD
+# fdisk -l
+
+Disk /dev/sda: 21.5 GB, 21474836480 bytes
+255 heads, 63 sectors/track, 2610 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x00089169
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *           1          32      248832   83  Linux
+Partition 1 does not end on cylinder boundary.
+/dev/sda2              32        2611    20719617    5  Extended
+/dev/sda5              32        2611    20719616   8e  Linux LVM
+
+Disk /dev/sdb: 21.5 GB, 21474836480 bytes
+255 heads, 63 sectors/track, 2610 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x6ed98b91
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdb3               1        2610    20964793+  83  Linux
+
+# 查看第二顆
+# fdisk /dev/sdb
+
+1. 輸入 m 顯示所有命令列示。
+2. 輸入 p 顯示硬盤分割情形。
+3. 輸入 a 設定硬盤啟動區。
+4. 輸入 n 設定新的硬盤分割區。
+4. 1. 輸入 e 硬盤為[延伸]分割區(extend)。
+4. 2. 輸入 p 硬盤為[主要]分割區(primary)。
+5. 輸入 t 改變硬盤分割區屬性。
+6. 輸入 d 刪除硬盤分割區屬性。
+7. 輸入 q 結束不存入硬盤分割區屬性。
+8. 輸入 w 結束並寫入硬盤分割區屬性。
+
+# 基本上可以用 n 來設定, 最後記得要下 w 儲存
+
+# format 格式化, 以下兩種是一樣的
+# mkfs.ext4 /dev/sdb
+# mke2fs -T ext4
+
+# 掛載 (目的目錄必須要存在) & 移除
+# mount /dev/sdb /var/www
+# umount /var/www
+
+# 每次開機都自動掛載
+# vi /etc/fstab
+# /dev/sdb /var/www ext4 defaults,errors=remount-ro 10
+
+

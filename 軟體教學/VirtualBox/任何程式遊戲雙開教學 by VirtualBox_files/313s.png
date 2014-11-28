@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>ImageShack&#174; - Error</title>
+<meta name="Author" content="ImageShack(R) Corp" />
+<meta name="Copyright" content="© 2003-2010 ImageShack Corp" />
+<meta name="Language" content="en" />
+
+<link rel="stylesheet" title="User Defined Style" href="/style/imageshack.css" type="text/css" />
+<link rel="stylesheet" title="User Defined Style" href="/img/tooltips.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/css/blue_round.css"/>
+<script type="text/javascript" src = "/scripts/yui/YAHOO.js" ></script>
+<script type="text/javascript" src = "/scripts/yui/connection.js" ></script>
+<script type="text/javascript" src="/scripts/common/common.js"></script> 
+<script type="text/javascript" src="/scripts/tooltips/fxtooltips.js"></script> 
+
+<!-- PUT THIS TAG IN THE head SECTION -->
+<script type="text/javascript" src="http://partner.googleadservices.com/gampad/google_service.js">
+</script>
+<script type="text/javascript">
+    GS_googleAddAdSenseService("ca-pub-7137941865592088");
+    GS_googleEnableAllServices();
+</script>
+<script type="text/javascript">
+    GA_googleAddSlot("ca-pub-7137941865592088", "Imageshack_DonePage_Bottom");
+    GA_googleAddSlot("ca-pub-7137941865592088", "Imageshack_DonePage_Top");
+</script>
+<script type="text/javascript">
+    GA_googleFetchAds();
+</script>
+<!-- END OF TAG FOR head SECTION -->
+
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /></head>
+
+<body><!-- Google Analytics -->
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-6232220-1");
+        pageTracker._initData();
+        pageTracker._setDomainName(".imageshack.us");
+        pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+<div id="mist" class="mist"></div>
+<!-- Start Google Analytics -->
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-6232220-1");
+        pageTracker._setDomainName(".imageshack.us");
+
+        pageTracker._setSampleRate("80");
+         
+            pageTracker._trackPageview();
+        
+        
+            } catch(err) {}
+    var related_type = ''.length > 0 ? parseInt() : 0;
+    var related_event_list = new Array('none','session','search','vold');
+    pageTracker._trackEvent('related-display',related_event_list[related_type]);
+</script>
+<!-- End Google Analytics -->
+
+<div class="layout">
+    <div class="indent">
+    <div id="top">       
+         <div class="top_form right">
+                        <div id="signOut" class="signOut">
+               <a href="http://my.imageshack.us/registration" onClick="pageTracker._trackEvent('new-header-click','header-register');">Sign Up</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" id="btnlogin" onClick="pageTracker._trackEvent('new-header-click','header-signin');">Login</a>  
+            </div>            
+            <!-- Search -->            
+            <div class="search-box right" style="cursor:nohand; background:transparent;">
+                <form method="get" action="/new_search.php" id="searchform">
+                  <div class="left">
+                                        <input name="q" id="searchfield" style="height:18px; padding-top:3px; font-family:Verdana,Arial,sans-serif; font-size:12px;" 
+                     
+                      onfocus="focussearch(this, 'Search'); pageTracker._trackEvent('new-header-click','header-search');" value="Search"
+                     />&nbsp;&nbsp;
+                  </div>
+                  <div class="left" style="margin-top: 4px">
+                    <a id="searchbutton" href="#" style="margin:0; padding:0; border:none;" onClick="pageTracker._trackEvent('new-header-click','header-search-btn');">
+                    <img src="http://crackle.imageshack.us/images/blue/arrow-right-round.gif" width="21px" height="20px" /></a>
+                  </div>
+                 </form>
+            </div>     
+         </div>
+         <div class="logo"><h1><a href="http://imageshack.us/" onClick="pageTracker._trackEvent('new-header-click','header-logo');">ImageShack</a></h1></div>      
+         <div class="clear"></div>         
+     </div>
+<!-- Main Menu  -->
+<div id="menu">
+    <ul class="sf-menu">
+        <li class=""><a class="topanchor" href="http://imageshack.us/">Media Upload</a></li>                                                             
+        <!--<li style="width:329px; cursor:nohand; background:transparent;">
+        </li>-->        
+        <li id="menu_signupgrade" style="width:251px;"
+            class="">
+                    <a class="topanchor" href="http://my.imageshack.us/registration" onClick="pageTracker._trackEvent('new-header-click','header-menu-register');">Sign Up</a>
+                  </li>                                                             
+        <li class="current"><a class="topanchor" href="http://imageshack.us/content.php?page=features" onClick="pageTracker._trackEvent('new-header-click','header-menu-tools');">Tools</a></li>                                                             
+        <li id="menu_myimages" class="">
+                <![if !IE]>
+                <a class="topanchor" href="http://my.imageshack.us/v_images.php" onClick="pageTracker._trackEvent('new-header-click','header-menu-myimages');"
+                style="border-right:none" 
+                 
+                >My Images</a>
+                <![endif]>
+                <!--[if IE]>
+                <a class="topanchor" href="http://my.imageshack.us/v_images.php" onClick="pageTracker._trackEvent('new-header-click','header-menu-myimages');"
+                style="border-right:none" 
+                 
+                >My Images</a>
+                <![endif]-->
+               
+                     </li>                                                          
+    </ul>
+</div>      
+
+<div class="clear"></div><table width="755" border="0" cellpadding="0" cellspacing="0" align="center">
+<!-- content -->
+<tr>
+<td colspan="2" valign="top">
+<div id='container' style='width:968px; padding:15px'><h1>You have tried to load a page on imageshack.us, but there was an error. Please press back and try again.</h1><br /><br /><p>This error has been logged, and we will investigate it immediately. There is no need to contact us about this issue.</p></div><br /> <!-- end content -->
+</table>
+
+<div style='width:1000px; margin:0 auto;'><div>    <div class="clear"></div>
+   
+ <!-- Bottom Menu -->   
+     <div class="menu-bottom">
+         <div class="menu-header">      
+            <a href="http://imageshack.us/content.php?page=aboutus" onClick="pageTracker._trackEvent('new-footer-click','footer-about');" title="About Us" class="menu-bottom-link">About</a>|
+            <a href="http://imageshack.us/content.php?page=advertising" onClick="pageTracker._trackEvent('new-footer-click','footer-advertising');" title="Advertise on ImageShack" class="menu-bottom-link">Advertising</a>|
+            <a href="http://stream.imageshack.us/content.php?page=email&q=customer" onClick="pageTracker._trackEvent('new-footer-click','footer-contact');" title="Report Lost or Missing Images" class="menu-bottom-link">Contact</a>|
+            <a href="http://stream.imageshack.us/content.php?page=email&amp;q=abuse" onClick="pageTracker._trackEvent('new-footer-click','footer-reportabuse');" title="Report Abuse or Request Deletion" class="menu-bottom-link">Report Abuse</a>|
+            <a href="http://imageshack.us/content.php?page=developer" onClick="pageTracker._trackEvent('new-footer-click','footer-api');" title="API" class="menu-bottom-link">API</a>|
+            <a href="http://imageshack.us/content.php?page=features" onClick="pageTracker._trackEvent('new-footer-click','footer-tools');" title="Tools" class="menu-bottom-link">Tools</a>|                
+            <a href="http://imageshack.us/content.php?page=rules" onClick="pageTracker._trackEvent('new-footer-click','footer-tos');" title="ToS" class="menu-bottom-link">ToS</a>|
+            <a href="http://blog.imageshack.us/blog/" title="Blog" onClick="pageTracker._trackEvent('new-footer-click','footer-blog');" class="menu-bottom-link">Blog</a>|     
+            <a href="http://imageshack.us/content.php?page=jobs" onClick="pageTracker._trackEvent('new-footer-click','footer-jobs');" title="Jobs" class="menu-bottom-link">Jobs</a>|
+            <a href="http://imageshack.us/content.php?page=faq" onClick="pageTracker._trackEvent('new-footer-click','footer-faq');" title="FAQ" class="menu-bottom-link">FAQ</a>|
+ 	    <a href="http://imageshack.us/content.php?page=help" onClick="pageTracker._trackEvent('new-footer-click','footer-help');" title="Help" class="menu-bottom-link">Help</a>
+	             </div>    
+     </div>           
+     <div id="copyright">
+         &copy; 2003-2010 ImageShack Corp. All rights reserved. 
+     </div>
+     
+
+                 
+    </div> <!-- div.indent -->         
+</div>  <!-- div.layout -->
+
+<div id="login_dialog" title="Login" style="display:none">
+    Login with your Imageshack username or email:    <table cellpadding="0" cellpadding="0" border="0" style="width:100%">
+        <tr>
+            <td style="width:100px; text-align:right;">
+                &nbsp;
+            </td>
+            <td style="text-align:left;">
+                <div style="width:245px;">
+                    <div id="l_no_user_error" class="error" style="display:none; color:#D34209;font-weight:bold;"><i>Please enter your username or email address</i></div>
+                    <div id="l_no_pass_error" class="error" style="display:none; color:#D34209;font-weight:bold;"><i>Please enter your password</i></div>
+                    <div id="l_auth_failed_error" class="error" style="display:none; color:#D34209;font-weight:bold;"><i>Authentication failed. Please check username and password entered</i></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:100px; text-align:right;">
+                Email:            </td>
+            <td style="text-align:left;">
+                <input id="l_login" style="font-style:italic;"/>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:100px; text-align:right;">
+                Password:            </td>
+            <td style="text-align:left;">
+                <input type="password" id="l_password"/>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:100px; text-align:right;">
+                &nbsp;
+            </td>
+            <td style="text-align:left;">
+                <input type="checkbox" id="stay_logged_in"/><label for="stay_logged_in" style="font-size: 8pt;">Remember me</label>
+                <input type="button" id="okbtn_login" style="cursor:pointer; margin-top:5px; margin-left:15px;" value="OK" onClick="pageTracker._trackEvent('new-header-click','login-ok');"/>
+            </td>
+        </tr>
+    </table>
+
+    <!--<input type="button" id="okbtn_login" style="cursor:pointer; margin-top:5px;" value="OK" onClick="pageTracker._trackEvent('new-header-click','login-ok');"/>-->
+    <!--<input type="button" id="cancelbtn_login" value="Cancel" onClick="pageTracker._trackEvent('new-header-click','login-cancel');"/>-->
+    <div align="left">    
+       <a class="ser" href="http://my.imageshack.us/registration/passwordrecovery.php" onClick="pageTracker._trackEvent('new-header-click','login-forgot-password');" style="font-style:italic;font-size:8pt;">Forgot your password?</a>
+    </div>
+    <hr/>
+    <p style="font-size:8pt;text-align:left;">If you are already registered with ImageShack, but do not have a password, please log in using your registration link and click on &quot;Preferences&quot; to create your new password.</p>
+</div>
+    <script type='text/javascript' src='http://crackle.imageshack.us/scripts/jquery/jquery-1.3.2.min.js'></script>
+<script type="text/javascript" src="http://crackle.imageshack.us/scripts/jquery/jquery-ui-1.7.2.custom.min.js"></script>
+<script type="text/javascript" src="http://crackle.imageshack.us/scripts/common/core-1.0.1.min.js"></script>
+
+
+
+<!-- Rubicon insight tag -->
+<script type="text/javascript" defer="defer" src="http://tap-cdn.rubiconproject.com/partner/scripts/rubicon/alice.js?pc=7991/12852"></script>
+
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+
+_qoptions={
+
+qacct:"p-65DrxcUXjcWq6",
+labels:"MyPageBlue"
+};
+</script>
+<script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+<noscript>
+<a href="http://www.quantcast.com/p-65DrxcUXjcWq6" target="_blank"><img src="http://pixel.quantserve.com/pixel/p-65DrxcUXjcWq6.gif?labels=MyPageBlue" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/></a>
+</noscript>
+<!-- End Quantcast tag -->
+
+<!-- Begin comScore Tag -->
+<script>
+document.write(unescape("%3Cscript src='" + (document.location.protocol == "https:" ? " https://sb" : " http://b") + ".scorecardresearch.com/beacon.js' %3E%3C/script%3E"));
+</script>
+<script>
+
+COMSCORE.beacon({
+c1:2,
+c2:7518627,
+c3:"",
+c4:"",
+c5:"",
+c6:"",
+c15:""
+});
+
+</script>
+<noscript>
+<img src="http://b.scorecardresearch.com/p?c1=2&c2=7518627&c3=&c4=&c5=&c6=&c15=&cj=1" />
+</noscript>
+<!-- End comScore Tag -->
+
+
+
+
+</body>
+</html>
