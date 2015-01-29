@@ -1,0 +1,97 @@
+From: chen@cc.nctu.edu.tw (C.S.Chen)
+
+Newsgroups: tw.bbs.comp.network,tw.bbs.comp.unix
+Subject: Re: DNS 伺服器的運作方式
+Date: 26 Jan 1997 07:58:04 GMT
+
+常常有個感覺.
+
+讀一些經過翻譯的東西, 介紹性的 article, 對於一些原本就懂的人, 幫助有限.
+然而對於許多原本不是很懂那些觀念的人, 如果翻譯者對問題了解夠深入, 語文
+表達能力也夠. 很多人, 可以因此而受益非淺. 另一方面, 有時候卻會因為翻譯的
+人, 理解不夠, 或者, 因為語文程度的關係, 以致使閱讀的人, 不知不覺中, 學到
+了錯誤的東西, 但卻又不知道.
+
+做這些工作, 有一定程度的貢獻, 而另一方面, 卻又必需面對, 最好不要因為本身的
+了解不夠, 而將不正確的知識與觀念, 誤傳給別人.  如何做到, 的確不是簡單.
+
+這一篇說明 DNS 運作原理的 article, 許多部份對不懂而且想了解的人, 應該有所
+幫助. 不過, 有部份的資料, 已經過時, 甚至有部份的資料與觀念, 則是明顯的錯誤.
+這系加以說明, 希望有助大家更了解 DNS 系統.
+
+1. BIND 的最新版本是 4.9.5-P1.
+
+2. IP addr 的觀念 (目前 IP v4 這一版 ) 並沒有單純的地理位置觀念.
+   -- 140.113.250.135 是交通大學一個 DNS server 的 address.
+
+   140.113.*.* 是交通大學所使用的部份網路(還有其它). 那麼 140.*.*.* 有
+   特別意義 ? (e.g 代表臺灣嗎?)  答案是,  沒有.
+
+   大家應該不陌生, 168.95.*.* 是 HiNet在用, 163.13.*.* 是 TKU在用(淡江大學)
+    , ..  有看出什麼地理意義嗎 ?
+
+   下一代的 IPv6, 才有打算把地理區域的觀念, 帶到部份的 IP address range 中.
+
+3. resolver 是以 Library 的型式, 存在許多個別的應用系統中
+
+   resolver 並不是單獨放置在 DNS server 中, 而是放在許許多多個別的 client
+   系統上 (PC, Unix, Mac, ...), 以 resolver library routine 的型式存在.
+
+   也就是說, 例如 user 下 telnet, ftp, netscape, ... 等連線程式, 當有用到
+   DNS query 時, 這些程式會用到諸如 gethostbyname(), gethostbyaddr(), ...
+   這類的 library call, 這些 library call (linked 之後, static or dynamic)
+   成為應用程式 (e.g. telnet, ftp, ....) 的一部份, 這些 library call 被用來
+   向 local DNS server 查詢各種 DNS 相關的問題.
+
+4. top level domain 的說明, 太美國本位主義.
+
+   wownet.net, silkera.net, hinet.net, acer.net, ... 等在美國嗎 ?
+   acer.com, zyxel.com, ... 等臺灣電腦相關企業, 完全在美國嗎 ?
+
+   當然不是, 事實上, top level domain 除了 "edu" 幾乎全是 USA 在用,
+   "gov" 是美國政府唯一在用. 其它 ".org", ".com", ".net" 等 (不是地理區域)
+   top level domain, 全球各地都有許多不同的單位在用.
+
+5. 名詞翻譯
+  - primary NS ( 一手, 原始資料 NS )
+    primary NS 應該是 "一手, 原始" 資料的 DNS server,
+    * 不宜翻成 "主要" 的 DNS  server.
+
+  - secondary NS ( 二手資料 NS )
+    同樣的, secondary NS, 應該翻成 "二手" 資料的 DNS server,
+    * 而不宜翻成 "次要" 的 DNS server.
+
+    主要/次要, 容易造成許多DNS 系統運作時的誤解, 與不要的聯想.
+
+6. DNS server 也不是分成 primary, secondary, caching server 三種
+   caching 和 primary/secondary, 根本是不太相同的東西. 如果硬要
+   扯, 應該也要把 "forwarders" 等說進來. ( 還有 slave servers)
+
+  - authoritative DNS server
+    翻成 "管理伺服系統", 似乎還是有一些詞不達意. authoritative 英文原意,
+    有原始 (source)資料, 以及具有決定性 (decision) 等意義在 面.
+
+    * DNS 系統上, 有某一個 domain zone 的 SOA ( Start Of Authority)
+      記錄者, 擁有該 domain zone 中所有的 RR (Resource Records), 因此
+      可以決定某一個 domain name 的 RR, 是不是存在.
+      ( 不像其它的 NS, 可能只擁有某個 domain zone 的部份 caching 資料)
+
+    舉例而言, tst.NCTU.edu.tw 這樣一個 domain name, 是不是存在, 目前網路
+    上, 透過? DNS 系統的運作, 苦以查到以下這三臺 DNS host 之一, 可以回答
+	  - ns.NCTU.edu.tw
+	  - ns2.NCTU.edu.tw
+	  - NCTU.edu.tw
+
+    其他的 DNS server, 除非將所有 NCTU.EDU.TW 這個  domain zone 的資料,
+    完全傳過去, 才可以有類似功能. (不過, 通常這樣有點畫蛇添足, 不太有意義)
+    -- 透過在 /etc/named 家 secondary line 的方式,  將所有 NCTU.EDU.TW
+       這個 domain zone 中 , 各種 A, MX, SOA, NS, ... 等全部傳過去.
+
+    一般翻成 "管理"的字眼, 英文常見的 "administration", or "management".
+    如將 "authoritative" 也翻成 "管理", 就不太合乎實際的意義與用法.
+
+--
+Joe. C.S.Chen,	chen@cc.nctu.edu.tw
+
+*******  Knowledge is of two kinds.  We know a subject ourselves,  *******
+	 or we know where we can find information upon it.
